@@ -103,7 +103,7 @@ def peak_sales(
 
 
 def pipeline_valuation(
-    drugs: list[dict],
+    drugs: list[dict[str, float]],
     discount_rate: float,
 ) -> ValuationResult:
     """Value a biotech pipeline.

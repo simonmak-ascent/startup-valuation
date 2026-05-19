@@ -123,7 +123,7 @@ def payment_processor_valuation(
         84.5
     """
     revenue = transaction_volume * take_rate
-    pv = 0
+    pv = 0.0
     for t in range(1, years + 1):
         cf = revenue * ((1 + growth_rate) ** t)
         pv += cf / ((1 + discount_rate) ** t)

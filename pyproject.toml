@@ -38,18 +38,20 @@ docs = [
     "mkdocs>=1.5.0",
     "mkdocstrings[python]>=0.24.0",
     "mkdocs-material>=9.5.0",
+    "pymdown-extensions>=10.0",
 ]
 dev = [
     "pytest>=7.4.0",
     "pytest-cov>=4.1.0",
     "ruff>=0.1.0",
+    "mypy>=1.0.0",
 ]
 
 [project.urls]
-Homepage = "https://github.com/simonmak/startup-valuation"
-Documentation = "https://simonmak.github.io/startup-valuation"
-Repository = "https://github.com/simonmak/startup-valuation"
-"Bug Tracker" = "https://github.com/simonmak/startup-valuation/issues"
+Homepage = "https://github.com/simonplmak-cloud/startup-valuation"
+Documentation = "https://simonplmak-cloud.github.io/startup-valuation"
+Repository = "https://github.com/simonplmak-cloud/startup-valuation"
+"Bug Tracker" = "https://github.com/simonplmak-cloud/startup-valuation/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/startup_valuation"]

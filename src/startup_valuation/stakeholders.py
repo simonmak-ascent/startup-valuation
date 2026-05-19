@@ -146,7 +146,7 @@ def opm_common_stock(
 
 
 def pwerm(
-    scenarios: list[dict],
+    scenarios: list[dict[str, float]],
 ) -> ValuationResult:
     """Calculate common stock value using PWERM.
 
@@ -218,7 +218,7 @@ def liquidation_value(
     return ValuationResult(
         value=total,
         method="Liquidation Value",
-        inputs={"assets": assets, "recovery_rates": recovery_rates},
+        inputs={"assets": str(assets), "recovery_rates": str(recovery_rates)},
         chapter="13",
     )
 
@@ -329,7 +329,7 @@ def intrinsic_option_value(
 
 
 def probability_weighted_employee_value(
-    scenarios: list[dict],
+    scenarios: list[dict[str, float]],
 ) -> ValuationResult:
     """Calculate employee option value using probability-weighted scenarios.
 
@@ -396,7 +396,7 @@ def vesting_adjusted_value(
     vested_value = total_value * vested_fraction
     unvested_value = total_value * (1 - vested_fraction)
 
-    adjusted_unvested = 0
+    adjusted_unvested = 0.0
     for t in range(1, years_remaining + 1):
         vest_portion = annual_vest_rate * unvested_value
         retention = retention_prob ** t

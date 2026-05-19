@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import Any
 
 
 @dataclass
@@ -32,7 +33,7 @@ class ValuationResult:
 
     value: float
     method: str
-    inputs: dict[str, float | str | list] = field(default_factory=dict)
+    inputs: dict[str, float | str | list[Any]] = field(default_factory=dict)
     assumptions: list[str] = field(default_factory=list)
     sensitivity: dict[str, SensitivityResult] = field(default_factory=dict)
     chapter: str = ""

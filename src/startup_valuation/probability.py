@@ -6,6 +6,7 @@ Chapter 2: Mathematical Foundations — Probability Theory
 from __future__ import annotations
 
 import math
+from collections.abc import Callable
 
 from scipy import integrate, stats as scipy_stats
 
@@ -183,7 +184,7 @@ def poisson_probability(lambda_: float, k: int) -> ValuationResult:
 
 
 def expected_value_continuous(
-    pdf_func,
+    pdf_func: Callable[[float], float],
     lower: float,
     upper: float,
 ) -> ValuationResult:
