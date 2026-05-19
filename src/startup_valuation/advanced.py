@@ -308,3 +308,67 @@ def ltv_cac_valuation(
         assumptions=["LTV/CAC > 1 for viable business model"],
         chapter="4",
     )
+
+
+def binomial_valuation(
+    underlying: float,
+    strike: float,
+    risk_free_rate: float,
+    volatility: float,
+    time_to_maturity: float,
+    steps: int = 50,
+) -> ValuationResult:
+    """Value a startup option using binomial tree with high resolution.
+
+    Formula: Same as binomial_tree with steps=50 for convergence to Black-Scholes.
+
+    Args:
+        underlying: Current value of startup.
+        strike: Liquidation preference or strike price.
+        risk_free_rate: Risk-free rate.
+        volatility: Volatility of startup value.
+        time_to_maturity: Time to exit in years.
+        steps: Number of time steps (default 50 for convergence).
+
+    Returns:
+        ValuationResult with option value.
+
+    Example:
+        >>> result = binomial_valuation(20_000_000, 5_000_000, 0.05, 0.40, 1.0, 50)
+        >>> round(result.value / 1_000_000, 2)
+        15.24
+    """
+    dt = time_to_maturity / steps
+    u = math.exp(volatility * math.sqrt(dt))
+    d = math.exp(-volatility * math.sqrt(dt))
+    p = (math.exp(risk_free_rate * dt) - d) / (u - d)
+
+    # Build terminal node values
+    node_values = [max(underlying * (u ** i) * (d ** (steps - i)) - strike, 0) for i in range(steps + 1)]
+
+    # Backward induction
+    for step in range(steps - 1, -1, -1):
+        node_values = [
+            math.exp(-risk_free_rate * dt) * (p * node_values[i + 1] + (1 - p) * node_values[i])
+            for i in range(step + 1)
+        ]
+
+    option_value = node_values[0]
+
+    return ValuationResult(
+        value=option_value,
+        method="Binomial Valuation (High Resolution)",
+        inputs={
+            "underlying": underlying,
+            "strike": strike,
+            "risk_free_rate": risk_free_rate,
+            "volatility": volatility,
+            "time_to_maturity": time_to_maturity,
+            "steps": steps,
+        },
+        assumptions=[
+            f"Binomial tree with {steps} steps converges to Black-Scholes",
+            "European-style option",
+        ],
+        chapter="4",
+    )

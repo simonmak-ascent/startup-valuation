@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import math
 
-from scipy import stats as scipy_stats
+from scipy import integrate, stats as scipy_stats
 
 from startup_valuation.types import ValuationResult
 
@@ -178,5 +178,40 @@ def poisson_probability(lambda_: float, k: int) -> ValuationResult:
         method="Poisson Probability",
         inputs={"lambda": lambda_, "k": k},
         assumptions=["Events occur independently at constant average rate"],
+        chapter="2",
+    )
+
+
+def expected_value_continuous(
+    pdf_func,
+    lower: float,
+    upper: float,
+) -> ValuationResult:
+    """Calculate expected value for a continuous random variable.
+
+    Formula: E[X] = ∫ x × f(x) dx over [lower, upper]
+
+    Args:
+        pdf_func: Probability density function f(x).
+        lower: Lower bound of integration.
+        upper: Upper bound of integration.
+
+    Returns:
+        ValuationResult with expected value.
+
+    Example:
+        >>> import scipy.stats
+        >>> result = expected_value_continuous(scipy_stats.norm(0, 1).pdf, -10, 10)
+        >>> round(result.value, 4)
+        0.0
+    """
+    integrand = lambda x: x * pdf_func(x)
+    ev, _ = integrate.quad(integrand, lower, upper, limit=200)
+
+    return ValuationResult(
+        value=ev,
+        method="Expected Value (Continuous)",
+        inputs={"lower": lower, "upper": upper},
+        assumptions=["PDF is properly normalized (integrates to 1)"],
         chapter="2",
     )

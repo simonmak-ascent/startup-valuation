@@ -1,0 +1,30 @@
+cff-version: "1.2.0"
+message: "If you use this software, please cite it as below."
+title: "Startup Valuation Engine"
+version: "0.2.0"
+authors:
+  - family-names: "Mak"
+    given-names: "Simon"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+abstract: >
+  A comprehensive Python library implementing 80+ startup valuation formulas
+  from the Startup Valuation textbook. Includes an MCP server for AI agents
+  and AI-Agent Skills for workflow guidance. Covers probability theory, time
+  value of money, CAPM, Scorecard, Berkus, VC Method, Black-Scholes, Monte
+  Carlo, SaaS metrics, biotech rNPV, fintech, marketplace, hardware,
+  international valuation, stakeholder analysis, and emerging topics.
+keywords:
+  - startup valuation
+  - venture capital
+  - financial modeling
+  - Black-Scholes
+  - Monte Carlo
+  - MCP server
+  - AI agents
+  - SaaS metrics
+  - biotech valuation
+  - fintech
+repository-code: "https://github.com/simonplmak-cloud/startup-valuation"
+license: MIT
+type: software
+date-released: "2026-05-20"

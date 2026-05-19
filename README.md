@@ -1,19 +1,27 @@
 # Startup Valuation Engine
 
-Comprehensive startup valuation library implementing **80+ formulas** from the Startup Valuation textbook. Includes a Python library, MCP server for AI agents, and AI-Agent Skills.
+> Comprehensive startup valuation library implementing **80+ formulas** from the Startup Valuation textbook. Python library + MCP server + AI-Agent Skills.
 
-## Features
+[![CI](https://github.com/simonplmak-cloud/startup-valuation/actions/workflows/ci.yml/badge.svg)](https://github.com/simonplmak-cloud/startup-valuation/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Docs](https://img.shields.io/badge/docs-GitHub_Pages-blue)](https://simonplmak-cloud.github.io/startup-valuation/)
 
-- **80+ valuation formulas** across 14 modules covering every method in the textbook
-- **Typed Python API** with structured `ValuationResult` returns (value + assumptions + sensitivity)
-- **MCP Server** exposing all calculations as tools for AI agents (Claude, OpenCode, etc.)
-- **AI-Agent Skills** with workflow guidance for 5 valuation domains
-- **Every function tested** against textbook example values
+## Overview
+
+A production-grade Python library for startup valuation, implementing every formula from the **Startup Valuation** textbook. Designed for developers, financial analysts, and AI agents who need auditable, structured valuation computations.
+
+**Three-layer architecture:**
+1. **Python Library** — 14 modules, 80+ typed functions, all returning `ValuationResult` (value + assumptions + sensitivity)
+2. **MCP Server** — 60+ tools for AI agents (Claude, OpenCode, etc.) via stdio/SSE
+3. **AI-Agent Skills** — 5 skill definitions with workflow guidance for valuation domains
 
 ## Installation
 
 ```bash
-pip install startup-valuation
+pip install startup-valuation          # library only
+pip install startup-valuation[mcp]     # + MCP server
+pip install startup-valuation[dev]     # + pytest, ruff, coverage
 ```
 
 ## Quick Start
@@ -25,7 +33,7 @@ from startup_valuation.core import scorecard_valuation, vc_method_post_money
 from startup_valuation.advanced import black_scholes, scenario_analysis
 from startup_valuation.types import Scenario
 
-# Scorecard Method
+# Scorecard Method (pre-revenue startups)
 result = scorecard_valuation(
     average_valuation=1_500_000,
     weights=[0.30, 0.25, 0.15, 0.10, 0.10, 0.05, 0.05],
@@ -33,7 +41,7 @@ result = scorecard_valuation(
 )
 print(f"Scorecard: ${result.value:,.0f}")  # $1,800,000
 
-# Black-Scholes for real options
+# Black-Scholes for real options (startup equity)
 result = black_scholes(
     underlying=20_000_000, strike=5_000_000,
     risk_free_rate=0.05, volatility=0.40, time_to_maturity=1.0,
@@ -50,42 +58,49 @@ result = scenario_analysis(scenarios)
 print(f"Expected value: ${result.value:,.0f}")  # $5,200,000
 ```
 
-### MCP Server
+### MCP Server (for AI Agents)
 
 ```bash
-cd mcp_server
-python server.py
+cd mcp_server && python server.py
 ```
 
-Connect with any MCP-compatible AI agent. All 40+ valuation tools are available.
+Connect with any MCP-compatible AI agent. All 60+ valuation tools available.
 
 ### AI-Agent Skills
 
-Copy the `skills/` directory to your agent's skills folder. Available skills:
-- `valuation-core` — Scorecard, Berkus, VC Method, Risk Factor
-- `valuation-advanced` — Black-Scholes, Monte Carlo, Scenario Analysis
-- `valuation-industry` — SaaS, Biotech, Fintech, Marketplace, Hardware
-- `valuation-stakeholder` — Dilution, OPM, PWERM, Liquidation
-- `valuation-emerging` — SAFE, Crypto, ESG, Network Effects
+Copy the `skills/` directory to your agent's skills folder:
+- **`valuation-core`** — Scorecard, Berkus, VC Method, Risk Factor Summation
+- **`valuation-advanced`** — Black-Scholes, Binomial, Monte Carlo, Scenario Analysis
+- **`valuation-industry`** — SaaS, Biotech, Fintech, Marketplace, Hardware
+- **`valuation-stakeholder`** — Dilution, OPM, PWERM, Liquidation Preference
+- **`valuation-emerging`** — SAFE, Crypto (MV=PQ), ESG, Metcalfe's Law
 
-## Modules
+## Valuation Methods by Category
 
-| Module | Methods | Chapter |
-|--------|---------|---------|
-| `probability` | Expected value, joint probability, Poisson | 2 |
-| `tv` | PV, NPV, annuity | 2 |
-| `capm` | CAPM, portfolio beta, startup-adjusted | 2 |
-| `core` | Scorecard, Berkus, Risk Factor, VC Method | 3 |
-| `advanced` | Black-Scholes, Binomial, Monte Carlo, Scenario | 4 |
-| `comparables` | Multiples, regression-adjusted | 5 |
-| `saas` | LTV, CAC, NRR, Magic Number, Rule of 40 | 11 |
-| `biotech` | rNPV, decision tree, peak sales, pipeline | 11 |
-| `fintech` | Payment revenue, lending, network effects | 11 |
-| `marketplace` | GMV, take rate, liquidity, network value | 11 |
-| `hardware` | TRL-adjusted, break-even, P-weighted DCF | 11 |
-| `international` | PPP, CRP, currency-adjusted DCF | 12 |
-| `stakeholders` | Dilution, OPM, PWERM, liquidation | 13 |
-| `emerging` | SAFE, MV=PQ, ESG, Metcalfe's Law | 14 |
+| Category | Methods | Chapter |
+|----------|---------|---------|
+| **Probability** | Expected value, joint probability, Poisson | 2 |
+| **Time Value** | PV, NPV, annuity | 2 |
+| **CAPM** | CAPM, portfolio beta, startup-adjusted | 2 |
+| **Core** | Scorecard, Berkus, Risk Factor, VC Method | 3 |
+| **Advanced** | Black-Scholes, Binomial, Monte Carlo, Scenario | 4 |
+| **Comparables** | P/E, P/S, EV/EBITDA, regression-adjusted | 5 |
+| **SaaS** | LTV, CAC, NRR, Magic Number, Rule of 40 | 11 |
+| **Biotech** | rNPV, decision tree, peak sales, pipeline | 11 |
+| **Fintech** | Payment revenue, lending, neobank, network effects | 11 |
+| **Marketplace** | GMV, take rate, liquidity, network density | 11 |
+| **Hardware** | TRL-adjusted, break-even, P-weighted DCF | 11 |
+| **International** | PPP, CRP, currency-adjusted DCF, Damodaran | 12 |
+| **Stakeholders** | Dilution, OPM, PWERM, liquidation, synergies | 13 |
+| **Emerging** | SAFE, MV=PQ, ESG, Metcalfe's, data moat | 14 |
+
+## Why This Library?
+
+- **Auditable** — Every function returns `ValuationResult` with value, method, inputs, assumptions, and sensitivity analysis
+- **Textbook-accurate** — All formulas verified against book example values with unit tests
+- **AI-ready** — MCP server and Skills for seamless AI agent integration
+- **Industry-specific** — Dedicated modules for SaaS, biotech, fintech, marketplace, and hardware startups
+- **Open source** — MIT license, extensible, well-documented
 
 ## Development
 
@@ -93,13 +108,39 @@ Copy the `skills/` directory to your agent's skills folder. Available skills:
 # Install dev dependencies
 pip install -e ".[dev]"
 
-# Run tests
+# Run tests (146 tests, ~6s)
 pytest
 
 # Run with coverage
 pytest --cov=startup_valuation --cov-report=term-missing
+
+# Lint
+ruff check .
+
+# Type check
+mypy src/startup_valuation
 ```
+
+## Documentation
+
+- **API Reference:** [GitHub Pages](https://simonplmak-cloud.github.io/startup-valuation/)
+- **Chapter Index:** Maps every function to its textbook chapter
+- **Examples:** Interactive code snippets for each valuation category
+
+## Citing This Project
+
+```bibtex
+@software{startup_valuation_engine,
+  author = {Mak, Simon},
+  title = {Startup Valuation Engine},
+  year = {2026},
+  url = {https://github.com/simonplmak-cloud/startup-valuation},
+  license = {MIT},
+}
+```
+
+Based on formulas from the **Startup Valuation** textbook. See `output/` for the full textbook source in markdown.
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE) for details.

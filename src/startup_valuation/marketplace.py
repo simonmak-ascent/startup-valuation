@@ -95,3 +95,74 @@ def network_value(active_users: float, k: float = 1.0, alpha: float = 1.3) -> Va
         assumptions=[f"Network effect exponent α={alpha}"],
         chapter="11",
     )
+
+
+def buyer_retention(
+    buyers_period_1: int,
+    buyers_repeat: int,
+) -> ValuationResult:
+    """Calculate marketplace buyer retention rate.
+
+    Formula: Buyer Retention = Repeat Buyers / Buyers in Period 1
+
+    Args:
+        buyers_period_1: Number of buyers in period 1.
+        buyers_repeat: Number of buyers who returned in period 2.
+
+    Returns:
+        ValuationResult with buyer retention rate.
+
+    Example:
+        >>> result = buyer_retention(10000, 3500)
+        >>> result.value
+        0.35
+    """
+    if buyers_period_1 <= 0:
+        raise ValueError("buyers_period_1 must be positive")
+    return ValuationResult(
+        value=buyers_repeat / buyers_period_1,
+        method="Buyer Retention",
+        inputs={"buyers_period_1": buyers_period_1, "buyers_repeat": buyers_repeat},
+        assumptions=["Period 1 and Period 2 are comparable time windows"],
+        chapter="11",
+    )
+
+
+def network_density(
+    active_buyers: int,
+    active_sellers: int,
+    total_users: int,
+) -> ValuationResult:
+    """Calculate marketplace network density.
+
+    Formula: Density = Actual Connections / Potential Connections
+    where Actual = buyers × sellers, Potential = total × (total - 1) / 2
+
+    Args:
+        active_buyers: Number of active buyers.
+        active_sellers: Number of active sellers.
+        total_users: Total number of users.
+
+    Returns:
+        ValuationResult with network density ratio.
+
+    Example:
+        >>> result = network_density(5000, 3000, 10000)
+        >>> round(result.value, 6)
+        0.0003
+    """
+    if total_users <= 1:
+        raise ValueError("total_users must be greater than 1")
+    actual = active_buyers * active_sellers
+    potential = total_users * (total_users - 1) / 2
+    return ValuationResult(
+        value=actual / potential,
+        method="Network Density",
+        inputs={
+            "active_buyers": active_buyers,
+            "active_sellers": active_sellers,
+            "total_users": total_users,
+        },
+        assumptions=["Network density measures marketplace liquidity potential"],
+        chapter="11",
+    )

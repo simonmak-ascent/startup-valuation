@@ -1,0 +1,76 @@
+site_name: Startup Valuation
+site_description: Comprehensive startup valuation library with 80+ formulas, MCP server, and AI-agent skills
+site_author: Startup Valuation Contributors
+repo_url: https://github.com/simonplmak-cloud/startup-valuation
+repo_name: simonplmak-cloud/startup-valuation
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: true
+            show_root_heading: true
+            show_category_heading: true
+            members_order: source
+            docstring_style: google
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - admonition
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - API Reference:
+      - Probability: api/probability.md
+      - Time Value: api/tv.md
+      - CAPM: api/capm.md
+      - Core Methods: api/core.md
+      - Advanced: api/advanced.md
+      - Comparables: api/comparables.md
+      - SaaS: api/saas.md
+      - Biotech: api/biotech.md
+      - Fintech: api/fintech.md
+      - Marketplace: api/marketplace.md
+      - Hardware: api/hardware.md
+      - International: api/international.md
+      - Stakeholders: api/stakeholders.md
+      - Emerging: api/emerging.md
+  - Examples:
+      - Core Methods: examples/core-methods.md
+      - Advanced Methods: examples/advanced-methods.md
+      - Industry Models: examples/industry-models.md
+  - Chapter Index: chapters.md
