@@ -1,0 +1,67 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "startup-valuation"
+version = "0.1.0"
+description = "Comprehensive startup valuation library implementing 80+ formulas from the Startup Valuation textbook. Includes Python library, MCP server, and AI-Agent Skills."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    { name = "Startup Valuation Contributors" }
+]
+keywords = ["valuation", "startup", "finance", "vc", "mcp", "ai-agent"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
+dependencies = [
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+]
+
+[project.optional-dependencies]
+mcp = [
+    "fastmcp>=0.1.0",
+]
+docs = [
+    "mkdocs>=1.5.0",
+    "mkdocstrings[python]>=0.24.0",
+    "mkdocs-material>=9.5.0",
+]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/simonmak/startup-valuation"
+Documentation = "https://simonmak.github.io/startup-valuation"
+Repository = "https://github.com/simonmak/startup-valuation"
+"Bug Tracker" = "https://github.com/simonmak/startup-valuation/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/startup_valuation"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
