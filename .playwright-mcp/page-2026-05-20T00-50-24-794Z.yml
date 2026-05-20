@@ -1,0 +1,1468 @@
+- generic [ref=e2]:
+  - navigation "Shortcuts menu" [ref=e3]:
+    - heading "Skip to" [level=2] [ref=e4]
+    - list "Skip to" [ref=e5]:
+      - listitem [ref=e6]:
+        - link "main content" [ref=e7] [cursor=pointer]:
+          - /url: "#skippedLink"
+          - text: Main content
+      - listitem [ref=e8]:
+        - link "Buying options" [ref=e9] [cursor=pointer]:
+          - /url: "#buybox"
+      - listitem [ref=e10]:
+        - link "Videos" [ref=e11] [cursor=pointer]:
+          - /url: "#va-related-videos-widget_feature_div"
+      - listitem [ref=e12]:
+        - link "Reviews" [ref=e13] [cursor=pointer]:
+          - /url: "#customerReviews"
+    - separator [ref=e14]
+    - heading "Keyboard shortcuts" [level=2] [ref=e15]
+    - list "Keyboard shortcuts" [ref=e16]:
+      - listitem [ref=e17]:
+        - link "Search, alt, forward slash" [ref=e18] [cursor=pointer]:
+          - /url: javascript:void(0)
+          - generic [ref=e19]:
+            - generic [ref=e20]: Search
+            - generic [ref=e21]:
+              - generic [ref=e22]: alt
+              - generic [ref=e23]: +
+              - generic [ref=e24]: /
+      - listitem [ref=e25]:
+        - link "Cart, shift, alt, c" [ref=e26] [cursor=pointer]:
+          - /url: javascript:void(0)
+          - generic [ref=e27]:
+            - generic [ref=e28]: Cart
+            - generic [ref=e29]:
+              - generic [ref=e30]: shift
+              - generic [ref=e31]: +
+              - generic [ref=e32]: alt
+              - generic [ref=e33]: +
+              - generic [ref=e34]: C
+      - listitem [ref=e35]:
+        - link "Home, shift, alt, h" [ref=e36] [cursor=pointer]:
+          - /url: javascript:void(0)
+          - generic [ref=e37]:
+            - generic [ref=e38]: Home
+            - generic [ref=e39]:
+              - generic [ref=e40]: shift
+              - generic [ref=e41]: +
+              - generic [ref=e42]: alt
+              - generic [ref=e43]: +
+              - generic [ref=e44]: H
+      - listitem [ref=e45]:
+        - link "Your orders, shift, alt, o" [ref=e46] [cursor=pointer]:
+          - /url: javascript:void(0)
+          - generic [ref=e47]:
+            - generic [ref=e48]: Orders
+            - generic [ref=e49]:
+              - generic [ref=e50]: shift
+              - generic [ref=e51]: +
+              - generic [ref=e52]: alt
+              - generic [ref=e53]: +
+              - generic [ref=e54]: O
+      - listitem [ref=e55]:
+        - button "Add to cart, shift, alt, K" [ref=e56] [cursor=pointer]:
+          - generic [ref=e57]:
+            - generic [ref=e58]: Add to cart
+            - generic [ref=e59]:
+              - generic [ref=e60]: shift
+              - generic [ref=e61]: +
+              - generic [ref=e62]: alt
+              - generic [ref=e63]: +
+              - generic [ref=e64]: K
+      - listitem [ref=e65]:
+        - button "Show/hide shortcuts, shift, alt, z" [ref=e66] [cursor=pointer]:
+          - generic [ref=e67]:
+            - generic [ref=e68]: Show/Hide shortcuts
+            - generic [ref=e69]:
+              - generic [ref=e70]: shift
+              - generic [ref=e71]: +
+              - generic [ref=e72]: alt
+              - generic [ref=e73]: +
+              - generic [ref=e74]: Z
+    - generic [ref=e80]: To move between items, use your keyboard's up or down arrows.
+  - banner [ref=e81]:
+    - navigation "Primary" [ref=e82]:
+      - generic [ref=e83]:
+        - generic [ref=e84]:
+          - link "Amazon" [ref=e86] [cursor=pointer]:
+            - /url: /ref=nav_logo
+          - button "Deliver to Hong Kong" [ref=e89] [cursor=pointer]:
+            - generic [ref=e91]:
+              - generic [ref=e92]: Deliver to
+              - generic [ref=e93]: Hong Kong
+        - search [ref=e96]:
+          - generic [ref=e99]:
+            - generic [ref=e101]: Books
+            - combobox "Select the department you want to search in" [ref=e103] [cursor=pointer]:
+              - option "All Departments"
+              - option "Arts & Crafts"
+              - option "Automotive"
+              - option "Baby"
+              - option "Beauty & Personal Care"
+              - option "Books" [selected]
+              - option "Boys' Fashion"
+              - option "Computers"
+              - option "Deals"
+              - option "Digital Music"
+              - option "Electronics"
+              - option "Girls' Fashion"
+              - option "Health & Household"
+              - option "Home & Kitchen"
+              - option "Industrial & Scientific"
+              - option "Kindle Store"
+              - option "Luggage"
+              - option "Men's Fashion"
+              - option "Movies & TV"
+              - option "Music, CDs & Vinyl"
+              - option "Pet Supplies"
+              - option "Prime Video"
+              - option "Software"
+              - option "Sports & Outdoors"
+              - option "Tools & Home Improvement"
+              - option "Toys & Games"
+              - option "Video Games"
+              - option "Women's Fashion"
+          - searchbox "Search Amazon" [ref=e106]
+          - generic [ref=e107]:
+            - generic "Go" [ref=e109] [cursor=pointer]:
+              - button "Go" [ref=e110]
+            - button [ref=e112]: Agent Search
+        - generic [ref=e114]:
+          - generic [ref=e115]:
+            - link "Choose a language for shopping in Amazon United States. The current selection is English (EN)." [ref=e116] [cursor=pointer]:
+              - /url: /customer-preferences/edit?ie=UTF8&preferencesReturnUrl=%2F&ref_=topnav_lang_ais
+              - generic [ref=e119]:
+                - img "United States" [ref=e120]
+                - generic [ref=e121]: EN
+            - button "Expand to Change Language or Country" [ref=e122] [cursor=pointer]
+          - generic [ref=e123]:
+            - link "Hello, sign in Account & Lists" [ref=e124] [cursor=pointer]:
+              - /url: https://www.amazon.com/ap/signin?openid.return_to=https%3A%2F%2Fwww.amazon.com%2FIntangible-Asset-Valuation-Comprehensive-Technology%2Fdp%2FB0FZ8742R1%3Fref_%3Dnav_ya_signin&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.assoc_handle=usflex&openid.mode=checkid_setup&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0
+              - generic [ref=e126]: Hello, sign in
+              - generic [ref=e127]: Account & Lists
+            - button "Expand Account and Lists" [ref=e128] [cursor=pointer]
+          - link "Returns & Orders" [ref=e129] [cursor=pointer]:
+            - /url: /gp/css/order-history?ref_=nav_orders_first
+            - generic [ref=e130]: Returns
+            - generic [ref=e131]: "& Orders"
+          - link "0 items in cart" [ref=e132] [cursor=pointer]:
+            - /url: /gp/cart/view.html?ref_=nav_cart
+            - generic [ref=e134]: "0"
+      - alertdialog "International Shopping Transition Alert" [ref=e136]:
+        - generic [ref=e137]:
+          - generic [ref=e141]:
+            - text: We're showing you items that ship to
+            - strong [ref=e142]: Hong Kong
+            - text: . To see items that ship to a different country, change your delivery address.
+          - generic [ref=e143]:
+            - generic [ref=e145] [cursor=pointer]:
+              - button "Submit" [ref=e146]
+              - generic [ref=e147]: Dismiss
+            - generic [ref=e149] [cursor=pointer]:
+              - button "Submit" [ref=e150]
+              - generic [ref=e151]: Change Address
+      - generic [ref=e155]:
+        - link "Sign in" [ref=e156] [cursor=pointer]:
+          - /url: https://www.amazon.com/ap/signin?openid.return_to=https%3A%2F%2Fwww.amazon.com%2FIntangible-Asset-Valuation-Comprehensive-Technology%2Fdp%2FB0FZ8742R1%3Fref_%3Dnav_custrec_signin&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.assoc_handle=usflex&openid.mode=checkid_setup&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0
+          - generic [ref=e157]: Sign in
+        - generic [ref=e158]:
+          - text: New customer?
+          - link "New to Amazon? Start here to create an account" [ref=e159] [cursor=pointer]:
+            - /url: https://www.amazon.com/ap/register?openid.return_to=https%3A%2F%2Fwww.amazon.com%2FIntangible-Asset-Valuation-Comprehensive-Technology%2Fdp%2FB0FZ8742R1%2F%3F_encoding%3DUTF8%26ref_%3Dnav_custrec_newcust&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.assoc_handle=usflex&openid.mode=checkid_setup&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0
+            - text: Start here.
+      - generic [ref=e164]:
+        - button "Open All Categories Menu" [ref=e166] [cursor=pointer]:
+          - generic [ref=e168]: All
+        - list [ref=e172]:
+          - listitem [ref=e173]:
+            - link "Amazon Bazaar" [ref=e175] [cursor=pointer]:
+              - /url: /gp/browse.html?node=212706003011&ref_=nav_bazaar_nav_in_d
+          - listitem [ref=e176]:
+            - link "Today's Deals" [ref=e178] [cursor=pointer]:
+              - /url: /gp/goldbox?ref_=nav_cs_gb
+          - listitem [ref=e179]:
+            - link "Gift Cards" [ref=e181] [cursor=pointer]:
+              - /url: /gift-cards/b/?ie=UTF8&node=2238192011&ref_=nav_cs_gc
+          - listitem [ref=e182]:
+            - link "Sell" [ref=e184] [cursor=pointer]:
+              - /url: /b/?_encoding=UTF8&ld=AZUSSOA-sell&node=12766669011&ref_=nav_cs_sell
+          - listitem [ref=e185]:
+            - link "Registry" [ref=e187] [cursor=pointer]:
+              - /url: /gp/browse.html?node=16115931011&ref_=nav_cs_registry
+          - listitem [ref=e188]:
+            - link "Prime Video" [ref=e190] [cursor=pointer]:
+              - /url: /Amazon-Video/b/?ie=UTF8&node=2858778011&ref_=nav_cs_prime_video
+          - listitem [ref=e191]:
+            - link "Customer Service" [ref=e193] [cursor=pointer]:
+              - /url: /gp/help/customer/display.html?nodeId=508510&ref_=nav_cs_customerservice
+          - link "Click to call our Disability Customer Support line, or reach us directly at 1-888-283-1678" [ref=e194] [cursor=pointer]:
+            - /url: /gp/help/customer/accessibility
+            - text: Disability Customer Support
+        - link "Download Amazon Bazaar app" [ref=e197] [cursor=pointer]:
+          - /url: /b/?_encoding=UTF8&_encoding=UTF8&node=212706003011&ref_=nav_swm_undefined&pf_rd_p=ca8c20d3-da06-4e41-8ba0-7d84d0c2da03&pf_rd_s=nav-sitewide-msg-text-export&pf_rd_t=4201&pf_rd_i=navbar-4201&pf_rd_m=ATVPDKIKX0DER&pf_rd_r=C5BHJYCR43D0JFG5EKH3
+      - navigation [ref=e201]:
+        - generic [ref=e202]:
+          - link "Books" [ref=e203] [cursor=pointer]:
+            - /url: /amz-books/store?ref=books_dsk_sn_books-logo-1b731
+            - img "Books" [ref=e204]
+          - button "Categories" [ref=e207] [cursor=pointer]: Categories
+          - button "New & Trending" [ref=e210] [cursor=pointer]: New & Trending
+          - button "Deals & Rewards" [ref=e213] [cursor=pointer]: Deals & Rewards
+          - button "More" [ref=e216] [cursor=pointer]: More
+          - button "Your Books" [ref=e220] [cursor=pointer]: Your Books
+      - dialog [ref=e222]
+  - main [ref=e225]:
+    - generic [ref=e226]:
+      - link "What are you working on? Kindle Scribe" [ref=e230] [cursor=pointer]:
+        - /url: /gp/product/https://www.amazon.com/dp/B0DWRBVDN6/ref=ref=ods_ilm_books_dp?ie=UTF8&pd_rd_w=Ixy90&content-id=amzn1.sym.edfc55fe-320a-4045-bfe2-9bce216236dc&pf_rd_p=edfc55fe-320a-4045-bfe2-9bce216236dc&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=ZLvhZ&pd_rd_r=9b0f72e8-157a-4869-9abb-ff511d24f09d
+        - img "What are you working on? Kindle Scribe" [ref=e231]
+      - list [ref=e236]:
+        - listitem [ref=e237]:
+          - link "Books" [ref=e239] [cursor=pointer]:
+            - /url: /books-used-books-textbooks/b/ref=dp_bc_1?ie=UTF8&node=283155
+        - listitem [ref=e240]: ›
+        - listitem [ref=e241]:
+          - link "Business & Money" [ref=e243] [cursor=pointer]:
+            - /url: /Business-Money-Investing-Books/b/ref=dp_bc_2?ie=UTF8&node=3
+        - listitem [ref=e244]: ›
+        - listitem [ref=e245]:
+          - link "Finance" [ref=e247] [cursor=pointer]:
+            - /url: /Finance-Business-Investing-Books/b/ref=dp_bc_3?ie=UTF8&node=2604
+        - listitem [ref=e248]: ›
+        - listitem [ref=e249]:
+          - link "Corporate Finance" [ref=e251] [cursor=pointer]:
+            - /url: /Corporate-Finance-Business-Investing-Books/b/ref=dp_bc_4?ie=UTF8&node=2607
+        - listitem [ref=e252]: ›
+        - listitem [ref=e253]:
+          - link "Valuation" [ref=e255] [cursor=pointer]:
+            - /url: /Valuation/b/ref=dp_bc_5?ie=UTF8&node=10020678011
+    - generic [ref=e256]:
+      - generic [ref=e257]:
+        - list [ref=e261]:
+          - listitem [ref=e262]:
+            - 'radio "Kindle Format: HKD 0.00 With Kindle Unlimited or HKD 115.92 to buy" [ref=e265] [cursor=pointer]':
+              - generic "Kindle Format:" [ref=e267]: Kindle
+              - generic [ref=e268]:
+                - text: HKD 0.00
+                - img "With Kindle Unlimited" [ref=e269]
+              - generic [ref=e272]: or HKD 115.92 to buy
+          - listitem [ref=e273]:
+            - 'radio "Paperback Format: HKD 225.58" [checked] [ref=e276] [cursor=pointer]':
+              - generic "Paperback Format:" [ref=e278]: Paperback
+              - generic [ref=e279]: HKD 225.58
+        - button "Other New from HKD 225.58" [ref=e282] [cursor=pointer]:
+          - generic "Other New from HKD 225.58" [ref=e283]
+        - generic [ref=e295]:
+          - generic [ref=e297]:
+            - generic [ref=e300]:
+              - generic [ref=e301]: HKD 225.58
+              - generic [ref=e303]:
+                - text: HKD
+                - generic [ref=e304]:
+                  - text: "225"
+                  - generic [ref=e305]: .
+                - text: "58"
+            - generic [ref=e306]:
+              - generic [ref=e307]:
+                - text: No Import Charges & HKD 70.57 Shipping to Hong Kong
+                - button "Details" [ref=e309] [cursor=pointer]: Details
+              - generic [ref=e311]:
+                - generic [ref=e314]:
+                  - generic [ref=e316]: Delivery Friday, May 29
+                  - generic [ref=e318]: Or fastest delivery Wednesday, May 27
+                - button "Deliver to Hong Kong" [ref=e321] [cursor=pointer]:
+                  - generic [ref=e327]: Deliver to Hong Kong
+            - generic [ref=e330]: In Stock
+            - generic [ref=e338]:
+              - generic [ref=e339]: "Quantity:"
+              - combobox "Quantity:" [ref=e340]:
+                - option "1" [selected]
+                - option "2"
+                - option "3"
+                - option "4"
+                - option "5"
+                - option "6"
+                - option "7"
+                - option "8"
+                - option "9"
+                - option "10"
+                - option "11"
+                - option "12"
+                - option "13"
+                - option "14"
+                - option "15"
+                - option "16"
+                - option "17"
+                - option "18"
+                - option "19"
+                - option "20"
+                - option "21"
+                - option "22"
+                - option "23"
+                - option "24"
+                - option "25"
+                - option "26"
+                - option "27"
+                - option "28"
+                - option "29"
+                - option "30"
+              - generic [ref=e343] [cursor=pointer]: Quantity:1
+            - generic [ref=e350] [cursor=pointer]:
+              - button "Add to cart" [ref=e351]
+              - generic [ref=e352]: Add to cart
+            - generic [ref=e357] [cursor=pointer]:
+              - button "Buy Now" [ref=e358]
+              - generic [ref=e359]: Buy Now
+            - generic [ref=e362]:
+              - group "Seller, shipping, and buying option details" [ref=e364]:
+                - generic [ref=e365]:
+                  - heading "Ships from" [level=4] [ref=e366]:
+                    - generic [ref=e367]: Ships from
+                  - generic [ref=e370]: Amazon
+                - generic [ref=e371]:
+                  - heading "Sold by" [level=4] [ref=e372]:
+                    - generic [ref=e373]: Sold by
+                  - link "Amazon Export Sales LLC" [ref=e376] [cursor=pointer]:
+                    - /url: /gp/help/seller/at-a-glance.html/ref=dp_merchant_link?ie=UTF8&seller=A2XZ7JICGUQ1CX&asin=B0FZ8742R1&ref_=dp_merchant_link&isAmazonFulfilled=1
+                - generic [ref=e377]:
+                  - heading "Returns" [level=4] [ref=e378]:
+                    - generic [ref=e379]: Returns
+                  - button "FREE 30-day refund/replacement" [ref=e382] [cursor=pointer]:
+                    - generic [ref=e383]: FREE 30-day refund/replacement
+                - generic [ref=e386]:
+                  - heading "Gift options" [level=4] [ref=e387]:
+                    - generic [ref=e388]: Gift options
+                  - button "Available at checkout" [ref=e391] [cursor=pointer]:
+                    - generic [ref=e393]: Available at checkout
+              - button "See more" [ref=e395] [cursor=pointer]: See more
+          - generic [ref=e397]:
+            - separator [ref=e398]
+            - link "Add to List" [ref=e403] [cursor=pointer]:
+              - /url: https://www.amazon.com/ap/signin?openid.return_to=https%3A%2F%2Fwww.amazon.com%2Fgp%2Faw%2Fd%2FB0FZ8742R1&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.assoc_handle=usflex&openid.mode=checkid_setup&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&
+      - generic [ref=e407]:
+        - generic [ref=e408]: Other sellers on Amazon
+        - separator [ref=e409]
+        - button "New (2) from HKD225.58" [ref=e412] [cursor=pointer]:
+          - text: New (2) from
+          - generic [ref=e413]:
+            - generic [ref=e414]: HKD225.58
+            - generic [ref=e415]:
+              - text: HKD
+              - generic [ref=e416]:
+                - text: "225"
+                - generic [ref=e417]: .
+              - text: "58"
+    - generic [ref=e418]:
+      - generic [ref=e424]:
+        - generic [ref=e426]:
+          - list
+          - list [ref=e427]:
+            - listitem [ref=e428] [cursor=pointer]:
+              - 'button "Intangible Asset Valuation: A Comprehensive Guide to Valuing Brands, IP, Technology, and Human Capital: Theory, Methods, Regulation, and Practice (Valuation in Practice)" [ref=e431]':
+                - 'img "Intangible Asset Valuation: A Comprehensive Guide to Valuing Brands, IP, Technology, and Human Capital: Theory, Methods, Regulation, and Practice (Valuation in Practice)" [ref=e432]'
+        - radiogroup "Image thumbnails" [ref=e434]:
+          - listitem [ref=e435]:
+            - radio [ref=e440] [cursor=pointer]
+          - listitem [ref=e442]:
+            - radio [ref=e447] [cursor=pointer]
+      - button "Read sample" [ref=e456] [cursor=pointer]
+      - generic [ref=e459]:
+        - separator [ref=e460]
+        - heading "Follow the author" [level=1] [ref=e461]
+        - img "Get new release updates & improved recommendations" [ref=e463]
+        - generic [ref=e464]:
+          - link [ref=e467] [cursor=pointer]:
+            - /url: /Simon-Mak/e/B0FVYJVWZP/ref=aufs_dp_fta_ai_dsk
+            - img [ref=e468]
+          - link "Simon Mak" [ref=e470] [cursor=pointer]:
+            - /url: /Simon-Mak/e/B0FVYJVWZP/ref=aufs_dp_fta_an_dsk
+            - generic [ref=e471]:
+              - generic [ref=e472]: Simon Mak
+              - generic [ref=e473]: Simon Mak
+          - link "Follow" [ref=e477] [cursor=pointer]:
+            - /url: https://www.amazon.com/ap/signin?openid.assoc_handle=author_follows_dp_us&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.mode=checkid_setup&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.ns.pape=http%3A%2F%2Fspecs.openid.net%2Fextensions%2Fpape%2F1.0&openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fwww.amazon.com%2FIntangible-Asset-Valuation-Comprehensive-Technology%2Fdp%2FB0FZ8742R1%3Fauthor-follow%3DB0FVYJVWZP
+    - generic [ref=e478]:
+      - generic [ref=e479]:
+        - button "Share" [ref=e481] [cursor=pointer]
+        - 'heading "Intangible Asset Valuation: A Comprehensive Guide to Valuing Brands, IP, Technology, and Human Capital: Theory, Methods, Regulation, and Practice (Valuation in Practice) Paperback – November 2, 2025" [level=1] [ref=e483]'
+      - generic [ref=e485]:
+        - text: by
+        - generic [ref=e486]:
+          - link "Simon Mak" [ref=e487] [cursor=pointer]:
+            - /url: /Simon-Mak/e/B0FVYJVWZP/ref=dp_byline_cont_book_1
+          - generic [ref=e488]: (Author),
+        - generic [ref=e489]:
+          - link "William Yuen" [ref=e490] [cursor=pointer]:
+            - /url: /s/ref=dp_byline_sr_book_2?ie=UTF8&field-author=William+Yuen&text=William+Yuen&sort=relevancerank&search-alias=books
+          - generic [ref=e491]: (Author),
+        - link "& 2 more" [ref=e493] [cursor=pointer]:
+          - /url: "#"
+      - generic [ref=e494]:
+        - generic [ref=e495]:
+          - generic [ref=e497]:
+            - generic "4.5 out of 5 stars" [ref=e499]:
+              - button "4.5 out of 5 stars" [ref=e501] [cursor=pointer]:
+                - text: "4.5"
+                - generic [ref=e503]: 4.5 out of 5 stars
+            - link "2 Reviews" [ref=e506] [cursor=pointer]:
+              - /url: "#averageCustomerReviewsAnchor"
+              - text: (2)
+          - 'link "Part of: Valuation in Practice (2 books)" [ref=e508] [cursor=pointer]':
+            - /url: /dp/B0FZ12KNML?binding=paperback&ref=dbs_dp_rwt_sb_pc_tpbk
+        - link "See all formats and editions" [ref=e512] [cursor=pointer]:
+          - /url: "#"
+      - separator [ref=e513]
+      - generic [ref=e515]:
+        - generic [ref=e516]:
+          - paragraph [ref=e517]: "Intangible Asset Valuation: A Comprehensive Guide to Valuing Brands, IP, Technology, and Human Capital is the authoritative, hands-on resource for finance professionals, investors, and entrepreneurs navigating the complexities of modern valuation. Part of the “Valuation in Practice Series” by Ascent Partners, this volume bridges rigorous theory with practical tools and real-world case studies—empowering you to value the assets that drive today’s economy."
+          - paragraph [ref=e518]: "Inside, you’ll discover:"
+          - list [ref=e519]:
+            - listitem [ref=e520]:
+              - generic [ref=e521]: Step-by-step frameworks for valuing intellectual property, technology, brands, customer relationships, and workforce assets
+            - listitem [ref=e522]:
+              - generic [ref=e523]: In-depth coverage of cost, market, and income-based approaches—including advanced methods like Relief-from-Royalty and Multi-Period Excess Earnings Method (MPEEM)
+            - listitem [ref=e524]:
+              - generic [ref=e525]: Industry-specific guidance for sectors such as SaaS, biotech, consumer goods, media, and more
+            - listitem [ref=e526]:
+              - generic [ref=e527]: "Practical tools: Excel templates, Python scripts, IFRS/GAAP disclosure checklists, and best-practice frameworks"
+            - listitem [ref=e528]:
+              - generic [ref=e529]: Guidance on regulatory, legal, and international issues—transfer pricing, tax planning, and purchase price allocation
+            - listitem [ref=e530]:
+              - generic [ref=e531]: Common pitfalls, best practices, and ethical considerations for valuation professionals
+          - paragraph [ref=e532]: Whether you’re valuing a pre-revenue startup, a high-growth SaaS business, or a cross-border acquisition, this book delivers the frameworks, checklists, and insights you need to make informed, defensible decisions.
+          - paragraph [ref=e533]: Written by the expert team at Ascent Partners, “Valuation in Practice” is your trusted companion for mastering valuation—across industries, geographies, and stages of growth.
+        - button "Read more" [ref=e536] [cursor=pointer]: Read more
+      - link "Report an issue with this product or seller" [ref=e542] [cursor=pointer]:
+        - /url: "#"
+      - generic [ref=e544]:
+        - separator [ref=e545]
+        - region "Book details" [ref=e546]:
+          - generic [ref=e548]:
+            - list [ref=e551]:
+              - listitem [ref=e552]:
+                - generic [ref=e553]:
+                  - generic [ref=e555]: Part of series
+                  - link "Valuation in Practice" [ref=e559] [cursor=pointer]:
+                    - /url: /dp/B0FZ12KNML?binding=paperback&ref=dbs_dp_sirpi
+              - listitem [ref=e560]:
+                - generic [ref=e561]:
+                  - generic [ref=e563]: Print length
+                  - generic [ref=e566]: 176 pages
+            - button "Next slide of product details" [ref=e568] [cursor=pointer]:
+              - generic [ref=e571]: Next slide of product details
+        - link "See all details" [ref=e573] [cursor=pointer]:
+          - /url: "#detailBullets_feature_div"
+      - generic [ref=e574]:
+        - separator [ref=e575]
+        - generic [ref=e578]:
+          - iframe [ref=e579]:
+            - generic [ref=f7e1]:
+              - 'link "Corporate Finance A$AP: Level Up With Powerful Finance Tools and Better Decision-Making" [ref=f7e2] [cursor=pointer]':
+                - /url: https://www.amazon.com/sspa/click?ie=UTF8&spc=MToxMDA1MDcwOTg4MDI2NTk6MTc3OTIzODIxMjpzcF9ocXBfc2hhcmVkOjMwMDU0NDIyODk4NjUwMjo6Ojo&url=%2Fdp%2FB0DDGYXS72%2Fref%3Dsspa_dk_hqp_detail_aax_0%3Fpsc%3D1%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9ocXBfc2hhcmVk
+              - 'img "Corporate Finance A$AP: Level Up With Powerful Finance Tools and Better Decision-Making" [ref=f7e4]'
+              - generic [ref=f7e5]:
+                - generic [ref=f7e6]: "Corporate Finance A$AP: Level Up With Powerful Finance Tools and Better... by John Cousins"
+                - generic [ref=f7e7]: "28"
+                - generic [ref=f7e9]:
+                  - generic [ref=f7e10]: HKD 119.47
+                  - generic [ref=f7e11]:
+                    - generic [ref=f7e12]: "|"
+                    - text: Paperback
+          - button "Leave feedback on Sponsored ad" [ref=e581] [cursor=pointer]:
+            - generic [ref=e582]: Sponsored
+    - generic [ref=e588]:
+      - separator [ref=e589]
+      - heading "Customers also bought or read" [level=2] [ref=e592]
+      - radiogroup "Select tags to filter results" [ref=e594]:
+        - listitem [ref=e595]:
+          - radio "In this series" [checked] [ref=e596] [cursor=pointer]:
+            - generic [ref=e598]: In this series
+        - listitem [ref=e599]:
+          - radio "by Simon Mak" [ref=e600] [cursor=pointer]:
+            - generic [ref=e602]: by Simon Mak
+      - generic "Results for tag:In this series" [ref=e603]:
+        - group [ref=e605]:
+          - group [ref=e611]:
+            - list [ref=e612]:
+              - listitem [ref=e613]:
+                - generic [ref=e615]:
+                  - 'link "Book cover Startup Valuation: A Comprehensive Guide to Valuing Fast-Growing Pre-Revenue Companies: Theory, Methods, Regulation, and Practice (Valuation in Practice)" [ref=e616] [cursor=pointer]':
+                    - /url: /dp/B0FZ2FBBTW/ref=mes-dp?_encoding=UTF8&pd_rd_w=dStTm&content-id=amzn1.sym.f45dea16-f25a-4516-b170-6b4033444233&pf_rd_p=f45dea16-f25a-4516-b170-6b4033444233&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                    - 'img "Book cover Startup Valuation: A Comprehensive Guide to Valuing Fast-Growing Pre-Revenue Companies: Theory, Methods, Regulation, and Practice (Valuation in Practice)" [ref=e619]'
+                  - 'link "Startup Valuation: A Comprehensive Guide to Valuing Fast-Growing Pre-Revenue Companies: Theory, Methods, Regulation, and Practice (Valuation in Practice)" [ref=e620] [cursor=pointer]':
+                    - /url: /dp/B0FZ2FBBTW/ref=mes-dp?_encoding=UTF8&pd_rd_w=dStTm&content-id=amzn1.sym.f45dea16-f25a-4516-b170-6b4033444233&pf_rd_p=f45dea16-f25a-4516-b170-6b4033444233&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                    - generic [ref=e621]:
+                      - generic [ref=e622]: "Startup Valuation: A Comprehensive Guide to Valuing Fast-Growing Pre-Revenue Companies: Theory, Methods, Regulation, and Practice (Valuation in Practice)"
+                      - generic [ref=e623]: "Startup Valuation: A Comprehensive Guide to Valuing Fast-Growi…"
+                  - link "1 reviews" [ref=e626] [cursor=pointer]:
+                    - /url: /dp/B0FZ2FBBTW/ref=mes-dp?_encoding=UTF8&pd_rd_w=dStTm&content-id=amzn1.sym.f45dea16-f25a-4516-b170-6b4033444233&pf_rd_p=f45dea16-f25a-4516-b170-6b4033444233&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea#customerReviews
+                    - text: "1"
+                  - generic [ref=e627]: Paperback
+                  - generic [ref=e628]:
+                    - generic [ref=e629]: HKD545.55
+                    - generic [ref=e630]:
+                      - text: HKD
+                      - generic [ref=e631]:
+                        - text: "545"
+                        - generic [ref=e632]: .
+                      - text: "55"
+                  - generic [ref=e638]: Delivery Fri, May 29
+              - listitem [ref=e639]:
+                - generic [ref=e641]:
+                  - 'link "Book cover Intangible Asset Valuation: A Comprehensive Guide to Valuing Brands, IP, Technology, and Human Capital: Theory, Methods, Regulation, and Practice (Valuation in Practice)" [ref=e642] [cursor=pointer]':
+                    - /url: /dp/B0FZ8742R1/ref=mes-dp?_encoding=UTF8&pd_rd_w=dStTm&content-id=amzn1.sym.f45dea16-f25a-4516-b170-6b4033444233&pf_rd_p=f45dea16-f25a-4516-b170-6b4033444233&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                    - 'img "Book cover Intangible Asset Valuation: A Comprehensive Guide to Valuing Brands, IP, Technology, and Human Capital: Theory, Methods, Regulation, and Practice (Valuation in Practice)" [ref=e645]'
+                  - 'link "Intangible Asset Valuation: A Comprehensive Guide to Valuing Brands, IP, Technology, and Human Capital: Theory, Methods, Regulation, and Practice (Valuation in Practice)" [ref=e646] [cursor=pointer]':
+                    - /url: /dp/B0FZ8742R1/ref=mes-dp?_encoding=UTF8&pd_rd_w=dStTm&content-id=amzn1.sym.f45dea16-f25a-4516-b170-6b4033444233&pf_rd_p=f45dea16-f25a-4516-b170-6b4033444233&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                    - generic [ref=e647]:
+                      - generic [ref=e648]: "Intangible Asset Valuation: A Comprehensive Guide to Valuing Brands, IP, Technology, and Human Capital: Theory, Methods, Regulation, and Practice (Valuation in Practice)"
+                      - generic [ref=e649]: "Intangible Asset Valuation: A Comprehensive Guid…"
+                  - link "2 reviews" [ref=e652] [cursor=pointer]:
+                    - /url: /dp/B0FZ8742R1/ref=mes-dp?_encoding=UTF8&pd_rd_w=dStTm&content-id=amzn1.sym.f45dea16-f25a-4516-b170-6b4033444233&pf_rd_p=f45dea16-f25a-4516-b170-6b4033444233&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea#customerReviews
+                    - text: "2"
+                  - generic [ref=e653]: Paperback
+                  - generic [ref=e654]:
+                    - generic [ref=e655]: HKD225.58
+                    - generic [ref=e656]:
+                      - text: HKD
+                      - generic [ref=e657]:
+                        - text: "225"
+                        - generic [ref=e658]: .
+                      - text: "58"
+                  - generic [ref=e664]: Delivery Fri, May 29
+              - listitem [ref=e665]:
+                - generic [ref=e666]:
+                  - link "Valuation in Practice" [ref=e667] [cursor=pointer]:
+                    - /url: /dp/B0FZ12KNML
+                    - img [ref=e669]
+                    - text: Valuation in Practice
+                  - generic [ref=e670]: 2 books
+                  - link "Go to series page" [ref=e671] [cursor=pointer]:
+                    - /url: /dp/B0FZ12KNML
+                    - generic [ref=e673]:
+                      - button "Go to series page" [ref=e674]
+                      - generic [ref=e675]: Go to series page
+    - generic [ref=e676]:
+      - generic [ref=e677]:
+        - separator [ref=e678]
+        - heading "Product details" [level=2] [ref=e679]
+        - list [ref=e681]:
+          - listitem [ref=e682]:
+            - generic [ref=e683]: "ASIN ‏ : ‎ B0FZ8742R1"
+          - listitem [ref=e684]:
+            - generic [ref=e685]: "Publisher ‏ : ‎ Independently published"
+          - listitem [ref=e686]:
+            - generic [ref=e687]: "Publication date ‏ : ‎ November 2, 2025"
+          - listitem [ref=e688]:
+            - generic [ref=e689]: "Language ‏ : ‎ English"
+          - listitem [ref=e690]:
+            - generic [ref=e691]: "Print length ‏ : ‎ 176 pages"
+          - listitem [ref=e692]:
+            - generic [ref=e693]: "ISBN-13 ‏ : ‎ 979-8272663375"
+          - listitem [ref=e694]:
+            - generic [ref=e695]: "Item Weight ‏ : ‎ 12.8 ounces"
+          - listitem [ref=e696]:
+            - generic [ref=e697]: "Dimensions ‏ : ‎ 8 x 0.4 x 10 inches"
+          - listitem [ref=e698]:
+            - generic [ref=e699]:
+              - text: "Part of series ‏ : ‎"
+              - link "Valuation in Practice" [ref=e700] [cursor=pointer]:
+                - /url: /dp/B0FZ12KNML?binding=paperback&ref=dbs_dp_sirpi
+          - listitem [ref=e701]:
+            - generic [ref=e702]:
+              - text: "Best Sellers Rank: #2,615,626 in Books ("
+              - link "See Top 100 in Books" [ref=e703] [cursor=pointer]:
+                - /url: /gp/bestsellers/books/ref=pd_zg_ts_books
+              - text: )
+              - list [ref=e704]:
+                - listitem [ref=e705]:
+                  - generic [ref=e706]:
+                    - text: "#37 in"
+                    - link "Financial Statements" [ref=e707] [cursor=pointer]:
+                      - /url: /gp/bestsellers/books/202438618011/ref=pd_zg_hrsr_books
+                - listitem [ref=e708]:
+                  - generic [ref=e709]:
+                    - text: "#161 in"
+                    - link "Copyright Law" [ref=e710] [cursor=pointer]:
+                      - /url: /gp/bestsellers/books/8883983011/ref=pd_zg_hrsr_books
+                - listitem [ref=e711]:
+                  - generic [ref=e712]:
+                    - text: "#166 in"
+                    - link "Valuation (Books)" [ref=e713] [cursor=pointer]:
+                      - /url: /gp/bestsellers/books/10020678011/ref=pd_zg_hrsr_books
+          - listitem [ref=e714]:
+            - generic [ref=e715]:
+              - text: "Customer Reviews:"
+              - generic [ref=e716]:
+                - generic "4.5 out of 5 stars" [ref=e718]:
+                  - button "4.5 out of 5 stars" [ref=e720] [cursor=pointer]:
+                    - text: "4.5"
+                    - generic [ref=e722]: 4.5 out of 5 stars
+                - link "2 Reviews" [ref=e725] [cursor=pointer]:
+                  - /url: "#averageCustomerReviewsAnchor"
+                  - text: (2)
+      - generic:
+        - navigation:
+          - navigation "Navigate within the product detail page":
+            - navigation "Back to top jump link":
+              - generic:
+                - generic: Top
+            - navigation "About this item widget jump link":
+              - generic:
+                - generic: About this item
+            - navigation "From the author widget jump link":
+              - generic:
+                - generic: From the Author
+            - navigation "Similar widget jump link":
+              - generic:
+                - generic: Similar
+            - navigation "Customer reviews widget jump link":
+              - generic:
+                - generic: Reviews
+          - navigation "Back to top Image jump link":
+            - 'img "Intangible Asset Valuation: A Comprehensive Guide to Valuing Brands, IP, Technology, and Human Capital: Theory, Methods, Regulation, and Practice (Valuation in Practice)"'
+          - navigation "Back to top title jump link":
+            - generic: "Intangible Asset Valuation: A Comprehensive Guide to Valuing Brands, IP, Technology, and Human Capital: Theory, Methods, Regulation, and Practice (Valuation in Practice)"
+    - generic [ref=e731]:
+      - heading "Videos" [level=2] [ref=e733]
+      - generic [ref=e734]: Help others learn more about this product by uploading a video!
+      - link "Upload your video" [ref=e737] [cursor=pointer]:
+        - /url: /creatorhub/video/upload?productASIN=B0FZ8742R1&referringURL=ZHAvQjBGWjg3NDJSMQ%3D%3D&ref=RVSW
+    - generic [ref=e740]:
+      - separator [ref=e741]
+      - heading "About the author" [level=2] [ref=e742]
+      - generic [ref=e743]: Follow authors to get new release updates, plus improved recommendations.
+      - generic [ref=e748]:
+        - generic [ref=e749]:
+          - img "Simon Mak" [ref=e752]
+          - link "Follow" [ref=e756] [cursor=pointer]:
+            - /url: https://www.amazon.com/ap/signin?openid.assoc_handle=author_follows_dp_us&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.mode=checkid_setup&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.ns.pape=http%3A%2F%2Fspecs.openid.net%2Fextensions%2Fpape%2F1.0&openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fwww.amazon.com%2FIntangible-Asset-Valuation-Comprehensive-Technology%2Fdp%2FB0FZ8742R1%3Fauthor-follow%3DB0FVYJVWZP
+        - generic [ref=e757]:
+          - link "Simon Mak" [ref=e759] [cursor=pointer]:
+            - /url: /Simon-Mak/e/B0FVYJVWZP/ref=aufs_dp_mata_dsk
+            - heading "Simon Mak" [level=2] [ref=e760]
+          - generic [ref=e763]:
+            - generic [ref=e767]:
+              - paragraph [ref=e768]: Simon Mak believes sustainability shouldn’t be complicated. As the founder of Ascent Partners Group Limited and Ascent Partners Foundation, he’s dedicated to helping businesses turn ESG and nature-related reporting from a burden into a real advantage. His Made Simple series—including ESG Reporting Made Simple and TNFD Made Simple—translates complex frameworks into clear, practical steps anyone can follow.
+              - paragraph [ref=e769]: Simon is a graduate of the Cambridge Institute for Sustainability Leadership (CISL) and an active voice in global sustainability conversations, from advising organizations to speaking at forums like COP28. Through his foundation work, he champions biodiversity, climate resilience, and corporate responsibility across Asia and beyond.
+              - paragraph [ref=e770]: When he’s not writing or advising, Simon is exploring new ways to make sustainability accessible, actionable, and even a little fun. His mission? To help every organization embrace sustainability with confidence.
+            - button [ref=e774] [cursor=pointer]:
+              - generic [ref=e776]: Read more about this author
+    - generic [ref=e779]:
+      - separator [ref=e780]
+      - group "Products related to this item" [ref=e781]:
+        - generic [ref=e783]:
+          - heading "Products related to this item" [level=2] [ref=e784]
+          - link "Sponsored" [ref=e788] [cursor=pointer]:
+            - /url: "#sp_detail2_feedbackForm"
+            - generic [ref=e789]:
+              - text: Sponsored
+              - img [ref=e790]
+        - group [ref=e797]:
+          - list [ref=e798]:
+            - listitem [ref=e799]:
+              - generic [ref=e800]:
+                - 'link "TAX-FREE Millionaire: How TRIPLE ZERO™ Plans Can Transform Your Future Retirement" [ref=e801] [cursor=pointer]':
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDAxMzEzMDU5NjU0MDI6Ojo6&url=%2Fdp%2FB09157XCF8%2Fref%3Dsspa_dk_detail_0%3Fpsc%3D1%26pd_rd_i%3DB09157XCF8%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - img [ref=e804]
+                  - generic [ref=e805]: "TAX-FREE Millionaire: How TRIPLE ZERO™ Plans Can Transform Your Future Retirement"
+                - link "Orr, CFP, Mark J." [ref=e807] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDAxMzEzMDU5NjU0MDI6Ojo6&url=%2Fdp%2FB09157XCF8%2Fref%3Dsspa_dk_detail_0%3Fpsc%3D1%26pd_rd_i%3DB09157XCF8%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                - link "4.4 out of 5 stars 158 ratings" [ref=e809] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDAxMzEzMDU5NjU0MDI6Ojo6&url=%2Fdp%2FB09157XCF8%2Fref%3Dsspa_dk_detail_0%3Fpsc%3D1%26pd_rd_i%3DB09157XCF8%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy#customerReviews
+                  - text: "158"
+                - link "Paperback" [ref=e812] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDAxMzEzMDU5NjU0MDI6Ojo6&url=%2Fdp%2FB09157XCF8%2Fref%3Dsspa_dk_detail_0%3Fpsc%3D1%26pd_rd_i%3DB09157XCF8%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                - link "HKD 55.71" [ref=e814] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDAxMzEzMDU5NjU0MDI6Ojo6&url=%2Fdp%2FB09157XCF8%2Fref%3Dsspa_dk_detail_0%3Fpsc%3D1%26pd_rd_i%3DB09157XCF8%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - generic [ref=e815]:
+                    - generic [ref=e816]: HKD 55.71
+                    - generic [ref=e817]:
+                      - text: HKD
+                      - generic [ref=e818]:
+                        - text: "55"
+                        - generic [ref=e819]: .
+                      - text: "71"
+                - link "Amazon Prime" [ref=e820] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDAxMzEzMDU5NjU0MDI6Ojo6&url=%2Fdp%2FB09157XCF8%2Fref%3Dsspa_dk_detail_0%3Fpsc%3D1%26pd_rd_i%3DB09157XCF8%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - img "Amazon Prime" [ref=e822]
+            - listitem [ref=e823]:
+              - generic [ref=e824]:
+                - 'link "Accounting Essentials for Small Businesses: Manage Your Finances with Confidence: A Practical Guide for Small Business Owners on How to Master Your ... Thrive (Entrepreneurial Essential Series)" [ref=e825] [cursor=pointer]':
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDAxMTcxMTUzNTQ2MDI6Ojo6&url=%2Fdp%2FB0CNLZBZ23%2Fref%3Dsspa_dk_detail_1%3Fpsc%3D1%26pd_rd_i%3DB0CNLZBZ23%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - img [ref=e828]
+                  - generic [ref=e829]: "Accounting Essentials for Small Businesses: Manage Your Finances with Confidence: A..."
+                - link "Victoria Wolf" [ref=e831] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDAxMTcxMTUzNTQ2MDI6Ojo6&url=%2Fdp%2FB0CNLZBZ23%2Fref%3Dsspa_dk_detail_1%3Fpsc%3D1%26pd_rd_i%3DB0CNLZBZ23%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                - link "4.5 out of 5 stars 29 ratings" [ref=e833] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDAxMTcxMTUzNTQ2MDI6Ojo6&url=%2Fdp%2FB0CNLZBZ23%2Fref%3Dsspa_dk_detail_1%3Fpsc%3D1%26pd_rd_i%3DB0CNLZBZ23%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy#customerReviews
+                  - text: "29"
+                - link "Paperback" [ref=e836] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDAxMTcxMTUzNTQ2MDI6Ojo6&url=%2Fdp%2FB0CNLZBZ23%2Fref%3Dsspa_dk_detail_1%3Fpsc%3D1%26pd_rd_i%3DB0CNLZBZ23%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                - link "HKD 223.07" [ref=e838] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDAxMTcxMTUzNTQ2MDI6Ojo6&url=%2Fdp%2FB0CNLZBZ23%2Fref%3Dsspa_dk_detail_1%3Fpsc%3D1%26pd_rd_i%3DB0CNLZBZ23%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - generic [ref=e839]:
+                    - generic [ref=e840]: HKD 223.07
+                    - generic [ref=e841]:
+                      - text: HKD
+                      - generic [ref=e842]:
+                        - text: "223"
+                        - generic [ref=e843]: .
+                      - text: "07"
+                - link "Amazon Prime" [ref=e844] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDAxMTcxMTUzNTQ2MDI6Ojo6&url=%2Fdp%2FB0CNLZBZ23%2Fref%3Dsspa_dk_detail_1%3Fpsc%3D1%26pd_rd_i%3DB0CNLZBZ23%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - img "Amazon Prime" [ref=e846]
+            - listitem [ref=e847]:
+              - generic [ref=e848]:
+                - 'link "Designed to Scale: How to Structure Your Business for Exponential Growth" [ref=e849] [cursor=pointer]':
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjoyMDAwMzIyOTkwNjIwOTg6Ojo6&url=%2Fdp%2FB09PDFMRL2%2Fref%3Dsspa_dk_detail_2%3Fpsc%3D1%26pd_rd_i%3DB09PDFMRL2%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - img [ref=e852]
+                  - generic [ref=e853]: "Designed to Scale: How to Structure Your Business for Exponential Growth"
+                - link "Lex Sisney" [ref=e855] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjoyMDAwMzIyOTkwNjIwOTg6Ojo6&url=%2Fdp%2FB09PDFMRL2%2Fref%3Dsspa_dk_detail_2%3Fpsc%3D1%26pd_rd_i%3DB09PDFMRL2%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                - link "4.9 out of 5 stars 37 ratings" [ref=e857] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjoyMDAwMzIyOTkwNjIwOTg6Ojo6&url=%2Fdp%2FB09PDFMRL2%2Fref%3Dsspa_dk_detail_2%3Fpsc%3D1%26pd_rd_i%3DB09PDFMRL2%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy#customerReviews
+                  - text: "37"
+                - link "Kindle Edition" [ref=e860] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjoyMDAwMzIyOTkwNjIwOTg6Ojo6&url=%2Fdp%2FB09PDFMRL2%2Fref%3Dsspa_dk_detail_2%3Fpsc%3D1%26pd_rd_i%3DB09PDFMRL2%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                - 'link "-84% HKD 127.44 Print List Price: HKD 789.01 Print List Price: HKD 789.01" [ref=e862] [cursor=pointer]':
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjoyMDAwMzIyOTkwNjIwOTg6Ojo6&url=%2Fdp%2FB09PDFMRL2%2Fref%3Dsspa_dk_detail_2%3Fpsc%3D1%26pd_rd_i%3DB09PDFMRL2%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - text: "-84%"
+                  - generic [ref=e863]:
+                    - generic [ref=e864]: HKD 127.44
+                    - generic [ref=e865]:
+                      - text: HKD
+                      - generic [ref=e866]:
+                        - text: "127"
+                        - generic [ref=e867]: .
+                      - text: "44"
+                  - generic [ref=e868]: "Print List Price: HKD 789.01"
+                  - generic [ref=e869]:
+                    - text: "Print List Price:"
+                    - generic [ref=e870]:
+                      - generic [ref=e871]: HKD 789.01
+                      - text: HKD789.01
+            - listitem [ref=e872]:
+              - generic [ref=e873]:
+                - 'link "The Fundamental Secrets of Accounting: A guide for all (including film/creative industries), to saving money, identifying/avoiding pitfalls and gaining economic success." [ref=e874] [cursor=pointer]':
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDAxMDIxNTAzMjU2MDI6Ojo6&url=%2Fdp%2FB0C2Y25MP2%2Fref%3Dsspa_dk_detail_3%3Fpsc%3D1%26pd_rd_i%3DB0C2Y25MP2%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - img [ref=e877]
+                  - generic [ref=e878]: "The Fundamental Secrets of Accounting: A guide for all (including film/creative ind..."
+                - link "Faith Mupakaviri" [ref=e880] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDAxMDIxNTAzMjU2MDI6Ojo6&url=%2Fdp%2FB0C2Y25MP2%2Fref%3Dsspa_dk_detail_3%3Fpsc%3D1%26pd_rd_i%3DB0C2Y25MP2%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                - link "Accounting made simple & clear with this superb & straightforward guide for business owners, entrepreneurs, creative agencies & film industry." [ref=e881] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDAxMDIxNTAzMjU2MDI6Ojo6&url=%2Fdp%2FB0C2Y25MP2%2Fref%3Dsspa_dk_detail_3%3Fpsc%3D1%26pd_rd_i%3DB0C2Y25MP2%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - generic [ref=e882]: Accounting made simple & clear with this superb & straightforward guide for business owners, entrepreneurs, creative agencies & film industry.
+                - link "4.0 out of 5 stars 5 ratings" [ref=e884] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDAxMDIxNTAzMjU2MDI6Ojo6&url=%2Fdp%2FB0C2Y25MP2%2Fref%3Dsspa_dk_detail_3%3Fpsc%3D1%26pd_rd_i%3DB0C2Y25MP2%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy#customerReviews
+                  - text: "5"
+                - link "Kindle Edition" [ref=e887] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDAxMDIxNTAzMjU2MDI6Ojo6&url=%2Fdp%2FB0C2Y25MP2%2Fref%3Dsspa_dk_detail_3%3Fpsc%3D1%26pd_rd_i%3DB0C2Y25MP2%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                - link "HKD 79.46" [ref=e889] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDAxMDIxNTAzMjU2MDI6Ojo6&url=%2Fdp%2FB0C2Y25MP2%2Fref%3Dsspa_dk_detail_3%3Fpsc%3D1%26pd_rd_i%3DB0C2Y25MP2%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - generic [ref=e890]:
+                    - generic [ref=e891]: HKD 79.46
+                    - generic [ref=e892]:
+                      - text: HKD
+                      - generic [ref=e893]:
+                        - text: "79"
+                        - generic [ref=e894]: .
+                      - text: "46"
+            - listitem [ref=e895]:
+              - generic [ref=e896]:
+                - 'link "Corporate Finance A$AP: Level Up With Powerful Finance Tools and Better Decision-Making" [ref=e897] [cursor=pointer]':
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDA1NDQyMjg5ODY1MDI6Ojo6&url=%2Fdp%2FB0DDGYXS72%2Fref%3Dsspa_dk_detail_4%3Fpsc%3D1%26pd_rd_i%3DB0DDGYXS72%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - img [ref=e900]
+                  - generic [ref=e901]: "Corporate Finance A$AP: Level Up With Powerful Finance Tools and Better Decision-Ma..."
+                - link "John Cousins" [ref=e903] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDA1NDQyMjg5ODY1MDI6Ojo6&url=%2Fdp%2FB0DDGYXS72%2Fref%3Dsspa_dk_detail_4%3Fpsc%3D1%26pd_rd_i%3DB0DDGYXS72%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                - link "Master Corporate Finance in hours, not years! Boost decision-making, analyze opportunities, and invest smarter with Corporate Finance ASAP!" [ref=e904] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDA1NDQyMjg5ODY1MDI6Ojo6&url=%2Fdp%2FB0DDGYXS72%2Fref%3Dsspa_dk_detail_4%3Fpsc%3D1%26pd_rd_i%3DB0DDGYXS72%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - generic [ref=e905]: Master Corporate Finance in hours, not years! Boost decision-making, analyze opportunities, and invest smarter with Corporate Finance ASAP!
+                - link "3.9 out of 5 stars 28 ratings" [ref=e907] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDA1NDQyMjg5ODY1MDI6Ojo6&url=%2Fdp%2FB0DDGYXS72%2Fref%3Dsspa_dk_detail_4%3Fpsc%3D1%26pd_rd_i%3DB0DDGYXS72%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy#customerReviews
+                  - text: "28"
+                - link "Paperback" [ref=e910] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDA1NDQyMjg5ODY1MDI6Ojo6&url=%2Fdp%2FB0DDGYXS72%2Fref%3Dsspa_dk_detail_4%3Fpsc%3D1%26pd_rd_i%3DB0DDGYXS72%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                - link "HKD 119.47" [ref=e912] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDA1NDQyMjg5ODY1MDI6Ojo6&url=%2Fdp%2FB0DDGYXS72%2Fref%3Dsspa_dk_detail_4%3Fpsc%3D1%26pd_rd_i%3DB0DDGYXS72%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - generic [ref=e913]:
+                    - generic [ref=e914]: HKD 119.47
+                    - generic [ref=e915]:
+                      - text: HKD
+                      - generic [ref=e916]:
+                        - text: "119"
+                        - generic [ref=e917]: .
+                      - text: "47"
+                - link "Amazon Prime" [ref=e918] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDA1NDQyMjg5ODY1MDI6Ojo6&url=%2Fdp%2FB0DDGYXS72%2Fref%3Dsspa_dk_detail_4%3Fpsc%3D1%26pd_rd_i%3DB0DDGYXS72%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - img "Amazon Prime" [ref=e920]
+            - listitem [ref=e921]:
+              - generic [ref=e922]:
+                - link "Financial Modeling Handbook - The Step-by-Step Guide to Building your First Financial Model & Value Companies from Scratch | For Investment Banking, Private Equity, VC | Zebra Learn Books" [ref=e923] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDEyMTMzMDk2NjgyMDI6Ojo6&url=%2Fdp%2F8195895042%2Fref%3Dsspa_dk_detail_5%3Fpsc%3D1%26pd_rd_i%3D8195895042%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - img [ref=e926]
+                  - generic [ref=e927]: Financial Modeling Handbook - The Step-by-Step Guide to Building your First Financi...
+                - link "Zebralearn" [ref=e929] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDEyMTMzMDk2NjgyMDI6Ojo6&url=%2Fdp%2F8195895042%2Fref%3Dsspa_dk_detail_5%3Fpsc%3D1%26pd_rd_i%3D8195895042%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                - link "4.4 out of 5 stars 336 ratings" [ref=e931] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDEyMTMzMDk2NjgyMDI6Ojo6&url=%2Fdp%2F8195895042%2Fref%3Dsspa_dk_detail_5%3Fpsc%3D1%26pd_rd_i%3D8195895042%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy#customerReviews
+                  - text: "336"
+                - link "Hardcover" [ref=e934] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDEyMTMzMDk2NjgyMDI6Ojo6&url=%2Fdp%2F8195895042%2Fref%3Dsspa_dk_detail_5%3Fpsc%3D1%26pd_rd_i%3D8195895042%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                - 'link "-33% HKD 370.99 List Price: HKD 549.91 List Price: HKD 549.91" [ref=e936] [cursor=pointer]':
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDEyMTMzMDk2NjgyMDI6Ojo6&url=%2Fdp%2F8195895042%2Fref%3Dsspa_dk_detail_5%3Fpsc%3D1%26pd_rd_i%3D8195895042%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - text: "-33%"
+                  - generic [ref=e937]:
+                    - generic [ref=e938]: HKD 370.99
+                    - generic [ref=e939]:
+                      - text: HKD
+                      - generic [ref=e940]:
+                        - text: "370"
+                        - generic [ref=e941]: .
+                      - text: "99"
+                  - generic [ref=e942]: "List Price: HKD 549.91"
+                  - generic [ref=e943]:
+                    - text: "List Price:"
+                    - generic [ref=e944]:
+                      - generic [ref=e945]: HKD 549.91
+                      - text: HKD549.91
+                - link "Amazon Prime" [ref=e946] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDEyMTMzMDk2NjgyMDI6Ojo6&url=%2Fdp%2F8195895042%2Fref%3Dsspa_dk_detail_5%3Fpsc%3D1%26pd_rd_i%3D8195895042%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - img "Amazon Prime" [ref=e948]
+            - listitem [ref=e949]:
+              - generic [ref=e950]:
+                - 'link "Small Business Accounting: Money Matters Made Easy: A Beginner''s Guide for Entrepreneurs" [ref=e951] [cursor=pointer]':
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDEyMzM5MjY3NTU4MDI6Ojo6&url=%2Fdp%2FB0CHN57N6N%2Fref%3Dsspa_dk_detail_6%3Fpsc%3D1%26pd_rd_i%3DB0CHN57N6N%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - img [ref=e954]
+                  - generic [ref=e955]: "Small Business Accounting: Money Matters Made Easy: A Beginner's Guide for…"
+                - link "Amy York" [ref=e957] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDEyMzM5MjY3NTU4MDI6Ojo6&url=%2Fdp%2FB0CHN57N6N%2Fref%3Dsspa_dk_detail_6%3Fpsc%3D1%26pd_rd_i%3DB0CHN57N6N%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                - link "4.2 out of 5 stars 54 ratings" [ref=e959] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDEyMzM5MjY3NTU4MDI6Ojo6&url=%2Fdp%2FB0CHN57N6N%2Fref%3Dsspa_dk_detail_6%3Fpsc%3D1%26pd_rd_i%3DB0CHN57N6N%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy#customerReviews
+                  - text: "54"
+                - link "Kindle Edition" [ref=e962] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDEyMzM5MjY3NTU4MDI6Ojo6&url=%2Fdp%2FB0CHN57N6N%2Fref%3Dsspa_dk_detail_6%3Fpsc%3D1%26pd_rd_i%3DB0CHN57N6N%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                - link "HKD 55.71" [ref=e964] [cursor=pointer]:
+                  - /url: /sspa/click?ie=UTF8&spc=MTozOTIxNzk0ODI2NDQ1MTM1OjE3NzkyMzgyMTI6c3BfZGV0YWlsMjozMDEyMzM5MjY3NTU4MDI6Ojo6&url=%2Fdp%2FB0CHN57N6N%2Fref%3Dsspa_dk_detail_6%3Fpsc%3D1%26pd_rd_i%3DB0CHN57N6N%26pd_rd_w%3DqXWG2%26content-id%3Damzn1.sym.4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_p%3D4a7f44df-467c-45a1-af5f-91661a6df2f9%26pf_rd_r%3DC5BHJYCR43D0JFG5EKH3%26pd_rd_wg%3DDupYx%26pd_rd_r%3Dc65d2a16-6102-46b5-a706-64d82b414cea%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9kZXRhaWwy
+                  - generic [ref=e965]:
+                    - generic [ref=e966]: HKD 55.71
+                    - generic [ref=e967]:
+                      - text: HKD
+                      - generic [ref=e968]:
+                        - text: "55"
+                        - generic [ref=e969]: .
+                      - text: "71"
+    - generic [ref=e974]:
+      - separator [ref=e975]
+      - generic "Rate today's book shopping experience" [ref=e977]:
+        - group [ref=e979]:
+          - heading [level=2] [ref=e980]: Rate today's book shopping experience
+          - generic [ref=e981]:
+            - radio "Very poor" [ref=e984]
+            - radio "Poor" [ref=e988]
+            - radio "Neutral" [ref=e992]
+            - radio "Good" [ref=e996]
+            - radio "Great" [ref=e1000]
+            - generic [ref=e1002]: Very poor
+            - generic [ref=e1003]: Poor
+            - generic [ref=e1004]: Neutral
+            - generic [ref=e1005]: Good
+            - generic [ref=e1006]: Great
+      - button "Hide for 30 days" [ref=e1008] [cursor=pointer]
+      - button "Hide for 30 days" [ref=e1010] [cursor=pointer]
+    - group [ref=e1015]:
+      - heading "Related books" [level=2] [ref=e1018]
+      - button "Leave feedback on Sponsored ad" [ref=e1023] [cursor=pointer]: Sponsored
+      - group [ref=e1028]:
+        - list [ref=e1029]:
+          - listitem [ref=e1030]:
+            - generic [ref=e1035]:
+              - link "Sponsored video, click to navigate to featured page." [ref=e1040] [cursor=pointer]:
+                - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JPP4h6ZNQkYxH2cL8Wm2mO4AAAGeQtyTtwEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICC892T3/clv1c_ek-YBYf3bcba3lYJZ_vu_sCVfjGxt4CH2pOBs8VAV00bI3G-Zf_OD9sRTYLs-D9RgvBcJvt9YnVrYwVDZJ8WPqpfdmsV5c6PUuxCL8_xvwAujwivaDb8ViEwUvlzrXR9AL5YY5JHrHTDK4dkbi_6dpmn8FyYgF0KE6axyjix9OLfyft9XCWhRGh9f9_XVnB8HlLuiSPbf4ZP2OeRsTxgY2anQ85-Zv2jll-iYC8DKdM67YfS8mYUiF5_JSS3SaVWx9tDxbN_LHPNC_lKhlYu3LWVblnUoNTJynDPBH97m6-PNb-ofaYjf_CShPvjCpBBVT4jzaNBePQV73-KEc8YxzbXVL5VkaIiDM-j_dUkdvuahVqZtAi6-g8y4EMy-ZQMKOYWrnqOL97S9Nx59EV_9J5lK1wQkbeh-afXoiSmuMbLtqBg7x2UvjMlkauNydkFzf7IlISmvbgGkhTI6avvNogsNP5cANrSDWOTw2aRBSmnzSHk47LaMaptLUCkRQP3piBHER237UZcUU7ap7bufuV4k9pDPvS-9nQBnbajdnxE8lirTwQTMUGhrRd6gLk1aU8gjKUXEo7dDPwdveKbohOJEBaeodpnqTrQBT0rSQFxcL49Mc9wXPOBDCcEEIYChLSitsS4vPPMbvFi1qDmdY4QRSDPjy1VmIV9NwyPsReOwB_fe4B7pleZw9lrFtTymruMLfKUwOSZCgBCyVq-qEBqLtY3iQaq5GgN4JeqZsBPnRShWGZsyf2sqR917LkwAJ9ePHvl3gduC1DWQEaT1-jwdR3g_jE1CDAnaBk_n0KjhJuPuk3BvxsdeaIp-_gX49BJjdlep5FwiC2jbbfwELivXE-s2UIgrZ0nOgAvJWV0di93dCsmF1FzRfpchjQk2DYuLylRwDpYgLlXO-Zy4jbq_G3hje02Dd8OQ0u4SMijl48Sv0mGeAVhKyFpa0xcXhuFNutJWzJZhWEYKvJ00yzLuqSJ9NlpH4-ey94SLtudx1BLNsc7swXJlw3GhILT_R7_SacIBo_URMlny4_3zNVbWHn0b4CHY9LFulfI_2JzKgKAPwjVGvrZUeTsys63CNidPpjm3DzaGwf4BhHDAEyxlj2QZZnKh73LZJRjX5E8NBVJshyf4MyUirUEg-JIN6fmQZXoEbTWbX8J3VeUffc6qdwV2dPcf5rF1IJQ4Dwq0nkTaqiUnuGbkNMZWQdxM_TVf76Zc-ouAb8bqX3-XXbKqlccWQAAvP_lPyvqEu6lBHhVrx67I13Smil30a9IHuNKVGGfPEx2RGJHNV_kzVqcEaKhn8KNKQoYRXvvR8b25D9FoGUc-eTHGTwUM7_11Vo65JNJpbjiwUKUPP1X-FHmYmFSUO8Is8iokLmecYJFn-gCI8saQwLBzt-ybeZblDESXJV3XlZl2MKpaWqq-J5vmL20INzz6noKmPb86xpHMIvJS3VpEhagdg7KI1lXerZoz9bhwp8MhcqY-UlAOiWKQ9i2GsXneZF_c8WZeeKBJaZbd540QWBHJT1nMvwP1AUqZ0p7YKrN/https://www.amazon.com/dp/B0FSYTN278/?_encoding=UTF8&pd_rd_i=B0FSYTN278&pd_rd_i=B0FSYTN278&ref_=sbx_be_s_sparkle_ssd_vid&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                - generic "Sponsored video, click to navigate to featured page." [ref=e1041]
+              - generic [ref=e1048]:
+                - 'link "The MACH-10 PM: AI-Powered Product Management at Hypersonic Speed (The MACH-10 Leadership Series)" [ref=e1051] [cursor=pointer]':
+                  - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JPP4h6ZNQkYxH2cL8Wm2mO4AAAGeQtyTtwEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICC892T3/clv1c_ek-YBYf3bcba3lYJZ_vu_sCVfjGxt4CH2pOBs8VAV00bI3G-Zf_OD9sRTYLs-D9RgvBcJvt9YnVrYwVDZJ8WPqpfdmsV5c6PUuxCL8_xvwAujwivaDb8ViEwUvlzrXR9AL5YY5JHrHTDK4dkbi_6dpmn8FyYgF0KE6axyjix9OLfyft9XCWhRGh9f9_XVnB8HlLuiSPbf4ZP2OeRsTxgY2anQ85-Zv2jll-iYC8DKdM67YfS8mYUiF5_JSS3SaVWx9tDxbN_LHPNC_lKhlYu3LWVblnUoNTJynDPBH97m6-PNb-ofaYjf_CShPvjCpBBVT4jzaNBePQV73-KEc8YxzbXVL5VkaIiDM-j_dUkdvuahVqZtAi6-g8y4EMy-ZQMKOYWrnqOL97S9Nx59EV_9J5lK1wQkbeh-afXoiSmuMbLtqBg7x2UvjMlkauNydkFzf7IlISmvbgGkhTI6avvNogsNP5cANrSDWOTw2aRBSmnzSHk47LaMaptLUCkRQP3piBHER237UZcUU7ap7bufuV4k9pDPvS-9nQBnbajdnxE8lirTwQTMUGhrRd6gLk1aU8gjKUXEo7dDPwdveKbohOJEBaeodpnqTrQBT0rSQFxcL49Mc9wXPOBDCcEEIYChLSitsS4vPPMbvFi1qDmdY4QRSDPjy1VmIV9NwyPsReOwB_fe4B7pleZw9lrFtTymruMLfKUwOSZCgBCyVq-qEBqLtY3iQaq5GgN4JeqZsBPnRShWGZsyf2sqR917LkwAJ9ePHvl3gduC1DWQEaT1-jwdR3g_jE1CDAnaBk_n0KjhJuPuk3BvxsdeaIp-_gX49BJjdlep5FwiC2jbbfwELivXE-s2UIgrZ0nOgAvJWV0di93dCsmF1FzRfpchjQk2DYuLylRwDpYgLlXO-Zy4jbq_G3hje02Dd8OQ0u4SMijl48Sv0mGeAVhKyFpa0xcXhuFNutJWzJZhWEYKvJ00yzLuqSJ9NlpH4-ey94SLtudx1BLNsc7swXJlw3GhILT_R7_SacIBo_URMlny4_3zNVbWHn0b4CHY9LFulfI_2JzKgKAPwjVGvrZUeTsys63CNidPpjm3DzaGwf4BhHDAEyxlj2QZZnKh73LZJRjX5E8NBVJshyf4MyUirUEg-JIN6fmQZXoEbTWbX8J3VeUffc6qdwV2dPcf5rF1IJQ4Dwq0nkTaqiUnuGbkNMZWQdxM_TVf76Zc-ouAb8bqX3-XXbKqlccWQAAvP_lPyvqEu6lBHhVrx67I13Smil30a9IHuNKVGGfPEx2RGJHNV_kzVqcEaKhn8KNKQoYRXvvR8b25D9FoGUc-eTHGTwUM7_11Vo65JNJpbjiwUKUPP1X-FHmYmFSUO8Is8iokLmecYJFn-gCI8saQwLBzt-ybeZblDESXJV3XlZl2MKpaWqq-J5vmL20INzz6noKmPb86xpHMIvJS3VpEhagdg7KI1lXerZoz9bhwp8MhcqY-UlAOiWKQ9i2GsXneZF_c8WZeeKBJaZbd540QWBHJT1nMvwP1AUqZ0p7YKrN/https://www.amazon.com/dp/B0FSYTN278/?_encoding=UTF8&pd_rd_i=B0FSYTN278&pd_rd_i=B0FSYTN278&ref_=sbx_be_s_sparkle_ssd_img&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                  - 'img "The MACH-10 PM: AI-Powered Product Management at Hypersonic Speed (The MACH-10 Leadership Series)" [ref=e1053]'
+                - generic [ref=e1055]:
+                  - link [ref=e1056] [cursor=pointer]:
+                    - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JPP4h6ZNQkYxH2cL8Wm2mO4AAAGeQtyTtwEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICC892T3/clv1c_ek-YBYf3bcba3lYJZ_vu_sCVfjGxt4CH2pOBs8VAV00bI3G-Zf_OD9sRTYLs-D9RgvBcJvt9YnVrYwVDZJ8WPqpfdmsV5c6PUuxCL8_xvwAujwivaDb8ViEwUvlzrXR9AL5YY5JHrHTDK4dkbi_6dpmn8FyYgF0KE6axyjix9OLfyft9XCWhRGh9f9_XVnB8HlLuiSPbf4ZP2OeRsTxgY2anQ85-Zv2jll-iYC8DKdM67YfS8mYUiF5_JSS3SaVWx9tDxbN_LHPNC_lKhlYu3LWVblnUoNTJynDPBH97m6-PNb-ofaYjf_CShPvjCpBBVT4jzaNBePQV73-KEc8YxzbXVL5VkaIiDM-j_dUkdvuahVqZtAi6-g8y4EMy-ZQMKOYWrnqOL97S9Nx59EV_9J5lK1wQkbeh-afXoiSmuMbLtqBg7x2UvjMlkauNydkFzf7IlISmvbgGkhTI6avvNogsNP5cANrSDWOTw2aRBSmnzSHk47LaMaptLUCkRQP3piBHER237UZcUU7ap7bufuV4k9pDPvS-9nQBnbajdnxE8lirTwQTMUGhrRd6gLk1aU8gjKUXEo7dDPwdveKbohOJEBaeodpnqTrQBT0rSQFxcL49Mc9wXPOBDCcEEIYChLSitsS4vPPMbvFi1qDmdY4QRSDPjy1VmIV9NwyPsReOwB_fe4B7pleZw9lrFtTymruMLfKUwOSZCgBCyVq-qEBqLtY3iQaq5GgN4JeqZsBPnRShWGZsyf2sqR917LkwAJ9ePHvl3gduC1DWQEaT1-jwdR3g_jE1CDAnaBk_n0KjhJuPuk3BvxsdeaIp-_gX49BJjdlep5FwiC2jbbfwELivXE-s2UIgrZ0nOgAvJWV0di93dCsmF1FzRfpchjQk2DYuLylRwDpYgLlXO-Zy4jbq_G3hje02Dd8OQ0u4SMijl48Sv0mGeAVhKyFpa0xcXhuFNutJWzJZhWEYKvJ00yzLuqSJ9NlpH4-ey94SLtudx1BLNsc7swXJlw3GhILT_R7_SacIBo_URMlny4_3zNVbWHn0b4CHY9LFulfI_2JzKgKAPwjVGvrZUeTsys63CNidPpjm3DzaGwf4BhHDAEyxlj2QZZnKh73LZJRjX5E8NBVJshyf4MyUirUEg-JIN6fmQZXoEbTWbX8J3VeUffc6qdwV2dPcf5rF1IJQ4Dwq0nkTaqiUnuGbkNMZWQdxM_TVf76Zc-ouAb8bqX3-XXbKqlccWQAAvP_lPyvqEu6lBHhVrx67I13Smil30a9IHuNKVGGfPEx2RGJHNV_kzVqcEaKhn8KNKQoYRXvvR8b25D9FoGUc-eTHGTwUM7_11Vo65JNJpbjiwUKUPP1X-FHmYmFSUO8Is8iokLmecYJFn-gCI8saQwLBzt-ybeZblDESXJV3XlZl2MKpaWqq-J5vmL20INzz6noKmPb86xpHMIvJS3VpEhagdg7KI1lXerZoz9bhwp8MhcqY-UlAOiWKQ9i2GsXneZF_c8WZeeKBJaZbd540QWBHJT1nMvwP1AUqZ0p7YKrN/https://www.amazon.com/dp/B0FSYTN278/?_encoding=UTF8&pd_rd_i=B0FSYTN278&pd_rd_i=B0FSYTN278&ref_=sbx_be_s_sparkle_ssd_bkg&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                  - generic [ref=e1057]:
+                    - link [ref=e1058] [cursor=pointer]:
+                      - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JPP4h6ZNQkYxH2cL8Wm2mO4AAAGeQtyTtwEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICC892T3/clv1c_ek-YBYf3bcba3lYJZ_vu_sCVfjGxt4CH2pOBs8VAV00bI3G-Zf_OD9sRTYLs-D9RgvBcJvt9YnVrYwVDZJ8WPqpfdmsV5c6PUuxCL8_xvwAujwivaDb8ViEwUvlzrXR9AL5YY5JHrHTDK4dkbi_6dpmn8FyYgF0KE6axyjix9OLfyft9XCWhRGh9f9_XVnB8HlLuiSPbf4ZP2OeRsTxgY2anQ85-Zv2jll-iYC8DKdM67YfS8mYUiF5_JSS3SaVWx9tDxbN_LHPNC_lKhlYu3LWVblnUoNTJynDPBH97m6-PNb-ofaYjf_CShPvjCpBBVT4jzaNBePQV73-KEc8YxzbXVL5VkaIiDM-j_dUkdvuahVqZtAi6-g8y4EMy-ZQMKOYWrnqOL97S9Nx59EV_9J5lK1wQkbeh-afXoiSmuMbLtqBg7x2UvjMlkauNydkFzf7IlISmvbgGkhTI6avvNogsNP5cANrSDWOTw2aRBSmnzSHk47LaMaptLUCkRQP3piBHER237UZcUU7ap7bufuV4k9pDPvS-9nQBnbajdnxE8lirTwQTMUGhrRd6gLk1aU8gjKUXEo7dDPwdveKbohOJEBaeodpnqTrQBT0rSQFxcL49Mc9wXPOBDCcEEIYChLSitsS4vPPMbvFi1qDmdY4QRSDPjy1VmIV9NwyPsReOwB_fe4B7pleZw9lrFtTymruMLfKUwOSZCgBCyVq-qEBqLtY3iQaq5GgN4JeqZsBPnRShWGZsyf2sqR917LkwAJ9ePHvl3gduC1DWQEaT1-jwdR3g_jE1CDAnaBk_n0KjhJuPuk3BvxsdeaIp-_gX49BJjdlep5FwiC2jbbfwELivXE-s2UIgrZ0nOgAvJWV0di93dCsmF1FzRfpchjQk2DYuLylRwDpYgLlXO-Zy4jbq_G3hje02Dd8OQ0u4SMijl48Sv0mGeAVhKyFpa0xcXhuFNutJWzJZhWEYKvJ00yzLuqSJ9NlpH4-ey94SLtudx1BLNsc7swXJlw3GhILT_R7_SacIBo_URMlny4_3zNVbWHn0b4CHY9LFulfI_2JzKgKAPwjVGvrZUeTsys63CNidPpjm3DzaGwf4BhHDAEyxlj2QZZnKh73LZJRjX5E8NBVJshyf4MyUirUEg-JIN6fmQZXoEbTWbX8J3VeUffc6qdwV2dPcf5rF1IJQ4Dwq0nkTaqiUnuGbkNMZWQdxM_TVf76Zc-ouAb8bqX3-XXbKqlccWQAAvP_lPyvqEu6lBHhVrx67I13Smil30a9IHuNKVGGfPEx2RGJHNV_kzVqcEaKhn8KNKQoYRXvvR8b25D9FoGUc-eTHGTwUM7_11Vo65JNJpbjiwUKUPP1X-FHmYmFSUO8Is8iokLmecYJFn-gCI8saQwLBzt-ybeZblDESXJV3XlZl2MKpaWqq-J5vmL20INzz6noKmPb86xpHMIvJS3VpEhagdg7KI1lXerZoz9bhwp8MhcqY-UlAOiWKQ9i2GsXneZF_c8WZeeKBJaZbd540QWBHJT1nMvwP1AUqZ0p7YKrN/https://www.amazon.com/dp/B0FSYTN278/?_encoding=UTF8&pd_rd_i=B0FSYTN278&pd_rd_i=B0FSYTN278&ref_=sbx_be_s_sparkle_ssd_bkg&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                    - 'link "The MACH-10 PM: AI-Powered Product Management at Hypersonic Speed (The MACH-10 Leadership Series)" [ref=e1059] [cursor=pointer]':
+                      - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JPP4h6ZNQkYxH2cL8Wm2mO4AAAGeQtyTtwEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICC892T3/clv1c_ek-YBYf3bcba3lYJZ_vu_sCVfjGxt4CH2pOBs8VAV00bI3G-Zf_OD9sRTYLs-D9RgvBcJvt9YnVrYwVDZJ8WPqpfdmsV5c6PUuxCL8_xvwAujwivaDb8ViEwUvlzrXR9AL5YY5JHrHTDK4dkbi_6dpmn8FyYgF0KE6axyjix9OLfyft9XCWhRGh9f9_XVnB8HlLuiSPbf4ZP2OeRsTxgY2anQ85-Zv2jll-iYC8DKdM67YfS8mYUiF5_JSS3SaVWx9tDxbN_LHPNC_lKhlYu3LWVblnUoNTJynDPBH97m6-PNb-ofaYjf_CShPvjCpBBVT4jzaNBePQV73-KEc8YxzbXVL5VkaIiDM-j_dUkdvuahVqZtAi6-g8y4EMy-ZQMKOYWrnqOL97S9Nx59EV_9J5lK1wQkbeh-afXoiSmuMbLtqBg7x2UvjMlkauNydkFzf7IlISmvbgGkhTI6avvNogsNP5cANrSDWOTw2aRBSmnzSHk47LaMaptLUCkRQP3piBHER237UZcUU7ap7bufuV4k9pDPvS-9nQBnbajdnxE8lirTwQTMUGhrRd6gLk1aU8gjKUXEo7dDPwdveKbohOJEBaeodpnqTrQBT0rSQFxcL49Mc9wXPOBDCcEEIYChLSitsS4vPPMbvFi1qDmdY4QRSDPjy1VmIV9NwyPsReOwB_fe4B7pleZw9lrFtTymruMLfKUwOSZCgBCyVq-qEBqLtY3iQaq5GgN4JeqZsBPnRShWGZsyf2sqR917LkwAJ9ePHvl3gduC1DWQEaT1-jwdR3g_jE1CDAnaBk_n0KjhJuPuk3BvxsdeaIp-_gX49BJjdlep5FwiC2jbbfwELivXE-s2UIgrZ0nOgAvJWV0di93dCsmF1FzRfpchjQk2DYuLylRwDpYgLlXO-Zy4jbq_G3hje02Dd8OQ0u4SMijl48Sv0mGeAVhKyFpa0xcXhuFNutJWzJZhWEYKvJ00yzLuqSJ9NlpH4-ey94SLtudx1BLNsc7swXJlw3GhILT_R7_SacIBo_URMlny4_3zNVbWHn0b4CHY9LFulfI_2JzKgKAPwjVGvrZUeTsys63CNidPpjm3DzaGwf4BhHDAEyxlj2QZZnKh73LZJRjX5E8NBVJshyf4MyUirUEg-JIN6fmQZXoEbTWbX8J3VeUffc6qdwV2dPcf5rF1IJQ4Dwq0nkTaqiUnuGbkNMZWQdxM_TVf76Zc-ouAb8bqX3-XXbKqlccWQAAvP_lPyvqEu6lBHhVrx67I13Smil30a9IHuNKVGGfPEx2RGJHNV_kzVqcEaKhn8KNKQoYRXvvR8b25D9FoGUc-eTHGTwUM7_11Vo65JNJpbjiwUKUPP1X-FHmYmFSUO8Is8iokLmecYJFn-gCI8saQwLBzt-ybeZblDESXJV3XlZl2MKpaWqq-J5vmL20INzz6noKmPb86xpHMIvJS3VpEhagdg7KI1lXerZoz9bhwp8MhcqY-UlAOiWKQ9i2GsXneZF_c8WZeeKBJaZbd540QWBHJT1nMvwP1AUqZ0p7YKrN/https://www.amazon.com/dp/B0FSYTN278/?_encoding=UTF8&pd_rd_i=B0FSYTN278&pd_rd_i=B0FSYTN278&ref_=sbx_be_s_sparkle_ssd_tt&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                  - link "Rated 4.8 out of 5 stars from 33 reviews" [ref=e1061] [cursor=pointer]:
+                    - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JPP4h6ZNQkYxH2cL8Wm2mO4AAAGeQtyTtwEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICC892T3/clv1c_ek-YBYf3bcba3lYJZ_vu_sCVfjGxt4CH2pOBs8VAV00bI3G-Zf_OD9sRTYLs-D9RgvBcJvt9YnVrYwVDZJ8WPqpfdmsV5c6PUuxCL8_xvwAujwivaDb8ViEwUvlzrXR9AL5YY5JHrHTDK4dkbi_6dpmn8FyYgF0KE6axyjix9OLfyft9XCWhRGh9f9_XVnB8HlLuiSPbf4ZP2OeRsTxgY2anQ85-Zv2jll-iYC8DKdM67YfS8mYUiF5_JSS3SaVWx9tDxbN_LHPNC_lKhlYu3LWVblnUoNTJynDPBH97m6-PNb-ofaYjf_CShPvjCpBBVT4jzaNBePQV73-KEc8YxzbXVL5VkaIiDM-j_dUkdvuahVqZtAi6-g8y4EMy-ZQMKOYWrnqOL97S9Nx59EV_9J5lK1wQkbeh-afXoiSmuMbLtqBg7x2UvjMlkauNydkFzf7IlISmvbgGkhTI6avvNogsNP5cANrSDWOTw2aRBSmnzSHk47LaMaptLUCkRQP3piBHER237UZcUU7ap7bufuV4k9pDPvS-9nQBnbajdnxE8lirTwQTMUGhrRd6gLk1aU8gjKUXEo7dDPwdveKbohOJEBaeodpnqTrQBT0rSQFxcL49Mc9wXPOBDCcEEIYChLSitsS4vPPMbvFi1qDmdY4QRSDPjy1VmIV9NwyPsReOwB_fe4B7pleZw9lrFtTymruMLfKUwOSZCgBCyVq-qEBqLtY3iQaq5GgN4JeqZsBPnRShWGZsyf2sqR917LkwAJ9ePHvl3gduC1DWQEaT1-jwdR3g_jE1CDAnaBk_n0KjhJuPuk3BvxsdeaIp-_gX49BJjdlep5FwiC2jbbfwELivXE-s2UIgrZ0nOgAvJWV0di93dCsmF1FzRfpchjQk2DYuLylRwDpYgLlXO-Zy4jbq_G3hje02Dd8OQ0u4SMijl48Sv0mGeAVhKyFpa0xcXhuFNutJWzJZhWEYKvJ00yzLuqSJ9NlpH4-ey94SLtudx1BLNsc7swXJlw3GhILT_R7_SacIBo_URMlny4_3zNVbWHn0b4CHY9LFulfI_2JzKgKAPwjVGvrZUeTsys63CNidPpjm3DzaGwf4BhHDAEyxlj2QZZnKh73LZJRjX5E8NBVJshyf4MyUirUEg-JIN6fmQZXoEbTWbX8J3VeUffc6qdwV2dPcf5rF1IJQ4Dwq0nkTaqiUnuGbkNMZWQdxM_TVf76Zc-ouAb8bqX3-XXbKqlccWQAAvP_lPyvqEu6lBHhVrx67I13Smil30a9IHuNKVGGfPEx2RGJHNV_kzVqcEaKhn8KNKQoYRXvvR8b25D9FoGUc-eTHGTwUM7_11Vo65JNJpbjiwUKUPP1X-FHmYmFSUO8Is8iokLmecYJFn-gCI8saQwLBzt-ybeZblDESXJV3XlZl2MKpaWqq-J5vmL20INzz6noKmPb86xpHMIvJS3VpEhagdg7KI1lXerZoz9bhwp8MhcqY-UlAOiWKQ9i2GsXneZF_c8WZeeKBJaZbd540QWBHJT1nMvwP1AUqZ0p7YKrN/https://www.amazon.com/dp/B0FSYTN278/?_encoding=UTF8&pd_rd_i=B0FSYTN278&pd_rd_i=B0FSYTN278&ref_=sbx_be_s_sparkle_ssd_rev&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                    - text: "4.8"
+                    - generic [ref=e1063]: 4.8 out of 5 stars
+                    - text: "33"
+                  - link "HKD156.58" [ref=e1065] [cursor=pointer]:
+                    - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JPP4h6ZNQkYxH2cL8Wm2mO4AAAGeQtyTtwEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICC892T3/clv1c_ek-YBYf3bcba3lYJZ_vu_sCVfjGxt4CH2pOBs8VAV00bI3G-Zf_OD9sRTYLs-D9RgvBcJvt9YnVrYwVDZJ8WPqpfdmsV5c6PUuxCL8_xvwAujwivaDb8ViEwUvlzrXR9AL5YY5JHrHTDK4dkbi_6dpmn8FyYgF0KE6axyjix9OLfyft9XCWhRGh9f9_XVnB8HlLuiSPbf4ZP2OeRsTxgY2anQ85-Zv2jll-iYC8DKdM67YfS8mYUiF5_JSS3SaVWx9tDxbN_LHPNC_lKhlYu3LWVblnUoNTJynDPBH97m6-PNb-ofaYjf_CShPvjCpBBVT4jzaNBePQV73-KEc8YxzbXVL5VkaIiDM-j_dUkdvuahVqZtAi6-g8y4EMy-ZQMKOYWrnqOL97S9Nx59EV_9J5lK1wQkbeh-afXoiSmuMbLtqBg7x2UvjMlkauNydkFzf7IlISmvbgGkhTI6avvNogsNP5cANrSDWOTw2aRBSmnzSHk47LaMaptLUCkRQP3piBHER237UZcUU7ap7bufuV4k9pDPvS-9nQBnbajdnxE8lirTwQTMUGhrRd6gLk1aU8gjKUXEo7dDPwdveKbohOJEBaeodpnqTrQBT0rSQFxcL49Mc9wXPOBDCcEEIYChLSitsS4vPPMbvFi1qDmdY4QRSDPjy1VmIV9NwyPsReOwB_fe4B7pleZw9lrFtTymruMLfKUwOSZCgBCyVq-qEBqLtY3iQaq5GgN4JeqZsBPnRShWGZsyf2sqR917LkwAJ9ePHvl3gduC1DWQEaT1-jwdR3g_jE1CDAnaBk_n0KjhJuPuk3BvxsdeaIp-_gX49BJjdlep5FwiC2jbbfwELivXE-s2UIgrZ0nOgAvJWV0di93dCsmF1FzRfpchjQk2DYuLylRwDpYgLlXO-Zy4jbq_G3hje02Dd8OQ0u4SMijl48Sv0mGeAVhKyFpa0xcXhuFNutJWzJZhWEYKvJ00yzLuqSJ9NlpH4-ey94SLtudx1BLNsc7swXJlw3GhILT_R7_SacIBo_URMlny4_3zNVbWHn0b4CHY9LFulfI_2JzKgKAPwjVGvrZUeTsys63CNidPpjm3DzaGwf4BhHDAEyxlj2QZZnKh73LZJRjX5E8NBVJshyf4MyUirUEg-JIN6fmQZXoEbTWbX8J3VeUffc6qdwV2dPcf5rF1IJQ4Dwq0nkTaqiUnuGbkNMZWQdxM_TVf76Zc-ouAb8bqX3-XXbKqlccWQAAvP_lPyvqEu6lBHhVrx67I13Smil30a9IHuNKVGGfPEx2RGJHNV_kzVqcEaKhn8KNKQoYRXvvR8b25D9FoGUc-eTHGTwUM7_11Vo65JNJpbjiwUKUPP1X-FHmYmFSUO8Is8iokLmecYJFn-gCI8saQwLBzt-ybeZblDESXJV3XlZl2MKpaWqq-J5vmL20INzz6noKmPb86xpHMIvJS3VpEhagdg7KI1lXerZoz9bhwp8MhcqY-UlAOiWKQ9i2GsXneZF_c8WZeeKBJaZbd540QWBHJT1nMvwP1AUqZ0p7YKrN/https://www.amazon.com/dp/B0FSYTN278/?_encoding=UTF8&pd_rd_i=B0FSYTN278&pd_rd_i=B0FSYTN278&ref_=sbx_be_s_sparkle_ssd_pce&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                    - generic [ref=e1066]:
+                      - generic [ref=e1067]: HKD156.58
+                      - generic [ref=e1068]:
+                        - text: HKD
+                        - generic [ref=e1069]: "156."
+                        - text: "58"
+          - listitem [ref=e1070]:
+            - generic [ref=e1075]:
+              - link "Sponsored video, click to navigate to featured page." [ref=e1080] [cursor=pointer]:
+                - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JGaH8Nx0UtbghS3FTuOzExkAAAGeQtyTuAEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICAV3xzr/clv1c_ek-YBYf3bcba3lYJZ_vu_sCVfjGxt4CH2pOwwHanDgYQpgI2Tl_MoOWFAhRSkmm3g0MqJMB1eQP7OT6bZf4R53KvFVh4ERDK3z36irG6UP2-yoHyI9GXQVnZIftoimoB6p8dns9aevGCD5dmFA2Gl6TBINe4JhXqndD75U9yDKcc3-8ZbdFNq9zRXR1IaStYt9UqoxVR3wXHzuIlw6CA0TOjgfW_wCgd7EymgA8DpVAC40eTcjR7ZZCDxxaOOGfG1KltvrhAN3CQUv4D-9l8setP9gnFjAfzhwLWqZl2WPQekxYqfSbCX-CStPPhClQ4RT4tDqNBSPwV798CiU1MLBq-YORJQLo8ioChTiCVmurXytelTs2wGU1x3iUVYw0IsTKa8XT1_zMb1h8s6dlZhKpqNjZfSATVtCSt69bfXLOLz5jimaKrVvoQ4K90QqdTQ-opuVBVcUhN_tmHQcbd2z7Jifw_8mLMaGFDfPl-q2t5PY5G6u-7Gpyh_WB_vfAVBV13ml25uh7ZRb_JU5kYBFCMUXr1TOtZmiMN7rtmV_9ZQ1zsrlM3af7JA0giddMUeujAdSXCT9eXr9A8KeJdsM8-2g1tHjMqmHYMMUEcIyTb9B9y3O_qnUM11ivRKMFQzx7IlkgE_oFzLAsXzr8J5bFqjYMLDMcFnGsooXm908NFJb8Xfi1FYJszh0ta0HwpJ8Zu8iQ0dvZmihcYO0rSVOeOBveSFf2Cp6j6Nw9Lbvjzh_aW1LADpt048lXU2JW8VoGgKKDy0xnJUG1GzChqTvJ4p8oP_hCrN2snw8KOMPg1u292ilNCBNQCCzDLdn3A5HBEiU0oPR53a5QIQfDOOThpRpwTEQ0wh-Vp5TEoQd3L3j3tNGBpwfgojeeaAZwrxV3FF0NZ2j5YgLlXOP5y4j4K_O1rk3C29wYSc3-sBKNxfGyhU9afn2pYdqkzu175p53_CR_Yp4we-PjD2ocCkgP5Fp5rXLNn3rBeSJsTKZs83X0A54nzxCcgUX-R5N1mAIDm9_1x2158AevbSfIiEeGhvJJ6YwXYGN3Fvdf472Ry1gFwMAjVGvoVUuSs1Q7wCIhhSVUmMHUFvXGORRHBAEy1FB2cZVnNh73KbNR_XxE8MG1J8gxfScgkF8Idx3b56GYyj9EuDeY4yvyn6wzR5sDzwSUSm54jysI9puOsRXn0RNWAki05VT0B0dRtgOgo6p9_FmOHvsRGP1G1wlwf3AqWBP1wRp1kF-vCZi89yJ5usW-W_iShfjarUFepwa9I5LdPoIaRc6sap4qSzIsR8W3399Opm8LMqQk9o4c1Grio5tMgflvZuVir8bvxMej4VXSbOfZva49w6nilgZa4MwQ79UFK4KzDGPEbB4lTMAF2p3SA_UUusehSM3Beq8OgDFTt6t77tMAlwMpPqlKq-J7hW4UsL9gA6zoSkPac6xpH0NigOZdNpUCzN_grpwx5WYdqz1aZwp1MlUJ7uUlAOdToIVk_WU6gFhN_c8WZeeKBJaZbd4doQGf5Ct641gVG4apPPkeHiXfN/https://www.amazon.com/dp/B0FRN7NFX5/?_encoding=UTF8&pd_rd_i=B0FRN7NFX5&pd_rd_i=B0FRN7NFX5&ref_=sbx_be_s_sparkle_ssd_vid&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                - generic "Sponsored video, click to navigate to featured page." [ref=e1081]
+              - generic [ref=e1088]:
+                - 'link "The Options Trading Bible [50 in 1]: Unlock Proven Tactics to Read Markets, Spot High-Probability Entries, and Manage Risk Like a Pro. For Beginners Seeking Clarity, Confidence, and Consistent Profits" [ref=e1091] [cursor=pointer]':
+                  - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JGaH8Nx0UtbghS3FTuOzExkAAAGeQtyTuAEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICAV3xzr/clv1c_ek-YBYf3bcba3lYJZ_vu_sCVfjGxt4CH2pOwwHanDgYQpgI2Tl_MoOWFAhRSkmm3g0MqJMB1eQP7OT6bZf4R53KvFVh4ERDK3z36irG6UP2-yoHyI9GXQVnZIftoimoB6p8dns9aevGCD5dmFA2Gl6TBINe4JhXqndD75U9yDKcc3-8ZbdFNq9zRXR1IaStYt9UqoxVR3wXHzuIlw6CA0TOjgfW_wCgd7EymgA8DpVAC40eTcjR7ZZCDxxaOOGfG1KltvrhAN3CQUv4D-9l8setP9gnFjAfzhwLWqZl2WPQekxYqfSbCX-CStPPhClQ4RT4tDqNBSPwV798CiU1MLBq-YORJQLo8ioChTiCVmurXytelTs2wGU1x3iUVYw0IsTKa8XT1_zMb1h8s6dlZhKpqNjZfSATVtCSt69bfXLOLz5jimaKrVvoQ4K90QqdTQ-opuVBVcUhN_tmHQcbd2z7Jifw_8mLMaGFDfPl-q2t5PY5G6u-7Gpyh_WB_vfAVBV13ml25uh7ZRb_JU5kYBFCMUXr1TOtZmiMN7rtmV_9ZQ1zsrlM3af7JA0giddMUeujAdSXCT9eXr9A8KeJdsM8-2g1tHjMqmHYMMUEcIyTb9B9y3O_qnUM11ivRKMFQzx7IlkgE_oFzLAsXzr8J5bFqjYMLDMcFnGsooXm908NFJb8Xfi1FYJszh0ta0HwpJ8Zu8iQ0dvZmihcYO0rSVOeOBveSFf2Cp6j6Nw9Lbvjzh_aW1LADpt048lXU2JW8VoGgKKDy0xnJUG1GzChqTvJ4p8oP_hCrN2snw8KOMPg1u292ilNCBNQCCzDLdn3A5HBEiU0oPR53a5QIQfDOOThpRpwTEQ0wh-Vp5TEoQd3L3j3tNGBpwfgojeeaAZwrxV3FF0NZ2j5YgLlXOP5y4j4K_O1rk3C29wYSc3-sBKNxfGyhU9afn2pYdqkzu175p53_CR_Yp4we-PjD2ocCkgP5Fp5rXLNn3rBeSJsTKZs83X0A54nzxCcgUX-R5N1mAIDm9_1x2158AevbSfIiEeGhvJJ6YwXYGN3Fvdf472Ry1gFwMAjVGvoVUuSs1Q7wCIhhSVUmMHUFvXGORRHBAEy1FB2cZVnNh73KbNR_XxE8MG1J8gxfScgkF8Idx3b56GYyj9EuDeY4yvyn6wzR5sDzwSUSm54jysI9puOsRXn0RNWAki05VT0B0dRtgOgo6p9_FmOHvsRGP1G1wlwf3AqWBP1wRp1kF-vCZi89yJ5usW-W_iShfjarUFepwa9I5LdPoIaRc6sap4qSzIsR8W3399Opm8LMqQk9o4c1Grio5tMgflvZuVir8bvxMej4VXSbOfZva49w6nilgZa4MwQ79UFK4KzDGPEbB4lTMAF2p3SA_UUusehSM3Beq8OgDFTt6t77tMAlwMpPqlKq-J7hW4UsL9gA6zoSkPac6xpH0NigOZdNpUCzN_grpwx5WYdqz1aZwp1MlUJ7uUlAOdToIVk_WU6gFhN_c8WZeeKBJaZbd4doQGf5Ct641gVG4apPPkeHiXfN/https://www.amazon.com/dp/B0FRN7NFX5/?_encoding=UTF8&pd_rd_i=B0FRN7NFX5&pd_rd_i=B0FRN7NFX5&ref_=sbx_be_s_sparkle_ssd_img&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                  - 'img "The Options Trading Bible [50 in 1]: Unlock Proven Tactics to Read Markets, Spot High-Probability Entries, and Manage Risk Like a Pro. For Beginners Seeking Clarity, Confidence, and Consistent Profits" [ref=e1093]'
+                - generic [ref=e1095]:
+                  - link [ref=e1096] [cursor=pointer]:
+                    - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JGaH8Nx0UtbghS3FTuOzExkAAAGeQtyTuAEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICAV3xzr/clv1c_ek-YBYf3bcba3lYJZ_vu_sCVfjGxt4CH2pOwwHanDgYQpgI2Tl_MoOWFAhRSkmm3g0MqJMB1eQP7OT6bZf4R53KvFVh4ERDK3z36irG6UP2-yoHyI9GXQVnZIftoimoB6p8dns9aevGCD5dmFA2Gl6TBINe4JhXqndD75U9yDKcc3-8ZbdFNq9zRXR1IaStYt9UqoxVR3wXHzuIlw6CA0TOjgfW_wCgd7EymgA8DpVAC40eTcjR7ZZCDxxaOOGfG1KltvrhAN3CQUv4D-9l8setP9gnFjAfzhwLWqZl2WPQekxYqfSbCX-CStPPhClQ4RT4tDqNBSPwV798CiU1MLBq-YORJQLo8ioChTiCVmurXytelTs2wGU1x3iUVYw0IsTKa8XT1_zMb1h8s6dlZhKpqNjZfSATVtCSt69bfXLOLz5jimaKrVvoQ4K90QqdTQ-opuVBVcUhN_tmHQcbd2z7Jifw_8mLMaGFDfPl-q2t5PY5G6u-7Gpyh_WB_vfAVBV13ml25uh7ZRb_JU5kYBFCMUXr1TOtZmiMN7rtmV_9ZQ1zsrlM3af7JA0giddMUeujAdSXCT9eXr9A8KeJdsM8-2g1tHjMqmHYMMUEcIyTb9B9y3O_qnUM11ivRKMFQzx7IlkgE_oFzLAsXzr8J5bFqjYMLDMcFnGsooXm908NFJb8Xfi1FYJszh0ta0HwpJ8Zu8iQ0dvZmihcYO0rSVOeOBveSFf2Cp6j6Nw9Lbvjzh_aW1LADpt048lXU2JW8VoGgKKDy0xnJUG1GzChqTvJ4p8oP_hCrN2snw8KOMPg1u292ilNCBNQCCzDLdn3A5HBEiU0oPR53a5QIQfDOOThpRpwTEQ0wh-Vp5TEoQd3L3j3tNGBpwfgojeeaAZwrxV3FF0NZ2j5YgLlXOP5y4j4K_O1rk3C29wYSc3-sBKNxfGyhU9afn2pYdqkzu175p53_CR_Yp4we-PjD2ocCkgP5Fp5rXLNn3rBeSJsTKZs83X0A54nzxCcgUX-R5N1mAIDm9_1x2158AevbSfIiEeGhvJJ6YwXYGN3Fvdf472Ry1gFwMAjVGvoVUuSs1Q7wCIhhSVUmMHUFvXGORRHBAEy1FB2cZVnNh73KbNR_XxE8MG1J8gxfScgkF8Idx3b56GYyj9EuDeY4yvyn6wzR5sDzwSUSm54jysI9puOsRXn0RNWAki05VT0B0dRtgOgo6p9_FmOHvsRGP1G1wlwf3AqWBP1wRp1kF-vCZi89yJ5usW-W_iShfjarUFepwa9I5LdPoIaRc6sap4qSzIsR8W3399Opm8LMqQk9o4c1Grio5tMgflvZuVir8bvxMej4VXSbOfZva49w6nilgZa4MwQ79UFK4KzDGPEbB4lTMAF2p3SA_UUusehSM3Beq8OgDFTt6t77tMAlwMpPqlKq-J7hW4UsL9gA6zoSkPac6xpH0NigOZdNpUCzN_grpwx5WYdqz1aZwp1MlUJ7uUlAOdToIVk_WU6gFhN_c8WZeeKBJaZbd4doQGf5Ct641gVG4apPPkeHiXfN/https://www.amazon.com/dp/B0FRN7NFX5/?_encoding=UTF8&pd_rd_i=B0FRN7NFX5&pd_rd_i=B0FRN7NFX5&ref_=sbx_be_s_sparkle_ssd_bkg&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                  - generic [ref=e1097]:
+                    - link [ref=e1098] [cursor=pointer]:
+                      - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JGaH8Nx0UtbghS3FTuOzExkAAAGeQtyTuAEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICAV3xzr/clv1c_ek-YBYf3bcba3lYJZ_vu_sCVfjGxt4CH2pOwwHanDgYQpgI2Tl_MoOWFAhRSkmm3g0MqJMB1eQP7OT6bZf4R53KvFVh4ERDK3z36irG6UP2-yoHyI9GXQVnZIftoimoB6p8dns9aevGCD5dmFA2Gl6TBINe4JhXqndD75U9yDKcc3-8ZbdFNq9zRXR1IaStYt9UqoxVR3wXHzuIlw6CA0TOjgfW_wCgd7EymgA8DpVAC40eTcjR7ZZCDxxaOOGfG1KltvrhAN3CQUv4D-9l8setP9gnFjAfzhwLWqZl2WPQekxYqfSbCX-CStPPhClQ4RT4tDqNBSPwV798CiU1MLBq-YORJQLo8ioChTiCVmurXytelTs2wGU1x3iUVYw0IsTKa8XT1_zMb1h8s6dlZhKpqNjZfSATVtCSt69bfXLOLz5jimaKrVvoQ4K90QqdTQ-opuVBVcUhN_tmHQcbd2z7Jifw_8mLMaGFDfPl-q2t5PY5G6u-7Gpyh_WB_vfAVBV13ml25uh7ZRb_JU5kYBFCMUXr1TOtZmiMN7rtmV_9ZQ1zsrlM3af7JA0giddMUeujAdSXCT9eXr9A8KeJdsM8-2g1tHjMqmHYMMUEcIyTb9B9y3O_qnUM11ivRKMFQzx7IlkgE_oFzLAsXzr8J5bFqjYMLDMcFnGsooXm908NFJb8Xfi1FYJszh0ta0HwpJ8Zu8iQ0dvZmihcYO0rSVOeOBveSFf2Cp6j6Nw9Lbvjzh_aW1LADpt048lXU2JW8VoGgKKDy0xnJUG1GzChqTvJ4p8oP_hCrN2snw8KOMPg1u292ilNCBNQCCzDLdn3A5HBEiU0oPR53a5QIQfDOOThpRpwTEQ0wh-Vp5TEoQd3L3j3tNGBpwfgojeeaAZwrxV3FF0NZ2j5YgLlXOP5y4j4K_O1rk3C29wYSc3-sBKNxfGyhU9afn2pYdqkzu175p53_CR_Yp4we-PjD2ocCkgP5Fp5rXLNn3rBeSJsTKZs83X0A54nzxCcgUX-R5N1mAIDm9_1x2158AevbSfIiEeGhvJJ6YwXYGN3Fvdf472Ry1gFwMAjVGvoVUuSs1Q7wCIhhSVUmMHUFvXGORRHBAEy1FB2cZVnNh73KbNR_XxE8MG1J8gxfScgkF8Idx3b56GYyj9EuDeY4yvyn6wzR5sDzwSUSm54jysI9puOsRXn0RNWAki05VT0B0dRtgOgo6p9_FmOHvsRGP1G1wlwf3AqWBP1wRp1kF-vCZi89yJ5usW-W_iShfjarUFepwa9I5LdPoIaRc6sap4qSzIsR8W3399Opm8LMqQk9o4c1Grio5tMgflvZuVir8bvxMej4VXSbOfZva49w6nilgZa4MwQ79UFK4KzDGPEbB4lTMAF2p3SA_UUusehSM3Beq8OgDFTt6t77tMAlwMpPqlKq-J7hW4UsL9gA6zoSkPac6xpH0NigOZdNpUCzN_grpwx5WYdqz1aZwp1MlUJ7uUlAOdToIVk_WU6gFhN_c8WZeeKBJaZbd4doQGf5Ct641gVG4apPPkeHiXfN/https://www.amazon.com/dp/B0FRN7NFX5/?_encoding=UTF8&pd_rd_i=B0FRN7NFX5&pd_rd_i=B0FRN7NFX5&ref_=sbx_be_s_sparkle_ssd_bkg&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                    - 'link "The Options Trading Bible [50 in 1]: Unlock Proven Tactics to Read Markets, Spot High-Probability Entries, and Manage Risk Like a Pro. For Beginners Seeking Clarity, Confidence, and Consistent Profits" [ref=e1099] [cursor=pointer]':
+                      - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JGaH8Nx0UtbghS3FTuOzExkAAAGeQtyTuAEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICAV3xzr/clv1c_ek-YBYf3bcba3lYJZ_vu_sCVfjGxt4CH2pOwwHanDgYQpgI2Tl_MoOWFAhRSkmm3g0MqJMB1eQP7OT6bZf4R53KvFVh4ERDK3z36irG6UP2-yoHyI9GXQVnZIftoimoB6p8dns9aevGCD5dmFA2Gl6TBINe4JhXqndD75U9yDKcc3-8ZbdFNq9zRXR1IaStYt9UqoxVR3wXHzuIlw6CA0TOjgfW_wCgd7EymgA8DpVAC40eTcjR7ZZCDxxaOOGfG1KltvrhAN3CQUv4D-9l8setP9gnFjAfzhwLWqZl2WPQekxYqfSbCX-CStPPhClQ4RT4tDqNBSPwV798CiU1MLBq-YORJQLo8ioChTiCVmurXytelTs2wGU1x3iUVYw0IsTKa8XT1_zMb1h8s6dlZhKpqNjZfSATVtCSt69bfXLOLz5jimaKrVvoQ4K90QqdTQ-opuVBVcUhN_tmHQcbd2z7Jifw_8mLMaGFDfPl-q2t5PY5G6u-7Gpyh_WB_vfAVBV13ml25uh7ZRb_JU5kYBFCMUXr1TOtZmiMN7rtmV_9ZQ1zsrlM3af7JA0giddMUeujAdSXCT9eXr9A8KeJdsM8-2g1tHjMqmHYMMUEcIyTb9B9y3O_qnUM11ivRKMFQzx7IlkgE_oFzLAsXzr8J5bFqjYMLDMcFnGsooXm908NFJb8Xfi1FYJszh0ta0HwpJ8Zu8iQ0dvZmihcYO0rSVOeOBveSFf2Cp6j6Nw9Lbvjzh_aW1LADpt048lXU2JW8VoGgKKDy0xnJUG1GzChqTvJ4p8oP_hCrN2snw8KOMPg1u292ilNCBNQCCzDLdn3A5HBEiU0oPR53a5QIQfDOOThpRpwTEQ0wh-Vp5TEoQd3L3j3tNGBpwfgojeeaAZwrxV3FF0NZ2j5YgLlXOP5y4j4K_O1rk3C29wYSc3-sBKNxfGyhU9afn2pYdqkzu175p53_CR_Yp4we-PjD2ocCkgP5Fp5rXLNn3rBeSJsTKZs83X0A54nzxCcgUX-R5N1mAIDm9_1x2158AevbSfIiEeGhvJJ6YwXYGN3Fvdf472Ry1gFwMAjVGvoVUuSs1Q7wCIhhSVUmMHUFvXGORRHBAEy1FB2cZVnNh73KbNR_XxE8MG1J8gxfScgkF8Idx3b56GYyj9EuDeY4yvyn6wzR5sDzwSUSm54jysI9puOsRXn0RNWAki05VT0B0dRtgOgo6p9_FmOHvsRGP1G1wlwf3AqWBP1wRp1kF-vCZi89yJ5usW-W_iShfjarUFepwa9I5LdPoIaRc6sap4qSzIsR8W3399Opm8LMqQk9o4c1Grio5tMgflvZuVir8bvxMej4VXSbOfZva49w6nilgZa4MwQ79UFK4KzDGPEbB4lTMAF2p3SA_UUusehSM3Beq8OgDFTt6t77tMAlwMpPqlKq-J7hW4UsL9gA6zoSkPac6xpH0NigOZdNpUCzN_grpwx5WYdqz1aZwp1MlUJ7uUlAOdToIVk_WU6gFhN_c8WZeeKBJaZbd4doQGf5Ct641gVG4apPPkeHiXfN/https://www.amazon.com/dp/B0FRN7NFX5/?_encoding=UTF8&pd_rd_i=B0FRN7NFX5&pd_rd_i=B0FRN7NFX5&ref_=sbx_be_s_sparkle_ssd_tt&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                  - link "Rated 4.5 out of 5 stars from 110 reviews" [ref=e1101] [cursor=pointer]:
+                    - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JGaH8Nx0UtbghS3FTuOzExkAAAGeQtyTuAEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICAV3xzr/clv1c_ek-YBYf3bcba3lYJZ_vu_sCVfjGxt4CH2pOwwHanDgYQpgI2Tl_MoOWFAhRSkmm3g0MqJMB1eQP7OT6bZf4R53KvFVh4ERDK3z36irG6UP2-yoHyI9GXQVnZIftoimoB6p8dns9aevGCD5dmFA2Gl6TBINe4JhXqndD75U9yDKcc3-8ZbdFNq9zRXR1IaStYt9UqoxVR3wXHzuIlw6CA0TOjgfW_wCgd7EymgA8DpVAC40eTcjR7ZZCDxxaOOGfG1KltvrhAN3CQUv4D-9l8setP9gnFjAfzhwLWqZl2WPQekxYqfSbCX-CStPPhClQ4RT4tDqNBSPwV798CiU1MLBq-YORJQLo8ioChTiCVmurXytelTs2wGU1x3iUVYw0IsTKa8XT1_zMb1h8s6dlZhKpqNjZfSATVtCSt69bfXLOLz5jimaKrVvoQ4K90QqdTQ-opuVBVcUhN_tmHQcbd2z7Jifw_8mLMaGFDfPl-q2t5PY5G6u-7Gpyh_WB_vfAVBV13ml25uh7ZRb_JU5kYBFCMUXr1TOtZmiMN7rtmV_9ZQ1zsrlM3af7JA0giddMUeujAdSXCT9eXr9A8KeJdsM8-2g1tHjMqmHYMMUEcIyTb9B9y3O_qnUM11ivRKMFQzx7IlkgE_oFzLAsXzr8J5bFqjYMLDMcFnGsooXm908NFJb8Xfi1FYJszh0ta0HwpJ8Zu8iQ0dvZmihcYO0rSVOeOBveSFf2Cp6j6Nw9Lbvjzh_aW1LADpt048lXU2JW8VoGgKKDy0xnJUG1GzChqTvJ4p8oP_hCrN2snw8KOMPg1u292ilNCBNQCCzDLdn3A5HBEiU0oPR53a5QIQfDOOThpRpwTEQ0wh-Vp5TEoQd3L3j3tNGBpwfgojeeaAZwrxV3FF0NZ2j5YgLlXOP5y4j4K_O1rk3C29wYSc3-sBKNxfGyhU9afn2pYdqkzu175p53_CR_Yp4we-PjD2ocCkgP5Fp5rXLNn3rBeSJsTKZs83X0A54nzxCcgUX-R5N1mAIDm9_1x2158AevbSfIiEeGhvJJ6YwXYGN3Fvdf472Ry1gFwMAjVGvoVUuSs1Q7wCIhhSVUmMHUFvXGORRHBAEy1FB2cZVnNh73KbNR_XxE8MG1J8gxfScgkF8Idx3b56GYyj9EuDeY4yvyn6wzR5sDzwSUSm54jysI9puOsRXn0RNWAki05VT0B0dRtgOgo6p9_FmOHvsRGP1G1wlwf3AqWBP1wRp1kF-vCZi89yJ5usW-W_iShfjarUFepwa9I5LdPoIaRc6sap4qSzIsR8W3399Opm8LMqQk9o4c1Grio5tMgflvZuVir8bvxMej4VXSbOfZva49w6nilgZa4MwQ79UFK4KzDGPEbB4lTMAF2p3SA_UUusehSM3Beq8OgDFTt6t77tMAlwMpPqlKq-J7hW4UsL9gA6zoSkPac6xpH0NigOZdNpUCzN_grpwx5WYdqz1aZwp1MlUJ7uUlAOdToIVk_WU6gFhN_c8WZeeKBJaZbd4doQGf5Ct641gVG4apPPkeHiXfN/https://www.amazon.com/dp/B0FRN7NFX5/?_encoding=UTF8&pd_rd_i=B0FRN7NFX5&pd_rd_i=B0FRN7NFX5&ref_=sbx_be_s_sparkle_ssd_rev&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                    - text: "4.5"
+                    - generic [ref=e1103]: 4.5 out of 5 stars
+                    - text: "110"
+                  - link "HKD289.73" [ref=e1105] [cursor=pointer]:
+                    - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JGaH8Nx0UtbghS3FTuOzExkAAAGeQtyTuAEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICAV3xzr/clv1c_ek-YBYf3bcba3lYJZ_vu_sCVfjGxt4CH2pOwwHanDgYQpgI2Tl_MoOWFAhRSkmm3g0MqJMB1eQP7OT6bZf4R53KvFVh4ERDK3z36irG6UP2-yoHyI9GXQVnZIftoimoB6p8dns9aevGCD5dmFA2Gl6TBINe4JhXqndD75U9yDKcc3-8ZbdFNq9zRXR1IaStYt9UqoxVR3wXHzuIlw6CA0TOjgfW_wCgd7EymgA8DpVAC40eTcjR7ZZCDxxaOOGfG1KltvrhAN3CQUv4D-9l8setP9gnFjAfzhwLWqZl2WPQekxYqfSbCX-CStPPhClQ4RT4tDqNBSPwV798CiU1MLBq-YORJQLo8ioChTiCVmurXytelTs2wGU1x3iUVYw0IsTKa8XT1_zMb1h8s6dlZhKpqNjZfSATVtCSt69bfXLOLz5jimaKrVvoQ4K90QqdTQ-opuVBVcUhN_tmHQcbd2z7Jifw_8mLMaGFDfPl-q2t5PY5G6u-7Gpyh_WB_vfAVBV13ml25uh7ZRb_JU5kYBFCMUXr1TOtZmiMN7rtmV_9ZQ1zsrlM3af7JA0giddMUeujAdSXCT9eXr9A8KeJdsM8-2g1tHjMqmHYMMUEcIyTb9B9y3O_qnUM11ivRKMFQzx7IlkgE_oFzLAsXzr8J5bFqjYMLDMcFnGsooXm908NFJb8Xfi1FYJszh0ta0HwpJ8Zu8iQ0dvZmihcYO0rSVOeOBveSFf2Cp6j6Nw9Lbvjzh_aW1LADpt048lXU2JW8VoGgKKDy0xnJUG1GzChqTvJ4p8oP_hCrN2snw8KOMPg1u292ilNCBNQCCzDLdn3A5HBEiU0oPR53a5QIQfDOOThpRpwTEQ0wh-Vp5TEoQd3L3j3tNGBpwfgojeeaAZwrxV3FF0NZ2j5YgLlXOP5y4j4K_O1rk3C29wYSc3-sBKNxfGyhU9afn2pYdqkzu175p53_CR_Yp4we-PjD2ocCkgP5Fp5rXLNn3rBeSJsTKZs83X0A54nzxCcgUX-R5N1mAIDm9_1x2158AevbSfIiEeGhvJJ6YwXYGN3Fvdf472Ry1gFwMAjVGvoVUuSs1Q7wCIhhSVUmMHUFvXGORRHBAEy1FB2cZVnNh73KbNR_XxE8MG1J8gxfScgkF8Idx3b56GYyj9EuDeY4yvyn6wzR5sDzwSUSm54jysI9puOsRXn0RNWAki05VT0B0dRtgOgo6p9_FmOHvsRGP1G1wlwf3AqWBP1wRp1kF-vCZi89yJ5usW-W_iShfjarUFepwa9I5LdPoIaRc6sap4qSzIsR8W3399Opm8LMqQk9o4c1Grio5tMgflvZuVir8bvxMej4VXSbOfZva49w6nilgZa4MwQ79UFK4KzDGPEbB4lTMAF2p3SA_UUusehSM3Beq8OgDFTt6t77tMAlwMpPqlKq-J7hW4UsL9gA6zoSkPac6xpH0NigOZdNpUCzN_grpwx5WYdqz1aZwp1MlUJ7uUlAOdToIVk_WU6gFhN_c8WZeeKBJaZbd4doQGf5Ct641gVG4apPPkeHiXfN/https://www.amazon.com/dp/B0FRN7NFX5/?_encoding=UTF8&pd_rd_i=B0FRN7NFX5&pd_rd_i=B0FRN7NFX5&ref_=sbx_be_s_sparkle_ssd_pce&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                    - generic [ref=e1106]:
+                      - generic [ref=e1107]: HKD289.73
+                      - generic [ref=e1108]:
+                        - text: HKD
+                        - generic [ref=e1109]: "289."
+                        - text: "73"
+          - listitem [ref=e1110]:
+            - generic [ref=e1115]:
+              - link "Sponsored video, click to navigate to featured page." [ref=e1120] [cursor=pointer]:
+                - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JOG08Zys-H0jcXlwbbY-XKMAAAGeQtyTuQEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICBLoJQ6/clv1c_ek-YBYf3LcTanut7cDgf-iYJiliYEkGFkoMYENCyfU-Tbep1YmD82n2vlDXdO9U_Yl2LRX_F8wO0hLnzHbbmb6iJ1UvAxxKT8sv2IubIGlQHgyNjrhTnuzVog_h6qH6paVue--QzPgQGyPMZ2RA__ENeAN6VukUqkQFwxTacvE6feErcuhsTbkjgden97ouQwXZ_jFoPRxeoFuRqsVWo1jkJCUYrIh13h6gNHtjqBAztl348EV__5y3TQxabA9R_GMMjJFgAwymQSvcqTgprKBqiDabztP7C6c3psGIqxtKekMRXVqcDOBwjm0CO20qU9Q5R91HXYcn-jBh_b3mgdvXc0-TreI-_32zWFl5s9Jh6truk7FwiHBpADxERTynFbZ-GoLclQ-jJx4CPW4BvF4PhtaAu1SHABam1TLmHZLqaDN5O9wow-3quz-0g7zBq352J4nF4ah3_1c4T73R6kkpUjN2_XqvDCl8JtsKpvlMoJtMj-enKC6hnFfLvdDNZkHbyHsNmvQ36o8E-8kB4aD3XedvDHvD_7pAAvaajdv5UAClnTjofAUehtRQKoL23aUfivKtqCgn9BJ0dnCq6shttqRmfMYVkp_uQFTUpaKkTiIrOaMZ_IKmGBxebDAYbGzHtSo0lTz1QHfDtGdAADjfg-MIV_TQpaFnrYsRYIasHAYuAOXuv6iMD8R3AJeKRmj-wLXRfEUMP3cFsC9njaWyHX4nVdeeSR-eBErw2RSY_Q1pGlf2itdQ-OkJLz6y5vOzGGWdhjChRuHfeMPK0tuN9A0O-msd4s88sDZvQZX6cxFw7Nt4WYqdPt3uRyqba4nB25q4l9NNKT4qv9XnLKQcm6Z_OGGZgInMoOm70HiNNH0W2NRXP2uk3LZM6-8hbr5pTCiEJulYVC2hPytV0ttP_IJO00F522mlNk16iPKHxuy2_U1D_h6moPtH9VB5lup5KbOl1uNd89_gL62PDTQhT7ol6osgRMqmQPHSXEILE1vucgmyTwijw4-j-v-awn0XjZnEaZQvAYPxdePrWEeGxsuh6fwfImO95KwtryNwSzg4VPDnVGtvdEeyQ2s6zCIYDWdWnN5UdOVCGBx2iAFSzFi14XJHORxSn5el_W5Gk9xVHgxyc4MyUirUEg-JMN4da2pYOKIQcQnm1wVaEffe6idgV2YQmUPvX63uR0McMwWUhrM22zCa1PdOvTjeRJYQSjAf-ggjNcb9l9XatSqsu2ENgtg118zts9gzZQIR9sEp_9d5cX9N4cZXoawi4-h7U-YssxooBaRWc0O0ttIvNSqCHSvSaoqbLhTj2i02RlHfV5bpe9hu5Ph2DFtbQzQ8bNggDbIgiyZL5lZcn6eaIIuuwkYJfhpmXxDy0WIYS8EWFGWmjIseBKHGTtGOVswCrZMpmOxgwS6fSuck0yVRxD86LUKHpnRg3VJ3q85m-zd9yvQMW7UMLfc3KI9-Uu7loz5fZPh6sikybk0w8SatXqniG5uJFUBinN_axWjixNpoYcnT2QnS-TGQD-tHoGOTz3lunh-Ev/https://www.amazon.com/dp/B0G58TH36M/?_encoding=UTF8&pd_rd_i=B0G58TH36M&pd_rd_i=B0G58TH36M&ref_=sbx_be_s_sparkle_ssd_vid&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                - generic "Sponsored video, click to navigate to featured page." [ref=e1121]
+              - generic [ref=e1128]:
+                - 'link "Master the PE Civil Structural Depth Exam: Step-by-Step Solutions Showing What to Use, Why it Applies, and How to Compute—160 Solved Problems | CBT-Aligned" [ref=e1131] [cursor=pointer]':
+                  - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JOG08Zys-H0jcXlwbbY-XKMAAAGeQtyTuQEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICBLoJQ6/clv1c_ek-YBYf3LcTanut7cDgf-iYJiliYEkGFkoMYENCyfU-Tbep1YmD82n2vlDXdO9U_Yl2LRX_F8wO0hLnzHbbmb6iJ1UvAxxKT8sv2IubIGlQHgyNjrhTnuzVog_h6qH6paVue--QzPgQGyPMZ2RA__ENeAN6VukUqkQFwxTacvE6feErcuhsTbkjgden97ouQwXZ_jFoPRxeoFuRqsVWo1jkJCUYrIh13h6gNHtjqBAztl348EV__5y3TQxabA9R_GMMjJFgAwymQSvcqTgprKBqiDabztP7C6c3psGIqxtKekMRXVqcDOBwjm0CO20qU9Q5R91HXYcn-jBh_b3mgdvXc0-TreI-_32zWFl5s9Jh6truk7FwiHBpADxERTynFbZ-GoLclQ-jJx4CPW4BvF4PhtaAu1SHABam1TLmHZLqaDN5O9wow-3quz-0g7zBq352J4nF4ah3_1c4T73R6kkpUjN2_XqvDCl8JtsKpvlMoJtMj-enKC6hnFfLvdDNZkHbyHsNmvQ36o8E-8kB4aD3XedvDHvD_7pAAvaajdv5UAClnTjofAUehtRQKoL23aUfivKtqCgn9BJ0dnCq6shttqRmfMYVkp_uQFTUpaKkTiIrOaMZ_IKmGBxebDAYbGzHtSo0lTz1QHfDtGdAADjfg-MIV_TQpaFnrYsRYIasHAYuAOXuv6iMD8R3AJeKRmj-wLXRfEUMP3cFsC9njaWyHX4nVdeeSR-eBErw2RSY_Q1pGlf2itdQ-OkJLz6y5vOzGGWdhjChRuHfeMPK0tuN9A0O-msd4s88sDZvQZX6cxFw7Nt4WYqdPt3uRyqba4nB25q4l9NNKT4qv9XnLKQcm6Z_OGGZgInMoOm70HiNNH0W2NRXP2uk3LZM6-8hbr5pTCiEJulYVC2hPytV0ttP_IJO00F522mlNk16iPKHxuy2_U1D_h6moPtH9VB5lup5KbOl1uNd89_gL62PDTQhT7ol6osgRMqmQPHSXEILE1vucgmyTwijw4-j-v-awn0XjZnEaZQvAYPxdePrWEeGxsuh6fwfImO95KwtryNwSzg4VPDnVGtvdEeyQ2s6zCIYDWdWnN5UdOVCGBx2iAFSzFi14XJHORxSn5el_W5Gk9xVHgxyc4MyUirUEg-JMN4da2pYOKIQcQnm1wVaEffe6idgV2YQmUPvX63uR0McMwWUhrM22zCa1PdOvTjeRJYQSjAf-ggjNcb9l9XatSqsu2ENgtg118zts9gzZQIR9sEp_9d5cX9N4cZXoawi4-h7U-YssxooBaRWc0O0ttIvNSqCHSvSaoqbLhTj2i02RlHfV5bpe9hu5Ph2DFtbQzQ8bNggDbIgiyZL5lZcn6eaIIuuwkYJfhpmXxDy0WIYS8EWFGWmjIseBKHGTtGOVswCrZMpmOxgwS6fSuck0yVRxD86LUKHpnRg3VJ3q85m-zd9yvQMW7UMLfc3KI9-Uu7loz5fZPh6sikybk0w8SatXqniG5uJFUBinN_axWjixNpoYcnT2QnS-TGQD-tHoGOTz3lunh-Ev/https://www.amazon.com/dp/B0G58TH36M/?_encoding=UTF8&pd_rd_i=B0G58TH36M&pd_rd_i=B0G58TH36M&ref_=sbx_be_s_sparkle_ssd_img&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                  - 'img "Master the PE Civil Structural Depth Exam: Step-by-Step Solutions Showing What to Use, Why it Applies, and How to Compute—160 Solved Problems | CBT-Aligned" [ref=e1133]'
+                - generic [ref=e1135]:
+                  - link [ref=e1136] [cursor=pointer]:
+                    - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JOG08Zys-H0jcXlwbbY-XKMAAAGeQtyTuQEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICBLoJQ6/clv1c_ek-YBYf3LcTanut7cDgf-iYJiliYEkGFkoMYENCyfU-Tbep1YmD82n2vlDXdO9U_Yl2LRX_F8wO0hLnzHbbmb6iJ1UvAxxKT8sv2IubIGlQHgyNjrhTnuzVog_h6qH6paVue--QzPgQGyPMZ2RA__ENeAN6VukUqkQFwxTacvE6feErcuhsTbkjgden97ouQwXZ_jFoPRxeoFuRqsVWo1jkJCUYrIh13h6gNHtjqBAztl348EV__5y3TQxabA9R_GMMjJFgAwymQSvcqTgprKBqiDabztP7C6c3psGIqxtKekMRXVqcDOBwjm0CO20qU9Q5R91HXYcn-jBh_b3mgdvXc0-TreI-_32zWFl5s9Jh6truk7FwiHBpADxERTynFbZ-GoLclQ-jJx4CPW4BvF4PhtaAu1SHABam1TLmHZLqaDN5O9wow-3quz-0g7zBq352J4nF4ah3_1c4T73R6kkpUjN2_XqvDCl8JtsKpvlMoJtMj-enKC6hnFfLvdDNZkHbyHsNmvQ36o8E-8kB4aD3XedvDHvD_7pAAvaajdv5UAClnTjofAUehtRQKoL23aUfivKtqCgn9BJ0dnCq6shttqRmfMYVkp_uQFTUpaKkTiIrOaMZ_IKmGBxebDAYbGzHtSo0lTz1QHfDtGdAADjfg-MIV_TQpaFnrYsRYIasHAYuAOXuv6iMD8R3AJeKRmj-wLXRfEUMP3cFsC9njaWyHX4nVdeeSR-eBErw2RSY_Q1pGlf2itdQ-OkJLz6y5vOzGGWdhjChRuHfeMPK0tuN9A0O-msd4s88sDZvQZX6cxFw7Nt4WYqdPt3uRyqba4nB25q4l9NNKT4qv9XnLKQcm6Z_OGGZgInMoOm70HiNNH0W2NRXP2uk3LZM6-8hbr5pTCiEJulYVC2hPytV0ttP_IJO00F522mlNk16iPKHxuy2_U1D_h6moPtH9VB5lup5KbOl1uNd89_gL62PDTQhT7ol6osgRMqmQPHSXEILE1vucgmyTwijw4-j-v-awn0XjZnEaZQvAYPxdePrWEeGxsuh6fwfImO95KwtryNwSzg4VPDnVGtvdEeyQ2s6zCIYDWdWnN5UdOVCGBx2iAFSzFi14XJHORxSn5el_W5Gk9xVHgxyc4MyUirUEg-JMN4da2pYOKIQcQnm1wVaEffe6idgV2YQmUPvX63uR0McMwWUhrM22zCa1PdOvTjeRJYQSjAf-ggjNcb9l9XatSqsu2ENgtg118zts9gzZQIR9sEp_9d5cX9N4cZXoawi4-h7U-YssxooBaRWc0O0ttIvNSqCHSvSaoqbLhTj2i02RlHfV5bpe9hu5Ph2DFtbQzQ8bNggDbIgiyZL5lZcn6eaIIuuwkYJfhpmXxDy0WIYS8EWFGWmjIseBKHGTtGOVswCrZMpmOxgwS6fSuck0yVRxD86LUKHpnRg3VJ3q85m-zd9yvQMW7UMLfc3KI9-Uu7loz5fZPh6sikybk0w8SatXqniG5uJFUBinN_axWjixNpoYcnT2QnS-TGQD-tHoGOTz3lunh-Ev/https://www.amazon.com/dp/B0G58TH36M/?_encoding=UTF8&pd_rd_i=B0G58TH36M&pd_rd_i=B0G58TH36M&ref_=sbx_be_s_sparkle_ssd_bkg&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                  - generic [ref=e1137]:
+                    - link [ref=e1138] [cursor=pointer]:
+                      - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JOG08Zys-H0jcXlwbbY-XKMAAAGeQtyTuQEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICBLoJQ6/clv1c_ek-YBYf3LcTanut7cDgf-iYJiliYEkGFkoMYENCyfU-Tbep1YmD82n2vlDXdO9U_Yl2LRX_F8wO0hLnzHbbmb6iJ1UvAxxKT8sv2IubIGlQHgyNjrhTnuzVog_h6qH6paVue--QzPgQGyPMZ2RA__ENeAN6VukUqkQFwxTacvE6feErcuhsTbkjgden97ouQwXZ_jFoPRxeoFuRqsVWo1jkJCUYrIh13h6gNHtjqBAztl348EV__5y3TQxabA9R_GMMjJFgAwymQSvcqTgprKBqiDabztP7C6c3psGIqxtKekMRXVqcDOBwjm0CO20qU9Q5R91HXYcn-jBh_b3mgdvXc0-TreI-_32zWFl5s9Jh6truk7FwiHBpADxERTynFbZ-GoLclQ-jJx4CPW4BvF4PhtaAu1SHABam1TLmHZLqaDN5O9wow-3quz-0g7zBq352J4nF4ah3_1c4T73R6kkpUjN2_XqvDCl8JtsKpvlMoJtMj-enKC6hnFfLvdDNZkHbyHsNmvQ36o8E-8kB4aD3XedvDHvD_7pAAvaajdv5UAClnTjofAUehtRQKoL23aUfivKtqCgn9BJ0dnCq6shttqRmfMYVkp_uQFTUpaKkTiIrOaMZ_IKmGBxebDAYbGzHtSo0lTz1QHfDtGdAADjfg-MIV_TQpaFnrYsRYIasHAYuAOXuv6iMD8R3AJeKRmj-wLXRfEUMP3cFsC9njaWyHX4nVdeeSR-eBErw2RSY_Q1pGlf2itdQ-OkJLz6y5vOzGGWdhjChRuHfeMPK0tuN9A0O-msd4s88sDZvQZX6cxFw7Nt4WYqdPt3uRyqba4nB25q4l9NNKT4qv9XnLKQcm6Z_OGGZgInMoOm70HiNNH0W2NRXP2uk3LZM6-8hbr5pTCiEJulYVC2hPytV0ttP_IJO00F522mlNk16iPKHxuy2_U1D_h6moPtH9VB5lup5KbOl1uNd89_gL62PDTQhT7ol6osgRMqmQPHSXEILE1vucgmyTwijw4-j-v-awn0XjZnEaZQvAYPxdePrWEeGxsuh6fwfImO95KwtryNwSzg4VPDnVGtvdEeyQ2s6zCIYDWdWnN5UdOVCGBx2iAFSzFi14XJHORxSn5el_W5Gk9xVHgxyc4MyUirUEg-JMN4da2pYOKIQcQnm1wVaEffe6idgV2YQmUPvX63uR0McMwWUhrM22zCa1PdOvTjeRJYQSjAf-ggjNcb9l9XatSqsu2ENgtg118zts9gzZQIR9sEp_9d5cX9N4cZXoawi4-h7U-YssxooBaRWc0O0ttIvNSqCHSvSaoqbLhTj2i02RlHfV5bpe9hu5Ph2DFtbQzQ8bNggDbIgiyZL5lZcn6eaIIuuwkYJfhpmXxDy0WIYS8EWFGWmjIseBKHGTtGOVswCrZMpmOxgwS6fSuck0yVRxD86LUKHpnRg3VJ3q85m-zd9yvQMW7UMLfc3KI9-Uu7loz5fZPh6sikybk0w8SatXqniG5uJFUBinN_axWjixNpoYcnT2QnS-TGQD-tHoGOTz3lunh-Ev/https://www.amazon.com/dp/B0G58TH36M/?_encoding=UTF8&pd_rd_i=B0G58TH36M&pd_rd_i=B0G58TH36M&ref_=sbx_be_s_sparkle_ssd_bkg&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                    - 'link "Master the PE Civil Structural Depth Exam: Step-by-Step Solutions Showing What to Use, Why it Applies, and How to Compute—160 Solved Problems | CBT-Aligned" [ref=e1139] [cursor=pointer]':
+                      - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JOG08Zys-H0jcXlwbbY-XKMAAAGeQtyTuQEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICBLoJQ6/clv1c_ek-YBYf3LcTanut7cDgf-iYJiliYEkGFkoMYENCyfU-Tbep1YmD82n2vlDXdO9U_Yl2LRX_F8wO0hLnzHbbmb6iJ1UvAxxKT8sv2IubIGlQHgyNjrhTnuzVog_h6qH6paVue--QzPgQGyPMZ2RA__ENeAN6VukUqkQFwxTacvE6feErcuhsTbkjgden97ouQwXZ_jFoPRxeoFuRqsVWo1jkJCUYrIh13h6gNHtjqBAztl348EV__5y3TQxabA9R_GMMjJFgAwymQSvcqTgprKBqiDabztP7C6c3psGIqxtKekMRXVqcDOBwjm0CO20qU9Q5R91HXYcn-jBh_b3mgdvXc0-TreI-_32zWFl5s9Jh6truk7FwiHBpADxERTynFbZ-GoLclQ-jJx4CPW4BvF4PhtaAu1SHABam1TLmHZLqaDN5O9wow-3quz-0g7zBq352J4nF4ah3_1c4T73R6kkpUjN2_XqvDCl8JtsKpvlMoJtMj-enKC6hnFfLvdDNZkHbyHsNmvQ36o8E-8kB4aD3XedvDHvD_7pAAvaajdv5UAClnTjofAUehtRQKoL23aUfivKtqCgn9BJ0dnCq6shttqRmfMYVkp_uQFTUpaKkTiIrOaMZ_IKmGBxebDAYbGzHtSo0lTz1QHfDtGdAADjfg-MIV_TQpaFnrYsRYIasHAYuAOXuv6iMD8R3AJeKRmj-wLXRfEUMP3cFsC9njaWyHX4nVdeeSR-eBErw2RSY_Q1pGlf2itdQ-OkJLz6y5vOzGGWdhjChRuHfeMPK0tuN9A0O-msd4s88sDZvQZX6cxFw7Nt4WYqdPt3uRyqba4nB25q4l9NNKT4qv9XnLKQcm6Z_OGGZgInMoOm70HiNNH0W2NRXP2uk3LZM6-8hbr5pTCiEJulYVC2hPytV0ttP_IJO00F522mlNk16iPKHxuy2_U1D_h6moPtH9VB5lup5KbOl1uNd89_gL62PDTQhT7ol6osgRMqmQPHSXEILE1vucgmyTwijw4-j-v-awn0XjZnEaZQvAYPxdePrWEeGxsuh6fwfImO95KwtryNwSzg4VPDnVGtvdEeyQ2s6zCIYDWdWnN5UdOVCGBx2iAFSzFi14XJHORxSn5el_W5Gk9xVHgxyc4MyUirUEg-JMN4da2pYOKIQcQnm1wVaEffe6idgV2YQmUPvX63uR0McMwWUhrM22zCa1PdOvTjeRJYQSjAf-ggjNcb9l9XatSqsu2ENgtg118zts9gzZQIR9sEp_9d5cX9N4cZXoawi4-h7U-YssxooBaRWc0O0ttIvNSqCHSvSaoqbLhTj2i02RlHfV5bpe9hu5Ph2DFtbQzQ8bNggDbIgiyZL5lZcn6eaIIuuwkYJfhpmXxDy0WIYS8EWFGWmjIseBKHGTtGOVswCrZMpmOxgwS6fSuck0yVRxD86LUKHpnRg3VJ3q85m-zd9yvQMW7UMLfc3KI9-Uu7loz5fZPh6sikybk0w8SatXqniG5uJFUBinN_axWjixNpoYcnT2QnS-TGQD-tHoGOTz3lunh-Ev/https://www.amazon.com/dp/B0G58TH36M/?_encoding=UTF8&pd_rd_i=B0G58TH36M&pd_rd_i=B0G58TH36M&ref_=sbx_be_s_sparkle_ssd_tt&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                  - link "Rated 4.4 out of 5 stars from 18 reviews" [ref=e1141] [cursor=pointer]:
+                    - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JOG08Zys-H0jcXlwbbY-XKMAAAGeQtyTuQEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICBLoJQ6/clv1c_ek-YBYf3LcTanut7cDgf-iYJiliYEkGFkoMYENCyfU-Tbep1YmD82n2vlDXdO9U_Yl2LRX_F8wO0hLnzHbbmb6iJ1UvAxxKT8sv2IubIGlQHgyNjrhTnuzVog_h6qH6paVue--QzPgQGyPMZ2RA__ENeAN6VukUqkQFwxTacvE6feErcuhsTbkjgden97ouQwXZ_jFoPRxeoFuRqsVWo1jkJCUYrIh13h6gNHtjqBAztl348EV__5y3TQxabA9R_GMMjJFgAwymQSvcqTgprKBqiDabztP7C6c3psGIqxtKekMRXVqcDOBwjm0CO20qU9Q5R91HXYcn-jBh_b3mgdvXc0-TreI-_32zWFl5s9Jh6truk7FwiHBpADxERTynFbZ-GoLclQ-jJx4CPW4BvF4PhtaAu1SHABam1TLmHZLqaDN5O9wow-3quz-0g7zBq352J4nF4ah3_1c4T73R6kkpUjN2_XqvDCl8JtsKpvlMoJtMj-enKC6hnFfLvdDNZkHbyHsNmvQ36o8E-8kB4aD3XedvDHvD_7pAAvaajdv5UAClnTjofAUehtRQKoL23aUfivKtqCgn9BJ0dnCq6shttqRmfMYVkp_uQFTUpaKkTiIrOaMZ_IKmGBxebDAYbGzHtSo0lTz1QHfDtGdAADjfg-MIV_TQpaFnrYsRYIasHAYuAOXuv6iMD8R3AJeKRmj-wLXRfEUMP3cFsC9njaWyHX4nVdeeSR-eBErw2RSY_Q1pGlf2itdQ-OkJLz6y5vOzGGWdhjChRuHfeMPK0tuN9A0O-msd4s88sDZvQZX6cxFw7Nt4WYqdPt3uRyqba4nB25q4l9NNKT4qv9XnLKQcm6Z_OGGZgInMoOm70HiNNH0W2NRXP2uk3LZM6-8hbr5pTCiEJulYVC2hPytV0ttP_IJO00F522mlNk16iPKHxuy2_U1D_h6moPtH9VB5lup5KbOl1uNd89_gL62PDTQhT7ol6osgRMqmQPHSXEILE1vucgmyTwijw4-j-v-awn0XjZnEaZQvAYPxdePrWEeGxsuh6fwfImO95KwtryNwSzg4VPDnVGtvdEeyQ2s6zCIYDWdWnN5UdOVCGBx2iAFSzFi14XJHORxSn5el_W5Gk9xVHgxyc4MyUirUEg-JMN4da2pYOKIQcQnm1wVaEffe6idgV2YQmUPvX63uR0McMwWUhrM22zCa1PdOvTjeRJYQSjAf-ggjNcb9l9XatSqsu2ENgtg118zts9gzZQIR9sEp_9d5cX9N4cZXoawi4-h7U-YssxooBaRWc0O0ttIvNSqCHSvSaoqbLhTj2i02RlHfV5bpe9hu5Ph2DFtbQzQ8bNggDbIgiyZL5lZcn6eaIIuuwkYJfhpmXxDy0WIYS8EWFGWmjIseBKHGTtGOVswCrZMpmOxgwS6fSuck0yVRxD86LUKHpnRg3VJ3q85m-zd9yvQMW7UMLfc3KI9-Uu7loz5fZPh6sikybk0w8SatXqniG5uJFUBinN_axWjixNpoYcnT2QnS-TGQD-tHoGOTz3lunh-Ev/https://www.amazon.com/dp/B0G58TH36M/?_encoding=UTF8&pd_rd_i=B0G58TH36M&pd_rd_i=B0G58TH36M&ref_=sbx_be_s_sparkle_ssd_rev&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                    - text: "4.4"
+                    - generic [ref=e1143]: 4.4 out of 5 stars
+                    - text: "18"
+                  - link "HKD469.18" [ref=e1145] [cursor=pointer]:
+                    - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JOG08Zys-H0jcXlwbbY-XKMAAAGeQtyTuQEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICBLoJQ6/clv1c_ek-YBYf3LcTanut7cDgf-iYJiliYEkGFkoMYENCyfU-Tbep1YmD82n2vlDXdO9U_Yl2LRX_F8wO0hLnzHbbmb6iJ1UvAxxKT8sv2IubIGlQHgyNjrhTnuzVog_h6qH6paVue--QzPgQGyPMZ2RA__ENeAN6VukUqkQFwxTacvE6feErcuhsTbkjgden97ouQwXZ_jFoPRxeoFuRqsVWo1jkJCUYrIh13h6gNHtjqBAztl348EV__5y3TQxabA9R_GMMjJFgAwymQSvcqTgprKBqiDabztP7C6c3psGIqxtKekMRXVqcDOBwjm0CO20qU9Q5R91HXYcn-jBh_b3mgdvXc0-TreI-_32zWFl5s9Jh6truk7FwiHBpADxERTynFbZ-GoLclQ-jJx4CPW4BvF4PhtaAu1SHABam1TLmHZLqaDN5O9wow-3quz-0g7zBq352J4nF4ah3_1c4T73R6kkpUjN2_XqvDCl8JtsKpvlMoJtMj-enKC6hnFfLvdDNZkHbyHsNmvQ36o8E-8kB4aD3XedvDHvD_7pAAvaajdv5UAClnTjofAUehtRQKoL23aUfivKtqCgn9BJ0dnCq6shttqRmfMYVkp_uQFTUpaKkTiIrOaMZ_IKmGBxebDAYbGzHtSo0lTz1QHfDtGdAADjfg-MIV_TQpaFnrYsRYIasHAYuAOXuv6iMD8R3AJeKRmj-wLXRfEUMP3cFsC9njaWyHX4nVdeeSR-eBErw2RSY_Q1pGlf2itdQ-OkJLz6y5vOzGGWdhjChRuHfeMPK0tuN9A0O-msd4s88sDZvQZX6cxFw7Nt4WYqdPt3uRyqba4nB25q4l9NNKT4qv9XnLKQcm6Z_OGGZgInMoOm70HiNNH0W2NRXP2uk3LZM6-8hbr5pTCiEJulYVC2hPytV0ttP_IJO00F522mlNk16iPKHxuy2_U1D_h6moPtH9VB5lup5KbOl1uNd89_gL62PDTQhT7ol6osgRMqmQPHSXEILE1vucgmyTwijw4-j-v-awn0XjZnEaZQvAYPxdePrWEeGxsuh6fwfImO95KwtryNwSzg4VPDnVGtvdEeyQ2s6zCIYDWdWnN5UdOVCGBx2iAFSzFi14XJHORxSn5el_W5Gk9xVHgxyc4MyUirUEg-JMN4da2pYOKIQcQnm1wVaEffe6idgV2YQmUPvX63uR0McMwWUhrM22zCa1PdOvTjeRJYQSjAf-ggjNcb9l9XatSqsu2ENgtg118zts9gzZQIR9sEp_9d5cX9N4cZXoawi4-h7U-YssxooBaRWc0O0ttIvNSqCHSvSaoqbLhTj2i02RlHfV5bpe9hu5Ph2DFtbQzQ8bNggDbIgiyZL5lZcn6eaIIuuwkYJfhpmXxDy0WIYS8EWFGWmjIseBKHGTtGOVswCrZMpmOxgwS6fSuck0yVRxD86LUKHpnRg3VJ3q85m-zd9yvQMW7UMLfc3KI9-Uu7loz5fZPh6sikybk0w8SatXqniG5uJFUBinN_axWjixNpoYcnT2QnS-TGQD-tHoGOTz3lunh-Ev/https://www.amazon.com/dp/B0G58TH36M/?_encoding=UTF8&pd_rd_i=B0G58TH36M&pd_rd_i=B0G58TH36M&ref_=sbx_be_s_sparkle_ssd_pce&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                    - generic [ref=e1146]:
+                      - generic [ref=e1147]: HKD469.18
+                      - generic [ref=e1148]:
+                        - text: HKD
+                        - generic [ref=e1149]: "469."
+                        - text: "18"
+          - listitem [ref=e1150]:
+            - generic [ref=e1155]:
+              - link "Sponsored video, click to navigate to featured page." [ref=e1160] [cursor=pointer]:
+                - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JJ7Vo3JvE7NMapY5D2VDJTQAAAGeQtyTugEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICAjkbcp/clv1c_ek-wxYHXFcbWDXHEa4sesmPkMDERPft4TWvWw1HqncH_8HsCrW0SW74HcIrNcs7FZdZ6RQ4Vipe09hcveL-upiMPdptddwoO-OmgD6H4rEAwitdnrkTtQY-4YPh8vqKR0DYWjbWsQoaK9pRmpqvWx_FU4duQvhVrk1hxzymMHE4fekpcySTG9tcJ9lJvRAvKbKnDIGAqn4DB2CjvnViIZEYwF1dzosR12xj0SA3oEYw-k_Kzlpp4zQYtlcKOkqfRD4_AMe43cTgxMbATTbPbyxd-MPCTpg6-DngxWPdt3MAjaAxx10P58S-63Ab3zdOAjxzYPwHgGXd8xCg-gaoDfdt0DjqtAFrLvWBU3Z5dCVDHQssffwyRmmUAeXtXzbJghDNxOK3BBVnTv2EvVt7KDutXiSL-k2KS41PqNYAxEqpNCEikwOwMJAsrvUUhQD7K4hzG0tQ6iWgbZBAtsa4i3YPF3en7y8CpVMGHbQGKdt7z3e21j3obRs-B1YQhOFFWaOF2jN0ZnBfVfzkrZ_z4olNtU2tkUA79LJrXv7yOWlmUMAXRISQkBnBGtgTnEATpu-K-4-W6GF5gzn81FXYVpqKpTI_LTZXBXGGsNYNfBBm10z24XPKtKr1Wh4nFIK2_4WPN-zl1krFYk3OQ0K9FXgqm1kAZsFyiHCrUBgekI4TPF-R5xxyF_88ypL4nKhG7eyFs1IMfwBMKl9ZkYn_Yrv0o7lRRa9Q2Ecg8rPeCJymuR7SgkwyaFbUSZ6XKHPJWSMnQ_7slRMOo3Nu_s9pYI1SAeXuL-QtGoVmLclhAK-emxlEv-z2t9xFWrRBXK6zhM1zbnk6d8A0JZqk009vClFkn-CFtCOwRVM0OZCRNqOFJWqx_ZpxK3usyzyaUThJGGZeNzKPg7kI25ZWhWYnRgxal20317GPUSoor1M2oiEcNZND8oYXYOQC45K6gDS_OBFtvEobsw3YTr2a0Bq8WsPszw3JoF9rL8w2sexbALqP5S73MqQaOxDB3Y4hpbCtl-lcS53lr4StLiAMcUP7_4QLKnYdfWr991-rA6VnUEtwNR809Xw_C5SkOJFD8DzUPZAEwZ97s4DZe113BqUKQLtdLpogOfmngvwYl-TB1MK2xUCL5DF9s3n1Ij8IeXpWjm9WkvQi7AANPGGwgllzdmWZxQ1i81Y55g6Y4PBQM7XKXmZNewaQCQnyMis2v0Bzbi_APe1m9yRYdekpPjWh_9PBu3fLqsH6QXBDcUxcfoipHr8mfY9_26utB3v_8NXd8byjTVXFhqKb8o39noarFkoE0GOF8DFk12gO0zyVLcZUCIZQfqPtL-LwDoa-N-5kUmYy2abshYxwm1Z5EbbjjEMxIunZpnfFOdjysHaZnK-rwMZvRDLcY19BJlfcrb6CaBILNa1Ske-8qq7oDLZpjns1M3r0IeT-LvL6ZwoDSv3wWI6DYO_g8nQE1D8UZEIYszQn4_UC0JHoBwVLXaZGUTv8_cGXjgSfDPcARambVeXa-sgUXrUZ3IE3lWBqoDb5uOgxUj16ABBsMPWKoxGwhIV3nMg/https://www.amazon.com/dp/1915404096/?_encoding=UTF8&pd_rd_i=1915404096&pd_rd_i=1915404096&ref_=sbx_be_s_sparkle_ssd_vid&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                - generic "Sponsored video, click to navigate to featured page." [ref=e1161]
+              - generic [ref=e1168]:
+                - 'link "Cash Secured Put Options for Weekly Paydays: Earn Safe, Steady Income in All Market Conditions - Even With a Small Account (Options Trading for Beginners)" [ref=e1171] [cursor=pointer]':
+                  - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JJ7Vo3JvE7NMapY5D2VDJTQAAAGeQtyTugEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICAjkbcp/clv1c_ek-wxYHXFcbWDXHEa4sesmPkMDERPft4TWvWw1HqncH_8HsCrW0SW74HcIrNcs7FZdZ6RQ4Vipe09hcveL-upiMPdptddwoO-OmgD6H4rEAwitdnrkTtQY-4YPh8vqKR0DYWjbWsQoaK9pRmpqvWx_FU4duQvhVrk1hxzymMHE4fekpcySTG9tcJ9lJvRAvKbKnDIGAqn4DB2CjvnViIZEYwF1dzosR12xj0SA3oEYw-k_Kzlpp4zQYtlcKOkqfRD4_AMe43cTgxMbATTbPbyxd-MPCTpg6-DngxWPdt3MAjaAxx10P58S-63Ab3zdOAjxzYPwHgGXd8xCg-gaoDfdt0DjqtAFrLvWBU3Z5dCVDHQssffwyRmmUAeXtXzbJghDNxOK3BBVnTv2EvVt7KDutXiSL-k2KS41PqNYAxEqpNCEikwOwMJAsrvUUhQD7K4hzG0tQ6iWgbZBAtsa4i3YPF3en7y8CpVMGHbQGKdt7z3e21j3obRs-B1YQhOFFWaOF2jN0ZnBfVfzkrZ_z4olNtU2tkUA79LJrXv7yOWlmUMAXRISQkBnBGtgTnEATpu-K-4-W6GF5gzn81FXYVpqKpTI_LTZXBXGGsNYNfBBm10z24XPKtKr1Wh4nFIK2_4WPN-zl1krFYk3OQ0K9FXgqm1kAZsFyiHCrUBgekI4TPF-R5xxyF_88ypL4nKhG7eyFs1IMfwBMKl9ZkYn_Yrv0o7lRRa9Q2Ecg8rPeCJymuR7SgkwyaFbUSZ6XKHPJWSMnQ_7slRMOo3Nu_s9pYI1SAeXuL-QtGoVmLclhAK-emxlEv-z2t9xFWrRBXK6zhM1zbnk6d8A0JZqk009vClFkn-CFtCOwRVM0OZCRNqOFJWqx_ZpxK3usyzyaUThJGGZeNzKPg7kI25ZWhWYnRgxal20317GPUSoor1M2oiEcNZND8oYXYOQC45K6gDS_OBFtvEobsw3YTr2a0Bq8WsPszw3JoF9rL8w2sexbALqP5S73MqQaOxDB3Y4hpbCtl-lcS53lr4StLiAMcUP7_4QLKnYdfWr991-rA6VnUEtwNR809Xw_C5SkOJFD8DzUPZAEwZ97s4DZe113BqUKQLtdLpogOfmngvwYl-TB1MK2xUCL5DF9s3n1Ij8IeXpWjm9WkvQi7AANPGGwgllzdmWZxQ1i81Y55g6Y4PBQM7XKXmZNewaQCQnyMis2v0Bzbi_APe1m9yRYdekpPjWh_9PBu3fLqsH6QXBDcUxcfoipHr8mfY9_26utB3v_8NXd8byjTVXFhqKb8o39noarFkoE0GOF8DFk12gO0zyVLcZUCIZQfqPtL-LwDoa-N-5kUmYy2abshYxwm1Z5EbbjjEMxIunZpnfFOdjysHaZnK-rwMZvRDLcY19BJlfcrb6CaBILNa1Ske-8qq7oDLZpjns1M3r0IeT-LvL6ZwoDSv3wWI6DYO_g8nQE1D8UZEIYszQn4_UC0JHoBwVLXaZGUTv8_cGXjgSfDPcARambVeXa-sgUXrUZ3IE3lWBqoDb5uOgxUj16ABBsMPWKoxGwhIV3nMg/https://www.amazon.com/dp/1915404096/?_encoding=UTF8&pd_rd_i=1915404096&pd_rd_i=1915404096&ref_=sbx_be_s_sparkle_ssd_img&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                  - 'img "Cash Secured Put Options for Weekly Paydays: Earn Safe, Steady Income in All Market Conditions - Even With a Small Account (Options Trading for Beginners)" [ref=e1173]'
+                - generic [ref=e1175]:
+                  - link [ref=e1176] [cursor=pointer]:
+                    - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JJ7Vo3JvE7NMapY5D2VDJTQAAAGeQtyTugEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICAjkbcp/clv1c_ek-wxYHXFcbWDXHEa4sesmPkMDERPft4TWvWw1HqncH_8HsCrW0SW74HcIrNcs7FZdZ6RQ4Vipe09hcveL-upiMPdptddwoO-OmgD6H4rEAwitdnrkTtQY-4YPh8vqKR0DYWjbWsQoaK9pRmpqvWx_FU4duQvhVrk1hxzymMHE4fekpcySTG9tcJ9lJvRAvKbKnDIGAqn4DB2CjvnViIZEYwF1dzosR12xj0SA3oEYw-k_Kzlpp4zQYtlcKOkqfRD4_AMe43cTgxMbATTbPbyxd-MPCTpg6-DngxWPdt3MAjaAxx10P58S-63Ab3zdOAjxzYPwHgGXd8xCg-gaoDfdt0DjqtAFrLvWBU3Z5dCVDHQssffwyRmmUAeXtXzbJghDNxOK3BBVnTv2EvVt7KDutXiSL-k2KS41PqNYAxEqpNCEikwOwMJAsrvUUhQD7K4hzG0tQ6iWgbZBAtsa4i3YPF3en7y8CpVMGHbQGKdt7z3e21j3obRs-B1YQhOFFWaOF2jN0ZnBfVfzkrZ_z4olNtU2tkUA79LJrXv7yOWlmUMAXRISQkBnBGtgTnEATpu-K-4-W6GF5gzn81FXYVpqKpTI_LTZXBXGGsNYNfBBm10z24XPKtKr1Wh4nFIK2_4WPN-zl1krFYk3OQ0K9FXgqm1kAZsFyiHCrUBgekI4TPF-R5xxyF_88ypL4nKhG7eyFs1IMfwBMKl9ZkYn_Yrv0o7lRRa9Q2Ecg8rPeCJymuR7SgkwyaFbUSZ6XKHPJWSMnQ_7slRMOo3Nu_s9pYI1SAeXuL-QtGoVmLclhAK-emxlEv-z2t9xFWrRBXK6zhM1zbnk6d8A0JZqk009vClFkn-CFtCOwRVM0OZCRNqOFJWqx_ZpxK3usyzyaUThJGGZeNzKPg7kI25ZWhWYnRgxal20317GPUSoor1M2oiEcNZND8oYXYOQC45K6gDS_OBFtvEobsw3YTr2a0Bq8WsPszw3JoF9rL8w2sexbALqP5S73MqQaOxDB3Y4hpbCtl-lcS53lr4StLiAMcUP7_4QLKnYdfWr991-rA6VnUEtwNR809Xw_C5SkOJFD8DzUPZAEwZ97s4DZe113BqUKQLtdLpogOfmngvwYl-TB1MK2xUCL5DF9s3n1Ij8IeXpWjm9WkvQi7AANPGGwgllzdmWZxQ1i81Y55g6Y4PBQM7XKXmZNewaQCQnyMis2v0Bzbi_APe1m9yRYdekpPjWh_9PBu3fLqsH6QXBDcUxcfoipHr8mfY9_26utB3v_8NXd8byjTVXFhqKb8o39noarFkoE0GOF8DFk12gO0zyVLcZUCIZQfqPtL-LwDoa-N-5kUmYy2abshYxwm1Z5EbbjjEMxIunZpnfFOdjysHaZnK-rwMZvRDLcY19BJlfcrb6CaBILNa1Ske-8qq7oDLZpjns1M3r0IeT-LvL6ZwoDSv3wWI6DYO_g8nQE1D8UZEIYszQn4_UC0JHoBwVLXaZGUTv8_cGXjgSfDPcARambVeXa-sgUXrUZ3IE3lWBqoDb5uOgxUj16ABBsMPWKoxGwhIV3nMg/https://www.amazon.com/dp/1915404096/?_encoding=UTF8&pd_rd_i=1915404096&pd_rd_i=1915404096&ref_=sbx_be_s_sparkle_ssd_bkg&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                  - generic [ref=e1177]:
+                    - link [ref=e1178] [cursor=pointer]:
+                      - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JJ7Vo3JvE7NMapY5D2VDJTQAAAGeQtyTugEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICAjkbcp/clv1c_ek-wxYHXFcbWDXHEa4sesmPkMDERPft4TWvWw1HqncH_8HsCrW0SW74HcIrNcs7FZdZ6RQ4Vipe09hcveL-upiMPdptddwoO-OmgD6H4rEAwitdnrkTtQY-4YPh8vqKR0DYWjbWsQoaK9pRmpqvWx_FU4duQvhVrk1hxzymMHE4fekpcySTG9tcJ9lJvRAvKbKnDIGAqn4DB2CjvnViIZEYwF1dzosR12xj0SA3oEYw-k_Kzlpp4zQYtlcKOkqfRD4_AMe43cTgxMbATTbPbyxd-MPCTpg6-DngxWPdt3MAjaAxx10P58S-63Ab3zdOAjxzYPwHgGXd8xCg-gaoDfdt0DjqtAFrLvWBU3Z5dCVDHQssffwyRmmUAeXtXzbJghDNxOK3BBVnTv2EvVt7KDutXiSL-k2KS41PqNYAxEqpNCEikwOwMJAsrvUUhQD7K4hzG0tQ6iWgbZBAtsa4i3YPF3en7y8CpVMGHbQGKdt7z3e21j3obRs-B1YQhOFFWaOF2jN0ZnBfVfzkrZ_z4olNtU2tkUA79LJrXv7yOWlmUMAXRISQkBnBGtgTnEATpu-K-4-W6GF5gzn81FXYVpqKpTI_LTZXBXGGsNYNfBBm10z24XPKtKr1Wh4nFIK2_4WPN-zl1krFYk3OQ0K9FXgqm1kAZsFyiHCrUBgekI4TPF-R5xxyF_88ypL4nKhG7eyFs1IMfwBMKl9ZkYn_Yrv0o7lRRa9Q2Ecg8rPeCJymuR7SgkwyaFbUSZ6XKHPJWSMnQ_7slRMOo3Nu_s9pYI1SAeXuL-QtGoVmLclhAK-emxlEv-z2t9xFWrRBXK6zhM1zbnk6d8A0JZqk009vClFkn-CFtCOwRVM0OZCRNqOFJWqx_ZpxK3usyzyaUThJGGZeNzKPg7kI25ZWhWYnRgxal20317GPUSoor1M2oiEcNZND8oYXYOQC45K6gDS_OBFtvEobsw3YTr2a0Bq8WsPszw3JoF9rL8w2sexbALqP5S73MqQaOxDB3Y4hpbCtl-lcS53lr4StLiAMcUP7_4QLKnYdfWr991-rA6VnUEtwNR809Xw_C5SkOJFD8DzUPZAEwZ97s4DZe113BqUKQLtdLpogOfmngvwYl-TB1MK2xUCL5DF9s3n1Ij8IeXpWjm9WkvQi7AANPGGwgllzdmWZxQ1i81Y55g6Y4PBQM7XKXmZNewaQCQnyMis2v0Bzbi_APe1m9yRYdekpPjWh_9PBu3fLqsH6QXBDcUxcfoipHr8mfY9_26utB3v_8NXd8byjTVXFhqKb8o39noarFkoE0GOF8DFk12gO0zyVLcZUCIZQfqPtL-LwDoa-N-5kUmYy2abshYxwm1Z5EbbjjEMxIunZpnfFOdjysHaZnK-rwMZvRDLcY19BJlfcrb6CaBILNa1Ske-8qq7oDLZpjns1M3r0IeT-LvL6ZwoDSv3wWI6DYO_g8nQE1D8UZEIYszQn4_UC0JHoBwVLXaZGUTv8_cGXjgSfDPcARambVeXa-sgUXrUZ3IE3lWBqoDb5uOgxUj16ABBsMPWKoxGwhIV3nMg/https://www.amazon.com/dp/1915404096/?_encoding=UTF8&pd_rd_i=1915404096&pd_rd_i=1915404096&ref_=sbx_be_s_sparkle_ssd_bkg&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                    - 'link "Cash Secured Put Options for Weekly Paydays: Earn Safe, Steady Income in All Market Conditions - Even With a Small Account (Options Trading for Beginners)" [ref=e1179] [cursor=pointer]':
+                      - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JJ7Vo3JvE7NMapY5D2VDJTQAAAGeQtyTugEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICAjkbcp/clv1c_ek-wxYHXFcbWDXHEa4sesmPkMDERPft4TWvWw1HqncH_8HsCrW0SW74HcIrNcs7FZdZ6RQ4Vipe09hcveL-upiMPdptddwoO-OmgD6H4rEAwitdnrkTtQY-4YPh8vqKR0DYWjbWsQoaK9pRmpqvWx_FU4duQvhVrk1hxzymMHE4fekpcySTG9tcJ9lJvRAvKbKnDIGAqn4DB2CjvnViIZEYwF1dzosR12xj0SA3oEYw-k_Kzlpp4zQYtlcKOkqfRD4_AMe43cTgxMbATTbPbyxd-MPCTpg6-DngxWPdt3MAjaAxx10P58S-63Ab3zdOAjxzYPwHgGXd8xCg-gaoDfdt0DjqtAFrLvWBU3Z5dCVDHQssffwyRmmUAeXtXzbJghDNxOK3BBVnTv2EvVt7KDutXiSL-k2KS41PqNYAxEqpNCEikwOwMJAsrvUUhQD7K4hzG0tQ6iWgbZBAtsa4i3YPF3en7y8CpVMGHbQGKdt7z3e21j3obRs-B1YQhOFFWaOF2jN0ZnBfVfzkrZ_z4olNtU2tkUA79LJrXv7yOWlmUMAXRISQkBnBGtgTnEATpu-K-4-W6GF5gzn81FXYVpqKpTI_LTZXBXGGsNYNfBBm10z24XPKtKr1Wh4nFIK2_4WPN-zl1krFYk3OQ0K9FXgqm1kAZsFyiHCrUBgekI4TPF-R5xxyF_88ypL4nKhG7eyFs1IMfwBMKl9ZkYn_Yrv0o7lRRa9Q2Ecg8rPeCJymuR7SgkwyaFbUSZ6XKHPJWSMnQ_7slRMOo3Nu_s9pYI1SAeXuL-QtGoVmLclhAK-emxlEv-z2t9xFWrRBXK6zhM1zbnk6d8A0JZqk009vClFkn-CFtCOwRVM0OZCRNqOFJWqx_ZpxK3usyzyaUThJGGZeNzKPg7kI25ZWhWYnRgxal20317GPUSoor1M2oiEcNZND8oYXYOQC45K6gDS_OBFtvEobsw3YTr2a0Bq8WsPszw3JoF9rL8w2sexbALqP5S73MqQaOxDB3Y4hpbCtl-lcS53lr4StLiAMcUP7_4QLKnYdfWr991-rA6VnUEtwNR809Xw_C5SkOJFD8DzUPZAEwZ97s4DZe113BqUKQLtdLpogOfmngvwYl-TB1MK2xUCL5DF9s3n1Ij8IeXpWjm9WkvQi7AANPGGwgllzdmWZxQ1i81Y55g6Y4PBQM7XKXmZNewaQCQnyMis2v0Bzbi_APe1m9yRYdekpPjWh_9PBu3fLqsH6QXBDcUxcfoipHr8mfY9_26utB3v_8NXd8byjTVXFhqKb8o39noarFkoE0GOF8DFk12gO0zyVLcZUCIZQfqPtL-LwDoa-N-5kUmYy2abshYxwm1Z5EbbjjEMxIunZpnfFOdjysHaZnK-rwMZvRDLcY19BJlfcrb6CaBILNa1Ske-8qq7oDLZpjns1M3r0IeT-LvL6ZwoDSv3wWI6DYO_g8nQE1D8UZEIYszQn4_UC0JHoBwVLXaZGUTv8_cGXjgSfDPcARambVeXa-sgUXrUZ3IE3lWBqoDb5uOgxUj16ABBsMPWKoxGwhIV3nMg/https://www.amazon.com/dp/1915404096/?_encoding=UTF8&pd_rd_i=1915404096&pd_rd_i=1915404096&ref_=sbx_be_s_sparkle_ssd_tt&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                  - link "Rated 4.6 out of 5 stars from 118 reviews" [ref=e1181] [cursor=pointer]:
+                    - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JJ7Vo3JvE7NMapY5D2VDJTQAAAGeQtyTugEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICAjkbcp/clv1c_ek-wxYHXFcbWDXHEa4sesmPkMDERPft4TWvWw1HqncH_8HsCrW0SW74HcIrNcs7FZdZ6RQ4Vipe09hcveL-upiMPdptddwoO-OmgD6H4rEAwitdnrkTtQY-4YPh8vqKR0DYWjbWsQoaK9pRmpqvWx_FU4duQvhVrk1hxzymMHE4fekpcySTG9tcJ9lJvRAvKbKnDIGAqn4DB2CjvnViIZEYwF1dzosR12xj0SA3oEYw-k_Kzlpp4zQYtlcKOkqfRD4_AMe43cTgxMbATTbPbyxd-MPCTpg6-DngxWPdt3MAjaAxx10P58S-63Ab3zdOAjxzYPwHgGXd8xCg-gaoDfdt0DjqtAFrLvWBU3Z5dCVDHQssffwyRmmUAeXtXzbJghDNxOK3BBVnTv2EvVt7KDutXiSL-k2KS41PqNYAxEqpNCEikwOwMJAsrvUUhQD7K4hzG0tQ6iWgbZBAtsa4i3YPF3en7y8CpVMGHbQGKdt7z3e21j3obRs-B1YQhOFFWaOF2jN0ZnBfVfzkrZ_z4olNtU2tkUA79LJrXv7yOWlmUMAXRISQkBnBGtgTnEATpu-K-4-W6GF5gzn81FXYVpqKpTI_LTZXBXGGsNYNfBBm10z24XPKtKr1Wh4nFIK2_4WPN-zl1krFYk3OQ0K9FXgqm1kAZsFyiHCrUBgekI4TPF-R5xxyF_88ypL4nKhG7eyFs1IMfwBMKl9ZkYn_Yrv0o7lRRa9Q2Ecg8rPeCJymuR7SgkwyaFbUSZ6XKHPJWSMnQ_7slRMOo3Nu_s9pYI1SAeXuL-QtGoVmLclhAK-emxlEv-z2t9xFWrRBXK6zhM1zbnk6d8A0JZqk009vClFkn-CFtCOwRVM0OZCRNqOFJWqx_ZpxK3usyzyaUThJGGZeNzKPg7kI25ZWhWYnRgxal20317GPUSoor1M2oiEcNZND8oYXYOQC45K6gDS_OBFtvEobsw3YTr2a0Bq8WsPszw3JoF9rL8w2sexbALqP5S73MqQaOxDB3Y4hpbCtl-lcS53lr4StLiAMcUP7_4QLKnYdfWr991-rA6VnUEtwNR809Xw_C5SkOJFD8DzUPZAEwZ97s4DZe113BqUKQLtdLpogOfmngvwYl-TB1MK2xUCL5DF9s3n1Ij8IeXpWjm9WkvQi7AANPGGwgllzdmWZxQ1i81Y55g6Y4PBQM7XKXmZNewaQCQnyMis2v0Bzbi_APe1m9yRYdekpPjWh_9PBu3fLqsH6QXBDcUxcfoipHr8mfY9_26utB3v_8NXd8byjTVXFhqKb8o39noarFkoE0GOF8DFk12gO0zyVLcZUCIZQfqPtL-LwDoa-N-5kUmYy2abshYxwm1Z5EbbjjEMxIunZpnfFOdjysHaZnK-rwMZvRDLcY19BJlfcrb6CaBILNa1Ske-8qq7oDLZpjns1M3r0IeT-LvL6ZwoDSv3wWI6DYO_g8nQE1D8UZEIYszQn4_UC0JHoBwVLXaZGUTv8_cGXjgSfDPcARambVeXa-sgUXrUZ3IE3lWBqoDb5uOgxUj16ABBsMPWKoxGwhIV3nMg/https://www.amazon.com/dp/1915404096/?_encoding=UTF8&pd_rd_i=1915404096&pd_rd_i=1915404096&ref_=sbx_be_s_sparkle_ssd_rev&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                    - text: "4.6"
+                    - generic [ref=e1183]: 4.6 out of 5 stars
+                    - text: "118"
+                  - link "HKD131.20" [ref=e1185] [cursor=pointer]:
+                    - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JJ7Vo3JvE7NMapY5D2VDJTQAAAGeQtyTugEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICAjkbcp/clv1c_ek-wxYHXFcbWDXHEa4sesmPkMDERPft4TWvWw1HqncH_8HsCrW0SW74HcIrNcs7FZdZ6RQ4Vipe09hcveL-upiMPdptddwoO-OmgD6H4rEAwitdnrkTtQY-4YPh8vqKR0DYWjbWsQoaK9pRmpqvWx_FU4duQvhVrk1hxzymMHE4fekpcySTG9tcJ9lJvRAvKbKnDIGAqn4DB2CjvnViIZEYwF1dzosR12xj0SA3oEYw-k_Kzlpp4zQYtlcKOkqfRD4_AMe43cTgxMbATTbPbyxd-MPCTpg6-DngxWPdt3MAjaAxx10P58S-63Ab3zdOAjxzYPwHgGXd8xCg-gaoDfdt0DjqtAFrLvWBU3Z5dCVDHQssffwyRmmUAeXtXzbJghDNxOK3BBVnTv2EvVt7KDutXiSL-k2KS41PqNYAxEqpNCEikwOwMJAsrvUUhQD7K4hzG0tQ6iWgbZBAtsa4i3YPF3en7y8CpVMGHbQGKdt7z3e21j3obRs-B1YQhOFFWaOF2jN0ZnBfVfzkrZ_z4olNtU2tkUA79LJrXv7yOWlmUMAXRISQkBnBGtgTnEATpu-K-4-W6GF5gzn81FXYVpqKpTI_LTZXBXGGsNYNfBBm10z24XPKtKr1Wh4nFIK2_4WPN-zl1krFYk3OQ0K9FXgqm1kAZsFyiHCrUBgekI4TPF-R5xxyF_88ypL4nKhG7eyFs1IMfwBMKl9ZkYn_Yrv0o7lRRa9Q2Ecg8rPeCJymuR7SgkwyaFbUSZ6XKHPJWSMnQ_7slRMOo3Nu_s9pYI1SAeXuL-QtGoVmLclhAK-emxlEv-z2t9xFWrRBXK6zhM1zbnk6d8A0JZqk009vClFkn-CFtCOwRVM0OZCRNqOFJWqx_ZpxK3usyzyaUThJGGZeNzKPg7kI25ZWhWYnRgxal20317GPUSoor1M2oiEcNZND8oYXYOQC45K6gDS_OBFtvEobsw3YTr2a0Bq8WsPszw3JoF9rL8w2sexbALqP5S73MqQaOxDB3Y4hpbCtl-lcS53lr4StLiAMcUP7_4QLKnYdfWr991-rA6VnUEtwNR809Xw_C5SkOJFD8DzUPZAEwZ97s4DZe113BqUKQLtdLpogOfmngvwYl-TB1MK2xUCL5DF9s3n1Ij8IeXpWjm9WkvQi7AANPGGwgllzdmWZxQ1i81Y55g6Y4PBQM7XKXmZNewaQCQnyMis2v0Bzbi_APe1m9yRYdekpPjWh_9PBu3fLqsH6QXBDcUxcfoipHr8mfY9_26utB3v_8NXd8byjTVXFhqKb8o39noarFkoE0GOF8DFk12gO0zyVLcZUCIZQfqPtL-LwDoa-N-5kUmYy2abshYxwm1Z5EbbjjEMxIunZpnfFOdjysHaZnK-rwMZvRDLcY19BJlfcrb6CaBILNa1Ske-8qq7oDLZpjns1M3r0IeT-LvL6ZwoDSv3wWI6DYO_g8nQE1D8UZEIYszQn4_UC0JHoBwVLXaZGUTv8_cGXjgSfDPcARambVeXa-sgUXrUZ3IE3lWBqoDb5uOgxUj16ABBsMPWKoxGwhIV3nMg/https://www.amazon.com/dp/1915404096/?_encoding=UTF8&pd_rd_i=1915404096&pd_rd_i=1915404096&ref_=sbx_be_s_sparkle_ssd_pce&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                    - generic [ref=e1186]:
+                      - generic [ref=e1187]: HKD131.20
+                      - generic [ref=e1188]:
+                        - text: HKD
+                        - generic [ref=e1189]: "131."
+                        - text: "20"
+          - listitem [ref=e1190]:
+            - generic [ref=e1195]:
+              - link "Sponsored video, click to navigate to featured page." [ref=e1200] [cursor=pointer]:
+                - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JEh3tIfTfYr-UW0U6-x2qGkAAAGeQtyTuwEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICD1KuXh/clv1c_ek-wBYHXErbWDn2nI-MgDzrZjBAPnk4ElUw1xlVg3ygMx_dqRDQX0PibtyCB8_xFY_QpybQL01KqSLJTfQPkbmGBX6D7txkamMtnql1p60gHzVKotesLKwhgYnl9uzTVhpg25pLtjH-WzmDpCquVX8TPYF2egk0qO5TQDzWw0eYrbXMszy4ANByOciwQtFofhtk3cYnPHwzyOe7npyBW3omPDQ5udRYK190arOysVh0mmRrZ3FF5_QAt6cpldGav39lHJa1lBtVZOvbKMyvtzRUeMPCTps7O8HgxGL6_1aJZKLfAZEqlUfaxyKJViOid77_Iq1uSVi9x5CDUzSzXplAZS-_IU1WRqpKAlLCP5BiIAP4xlaVYHbdvJ2CfdrUvKZSCI9zz56TAUl73OFkg81mF_TNeily7taRNm-aEcRnkB54-l0XLdNL0om5pl1axiKRHhfb0ymqnMiZR4L-tjF9mUzs5NQGaSFx5do1K3f98248YWwwi_GOy_8lRAUbVa1BWGV6eGcNLD5yFHQ32-eOYVlbBCoZoEGRZe1Sp0IalJpOpY3glMbnI2D-Zx0wQmwYW_OcwdMhZwS1Dc00La-SRnmB6CtCviuylVtYJAPi-Dt8B-kMYPJ1IYBtIia5RM3vhZcmiD-Bd-SDsZiiv4odaFE551nv-_4tfU9ra2nSkdhY47mmF_yR-vaT6EfOVx_mlxaezfbcKWv0U2OJbUQ0se9RTCMSqJJiuwG9EdHMH4UxY2DofdgM1wKxegaIuvAIPetDNS0L6XehRrIO0vC385VBeQN3OVq-MU7TP-vv5S0h8S3N5ZgOOn87VEWb-kttBMFWegFVM2TLWSBgMUaKEuY1CDYSY0gzGrH8vvd2EiuKVZs2Hnc7OK33BXlBwpMGC6xrJ7WrGIe4CTHtFwP3IR-OlDdDJmaU6-Yde2CzNp1uHNtjaI7UFnXpMLV1jbhK7ykLsj2WMdiGDzGARzNXySATR1sDBCkGF7FXDFl961fEiTvn71kDemAbM_5uHbzk24zRvaHRXxF7pzfgWX0zyD4as0vl8fnuK1jX1WCFLjMTfVwUpo1wCT5EBk3kWejEJNfffOaqE-DhcoxsUy1JKD9lNN48ebn0B8lyuRH1lug7CY_plAW_nFKrWg5Sm6aThOSZkLWaJGhmlsdk5gf7G7dDbgKmQX_T-XUPvQh8enbs3EYvlQ44D0x2jL7TmUAF90BqrfFzYMyfmA1kqYa7bg2nEWnAHaiLPD5KdwAA4dJweOuWJ2QmRQLtZFRcK9XmH1jfcBXHPcGps96_q1MnbM2k9A0JlhdI_Ss3X8v0y7Gt5G4p2zq1PsBoOBZdqnNvANQjzcGUaxrGo_M1LdRKVhBTfaLW9hkUDRhlNxxDuoGg46xLzcOnUlnPbPBU7GqWKloMkRshq90UV5jQbr6azZzO3B7aZ3oA645tLKFIFltd_jCa7ENBzNjpFSjh56qNTL3algac8cUbTHftzj4x3vKYzyU8tsbv_1EtAN-ReKlhJpk8PQgEk20sWmFSCEYM/https://www.amazon.com/dp/1804093262/?_encoding=UTF8&pd_rd_i=1804093262&pd_rd_i=1804093262&ref_=sbx_be_s_sparkle_ssd_vid&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                - generic "Sponsored video, click to navigate to featured page." [ref=e1201]
+              - generic [ref=e1208]:
+                - 'link "Risk and Reward: How to handle market volatility and build long-term wealth" [ref=e1211] [cursor=pointer]':
+                  - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JEh3tIfTfYr-UW0U6-x2qGkAAAGeQtyTuwEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICD1KuXh/clv1c_ek-wBYHXErbWDn2nI-MgDzrZjBAPnk4ElUw1xlVg3ygMx_dqRDQX0PibtyCB8_xFY_QpybQL01KqSLJTfQPkbmGBX6D7txkamMtnql1p60gHzVKotesLKwhgYnl9uzTVhpg25pLtjH-WzmDpCquVX8TPYF2egk0qO5TQDzWw0eYrbXMszy4ANByOciwQtFofhtk3cYnPHwzyOe7npyBW3omPDQ5udRYK190arOysVh0mmRrZ3FF5_QAt6cpldGav39lHJa1lBtVZOvbKMyvtzRUeMPCTps7O8HgxGL6_1aJZKLfAZEqlUfaxyKJViOid77_Iq1uSVi9x5CDUzSzXplAZS-_IU1WRqpKAlLCP5BiIAP4xlaVYHbdvJ2CfdrUvKZSCI9zz56TAUl73OFkg81mF_TNeily7taRNm-aEcRnkB54-l0XLdNL0om5pl1axiKRHhfb0ymqnMiZR4L-tjF9mUzs5NQGaSFx5do1K3f98248YWwwi_GOy_8lRAUbVa1BWGV6eGcNLD5yFHQ32-eOYVlbBCoZoEGRZe1Sp0IalJpOpY3glMbnI2D-Zx0wQmwYW_OcwdMhZwS1Dc00La-SRnmB6CtCviuylVtYJAPi-Dt8B-kMYPJ1IYBtIia5RM3vhZcmiD-Bd-SDsZiiv4odaFE551nv-_4tfU9ra2nSkdhY47mmF_yR-vaT6EfOVx_mlxaezfbcKWv0U2OJbUQ0se9RTCMSqJJiuwG9EdHMH4UxY2DofdgM1wKxegaIuvAIPetDNS0L6XehRrIO0vC385VBeQN3OVq-MU7TP-vv5S0h8S3N5ZgOOn87VEWb-kttBMFWegFVM2TLWSBgMUaKEuY1CDYSY0gzGrH8vvd2EiuKVZs2Hnc7OK33BXlBwpMGC6xrJ7WrGIe4CTHtFwP3IR-OlDdDJmaU6-Yde2CzNp1uHNtjaI7UFnXpMLV1jbhK7ykLsj2WMdiGDzGARzNXySATR1sDBCkGF7FXDFl961fEiTvn71kDemAbM_5uHbzk24zRvaHRXxF7pzfgWX0zyD4as0vl8fnuK1jX1WCFLjMTfVwUpo1wCT5EBk3kWejEJNfffOaqE-DhcoxsUy1JKD9lNN48ebn0B8lyuRH1lug7CY_plAW_nFKrWg5Sm6aThOSZkLWaJGhmlsdk5gf7G7dDbgKmQX_T-XUPvQh8enbs3EYvlQ44D0x2jL7TmUAF90BqrfFzYMyfmA1kqYa7bg2nEWnAHaiLPD5KdwAA4dJweOuWJ2QmRQLtZFRcK9XmH1jfcBXHPcGps96_q1MnbM2k9A0JlhdI_Ss3X8v0y7Gt5G4p2zq1PsBoOBZdqnNvANQjzcGUaxrGo_M1LdRKVhBTfaLW9hkUDRhlNxxDuoGg46xLzcOnUlnPbPBU7GqWKloMkRshq90UV5jQbr6azZzO3B7aZ3oA645tLKFIFltd_jCa7ENBzNjpFSjh56qNTL3algac8cUbTHftzj4x3vKYzyU8tsbv_1EtAN-ReKlhJpk8PQgEk20sWmFSCEYM/https://www.amazon.com/dp/1804093262/?_encoding=UTF8&pd_rd_i=1804093262&pd_rd_i=1804093262&ref_=sbx_be_s_sparkle_ssd_img&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                  - 'img "Risk and Reward: How to handle market volatility and build long-term wealth" [ref=e1213]'
+                - generic [ref=e1215]:
+                  - link [ref=e1216] [cursor=pointer]:
+                    - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JEh3tIfTfYr-UW0U6-x2qGkAAAGeQtyTuwEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICD1KuXh/clv1c_ek-wBYHXErbWDn2nI-MgDzrZjBAPnk4ElUw1xlVg3ygMx_dqRDQX0PibtyCB8_xFY_QpybQL01KqSLJTfQPkbmGBX6D7txkamMtnql1p60gHzVKotesLKwhgYnl9uzTVhpg25pLtjH-WzmDpCquVX8TPYF2egk0qO5TQDzWw0eYrbXMszy4ANByOciwQtFofhtk3cYnPHwzyOe7npyBW3omPDQ5udRYK190arOysVh0mmRrZ3FF5_QAt6cpldGav39lHJa1lBtVZOvbKMyvtzRUeMPCTps7O8HgxGL6_1aJZKLfAZEqlUfaxyKJViOid77_Iq1uSVi9x5CDUzSzXplAZS-_IU1WRqpKAlLCP5BiIAP4xlaVYHbdvJ2CfdrUvKZSCI9zz56TAUl73OFkg81mF_TNeily7taRNm-aEcRnkB54-l0XLdNL0om5pl1axiKRHhfb0ymqnMiZR4L-tjF9mUzs5NQGaSFx5do1K3f98248YWwwi_GOy_8lRAUbVa1BWGV6eGcNLD5yFHQ32-eOYVlbBCoZoEGRZe1Sp0IalJpOpY3glMbnI2D-Zx0wQmwYW_OcwdMhZwS1Dc00La-SRnmB6CtCviuylVtYJAPi-Dt8B-kMYPJ1IYBtIia5RM3vhZcmiD-Bd-SDsZiiv4odaFE551nv-_4tfU9ra2nSkdhY47mmF_yR-vaT6EfOVx_mlxaezfbcKWv0U2OJbUQ0se9RTCMSqJJiuwG9EdHMH4UxY2DofdgM1wKxegaIuvAIPetDNS0L6XehRrIO0vC385VBeQN3OVq-MU7TP-vv5S0h8S3N5ZgOOn87VEWb-kttBMFWegFVM2TLWSBgMUaKEuY1CDYSY0gzGrH8vvd2EiuKVZs2Hnc7OK33BXlBwpMGC6xrJ7WrGIe4CTHtFwP3IR-OlDdDJmaU6-Yde2CzNp1uHNtjaI7UFnXpMLV1jbhK7ykLsj2WMdiGDzGARzNXySATR1sDBCkGF7FXDFl961fEiTvn71kDemAbM_5uHbzk24zRvaHRXxF7pzfgWX0zyD4as0vl8fnuK1jX1WCFLjMTfVwUpo1wCT5EBk3kWejEJNfffOaqE-DhcoxsUy1JKD9lNN48ebn0B8lyuRH1lug7CY_plAW_nFKrWg5Sm6aThOSZkLWaJGhmlsdk5gf7G7dDbgKmQX_T-XUPvQh8enbs3EYvlQ44D0x2jL7TmUAF90BqrfFzYMyfmA1kqYa7bg2nEWnAHaiLPD5KdwAA4dJweOuWJ2QmRQLtZFRcK9XmH1jfcBXHPcGps96_q1MnbM2k9A0JlhdI_Ss3X8v0y7Gt5G4p2zq1PsBoOBZdqnNvANQjzcGUaxrGo_M1LdRKVhBTfaLW9hkUDRhlNxxDuoGg46xLzcOnUlnPbPBU7GqWKloMkRshq90UV5jQbr6azZzO3B7aZ3oA645tLKFIFltd_jCa7ENBzNjpFSjh56qNTL3algac8cUbTHftzj4x3vKYzyU8tsbv_1EtAN-ReKlhJpk8PQgEk20sWmFSCEYM/https://www.amazon.com/dp/1804093262/?_encoding=UTF8&pd_rd_i=1804093262&pd_rd_i=1804093262&ref_=sbx_be_s_sparkle_ssd_bkg&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                  - generic [ref=e1217]:
+                    - link [ref=e1218] [cursor=pointer]:
+                      - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JEh3tIfTfYr-UW0U6-x2qGkAAAGeQtyTuwEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICD1KuXh/clv1c_ek-wBYHXErbWDn2nI-MgDzrZjBAPnk4ElUw1xlVg3ygMx_dqRDQX0PibtyCB8_xFY_QpybQL01KqSLJTfQPkbmGBX6D7txkamMtnql1p60gHzVKotesLKwhgYnl9uzTVhpg25pLtjH-WzmDpCquVX8TPYF2egk0qO5TQDzWw0eYrbXMszy4ANByOciwQtFofhtk3cYnPHwzyOe7npyBW3omPDQ5udRYK190arOysVh0mmRrZ3FF5_QAt6cpldGav39lHJa1lBtVZOvbKMyvtzRUeMPCTps7O8HgxGL6_1aJZKLfAZEqlUfaxyKJViOid77_Iq1uSVi9x5CDUzSzXplAZS-_IU1WRqpKAlLCP5BiIAP4xlaVYHbdvJ2CfdrUvKZSCI9zz56TAUl73OFkg81mF_TNeily7taRNm-aEcRnkB54-l0XLdNL0om5pl1axiKRHhfb0ymqnMiZR4L-tjF9mUzs5NQGaSFx5do1K3f98248YWwwi_GOy_8lRAUbVa1BWGV6eGcNLD5yFHQ32-eOYVlbBCoZoEGRZe1Sp0IalJpOpY3glMbnI2D-Zx0wQmwYW_OcwdMhZwS1Dc00La-SRnmB6CtCviuylVtYJAPi-Dt8B-kMYPJ1IYBtIia5RM3vhZcmiD-Bd-SDsZiiv4odaFE551nv-_4tfU9ra2nSkdhY47mmF_yR-vaT6EfOVx_mlxaezfbcKWv0U2OJbUQ0se9RTCMSqJJiuwG9EdHMH4UxY2DofdgM1wKxegaIuvAIPetDNS0L6XehRrIO0vC385VBeQN3OVq-MU7TP-vv5S0h8S3N5ZgOOn87VEWb-kttBMFWegFVM2TLWSBgMUaKEuY1CDYSY0gzGrH8vvd2EiuKVZs2Hnc7OK33BXlBwpMGC6xrJ7WrGIe4CTHtFwP3IR-OlDdDJmaU6-Yde2CzNp1uHNtjaI7UFnXpMLV1jbhK7ykLsj2WMdiGDzGARzNXySATR1sDBCkGF7FXDFl961fEiTvn71kDemAbM_5uHbzk24zRvaHRXxF7pzfgWX0zyD4as0vl8fnuK1jX1WCFLjMTfVwUpo1wCT5EBk3kWejEJNfffOaqE-DhcoxsUy1JKD9lNN48ebn0B8lyuRH1lug7CY_plAW_nFKrWg5Sm6aThOSZkLWaJGhmlsdk5gf7G7dDbgKmQX_T-XUPvQh8enbs3EYvlQ44D0x2jL7TmUAF90BqrfFzYMyfmA1kqYa7bg2nEWnAHaiLPD5KdwAA4dJweOuWJ2QmRQLtZFRcK9XmH1jfcBXHPcGps96_q1MnbM2k9A0JlhdI_Ss3X8v0y7Gt5G4p2zq1PsBoOBZdqnNvANQjzcGUaxrGo_M1LdRKVhBTfaLW9hkUDRhlNxxDuoGg46xLzcOnUlnPbPBU7GqWKloMkRshq90UV5jQbr6azZzO3B7aZ3oA645tLKFIFltd_jCa7ENBzNjpFSjh56qNTL3algac8cUbTHftzj4x3vKYzyU8tsbv_1EtAN-ReKlhJpk8PQgEk20sWmFSCEYM/https://www.amazon.com/dp/1804093262/?_encoding=UTF8&pd_rd_i=1804093262&pd_rd_i=1804093262&ref_=sbx_be_s_sparkle_ssd_bkg&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                    - 'link "Risk and Reward: How to handle market volatility and build long-term wealth" [ref=e1219] [cursor=pointer]':
+                      - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JEh3tIfTfYr-UW0U6-x2qGkAAAGeQtyTuwEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICD1KuXh/clv1c_ek-wBYHXErbWDn2nI-MgDzrZjBAPnk4ElUw1xlVg3ygMx_dqRDQX0PibtyCB8_xFY_QpybQL01KqSLJTfQPkbmGBX6D7txkamMtnql1p60gHzVKotesLKwhgYnl9uzTVhpg25pLtjH-WzmDpCquVX8TPYF2egk0qO5TQDzWw0eYrbXMszy4ANByOciwQtFofhtk3cYnPHwzyOe7npyBW3omPDQ5udRYK190arOysVh0mmRrZ3FF5_QAt6cpldGav39lHJa1lBtVZOvbKMyvtzRUeMPCTps7O8HgxGL6_1aJZKLfAZEqlUfaxyKJViOid77_Iq1uSVi9x5CDUzSzXplAZS-_IU1WRqpKAlLCP5BiIAP4xlaVYHbdvJ2CfdrUvKZSCI9zz56TAUl73OFkg81mF_TNeily7taRNm-aEcRnkB54-l0XLdNL0om5pl1axiKRHhfb0ymqnMiZR4L-tjF9mUzs5NQGaSFx5do1K3f98248YWwwi_GOy_8lRAUbVa1BWGV6eGcNLD5yFHQ32-eOYVlbBCoZoEGRZe1Sp0IalJpOpY3glMbnI2D-Zx0wQmwYW_OcwdMhZwS1Dc00La-SRnmB6CtCviuylVtYJAPi-Dt8B-kMYPJ1IYBtIia5RM3vhZcmiD-Bd-SDsZiiv4odaFE551nv-_4tfU9ra2nSkdhY47mmF_yR-vaT6EfOVx_mlxaezfbcKWv0U2OJbUQ0se9RTCMSqJJiuwG9EdHMH4UxY2DofdgM1wKxegaIuvAIPetDNS0L6XehRrIO0vC385VBeQN3OVq-MU7TP-vv5S0h8S3N5ZgOOn87VEWb-kttBMFWegFVM2TLWSBgMUaKEuY1CDYSY0gzGrH8vvd2EiuKVZs2Hnc7OK33BXlBwpMGC6xrJ7WrGIe4CTHtFwP3IR-OlDdDJmaU6-Yde2CzNp1uHNtjaI7UFnXpMLV1jbhK7ykLsj2WMdiGDzGARzNXySATR1sDBCkGF7FXDFl961fEiTvn71kDemAbM_5uHbzk24zRvaHRXxF7pzfgWX0zyD4as0vl8fnuK1jX1WCFLjMTfVwUpo1wCT5EBk3kWejEJNfffOaqE-DhcoxsUy1JKD9lNN48ebn0B8lyuRH1lug7CY_plAW_nFKrWg5Sm6aThOSZkLWaJGhmlsdk5gf7G7dDbgKmQX_T-XUPvQh8enbs3EYvlQ44D0x2jL7TmUAF90BqrfFzYMyfmA1kqYa7bg2nEWnAHaiLPD5KdwAA4dJweOuWJ2QmRQLtZFRcK9XmH1jfcBXHPcGps96_q1MnbM2k9A0JlhdI_Ss3X8v0y7Gt5G4p2zq1PsBoOBZdqnNvANQjzcGUaxrGo_M1LdRKVhBTfaLW9hkUDRhlNxxDuoGg46xLzcOnUlnPbPBU7GqWKloMkRshq90UV5jQbr6azZzO3B7aZ3oA645tLKFIFltd_jCa7ENBzNjpFSjh56qNTL3algac8cUbTHftzj4x3vKYzyU8tsbv_1EtAN-ReKlhJpk8PQgEk20sWmFSCEYM/https://www.amazon.com/dp/1804093262/?_encoding=UTF8&pd_rd_i=1804093262&pd_rd_i=1804093262&ref_=sbx_be_s_sparkle_ssd_tt&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                  - link "Rated 5.0 out of 5 stars from 4 reviews" [ref=e1221] [cursor=pointer]:
+                    - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JEh3tIfTfYr-UW0U6-x2qGkAAAGeQtyTuwEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICD1KuXh/clv1c_ek-wBYHXErbWDn2nI-MgDzrZjBAPnk4ElUw1xlVg3ygMx_dqRDQX0PibtyCB8_xFY_QpybQL01KqSLJTfQPkbmGBX6D7txkamMtnql1p60gHzVKotesLKwhgYnl9uzTVhpg25pLtjH-WzmDpCquVX8TPYF2egk0qO5TQDzWw0eYrbXMszy4ANByOciwQtFofhtk3cYnPHwzyOe7npyBW3omPDQ5udRYK190arOysVh0mmRrZ3FF5_QAt6cpldGav39lHJa1lBtVZOvbKMyvtzRUeMPCTps7O8HgxGL6_1aJZKLfAZEqlUfaxyKJViOid77_Iq1uSVi9x5CDUzSzXplAZS-_IU1WRqpKAlLCP5BiIAP4xlaVYHbdvJ2CfdrUvKZSCI9zz56TAUl73OFkg81mF_TNeily7taRNm-aEcRnkB54-l0XLdNL0om5pl1axiKRHhfb0ymqnMiZR4L-tjF9mUzs5NQGaSFx5do1K3f98248YWwwi_GOy_8lRAUbVa1BWGV6eGcNLD5yFHQ32-eOYVlbBCoZoEGRZe1Sp0IalJpOpY3glMbnI2D-Zx0wQmwYW_OcwdMhZwS1Dc00La-SRnmB6CtCviuylVtYJAPi-Dt8B-kMYPJ1IYBtIia5RM3vhZcmiD-Bd-SDsZiiv4odaFE551nv-_4tfU9ra2nSkdhY47mmF_yR-vaT6EfOVx_mlxaezfbcKWv0U2OJbUQ0se9RTCMSqJJiuwG9EdHMH4UxY2DofdgM1wKxegaIuvAIPetDNS0L6XehRrIO0vC385VBeQN3OVq-MU7TP-vv5S0h8S3N5ZgOOn87VEWb-kttBMFWegFVM2TLWSBgMUaKEuY1CDYSY0gzGrH8vvd2EiuKVZs2Hnc7OK33BXlBwpMGC6xrJ7WrGIe4CTHtFwP3IR-OlDdDJmaU6-Yde2CzNp1uHNtjaI7UFnXpMLV1jbhK7ykLsj2WMdiGDzGARzNXySATR1sDBCkGF7FXDFl961fEiTvn71kDemAbM_5uHbzk24zRvaHRXxF7pzfgWX0zyD4as0vl8fnuK1jX1WCFLjMTfVwUpo1wCT5EBk3kWejEJNfffOaqE-DhcoxsUy1JKD9lNN48ebn0B8lyuRH1lug7CY_plAW_nFKrWg5Sm6aThOSZkLWaJGhmlsdk5gf7G7dDbgKmQX_T-XUPvQh8enbs3EYvlQ44D0x2jL7TmUAF90BqrfFzYMyfmA1kqYa7bg2nEWnAHaiLPD5KdwAA4dJweOuWJ2QmRQLtZFRcK9XmH1jfcBXHPcGps96_q1MnbM2k9A0JlhdI_Ss3X8v0y7Gt5G4p2zq1PsBoOBZdqnNvANQjzcGUaxrGo_M1LdRKVhBTfaLW9hkUDRhlNxxDuoGg46xLzcOnUlnPbPBU7GqWKloMkRshq90UV5jQbr6azZzO3B7aZ3oA645tLKFIFltd_jCa7ENBzNjpFSjh56qNTL3algac8cUbTHftzj4x3vKYzyU8tsbv_1EtAN-ReKlhJpk8PQgEk20sWmFSCEYM/https://www.amazon.com/dp/1804093262/?_encoding=UTF8&pd_rd_i=1804093262&pd_rd_i=1804093262&ref_=sbx_be_s_sparkle_ssd_rev&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                    - text: "5.0"
+                    - generic [ref=e1223]: 5.0 out of 5 stars
+                    - text: "4"
+                  - 'link "HKD145.92 List: HKD156.58" [ref=e1225] [cursor=pointer]':
+                    - /url: https://aax-us-east-retail-direct.amazon.com/x/c/JEh3tIfTfYr-UW0U6-x2qGkAAAGeQtyTuwEAAAH2AQBvbm9fdHhuX2JpZDUgICBvbm9fdHhuX2ltcDIgICD1KuXh/clv1c_ek-wBYHXErbWDn2nI-MgDzrZjBAPnk4ElUw1xlVg3ygMx_dqRDQX0PibtyCB8_xFY_QpybQL01KqSLJTfQPkbmGBX6D7txkamMtnql1p60gHzVKotesLKwhgYnl9uzTVhpg25pLtjH-WzmDpCquVX8TPYF2egk0qO5TQDzWw0eYrbXMszy4ANByOciwQtFofhtk3cYnPHwzyOe7npyBW3omPDQ5udRYK190arOysVh0mmRrZ3FF5_QAt6cpldGav39lHJa1lBtVZOvbKMyvtzRUeMPCTps7O8HgxGL6_1aJZKLfAZEqlUfaxyKJViOid77_Iq1uSVi9x5CDUzSzXplAZS-_IU1WRqpKAlLCP5BiIAP4xlaVYHbdvJ2CfdrUvKZSCI9zz56TAUl73OFkg81mF_TNeily7taRNm-aEcRnkB54-l0XLdNL0om5pl1axiKRHhfb0ymqnMiZR4L-tjF9mUzs5NQGaSFx5do1K3f98248YWwwi_GOy_8lRAUbVa1BWGV6eGcNLD5yFHQ32-eOYVlbBCoZoEGRZe1Sp0IalJpOpY3glMbnI2D-Zx0wQmwYW_OcwdMhZwS1Dc00La-SRnmB6CtCviuylVtYJAPi-Dt8B-kMYPJ1IYBtIia5RM3vhZcmiD-Bd-SDsZiiv4odaFE551nv-_4tfU9ra2nSkdhY47mmF_yR-vaT6EfOVx_mlxaezfbcKWv0U2OJbUQ0se9RTCMSqJJiuwG9EdHMH4UxY2DofdgM1wKxegaIuvAIPetDNS0L6XehRrIO0vC385VBeQN3OVq-MU7TP-vv5S0h8S3N5ZgOOn87VEWb-kttBMFWegFVM2TLWSBgMUaKEuY1CDYSY0gzGrH8vvd2EiuKVZs2Hnc7OK33BXlBwpMGC6xrJ7WrGIe4CTHtFwP3IR-OlDdDJmaU6-Yde2CzNp1uHNtjaI7UFnXpMLV1jbhK7ykLsj2WMdiGDzGARzNXySATR1sDBCkGF7FXDFl961fEiTvn71kDemAbM_5uHbzk24zRvaHRXxF7pzfgWX0zyD4as0vl8fnuK1jX1WCFLjMTfVwUpo1wCT5EBk3kWejEJNfffOaqE-DhcoxsUy1JKD9lNN48ebn0B8lyuRH1lug7CY_plAW_nFKrWg5Sm6aThOSZkLWaJGhmlsdk5gf7G7dDbgKmQX_T-XUPvQh8enbs3EYvlQ44D0x2jL7TmUAF90BqrfFzYMyfmA1kqYa7bg2nEWnAHaiLPD5KdwAA4dJweOuWJ2QmRQLtZFRcK9XmH1jfcBXHPcGps96_q1MnbM2k9A0JlhdI_Ss3X8v0y7Gt5G4p2zq1PsBoOBZdqnNvANQjzcGUaxrGo_M1LdRKVhBTfaLW9hkUDRhlNxxDuoGg46xLzcOnUlnPbPBU7GqWKloMkRshq90UV5jQbr6azZzO3B7aZ3oA645tLKFIFltd_jCa7ENBzNjpFSjh56qNTL3algac8cUbTHftzj4x3vKYzyU8tsbv_1EtAN-ReKlhJpk8PQgEk20sWmFSCEYM/https://www.amazon.com/dp/1804093262/?_encoding=UTF8&pd_rd_i=1804093262&pd_rd_i=1804093262&ref_=sbx_be_s_sparkle_ssd_pce&pd_rd_w=xR0t0&content-id=amzn1.sym.ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea&pf_rd_p=ccb770a9-35d1-4af6-8af2-bcbd12656fbb&pf_rd_r=C5BHJYCR43D0JFG5EKH3&pd_rd_wg=DupYx&pd_rd_w=xR0t0&pd_rd_r=c65d2a16-6102-46b5-a706-64d82b414cea
+                    - generic [ref=e1226]:
+                      - generic [ref=e1227]: HKD145.92
+                      - generic [ref=e1228]:
+                        - text: HKD
+                        - generic [ref=e1229]: "145."
+                        - text: "92"
+                    - text: "List:"
+                    - generic [ref=e1230]:
+                      - generic [ref=e1231]: HKD156.58
+                      - text: HKD156.58
+    - generic "Top reviews" [ref=e1234]:
+      - separator [ref=e1235]
+      - generic [ref=e1237]:
+        - generic [ref=e1238]:
+          - generic [ref=e1243]:
+            - heading "Customer reviews" [level=2] [ref=e1245]
+            - generic [ref=e1247]:
+              - generic [ref=e1249]:
+                - generic [ref=e1252]: 4.5 out of 5 stars
+                - generic [ref=e1255]: 4.5 out of 5
+              - generic [ref=e1256]: 2 global ratings
+            - list [ref=e1261]:
+              - listitem [ref=e1262]:
+                - link "50 percent of reviews have 5 stars" [ref=e1265] [cursor=pointer]:
+                  - /url: /product-reviews/B0FZ8742R1/ref=acr_dp_hist_5?ie=UTF8&filterByStar=five_star&reviewerType=all_reviews#reviews-filter-bar
+                  - generic [ref=e1266]: 5 star
+                  - progressbar [ref=e1268]
+                  - generic [ref=e1269]: 50%
+              - listitem [ref=e1270]:
+                - link "50 percent of reviews have 4 stars" [ref=e1273] [cursor=pointer]:
+                  - /url: /product-reviews/B0FZ8742R1/ref=acr_dp_hist_4?ie=UTF8&filterByStar=four_star&reviewerType=all_reviews#reviews-filter-bar
+                  - generic [ref=e1274]: 4 star
+                  - progressbar [ref=e1276]
+                  - generic [ref=e1277]: 50%
+              - listitem [ref=e1278]:
+                - generic "0 percent of reviews have 3 stars" [ref=e1281]:
+                  - generic [ref=e1282]: 3 star
+                  - progressbar [ref=e1284]
+                  - generic [ref=e1285]: 0%
+              - listitem [ref=e1286]:
+                - generic "0 percent of reviews have 2 stars" [ref=e1289]:
+                  - generic [ref=e1290]: 2 star
+                  - progressbar [ref=e1292]
+                  - generic [ref=e1293]: 0%
+              - listitem [ref=e1294]:
+                - generic "0 percent of reviews have 1 stars" [ref=e1297]:
+                  - generic [ref=e1298]: 1 star
+                  - progressbar [ref=e1300]
+                  - generic [ref=e1301]: 0%
+            - button "How customer reviews and ratings work" [ref=e1306] [cursor=pointer]: How customer reviews and ratings work
+          - separator [ref=e1308]
+          - separator [ref=e1309]
+          - generic [ref=e1312]:
+            - iframe [ref=e1313]:
+              - generic [ref=f9e4]:
+                - 'link "Corporate Finance A$AP: Level Up With Powerful Finance Tools and Better Decision-Making" [ref=f9e5] [cursor=pointer]':
+                  - /url: https://aax-events-cell01-cf.us-east.ono.axp.amazon-adsystem.com/x/c/RMtXclV5wR0a0etdYDNn9_gAAAGeQtyTawEAAAH0BABvbm9fdHhuX2JpZDYgICBvbm9fdHhuX2ltcDIgICAEbwg7/clv1c_ek8OM3GX57OOBXc78KNgzSsuRo70KTtDSGrKhv4FhB-Et7WjkDcA5ge6mgagwUHxvVzrpo8mWOVTK9k6enqnVlGCClNfKiTenxAcCjwcuirT0hUOcE71yJnbfpTpLSGcyh9XKYA_wl-AitWA2-mvs8zk4HdNey1jW0dgrSv3A84VWG77bZSKg7Gza_z1VMk15tcBlPj4lXU630mRxUMN_t82aVLSiBXdeGKS3ZXLdjX8qh7zB61YfVEy4-ekp7rePmHO1uH1x_pNyCnnA7ECJP4dnOUn56YnpcpQws4MbhXCBWPekbgOEjxn5mMjgrH9HhJd9mqTx8j-iF7BEeWRrlgV8NTb8JWbz8azfOc9E_V2_dB_mxlxiXAYj7saeA/https://www.amazon.com/sspa/click?ie=UTF8&spc=MTozNzEyMzk5NDQ5Mzk5NDE6MTc3OTIzODIxMjpzcF9jcnJfc2hhcmVkOjMwMDU0NDIyODk4NjUwMjo6Ojo&url=%2Fdp%2FB0DDGYXS72%2Fref%3Dsspa_dk_crr_aax_0%3Fpsc%3D1%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9jcnJfc2hhcmVk
+                - 'img "Corporate Finance A$AP: Level Up With Powerful Finance Tools and Better Decision-Making" [ref=f9e9]'
+                - generic [ref=f9e11]: "Corporate Finance A$AP: Level Up With Powerful Finance Tools and Better Decision-Making"
+                - generic [ref=f9e12]:
+                  - generic [ref=f9e13]:
+                    - link "28" [ref=f9e15] [cursor=pointer]:
+                      - /url: https://aax-events-cell01-cf.us-east.ono.axp.amazon-adsystem.com/x/c/RMtXclV5wR0a0etdYDNn9_gAAAGeQtyTawEAAAH0BABvbm9fdHhuX2JpZDYgICBvbm9fdHhuX2ltcDIgICAEbwg7/clv1c_ek8OM3GX57OOBXc78KNgzSsuRo70KTtDSGrKhv4FhB-Et7WjkDcA5ge6mgagwUHxvVzrpo8mWOVTK9k6enqnVlGCClNfKiTenxAcCjwcuirT0hUOcE71yJnbfpTpLSGcyh9XKYA_wl-AitWA2-mvs8zk4HdNey1jW0dgrSv3A84VWG77bZSKg7Gza_z1VMk15tcBlPj4lXU630mRxUMN_t82aVLSiBXdeGKS3ZXLdjX8qh7zB61YfVEy4-ekp7rePmHO1uH1x_pNyCnnA7ECJP4dnOUn56YnpcpQws4MbhXCBWPekbgOEjxn5mMjgrH9HhJd9mqTx8j-iF7BEeWRrlgV8NTb8JWbz8azfOc9E_V2_dB_mxlxiXAYj7saeA/https://www.amazon.com/sspa/click?ie=UTF8&spc=MTozNzEyMzk5NDQ5Mzk5NDE6MTc3OTIzODIxMjpzcF9jcnJfc2hhcmVkOjMwMDU0NDIyODk4NjUwMjo6Ojo&url=%2Fdp%2FB0DDGYXS72%2Fref%3Dsspa_dk_crr_aax_0%3Fpsc%3D1%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9jcnJfc2hhcmVk#customerReviews
+                      - text: "28"
+                    - generic [ref=f9e17]: HKD 119.47
+                  - link "Shop now" [ref=f9e21] [cursor=pointer]:
+                    - /url: https://aax-events-cell01-cf.us-east.ono.axp.amazon-adsystem.com/x/c/RMtXclV5wR0a0etdYDNn9_gAAAGeQtyTawEAAAH0BABvbm9fdHhuX2JpZDYgICBvbm9fdHhuX2ltcDIgICAEbwg7/clv1c_ek8OM3GX57OOBXc78KNgzSsuRo70KTtDSGrKhv4FhB-Et7WjkDcA5ge6mgagwUHxvVzrpo8mWOVTK9k6enqnVlGCClNfKiTenxAcCjwcuirT0hUOcE71yJnbfpTpLSGcyh9XKYA_wl-AitWA2-mvs8zk4HdNey1jW0dgrSv3A84VWG77bZSKg7Gza_z1VMk15tcBlPj4lXU630mRxUMN_t82aVLSiBXdeGKS3ZXLdjX8qh7zB61YfVEy4-ekp7rePmHO1uH1x_pNyCnnA7ECJP4dnOUn56YnpcpQws4MbhXCBWPekbgOEjxn5mMjgrH9HhJd9mqTx8j-iF7BEeWRrlgV8NTb8JWbz8azfOc9E_V2_dB_mxlxiXAYj7saeA/https://www.amazon.com/sspa/click?ie=UTF8&spc=MTozNzEyMzk5NDQ5Mzk5NDE6MTc3OTIzODIxMjpzcF9jcnJfc2hhcmVkOjMwMDU0NDIyODk4NjUwMjo6Ojo&url=%2Fdp%2FB0DDGYXS72%2Fref%3Dsspa_dk_crr_aax_0%3Fpsc%3D1%26sp_csd%3Dd2lkZ2V0TmFtZT1zcF9jcnJfc2hhcmVk
+            - button "Leave feedback on Sponsored ad" [ref=e1315] [cursor=pointer]:
+              - generic [ref=e1316]: Sponsored
+        - generic [ref=e1329]: There are 0 customer reviews.
+  - complementary "Your recently viewed items and featured recommendations"
+  - generic [ref=e1330]:
+    - button "Back to top" [ref=e1331] [cursor=pointer]:
+      - generic [ref=e1332]: Back to top
+    - generic [ref=e1333]:
+      - generic [ref=e1334]:
+        - heading "Get to Know Us" [level=6] [ref=e1335]
+        - list [ref=e1336]:
+          - listitem [ref=e1337]:
+            - link "Careers" [ref=e1338] [cursor=pointer]:
+              - /url: https://www.amazon.jobs
+          - listitem [ref=e1339]:
+            - link "Blog" [ref=e1340] [cursor=pointer]:
+              - /url: https://blog.aboutamazon.com/?utm_source=gateway&utm_medium=footer
+          - listitem [ref=e1341]:
+            - link "About Amazon" [ref=e1342] [cursor=pointer]:
+              - /url: https://www.aboutamazon.com/?utm_source=gateway&utm_medium=footer
+          - listitem [ref=e1343]:
+            - link "Investor Relations" [ref=e1344] [cursor=pointer]:
+              - /url: https://www.amazon.com/ir
+          - listitem [ref=e1345]:
+            - link "Amazon Devices" [ref=e1346] [cursor=pointer]:
+              - /url: /gp/browse.html?node=2102313011&ref_=footer_devices
+          - listitem [ref=e1347]:
+            - link "Amazon Science" [ref=e1348] [cursor=pointer]:
+              - /url: https://www.amazon.science
+      - generic [ref=e1350]:
+        - heading "Make Money with Us" [level=6] [ref=e1351]
+        - list [ref=e1352]:
+          - listitem [ref=e1353]:
+            - link "Sell products on Amazon" [ref=e1354] [cursor=pointer]:
+              - /url: https://services.amazon.com/sell.html?ld=AZFSSOA&ref_=footer_soa
+          - listitem [ref=e1355]:
+            - link "Sell on Amazon Business" [ref=e1356] [cursor=pointer]:
+              - /url: https://services.amazon.com/amazon-business.html?ld=usb2bunifooter&ref_=footer_b2b
+          - listitem [ref=e1357]:
+            - link "Sell apps on Amazon" [ref=e1358] [cursor=pointer]:
+              - /url: https://developer.amazon.com
+          - listitem [ref=e1359]:
+            - link "Become an Affiliate" [ref=e1360] [cursor=pointer]:
+              - /url: https://affiliate-program.amazon.com/
+          - listitem [ref=e1361]:
+            - link "Advertise Your Products" [ref=e1362] [cursor=pointer]:
+              - /url: https://advertising.amazon.com/?ref=ext_amzn_ftr
+          - listitem [ref=e1363]:
+            - link "Self-Publish with Us" [ref=e1364] [cursor=pointer]:
+              - /url: /gp/seller-account/mm-summary-page.html?ld=AZFooterSelfPublish&topic=200260520&ref_=footer_publishing
+          - listitem [ref=e1365]:
+            - link "Host an Amazon Hub" [ref=e1366] [cursor=pointer]:
+              - /url: https://go.thehub-amazon.com/amazon-hub-locker
+          - listitem [ref=e1367]:
+            - text: ›
+            - link "See More Make Money with Us" [ref=e1368] [cursor=pointer]:
+              - /url: /b/?node=18190131011&ld=AZUSSOA-seemore&ref_=footer_seemore
+      - generic [ref=e1370]:
+        - heading "Amazon Payment Products" [level=6] [ref=e1371]
+        - list [ref=e1372]:
+          - listitem [ref=e1373]:
+            - link "Amazon Business Card" [ref=e1374] [cursor=pointer]:
+              - /url: /dp/B07984JN3L?plattr=ACOMFO&ie=UTF-8
+          - listitem [ref=e1375]:
+            - link "Shop with Points" [ref=e1376] [cursor=pointer]:
+              - /url: /gp/browse.html?node=16218619011&ref_=footer_swp
+          - listitem [ref=e1377]:
+            - link "Reload Your Balance" [ref=e1378] [cursor=pointer]:
+              - /url: /dp/B0CHTVMXZJ?th=1?ref_=footer_reload_us
+          - listitem [ref=e1379]:
+            - link "Amazon Currency Converter" [ref=e1380] [cursor=pointer]:
+              - /url: /gp/browse.html?node=388305011&ref_=footer_tfx
+      - generic [ref=e1382]:
+        - heading "Let Us Help You" [level=6] [ref=e1383]
+        - list [ref=e1384]:
+          - listitem [ref=e1385]:
+            - link "Amazon and COVID-19" [ref=e1386] [cursor=pointer]:
+              - /url: /gp/help/customer/display.html?nodeId=GDFU3JS5AL6SYHRD&ref_=footer_covid
+          - listitem [ref=e1387]:
+            - link "Your Account" [ref=e1388] [cursor=pointer]:
+              - /url: https://www.amazon.com/gp/css/homepage.html?ref_=footer_ya
+          - listitem [ref=e1389]:
+            - link "Your Orders" [ref=e1390] [cursor=pointer]:
+              - /url: https://www.amazon.com/gp/css/order-history?ref_=footer_yo
+          - listitem [ref=e1391]:
+            - link "Shipping Rates & Policies" [ref=e1392] [cursor=pointer]:
+              - /url: /gp/help/customer/display.html?nodeId=468520&ref_=footer_shiprates
+          - listitem [ref=e1393]:
+            - link "Returns & Replacements" [ref=e1394] [cursor=pointer]:
+              - /url: /gp/css/returns/homepage.html?ref_=footer_hy_f_4
+          - listitem [ref=e1395]:
+            - link "Manage Your Content and Devices" [ref=e1396] [cursor=pointer]:
+              - /url: /gp/digital/fiona/manage?ref_=footer_myk
+          - listitem [ref=e1397]:
+            - link "Help" [ref=e1398] [cursor=pointer]:
+              - /url: /gp/help/customer/display.html?nodeId=508510&ref_=footer_gw_m_b_he
+    - generic [ref=e1400]:
+      - link "Amazon US Home" [ref=e1403] [cursor=pointer]:
+        - /url: /?ref_=footer_logo
+      - generic [ref=e1406]:
+        - generic [ref=e1407]:
+          - link "Choose a language for shopping. Current selection is English." [ref=e1408] [cursor=pointer]:
+            - /url: /customer-preferences/edit?ie=UTF8&preferencesReturnUrl=%2F&ref_=footer_lang
+            - generic [ref=e1410]: English
+          - button "Expand to Change Language or Country" [ref=e1411] [cursor=pointer]
+        - link "HK$ HKD - Hong Kong Dollar" [ref=e1412] [cursor=pointer]:
+          - /url: /customer-preferences/edit?ie=UTF8&ref_=footer_cop&preferencesReturnUrl=%2FIntangible-Asset-Valuation-Comprehensive-Technology%2Fdp%2FB0FZ8742R1
+          - generic [ref=e1413]: HK$
+          - generic [ref=e1414]: HKD - Hong Kong Dollar
+        - button "Choose a country/region for shopping. The current selection is United States." [ref=e1415] [cursor=pointer]:
+          - generic [ref=e1417]: United States
+    - navigation "More on Amazon" [ref=e1418]:
+      - generic "More on Amazon" [ref=e1419]:
+        - list [ref=e1420]:
+          - listitem [ref=e1421]:
+            - link "Amazon Music Stream millions of songs" [ref=e1422] [cursor=pointer]:
+              - /url: https://music.amazon.com?ref=dm_aff_amz_com
+              - heading "Amazon Music" [level=5] [ref=e1423]
+              - generic [ref=e1424]:
+                - text: Stream millions
+                - text: of songs
+          - listitem [ref=e1425]
+          - listitem [ref=e1426]:
+            - link "Amazon Ads Reach customers wherever they spend their time" [ref=e1427] [cursor=pointer]:
+              - /url: https://advertising.amazon.com/?ref=footer_advtsing_amzn_com
+              - heading "Amazon Ads" [level=5] [ref=e1428]
+              - generic [ref=e1429]:
+                - text: Reach customers
+                - text: wherever they
+                - text: spend their time
+          - listitem [ref=e1430]
+          - listitem [ref=e1431]:
+            - link "6pm Score deals on fashion brands" [ref=e1432] [cursor=pointer]:
+              - /url: https://www.6pm.com
+              - heading "6pm" [level=5] [ref=e1433]
+              - generic [ref=e1434]:
+                - text: Score deals
+                - text: on fashion brands
+          - listitem [ref=e1435]
+          - listitem [ref=e1436]:
+            - link "AbeBooks Books, art & collectibles" [ref=e1437] [cursor=pointer]:
+              - /url: https://www.abebooks.com
+              - heading "AbeBooks" [level=5] [ref=e1438]
+              - generic [ref=e1439]:
+                - text: Books, art
+                - text: "& collectibles"
+          - listitem [ref=e1440]
+          - listitem [ref=e1441]:
+            - link "ACX Audiobook Publishing Made Easy" [ref=e1442] [cursor=pointer]:
+              - /url: https://www.acx.com/
+              - heading "ACX" [level=5] [ref=e1443]
+              - generic [ref=e1444]:
+                - text: Audiobook Publishing
+                - text: Made Easy
+          - listitem [ref=e1445]
+          - listitem [ref=e1446]:
+            - link "Sell on Amazon Start a Selling Account" [ref=e1447] [cursor=pointer]:
+              - /url: https://sell.amazon.com/?ld=AZUSSOA-footer-aff&ref_=footer_sell
+              - heading "Sell on Amazon" [level=5] [ref=e1448]
+              - generic [ref=e1449]: Start a Selling Account
+          - listitem [ref=e1450]
+          - listitem [ref=e1451]:
+            - link "Veeqo Shipping Software Inventory Management" [ref=e1452] [cursor=pointer]:
+              - /url: https://www.veeqo.com/?utm_source=amazon&utm_medium=website&utm_campaign=footer
+              - heading "Veeqo" [level=5] [ref=e1453]
+              - generic [ref=e1454]:
+                - text: Shipping Software
+                - text: Inventory Management
+        - list [ref=e1455]:
+          - listitem [ref=e1456]:
+            - link "Amazon Business Everything For Your Business" [ref=e1457] [cursor=pointer]:
+              - /url: /business?ref_=footer_retail_b2b
+              - heading "Amazon Business" [level=5] [ref=e1458]
+              - generic [ref=e1459]:
+                - text: Everything For
+                - text: Your Business
+          - listitem [ref=e1460]
+          - listitem [ref=e1461]:
+            - link "AmazonGlobal Ship Orders Internationally" [ref=e1462] [cursor=pointer]:
+              - /url: /gp/browse.html?node=230659011&ref_=footer_amazonglobal
+              - heading "AmazonGlobal" [level=5] [ref=e1463]
+              - generic [ref=e1464]:
+                - text: Ship Orders
+                - text: Internationally
+          - listitem [ref=e1465]
+          - listitem [ref=e1466]:
+            - link "Amazon Web Services Scalable Cloud Computing Services" [ref=e1467] [cursor=pointer]:
+              - /url: https://aws.amazon.com/what-is-cloud-computing/?sc_channel=EL&sc_campaign=amazonfooter
+              - heading "Amazon Web Services" [level=5] [ref=e1468]
+              - generic [ref=e1469]:
+                - text: Scalable Cloud
+                - text: Computing Services
+          - listitem [ref=e1470]
+          - listitem [ref=e1471]:
+            - link "Audible Listen to Books & Original Audio Performances" [ref=e1472] [cursor=pointer]:
+              - /url: https://www.audible.com
+              - heading "Audible" [level=5] [ref=e1473]
+              - generic [ref=e1474]:
+                - text: Listen to Books & Original
+                - text: Audio Performances
+          - listitem [ref=e1475]
+          - listitem [ref=e1476]:
+            - link "Box Office Mojo Find Movie Box Office Data" [ref=e1477] [cursor=pointer]:
+              - /url: https://www.boxofficemojo.com/?ref_=amzn_nav_ftr
+              - heading "Box Office Mojo" [level=5] [ref=e1478]
+              - generic [ref=e1479]:
+                - text: Find Movie
+                - text: Box Office Data
+          - listitem [ref=e1480]
+          - listitem [ref=e1481]:
+            - link "Goodreads Book reviews & recommendations" [ref=e1482] [cursor=pointer]:
+              - /url: https://www.goodreads.com
+              - heading "Goodreads" [level=5] [ref=e1483]
+              - generic [ref=e1484]:
+                - text: Book reviews
+                - text: "& recommendations"
+          - listitem [ref=e1485]
+          - listitem [ref=e1486]:
+            - link "IMDb Movies, TV & Celebrities" [ref=e1487] [cursor=pointer]:
+              - /url: https://www.imdb.com
+              - heading "IMDb" [level=5] [ref=e1488]
+              - generic [ref=e1489]:
+                - text: Movies, TV
+                - text: "& Celebrities"
+        - list [ref=e1490]:
+          - listitem [ref=e1491]:
+            - link "IMDbPro Get Info Entertainment Professionals Need" [ref=e1492] [cursor=pointer]:
+              - /url: https://pro.imdb.com?ref_=amzn_nav_ftr
+              - heading "IMDbPro" [level=5] [ref=e1493]
+              - generic [ref=e1494]:
+                - text: Get Info Entertainment
+                - text: Professionals Need
+          - listitem [ref=e1495]
+          - listitem [ref=e1496]:
+            - link "Kindle Direct Publishing Indie Digital & Print Publishing Made Easy" [ref=e1497] [cursor=pointer]:
+              - /url: https://kdp.amazon.com
+              - heading "Kindle Direct Publishing" [level=5] [ref=e1498]
+              - generic [ref=e1499]:
+                - text: Indie Digital & Print Publishing
+                - text: Made Easy
+          - listitem [ref=e1500]
+          - listitem [ref=e1501]:
+            - link "Prime Video Direct Video Distribution Made Easy" [ref=e1502] [cursor=pointer]:
+              - /url: https://videodirect.amazon.com/home/landing
+              - heading "Prime Video Direct" [level=5] [ref=e1503]
+              - generic [ref=e1504]:
+                - text: Video Distribution
+                - text: Made Easy
+          - listitem [ref=e1505]
+          - listitem [ref=e1506]:
+            - link "Shopbop Designer Fashion Brands" [ref=e1507] [cursor=pointer]:
+              - /url: https://www.shopbop.com
+              - heading "Shopbop" [level=5] [ref=e1508]
+              - generic [ref=e1509]:
+                - text: Designer
+                - text: Fashion Brands
+          - listitem [ref=e1510]
+          - listitem [ref=e1511]:
+            - link "Woot! Deals and Shenanigans" [ref=e1512] [cursor=pointer]:
+              - /url: https://www.woot.com/
+              - heading "Woot!" [level=5] [ref=e1513]
+              - generic [ref=e1514]:
+                - text: Deals and
+                - text: Shenanigans
+          - listitem [ref=e1515]
+          - listitem [ref=e1516]:
+            - link "Zappos Shoes & Clothing" [ref=e1517] [cursor=pointer]:
+              - /url: https://www.zappos.com
+              - heading "Zappos" [level=5] [ref=e1518]
+              - generic [ref=e1519]:
+                - text: Shoes &
+                - text: Clothing
+          - listitem [ref=e1520]
+          - listitem [ref=e1521]:
+            - link "Ring Smart Home Security Systems" [ref=e1522] [cursor=pointer]:
+              - /url: https://ring.com
+              - heading "Ring" [level=5] [ref=e1523]
+              - generic [ref=e1524]:
+                - text: Smart Home
+                - text: Security Systems
+        - list [ref=e1525]:
+          - listitem [ref=e1526]
+          - listitem [ref=e1527]
+          - listitem [ref=e1528]:
+            - link "eero WiFi Stream 4K Video in Every Room" [ref=e1529] [cursor=pointer]:
+              - /url: https://eero.com/
+              - heading "eero WiFi" [level=5] [ref=e1530]
+              - generic [ref=e1531]:
+                - text: Stream 4K Video
+                - text: in Every Room
+          - listitem [ref=e1532]
+          - listitem [ref=e1533]:
+            - link "Blink Smart Security for Every Home" [ref=e1534] [cursor=pointer]:
+              - /url: https://blinkforhome.com/?ref=nav_footer
+              - heading "Blink" [level=5] [ref=e1535]
+              - generic [ref=e1536]:
+                - text: Smart Security
+                - text: for Every Home
+          - listitem [ref=e1537]
+          - listitem [ref=e1538]:
+            - link "Neighbors App Real-Time Crime & Safety Alerts" [ref=e1539] [cursor=pointer]:
+              - /url: https://shop.ring.com/pages/neighbors-app
+              - heading "Neighbors App" [level=5] [ref=e1540]
+              - generic [ref=e1541]:
+                - text: Real-Time Crime
+                - text: "& Safety Alerts"
+          - listitem [ref=e1542]
+          - listitem [ref=e1543]:
+            - link "PillPack Pharmacy Simplified" [ref=e1544] [cursor=pointer]:
+              - /url: https://www.pillpack.com
+              - heading "PillPack" [level=5] [ref=e1545]
+              - generic [ref=e1546]: Pharmacy Simplified
+          - listitem [ref=e1547]
+          - listitem [ref=e1548]
+          - listitem [ref=e1549]
+          - listitem [ref=e1550]
+    - generic [ref=e1551]:
+      - list [ref=e1552]:
+        - listitem [ref=e1553]:
+          - link "Conditions of Use" [ref=e1554] [cursor=pointer]:
+            - /url: /gp/help/customer/display.html?nodeId=508088&ref_=footer_cou
+        - listitem [ref=e1555]:
+          - link "Privacy Notice" [ref=e1556] [cursor=pointer]:
+            - /url: /gp/help/customer/display.html?nodeId=GX7NJQ4ZB8MHFRNJ&ref_=footer_privacy
+        - listitem [ref=e1557]:
+          - link "Consumer Health Data Privacy Disclosure" [ref=e1558] [cursor=pointer]:
+            - /url: /gp/help/customer/display.html?ie=UTF8&nodeId=TnACMrGVghHocjL8KB&ref_=footer_consumer_health_data_privacy
+        - listitem [ref=e1559]:
+          - link "Your Ads Privacy Choices" [ref=e1560] [cursor=pointer]:
+            - /url: /privacyprefs?ref_=footer_iba
+        - listitem [ref=e1561]
+      - generic [ref=e1563]: © 1996-2026, Amazon.com, Inc. or its affiliates
+  - iframe [ref=e1565]:
+    - iframe [ref=f11e2]:
+      - generic [active]:
+        - img [ref=f12e1]
+        - img [ref=f12e2]
+        - img [ref=f12e3]
+        - img [ref=f12e4]
+        - img [ref=f12e5]
+        - img [ref=f12e6]
+        - img [ref=f12e7]
+        - img [ref=f12e8]
+        - img [ref=f12e9]
+        - img [ref=f12e10]
+        - img [ref=f12e11]
+        - img [ref=f12e12]
+        - img [ref=f12e13]
+        - img [ref=f12e14]
+        - img [ref=f12e15]
+        - img [ref=f12e16]
+        - img [ref=f12e17]
+        - img [ref=f12e18]
+        - img [ref=f12e19]
+        - img [ref=f12e20]
+        - img [ref=f12e21]
+        - img [ref=f12e22]
+        - img [ref=f12e23]
+        - img [ref=f12e24]
+        - img [ref=f12e25]
+        - img [ref=f12e26]
+        - img [ref=f12e27]
+        - img [ref=f12e28]
+        - img [ref=f12e29]
+        - img [ref=f12e30]
+        - img [ref=f12e31]
+        - img [ref=f12e32]
+        - img [ref=f12e33]
+        - img [ref=f12e34]
+        - img [ref=f12e35]
+        - img [ref=f12e36]
+        - img [ref=f12e37]
+        - img [ref=f12e38]
+        - img [ref=f12e39]
+        - img [ref=f12e40]
+        - img [ref=f12e41]
+        - img [ref=f12e42]
+        - img [ref=f12e43]

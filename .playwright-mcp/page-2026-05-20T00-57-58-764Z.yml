@@ -1,0 +1,432 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: https://simonplmak-cloud.github.io/startup-valuation/#startup-valuation-a-comprehensive-guide
+  - banner [ref=e3]:
+    - navigation "Header" [ref=e4]:
+      - img [ref=e6] [cursor=pointer]
+      - generic [ref=e9]:
+        - generic [ref=e11]: Startup Valuation
+        - generic:
+          - generic: Home
+      - generic [ref=e12]:
+        - radio "Switch to dark mode"
+        - generic "Switch to dark mode" [ref=e13] [cursor=pointer]:
+          - img [ref=e14]
+        - radio "Switch to light mode"
+      - img [ref=e17] [cursor=pointer]
+      - dialog:
+        - search:
+          - generic:
+            - textbox "Search" [ref=e19]
+            - img [ref=e21] [cursor=pointer]
+            - navigation "Search":
+              - link "Share":
+                - /url: https://simonplmak-cloud.github.io/startup-valuation/?q=
+                - img
+              - button "Clear":
+                - img
+          - generic [ref=e23]: Initializing search
+  - generic [ref=e24]:
+    - main [ref=e25]:
+      - generic [ref=e26]:
+        - navigation "Navigation" [ref=e29]:
+          - generic [ref=e30] [cursor=pointer]:
+            - link "Startup Valuation" [ref=e31]:
+              - /url: https://simonplmak-cloud.github.io/startup-valuation/
+              - img "logo" [ref=e32]
+            - text: Startup Valuation
+          - link "simonplmak-cloud/startup-valuation" [ref=e34] [cursor=pointer]:
+            - /url: https://github.com/simonplmak-cloud/startup-valuation
+            - img [ref=e36]
+            - generic [ref=e38]: simonplmak-cloud/startup-valuation
+          - list [ref=e39]:
+            - listitem [ref=e40]:
+              - generic [ref=e42]: Home
+              - navigation "Table of contents" [ref=e44]:
+                - generic [ref=e45] [cursor=pointer]: Table of contents
+                - list [ref=e47]:
+                  - listitem [ref=e48]:
+                    - link "Companion Library" [ref=e49] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/#companion-library
+                      - generic [ref=e50]: Companion Library
+                  - listitem [ref=e51]:
+                    - link "Quick Start" [ref=e52] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/#quick-start
+                      - generic [ref=e53]: Quick Start
+                  - listitem [ref=e54]:
+                    - link "Book Chapters → Library Modules" [ref=e55] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/#book-chapters-library-modules
+                      - generic [ref=e56]: Book Chapters → Library Modules
+                  - listitem [ref=e57]:
+                    - link "Features" [ref=e58] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/#features
+                      - generic [ref=e59]: Features
+                  - listitem [ref=e60]:
+                    - link "Modules" [ref=e61] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/#modules
+                      - generic [ref=e62]: Modules
+                  - listitem [ref=e63]:
+                    - link "MCP Server" [ref=e64] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/#mcp-server
+                      - generic [ref=e65]: MCP Server
+                  - listitem [ref=e66]:
+                    - link "AI-Agent Skills" [ref=e67] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/#ai-agent-skills
+                      - generic [ref=e68]: AI-Agent Skills
+                  - listitem [ref=e69]:
+                    - link "Development" [ref=e70] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/#development
+                      - generic [ref=e71]: Development
+                  - listitem [ref=e72]:
+                    - link "License" [ref=e73] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/#license
+                      - generic [ref=e74]: License
+            - listitem [ref=e75]:
+              - generic [ref=e77]: API Reference
+              - navigation "API Reference" [ref=e79]:
+                - generic [ref=e80] [cursor=pointer]: API Reference
+                - list [ref=e82]:
+                  - listitem [ref=e83]:
+                    - link "Probability" [ref=e84] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/api/probability/
+                      - generic [ref=e85]: Probability
+                  - listitem [ref=e86]:
+                    - link "Time Value" [ref=e87] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/api/tv/
+                      - generic [ref=e88]: Time Value
+                  - listitem [ref=e89]:
+                    - link "CAPM" [ref=e90] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/api/capm/
+                      - generic [ref=e91]: CAPM
+                  - listitem [ref=e92]:
+                    - link "Core Methods" [ref=e93] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/api/core/
+                      - generic [ref=e94]: Core Methods
+                  - listitem [ref=e95]:
+                    - link "Advanced" [ref=e96] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/api/advanced/
+                      - generic [ref=e97]: Advanced
+                  - listitem [ref=e98]:
+                    - link "Comparables" [ref=e99] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/api/comparables/
+                      - generic [ref=e100]: Comparables
+                  - listitem [ref=e101]:
+                    - link "SaaS" [ref=e102] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/api/saas/
+                      - generic [ref=e103]: SaaS
+                  - listitem [ref=e104]:
+                    - link "Biotech" [ref=e105] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/api/biotech/
+                      - generic [ref=e106]: Biotech
+                  - listitem [ref=e107]:
+                    - link "Fintech" [ref=e108] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/api/fintech/
+                      - generic [ref=e109]: Fintech
+                  - listitem [ref=e110]:
+                    - link "Marketplace" [ref=e111] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/api/marketplace/
+                      - generic [ref=e112]: Marketplace
+                  - listitem [ref=e113]:
+                    - link "Hardware" [ref=e114] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/api/hardware/
+                      - generic [ref=e115]: Hardware
+                  - listitem [ref=e116]:
+                    - link "International" [ref=e117] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/api/international/
+                      - generic [ref=e118]: International
+                  - listitem [ref=e119]:
+                    - link "Stakeholders" [ref=e120] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/api/stakeholders/
+                      - generic [ref=e121]: Stakeholders
+                  - listitem [ref=e122]:
+                    - link "Emerging" [ref=e123] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/api/emerging/
+                      - generic [ref=e124]: Emerging
+            - listitem [ref=e125]:
+              - generic [ref=e127]: Examples
+              - navigation "Examples" [ref=e129]:
+                - generic [ref=e130] [cursor=pointer]: Examples
+                - list [ref=e132]:
+                  - listitem [ref=e133]:
+                    - link "Core Methods" [ref=e134] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/examples/core-methods/
+                      - generic [ref=e135]: Core Methods
+                  - listitem [ref=e136]:
+                    - link "Advanced Methods" [ref=e137] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/examples/advanced-methods/
+                      - generic [ref=e138]: Advanced Methods
+                  - listitem [ref=e139]:
+                    - link "Industry Models" [ref=e140] [cursor=pointer]:
+                      - /url: https://simonplmak-cloud.github.io/startup-valuation/examples/industry-models/
+                      - generic [ref=e141]: Industry Models
+            - listitem [ref=e142]:
+              - link "Chapter Index" [ref=e143] [cursor=pointer]:
+                - /url: https://simonplmak-cloud.github.io/startup-valuation/chapters/
+                - generic [ref=e144]: Chapter Index
+        - article [ref=e146]:
+          - 'heading "Startup Valuation: A Comprehensive Guide ¶" [level=1] [ref=e147]':
+            - text: "Startup Valuation: A Comprehensive Guide"
+            - link "¶" [ref=e148] [cursor=pointer]:
+              - /url: https://simonplmak-cloud.github.io/startup-valuation/#startup-valuation-a-comprehensive-guide
+          - generic [ref=e149]:
+            - img "Startup Valuation book cover" [ref=e151]
+            - generic [ref=e152]:
+              - heading "Startup Valuation" [level=2] [ref=e153]
+              - paragraph [ref=e154]: A Comprehensive Guide to Valuing Fast-Growing Pre-Revenue Companies
+              - paragraph [ref=e155]: Theory, Methods, Regulation, and Practice
+              - paragraph [ref=e156]: Valuation in Practice Series by Ascent Partners
+              - paragraph [ref=e157]: By Simon Mak
+              - paragraph [ref=e158]: Unlock the secrets of startup valuation with the definitive textbook for finance professionals, investors, founders, and students. Dive deep into probability theory, option pricing, and stochastic processes—explained step-by-step and applied to real startup scenarios.
+              - paragraph [ref=e159]: 15 chapters · 5 appendices · 300+ exercises · 20+ real-world cases · 50+ figures · 100+ tables
+              - link "Buy on Amazon — Kindle $38.80 | Paperback $69.65" [ref=e160] [cursor=pointer]:
+                - /url: https://www.amazon.com/Startup-Valuation-Comprehensive-Fast-Growing-Pre-Revenue-ebook/dp/B0FYTGNVWS/
+          - heading "Companion Library ¶" [level=2] [ref=e161]:
+            - text: Companion Library
+            - link "¶" [ref=e162] [cursor=pointer]:
+              - /url: https://simonplmak-cloud.github.io/startup-valuation/#companion-library
+          - paragraph [ref=e163]:
+            - text: This site is the companion documentation for the Python library implementing
+            - strong [ref=e164]: 80+ formulas
+            - text: from the Startup Valuation textbook.
+          - heading "Quick Start ¶" [level=2] [ref=e165]:
+            - text: Quick Start
+            - link "¶" [ref=e166] [cursor=pointer]:
+              - /url: https://simonplmak-cloud.github.io/startup-valuation/#quick-start
+          - generic [ref=e168]:
+            - navigation [ref=e169]:
+              - button "Copy to clipboard" [ref=e170] [cursor=pointer]
+            - code [ref=e171]: pip install -e ".[dev]"
+          - generic [ref=e173]:
+            - navigation [ref=e174]:
+              - button "Copy to clipboard" [ref=e175] [cursor=pointer]
+            - code [ref=e176]: "from startup_valuation.core import scorecard_valuation, vc_method_post_money from startup_valuation.advanced import black_scholes # Scorecard Method result = scorecard_valuation( average_valuation=1_500_000, weights=[0.30, 0.25, 0.15, 0.10, 0.10, 0.05, 0.05], scores=[1.25, 1.50, 1.20, 0.75, 1.00, 0.90, 1.00], ) print(f\"Scorecard: ${result.value:,.0f}\") # $1,800,000 # Black-Scholes for real options result = black_scholes(20_000_000, 5_000_000, 0.05, 0.40, 1.0) print(f\"Option value: ${result.value:,.0f}\") # $15,240,000"
+          - heading "Book Chapters → Library Modules ¶" [level=2] [ref=e177]:
+            - text: Book Chapters → Library Modules
+            - link "¶" [ref=e178] [cursor=pointer]:
+              - /url: https://simonplmak-cloud.github.io/startup-valuation/#book-chapters-library-modules
+          - table [ref=e181]:
+            - rowgroup [ref=e182]:
+              - row "Chapter Topic Library Module" [ref=e183]:
+                - columnheader "Chapter" [ref=e184]
+                - columnheader "Topic" [ref=e185]
+                - columnheader "Library Module" [ref=e186]
+            - rowgroup [ref=e187]:
+              - row "1 Introduction to Startup Valuation —" [ref=e188]:
+                - cell "1" [ref=e189]
+                - cell "Introduction to Startup Valuation" [ref=e190]
+                - cell "—" [ref=e191]
+              - row "2 Probability, TVM, CAPM probability, tv, capm" [ref=e192]:
+                - cell "2" [ref=e193]
+                - cell "Probability, TVM, CAPM" [ref=e194]
+                - cell "probability, tv, capm" [ref=e195]:
+                  - code [ref=e196]: probability
+                  - text: ","
+                  - code [ref=e197]: tv
+                  - text: ","
+                  - code [ref=e198]: capm
+              - row "3 Core Valuation Methods core" [ref=e199]:
+                - cell "3" [ref=e200]
+                - cell "Core Valuation Methods" [ref=e201]
+                - cell "core" [ref=e202]:
+                  - code [ref=e203]: core
+              - row "4 Advanced Methods advanced" [ref=e204]:
+                - cell "4" [ref=e205]
+                - cell "Advanced Methods" [ref=e206]
+                - cell "advanced" [ref=e207]:
+                  - code [ref=e208]: advanced
+              - row "5 Comparables & Multiples comparables" [ref=e209]:
+                - cell "5" [ref=e210]
+                - cell "Comparables & Multiples" [ref=e211]
+                - cell "comparables" [ref=e212]:
+                  - code [ref=e213]: comparables
+              - row "6–10 Specialized Topics See textbook" [ref=e214]:
+                - cell "6–10" [ref=e215]
+                - cell "Specialized Topics" [ref=e216]
+                - cell "See textbook" [ref=e217]
+              - row "11 Industry-Specific Models saas, biotech, fintech, marketplace, hardware" [ref=e218]:
+                - cell "11" [ref=e219]
+                - cell "Industry-Specific Models" [ref=e220]
+                - cell "saas, biotech, fintech, marketplace, hardware" [ref=e221]:
+                  - code [ref=e222]: saas
+                  - text: ","
+                  - code [ref=e223]: biotech
+                  - text: ","
+                  - code [ref=e224]: fintech
+                  - text: ","
+                  - code [ref=e225]: marketplace
+                  - text: ","
+                  - code [ref=e226]: hardware
+              - row "12 International Valuation international" [ref=e227]:
+                - cell "12" [ref=e228]
+                - cell "International Valuation" [ref=e229]
+                - cell "international" [ref=e230]:
+                  - code [ref=e231]: international
+              - row "13 Stakeholder Analysis stakeholders" [ref=e232]:
+                - cell "13" [ref=e233]
+                - cell "Stakeholder Analysis" [ref=e234]
+                - cell "stakeholders" [ref=e235]:
+                  - code [ref=e236]: stakeholders
+              - row "14 Emerging Methods emerging" [ref=e237]:
+                - cell "14" [ref=e238]
+                - cell "Emerging Methods" [ref=e239]
+                - cell "emerging" [ref=e240]:
+                  - code [ref=e241]: emerging
+              - row "15 Conclusion & Best Practices —" [ref=e242]:
+                - cell "15" [ref=e243]
+                - cell "Conclusion & Best Practices" [ref=e244]
+                - cell "—" [ref=e245]
+          - heading "Features ¶" [level=2] [ref=e246]:
+            - text: Features
+            - link "¶" [ref=e247] [cursor=pointer]:
+              - /url: https://simonplmak-cloud.github.io/startup-valuation/#features
+          - list [ref=e248]:
+            - listitem [ref=e249]:
+              - strong [ref=e250]: 80+ valuation formulas
+              - text: across 14 modules covering every method in the textbook
+            - listitem [ref=e251]:
+              - strong [ref=e252]: Typed Python API
+              - text: with structured
+              - code [ref=e253]: ValuationResult
+              - text: returns (value + assumptions + sensitivity)
+            - listitem [ref=e254]:
+              - strong [ref=e255]: MCP Server
+              - text: exposing all calculations as tools for AI agents (Claude, OpenCode, etc.)
+            - listitem [ref=e256]:
+              - strong [ref=e257]: AI-Agent Skills
+              - text: with workflow guidance for 5 valuation domains
+            - listitem [ref=e258]:
+              - strong [ref=e259]: Every function tested
+              - text: against textbook example values
+          - heading "Modules ¶" [level=2] [ref=e260]:
+            - text: Modules
+            - link "¶" [ref=e261] [cursor=pointer]:
+              - /url: https://simonplmak-cloud.github.io/startup-valuation/#modules
+          - table [ref=e264]:
+            - rowgroup [ref=e265]:
+              - row "Module Methods Chapter" [ref=e266]:
+                - columnheader "Module" [ref=e267]
+                - columnheader "Methods" [ref=e268]
+                - columnheader "Chapter" [ref=e269]
+            - rowgroup [ref=e270]:
+              - row "probability Expected value, joint probability, Poisson 2" [ref=e271]:
+                - cell "probability" [ref=e272]:
+                  - code [ref=e273]: probability
+                - cell "Expected value, joint probability, Poisson" [ref=e274]
+                - cell "2" [ref=e275]
+              - row "tv PV, NPV, annuity 2" [ref=e276]:
+                - cell "tv" [ref=e277]:
+                  - code [ref=e278]: tv
+                - cell "PV, NPV, annuity" [ref=e279]
+                - cell "2" [ref=e280]
+              - row "capm CAPM, portfolio beta, startup-adjusted 2" [ref=e281]:
+                - cell "capm" [ref=e282]:
+                  - code [ref=e283]: capm
+                - cell "CAPM, portfolio beta, startup-adjusted" [ref=e284]
+                - cell "2" [ref=e285]
+              - row "core Scorecard, Berkus, Risk Factor, VC Method 3" [ref=e286]:
+                - cell "core" [ref=e287]:
+                  - code [ref=e288]: core
+                - cell "Scorecard, Berkus, Risk Factor, VC Method" [ref=e289]
+                - cell "3" [ref=e290]
+              - row "advanced Black-Scholes, Binomial, Monte Carlo, Scenario 4" [ref=e291]:
+                - cell "advanced" [ref=e292]:
+                  - code [ref=e293]: advanced
+                - cell "Black-Scholes, Binomial, Monte Carlo, Scenario" [ref=e294]
+                - cell "4" [ref=e295]
+              - row "comparables Multiples, regression-adjusted 5" [ref=e296]:
+                - cell "comparables" [ref=e297]:
+                  - code [ref=e298]: comparables
+                - cell "Multiples, regression-adjusted" [ref=e299]
+                - cell "5" [ref=e300]
+              - row "saas LTV, CAC, NRR, Magic Number, Rule of 40 11" [ref=e301]:
+                - cell "saas" [ref=e302]:
+                  - code [ref=e303]: saas
+                - cell "LTV, CAC, NRR, Magic Number, Rule of 40" [ref=e304]
+                - cell "11" [ref=e305]
+              - row "biotech rNPV, decision tree, peak sales, pipeline 11" [ref=e306]:
+                - cell "biotech" [ref=e307]:
+                  - code [ref=e308]: biotech
+                - cell "rNPV, decision tree, peak sales, pipeline" [ref=e309]
+                - cell "11" [ref=e310]
+              - row "fintech Payment revenue, lending, network effects 11" [ref=e311]:
+                - cell "fintech" [ref=e312]:
+                  - code [ref=e313]: fintech
+                - cell "Payment revenue, lending, network effects" [ref=e314]
+                - cell "11" [ref=e315]
+              - row "marketplace GMV, take rate, liquidity, network density 11" [ref=e316]:
+                - cell "marketplace" [ref=e317]:
+                  - code [ref=e318]: marketplace
+                - cell "GMV, take rate, liquidity, network density" [ref=e319]
+                - cell "11" [ref=e320]
+              - row "hardware TRL-adjusted, break-even, P-weighted DCF 11" [ref=e321]:
+                - cell "hardware" [ref=e322]:
+                  - code [ref=e323]: hardware
+                - cell "TRL-adjusted, break-even, P-weighted DCF" [ref=e324]
+                - cell "11" [ref=e325]
+              - row "international PPP, CRP, currency-adjusted DCF 12" [ref=e326]:
+                - cell "international" [ref=e327]:
+                  - code [ref=e328]: international
+                - cell "PPP, CRP, currency-adjusted DCF" [ref=e329]
+                - cell "12" [ref=e330]
+              - row "stakeholders Dilution, OPM, PWERM, liquidation 13" [ref=e331]:
+                - cell "stakeholders" [ref=e332]:
+                  - code [ref=e333]: stakeholders
+                - cell "Dilution, OPM, PWERM, liquidation" [ref=e334]
+                - cell "13" [ref=e335]
+              - row "emerging SAFE, MV=PQ, ESG, Metcalfe's Law 14" [ref=e336]:
+                - cell "emerging" [ref=e337]:
+                  - code [ref=e338]: emerging
+                - cell "SAFE, MV=PQ, ESG, Metcalfe's Law" [ref=e339]
+                - cell "14" [ref=e340]
+          - heading "MCP Server ¶" [level=2] [ref=e341]:
+            - text: MCP Server
+            - link "¶" [ref=e342] [cursor=pointer]:
+              - /url: https://simonplmak-cloud.github.io/startup-valuation/#mcp-server
+          - generic [ref=e344]:
+            - navigation [ref=e345]:
+              - button "Copy to clipboard" [ref=e346] [cursor=pointer]
+            - code [ref=e347]: cd mcp_server && python server.py
+          - paragraph [ref=e348]: Connect with any MCP-compatible AI agent. All 60+ valuation tools are available.
+          - heading "AI-Agent Skills ¶" [level=2] [ref=e349]:
+            - text: AI-Agent Skills
+            - link "¶" [ref=e350] [cursor=pointer]:
+              - /url: https://simonplmak-cloud.github.io/startup-valuation/#ai-agent-skills
+          - paragraph [ref=e351]:
+            - text: Copy the
+            - code [ref=e352]: skills/
+            - text: "directory to your agent's skills folder. Available skills: -"
+            - code [ref=e353]: valuation-core
+            - text: — Scorecard, Berkus, VC Method, Risk Factor -
+            - code [ref=e354]: valuation-advanced
+            - text: — Black-Scholes, Monte Carlo, Scenario Analysis -
+            - code [ref=e355]: valuation-industry
+            - text: — SaaS, Biotech, Fintech, Marketplace, Hardware -
+            - code [ref=e356]: valuation-stakeholder
+            - text: — Dilution, OPM, PWERM, Liquidation -
+            - code [ref=e357]: valuation-emerging
+            - text: — SAFE, Crypto, ESG, Network Effects
+          - heading "Development ¶" [level=2] [ref=e358]:
+            - text: Development
+            - link "¶" [ref=e359] [cursor=pointer]:
+              - /url: https://simonplmak-cloud.github.io/startup-valuation/#development
+          - generic [ref=e361]:
+            - navigation [ref=e362]:
+              - button "Copy to clipboard" [ref=e363] [cursor=pointer]
+            - code [ref=e364]: pip install -e ".[dev]" pytest --cov=startup_valuation --cov-report=term-missing ruff check .
+          - heading "License ¶" [level=2] [ref=e365]:
+            - text: License
+            - link "¶" [ref=e366] [cursor=pointer]:
+              - /url: https://simonplmak-cloud.github.io/startup-valuation/#license
+          - paragraph [ref=e367]: MIT
+      - button "Back to top":
+        - img
+        - text: Back to top
+    - contentinfo [ref=e368]:
+      - generic [ref=e370]:
+        - generic [ref=e372]:
+          - text: © 2026 Ascent Partners Group Ltd, All rights reserved. | Part of the
+          - link "Valuation in Practice Series" [ref=e373] [cursor=pointer]:
+            - /url: https://www.amazon.com/Startup-Valuation-Comprehensive-Fast-Growing-Pre-Revenue-ebook/dp/B0FYTGNVWS/
+        - link "Ascent Partners on LinkedIn" [ref=e375] [cursor=pointer]:
+          - /url: https://www.linkedin.com/company/ascent-partners-group-
+          - img [ref=e376]
