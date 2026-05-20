@@ -2,6 +2,7 @@
 
 > Comprehensive startup valuation library implementing **80+ formulas** from the Startup Valuation textbook. Python library + MCP server + AI-Agent Skills.
 
+[![PyPI](https://img.shields.io/pypi/v/startup-valuation.svg)](https://pypi.org/project/startup-valuation/)
 [![CI](https://github.com/simonplmak-cloud/startup-valuation/actions/workflows/ci.yml/badge.svg)](https://github.com/simonplmak-cloud/startup-valuation/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
@@ -9,7 +10,7 @@
 
 ## Overview
 
-A production-grade Python library for startup valuation, implementing every formula from the **Startup Valuation** textbook. Designed for developers, financial analysts, and AI agents who need auditable, structured valuation computations.
+A production-grade Python library for startup valuation, implementing every formula from the **[Startup Valuation](https://www.amazon.com/Startup-Valuation-Comprehensive-Fast-Growing-Pre-Revenue-ebook/dp/B0FYTGNVWS/)** textbook by Simon Mak (Valuation in Practice Series, Ascent Partners). Designed for developers, financial analysts, and AI agents who need auditable, structured valuation computations.
 
 **Three-layer architecture:**
 1. **Python Library** — 14 modules, 80+ typed functions, all returning `ValuationResult` (value + assumptions + sensitivity)
@@ -21,7 +22,7 @@ A production-grade Python library for startup valuation, implementing every form
 ```bash
 pip install startup-valuation          # library only
 pip install startup-valuation[mcp]     # + MCP server
-pip install startup-valuation[dev]     # + pytest, ruff, coverage
+pip install startup-valuation[dev]     # + pytest, ruff, mypy
 ```
 
 ## Quick Start
@@ -108,7 +109,7 @@ Copy the `skills/` directory to your agent's skills folder:
 # Install dev dependencies
 pip install -e ".[dev]"
 
-# Run tests (146 tests, ~6s)
+# Run tests (101 tests, ~6s)
 pytest
 
 # Run with coverage
@@ -124,8 +125,15 @@ mypy src/startup_valuation
 ## Documentation
 
 - **API Reference:** [GitHub Pages](https://simonplmak-cloud.github.io/startup-valuation/)
+- **PyPI:** [pypi.org/project/startup-valuation](https://pypi.org/project/startup-valuation/)
 - **Chapter Index:** Maps every function to its textbook chapter
 - **Examples:** Interactive code snippets for each valuation category
+
+## Companion Textbook
+
+**[Startup Valuation: A Comprehensive Guide to Valuing Fast-Growing Pre-Revenue Companies](https://www.amazon.com/Startup-Valuation-Comprehensive-Fast-Growing-Pre-Revenue-ebook/dp/B0FYTGNVWS/)**  
+*Theory, Methods, Regulation, and Practice* — Valuation in Practice Series by Ascent Partners  
+By Simon Mak · 338 pages · 15 chapters · 300+ exercises · 20+ real-world cases
 
 ## Citing This Project
 
