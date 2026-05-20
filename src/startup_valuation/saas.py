@@ -78,11 +78,11 @@ def net_revenue_retention(
 ) -> ValuationResult:
     """Calculate Net Revenue Retention.
 
-    Formula: NRR = (Revenue_end - Churn + Expansion) / Revenue_start
+    Formula: NRR = (Ending Revenue + Expansion Revenue) / Starting Revenue
     """
     if starting_revenue <= 0:
         raise ValueError("starting_revenue must be positive")
-    nrr = ending_revenue / starting_revenue
+    nrr = (ending_revenue + expansion_revenue) / starting_revenue
     return ValuationResult(
         value=nrr,
         method="Net Revenue Retention",

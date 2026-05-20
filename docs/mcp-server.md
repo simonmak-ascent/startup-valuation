@@ -98,6 +98,7 @@ Then connect your client to `http://your-server:8000/sse`.
 | `valuation_joint_probability` | `probabilities: list[float]` | `{"value": float, "method": str}` |
 | `valuation_probability_weighted` | `probabilities: list[float]`, `values: list[float]` | `{"value": float, "method": str}` |
 | `valuation_portfolio_return` | `probabilities: list[float]`, `returns: list[float]` | `{"value": float, "method": str}` |
+| `valuation_expected_value_continuous` | `lower: float`, `upper: float` | `{"value": float, "method": str}` |
 
 ### Time Value
 
@@ -154,6 +155,8 @@ Then connect your client to `http://your-server:8000/sse`.
 |---|---|---|
 | `valuation_payment_revenue` | `transaction_volume: float`, `take_rate: float` | `{"value": float, "method": str}` |
 | `valuation_lending` | `loan_book: float`, `roe: float`, `pe_multiple: float`, `npl_reserves: float = 0` | `{"value": float, "method": str}` |
+| `valuation_payment_processor` | `transaction_volume: float`, `take_rate: float`, `growth_rate: float`, `discount_rate: float`, `terminal_multiple: float`, `years: int = 5` | `{"value": float, "method": str}` |
+| `valuation_neobank` | `customers: int`, `arpu: float`, `gross_margin: float`, `churn_rate: float`, `pe_multiple: float` | `{"value": float, "method": str}` |
 
 ### Marketplace
 
@@ -161,6 +164,8 @@ Then connect your client to `http://your-server:8000/sse`.
 |---|---|---|
 | `valuation_take_rate` | `revenue: float`, `gmv: float` | `{"value": float, "method": str}` |
 | `valuation_gmv_multiple` | `gmv: float`, `multiple: float` | `{"value": float, "method": str}` |
+| `valuation_buyer_retention` | `buyers_period_1: int`, `buyers_repeat: int` | `{"value": float, "method": str}` |
+| `valuation_network_density` | `active_buyers: int`, `active_sellers: int`, `total_users: int` | `{"value": float, "method": str}` |
 
 ### Hardware
 
@@ -184,16 +189,29 @@ Then connect your client to `http://your-server:8000/sse`.
 | `valuation_opm` | `enterprise_value: float`, `liquidation_pref: float`, `time_to_exit: float`, `volatility: float` | `{"value": float, "method": str}` |
 | `valuation_pwerm` | `scenarios: list[dict]` | `{"value": float, "method": str}` |
 | `valuation_liquidation` | `assets: dict`, `recovery_rates: dict` | `{"value": float, "method": str}` |
+| `valuation_risk_adjusted_synergy` | `revenue_synergies: float`, `cost_synergies: float`, `prob_revenue: float = 0.4`, `prob_cost: float = 0.8`, `discount_rate: float = 0.10`, `years: int = 3` | `{"value": float, "method": str}` |
+| `valuation_intrinsic_option` | `strike_price: float`, `fair_market_value: float`, `shares: int` | `{"value": float, "method": str}` |
+| `valuation_employee_option` | `scenarios: list[dict]` | `{"value": float, "method": str}` |
+| `valuation_vesting_adjusted` | `total_value: float`, `vested_fraction: float`, `annual_vest_rate: float = 0.25`, `retention_prob: float = 0.8`, `years_remaining: int = 3` | `{"value": float, "method": str}` |
+| `valuation_cash_equity_breakeven` | `salary_reduction: float`, `equity_value: float`, `tax_rate: float = 0.30`, `discount_rate: float = 0.20`, `years: int = 4` | `{"value": float, "method": str}` |
+| `valuation_max_asset_loan` | `cash: float = 0`, `accounts_receivable: float = 0`, `inventory: float = 0`, `equipment: float = 0`, `real_estate: float = 0` | `{"value": float, "method": str}` |
 
 ### Emerging
 
 | Tool | Parameters | Returns |
 |---|---|---|
 | `valuation_safe_discount` | `series_a_price: float`, `discount: float` | `{"value": float, "method": str}` |
+| `valuation_safe_cap` | `cap: float`, `series_a_price: float` | `{"value": float, "method": str}` |
+| `valuation_safe_expected` | `investment: float`, `cap: float`, `discount: float`, `series_a_valuation: float`, `series_a_price: float` | `{"value": float, "method": str}` |
 | `valuation_token_value` | `transaction_volume: float`, `price_per_tx: float`, `velocity: float`, `supply: float` | `{"value": float, "method": str}` |
+| `valuation_nvt_ratio` | `market_cap: float`, `daily_transaction_volume: float` | `{"value": float, "method": str}` |
 | `valuation_esg_rate` | `base_rate: float`, `risk_premium: float = 0`, `opp_discount: float = 0` | `{"value": float, "method": str}` |
+| `valuation_esg_premium` | `base_valuation: float`, `esg_score: float`, `premium_per_point: float = 0.02` | `{"value": float, "method": str}` |
+| `valuation_esg_discount` | `base_valuation: float`, `esg_risk_score: float`, `discount_per_point: float = 0.01` | `{"value": float, "method": str}` |
 | `valuation_metcalfes` | `n: float`, `k: float = 1.0` | `{"value": float, "method": str}` |
+| `valuation_data_moat` | `data_volume: float`, `data_uniqueness: float`, `monetization_rate: float`, `competitive_advantage_years: float`, `discount_rate: float = 0.15` | `{"value": float, "method": str}` |
 | `valuation_remote_npv` | `annual_savings: float`, `discount_rate: float` | `{"value": float, "method": str}` |
+| `valuation_remote_premium` | `base_valuation: float`, `cost_savings_pct: float = 0.20`, `talent_access_premium: float = 0.10`, `productivity_gain: float = 0.05` | `{"value": float, "method": str}` |
 
 ### Compound Tool
 

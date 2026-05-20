@@ -188,8 +188,8 @@ def safe_conversion_cap(
 ) -> ValuationResult:
     """Calculate SAFE conversion price using valuation cap.
 
-    Formula: SAFE Price = min(Cap / Shares_outstanding, Series A Price)
-    Simplified: Price per share = Cap / (Cap / Series A Price) = Series A Price if Cap > valuation
+    Formula: SAFE Price = Series A Price
+    (conservative when Cap > valuation; shares_outstanding not available)
 
     Args:
         cap: Valuation cap on SAFE.
@@ -204,7 +204,7 @@ def safe_conversion_cap(
         5.0
     """
     return ValuationResult(
-        value=min(cap, series_a_price * cap),
+        value=series_a_price,
         method="SAFE Conversion (Cap)",
         inputs={"cap": cap, "series_a_price": series_a_price},
         assumptions=["Cap is pre-money valuation cap"],

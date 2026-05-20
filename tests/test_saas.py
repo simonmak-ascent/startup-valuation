@@ -39,6 +39,9 @@ def test_net_revenue_retention():
     result = net_revenue_retention(1_000_000, 1_100_000)
     assert result.value == pytest.approx(1.1)
 
+    result2 = net_revenue_retention(100_000, 110_000, expansion_revenue=10_000)
+    assert result2.value == pytest.approx(1.2)
+
 
 def test_cac_payback_period():
     result = cac_payback_period(5_000, 500, 0.80)

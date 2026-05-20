@@ -28,7 +28,8 @@ def test_safe_conversion_discount():
 
 def test_safe_conversion_cap():
     result = safe_conversion_cap(8_000_000, 5.0)
-    assert result.value > 0
+    assert result.value == pytest.approx(5.0)
+    assert result.method == "SAFE Conversion (Cap)"
 
 
 def test_safe_expected_value():

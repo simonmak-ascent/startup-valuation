@@ -122,7 +122,7 @@ def risk_factor_summation(
 ) -> ValuationResult:
     """Valuation using the Risk Factor Summation Method.
 
-    Formula: V = V_base × (1 + Σ(rᵢ × $250K))
+    Formula: V = V_base + Σ(rᵢ × adjustment_per_unit)
 
     Args:
         base_valuation: Base valuation for comparable companies.

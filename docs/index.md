@@ -7,7 +7,7 @@ This site is the companion documentation for the Python library implementing **8
 ## Quick Start
 
 ```bash
-pip install -e ".[dev]"
+pip install startup-valuation
 ```
 
 ```python

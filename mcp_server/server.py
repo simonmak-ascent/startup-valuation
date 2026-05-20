@@ -19,7 +19,7 @@ from startup_valuation import (
     tv,
 )
 
-mcp = FastMCP("startup-valuation", version="0.1.0")
+mcp = FastMCP("startup-valuation", version="1.0.2")
 
 
 # ── Probability ──────────────────────────────────────────────────────

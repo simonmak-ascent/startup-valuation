@@ -378,7 +378,7 @@ def vesting_adjusted_value(
 ) -> ValuationResult:
     """Calculate option value adjusted for vesting schedule.
 
-    Formula: Adjusted V = V_vested + Σ[V_unvested × VestRate × Retention^t] / (1+r)^t
+    Formula: Adjusted V = V_vested + Σ[V_unvested × VestRate × Retention^t]
 
     Args:
         total_value: Total option value (intrinsic).
@@ -393,7 +393,7 @@ def vesting_adjusted_value(
     Example:
         >>> result = vesting_adjusted_value(400_000, 0.25, 0.25, 0.8, 3)
         >>> round(result.value / 1000, 0)
-        238.0
+        246.0
     """
     vested_value = total_value * vested_fraction
     unvested_value = total_value * (1 - vested_fraction)
