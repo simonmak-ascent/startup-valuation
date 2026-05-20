@@ -1,14 +1,30 @@
-# Startup Valuation Engine
+# Startup Valuation: A Comprehensive Guide
 
-Comprehensive startup valuation library implementing **80+ formulas** from the Startup Valuation textbook.
+<div class="book-hero">
+  <div class="book-cover">
+    <img src="assets/images/book-cover.jpg" alt="Startup Valuation book cover">
+  </div>
+  <div class="book-info">
+    <h2>Startup Valuation</h2>
+    <p class="book-subtitle">A Comprehensive Guide to Valuing Fast-Growing Pre-Revenue Companies</p>
+    <p class="book-subtitle-2">Theory, Methods, Regulation, and Practice</p>
+    <p class="book-series">Valuation in Practice Series by Ascent Partners</p>
+    <p class="book-author">By Simon Mak</p>
+    <p class="book-description">
+      Unlock the secrets of startup valuation with the definitive textbook for finance professionals, investors, founders, and students. Dive deep into probability theory, option pricing, and stochastic processes—explained step-by-step and applied to real startup scenarios.
+    </p>
+    <p class="book-features">
+      15 chapters · 5 appendices · 300+ exercises · 20+ real-world cases · 50+ figures · 100+ tables
+    </p>
+    <a href="https://www.amazon.com/Startup-Valuation-Comprehensive-Fast-Growing-Pre-Revenue-ebook/dp/B0FYTGNVWS/" class="amazon-btn" target="_blank" rel="noopener">
+      Buy on Amazon — Kindle $38.80 | Paperback $69.65
+    </a>
+  </div>
+</div>
 
-## Features
+## Companion Library
 
-- **80+ valuation formulas** across 14 modules covering every method in the textbook
-- **Typed Python API** with structured `ValuationResult` returns (value + assumptions + sensitivity)
-- **MCP Server** exposing all calculations as tools for AI agents (Claude, OpenCode, etc.)
-- **AI-Agent Skills** with workflow guidance for 5 valuation domains
-- **Every function tested** against textbook example values
+This site is the companion documentation for the Python library implementing **80+ formulas** from the Startup Valuation textbook.
 
 ## Quick Start
 
@@ -32,6 +48,30 @@ print(f"Scorecard: ${result.value:,.0f}")  # $1,800,000
 result = black_scholes(20_000_000, 5_000_000, 0.05, 0.40, 1.0)
 print(f"Option value: ${result.value:,.0f}")  # $15,240,000
 ```
+
+## Book Chapters → Library Modules
+
+| Chapter | Topic | Library Module |
+|---------|-------|----------------|
+| 1 | Introduction to Startup Valuation | — |
+| 2 | Probability, TVM, CAPM | `probability`, `tv`, `capm` |
+| 3 | Core Valuation Methods | `core` |
+| 4 | Advanced Methods | `advanced` |
+| 5 | Comparables & Multiples | `comparables` |
+| 6–10 | Specialized Topics | See textbook |
+| 11 | Industry-Specific Models | `saas`, `biotech`, `fintech`, `marketplace`, `hardware` |
+| 12 | International Valuation | `international` |
+| 13 | Stakeholder Analysis | `stakeholders` |
+| 14 | Emerging Methods | `emerging` |
+| 15 | Conclusion & Best Practices | — |
+
+## Features
+
+- **80+ valuation formulas** across 14 modules covering every method in the textbook
+- **Typed Python API** with structured `ValuationResult` returns (value + assumptions + sensitivity)
+- **MCP Server** exposing all calculations as tools for AI agents (Claude, OpenCode, etc.)
+- **AI-Agent Skills** with workflow guidance for 5 valuation domains
+- **Every function tested** against textbook example values
 
 ## Modules
 

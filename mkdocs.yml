@@ -48,7 +48,7 @@ extra:
       name: Ascent Partners on LinkedIn
   generator: false
 
-copyright: "© 2026 Ascent Partners Group Ltd, All rights reserved."
+copyright: "© 2026 Ascent Partners Group Ltd, All rights reserved. | Part of the <a href='https://www.amazon.com/Startup-Valuation-Comprehensive-Fast-Growing-Pre-Revenue-ebook/dp/B0FYTGNVWS/' target='_blank' rel='noopener'>Valuation in Practice Series</a>"
 
 plugins:
   - search

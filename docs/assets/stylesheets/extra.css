@@ -184,3 +184,123 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #006585;
 }
+
+/* ── Book Hero Section ────────────────────────────────────────────── */
+.book-hero {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  margin: 1.5rem 0 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f5f9fb 0%, #ffffff 100%);
+  border-radius: 8px;
+  border: 1px solid #e0eef3;
+}
+
+.book-cover {
+  flex-shrink: 0;
+  width: 200px;
+}
+
+.book-cover img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.book-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.book-info h2 {
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+  color: #0083AB;
+  font-size: 1.75rem;
+}
+
+.book-subtitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #373737;
+  margin: 0.25rem 0;
+}
+
+.book-subtitle-2 {
+  font-size: 0.95rem;
+  color: #555;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.book-series {
+  font-size: 0.85rem;
+  color: #0083AB;
+  font-weight: 600;
+  margin: 0.5rem 0 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.book-author {
+  font-size: 1rem;
+  color: #373737;
+  margin: 0.25rem 0 0.75rem;
+}
+
+.book-description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #444;
+  margin-bottom: 0.75rem;
+}
+
+.book-features {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.amazon-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #FF9900 0%, #FFB84D 100%);
+  color: #000000;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(255, 153, 0, 0.3);
+}
+
+.amazon-btn:hover {
+  background: linear-gradient(135deg, #E68A00 0%, #FFA833 100%);
+  color: #000000;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(255, 153, 0, 0.4);
+}
+
+/* ── Responsive: Book Hero ────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .book-hero {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .book-cover {
+    width: 160px;
+  }
+
+  .book-info h2 {
+    font-size: 1.5rem;
+  }
+
+  .amazon-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
