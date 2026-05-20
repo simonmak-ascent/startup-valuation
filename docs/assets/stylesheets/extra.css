@@ -1,0 +1,186 @@
+/* Ascent Partners Brand Overrides for MkDocs Material */
+
+/* ── Google Fonts ─────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Titillium+Web:wght@400;600;700&display=swap');
+
+/* ── Color Variables ──────────────────────────────────────────────── */
+:root {
+  --md-primary-fg-color: #0083AB;
+  --md-primary-fg-color--light: #00a3d4;
+  --md-primary-fg-color--dark: #006585;
+  --md-accent-fg-color: #0083AB;
+  --md-accent-fg-color--transparent: rgba(0, 131, 171, 0.1);
+  --md-typeset-color: #2D2D2D;
+  --md-typeset-a-color: #0083AB;
+  --md-default-fg-color: #373737;
+}
+
+/* ── Typography ───────────────────────────────────────────────────── */
+.md-typeset {
+  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+  color: #2D2D2D;
+}
+
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4,
+.md-typeset h5,
+.md-typeset h6 {
+  font-family: 'Titillium Web', 'Open Sans', sans-serif;
+  color: #373737;
+  font-weight: 600;
+}
+
+.md-typeset a {
+  color: #0083AB;
+}
+
+.md-typeset a:hover {
+  color: #006585;
+}
+
+/* ── Header / Navigation ──────────────────────────────────────────── */
+.md-header {
+  background-color: #FFFFFF;
+  color: #373737;
+  border-bottom: 2px solid #0083AB;
+}
+
+.md-header__title {
+  color: #373737;
+}
+
+.md-header__topic {
+  font-family: 'Titillium Web', sans-serif;
+  font-weight: 600;
+}
+
+.md-search__input {
+  background-color: #f5f5f5;
+  color: #2D2D2D;
+}
+
+.md-search__input::placeholder {
+  color: #888;
+}
+
+/* ── Sidebar / Navigation ─────────────────────────────────────────── */
+.md-sidebar__scrollwrap {
+  border-right: 1px solid #e8e8e8;
+}
+
+.md-nav__link {
+  color: #373737;
+}
+
+.md-nav__link--active {
+  color: #0083AB;
+  font-weight: 600;
+}
+
+.md-nav__link:hover {
+  color: #0083AB;
+}
+
+.md-nav__item--nested > .md-nav__link {
+  color: #555;
+}
+
+/* ── Table of Contents ────────────────────────────────────────────── */
+.md-nav--secondary .md-nav__link {
+  color: #555;
+}
+
+/* ── Footer ───────────────────────────────────────────────────────── */
+.md-footer {
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+}
+
+.md-footer-meta {
+  background-color: #111111;
+}
+
+.md-footer__inner {
+  color: #ccc;
+}
+
+.md-footer a {
+  color: #00a3d4;
+}
+
+.md-footer a:hover {
+  color: #FFFFFF;
+}
+
+/* ── Code Blocks ──────────────────────────────────────────────────── */
+.md-typeset code {
+  background-color: #f0f7fa;
+  color: #006585;
+  border: 1px solid #d0e8f0;
+}
+
+.md-typeset pre > code {
+  background-color: #f0f7fa;
+  color: #2D2D2D;
+  border: none;
+}
+
+/* ── Tables ───────────────────────────────────────────────────────── */
+.md-typeset table:not([class]) th {
+  background-color: #0083AB;
+  color: #FFFFFF;
+}
+
+.md-typeset table:not([class]) tr:nth-child(even) {
+  background-color: #f5f9fb;
+}
+
+/* ── Admonitions ──────────────────────────────────────────────────── */
+.md-typeset .admonition,
+.md-typeset details {
+  border-color: #0083AB;
+}
+
+.md-typeset .admonition-title,
+.md-typeset summary {
+  background-color: rgba(0, 131, 171, 0.1);
+  border-color: #0083AB;
+  color: #006585;
+}
+
+/* ── Logo in Header ───────────────────────────────────────────────── */
+.md-header__button.md-logo {
+  padding: 0.4rem;
+  margin: 0.4rem 0;
+}
+
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  height: 2rem;
+  width: auto;
+}
+
+/* ── Hero / Landing Page ──────────────────────────────────────────── */
+.md-main__inner {
+  margin-top: 0;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0083AB;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #006585;
+}

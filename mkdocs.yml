@@ -1,25 +1,31 @@
 site_name: Startup Valuation
 site_description: Comprehensive startup valuation library with 80+ formulas, MCP server, and AI-agent skills
-site_author: Startup Valuation Contributors
+site_author: Ascent Partners
+site_url: https://simonplmak-cloud.github.io/startup-valuation
 repo_url: https://github.com/simonplmak-cloud/startup-valuation
 repo_name: simonplmak-cloud/startup-valuation
 edit_uri: edit/main/docs/
 
 theme:
   name: material
+  logo: assets/images/ascent-logo.png
+  favicon: assets/images/ascent-logo.png
   palette:
     - scheme: default
-      primary: indigo
-      accent: indigo
+      primary: custom
+      accent: custom
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
     - scheme: slate
-      primary: indigo
-      accent: indigo
+      primary: custom
+      accent: custom
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
+  font:
+    text: Open Sans
+    code: Roboto Mono
   features:
     - navigation.instant
     - navigation.tracking
@@ -29,6 +35,17 @@ theme:
     - search.share
     - content.code.copy
     - content.code.annotate
+
+extra_css:
+  - assets/stylesheets/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/company/ascent-partners-group-
+      name: Ascent Partners on LinkedIn
+  generator: false
+  copyright: "© 2026 Ascent Partners Group Ltd, All rights reserved."
 
 plugins:
   - search
