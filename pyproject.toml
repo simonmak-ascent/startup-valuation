@@ -56,6 +56,20 @@ Repository = "https://github.com/simonplmak-cloud/startup-valuation"
 [tool.hatch.build.targets.wheel]
 packages = ["src/startup_valuation"]
 
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/.playwright-mcp/",
+  "/AGENTS.md",
+  "/constitution.md",
+  "/skills/",
+  "/specs/",
+  "/book-alignment-homepage.png",
+  "/.mypy_cache/",
+  "/.pytest_cache/",
+  "/site/",
+  "/output/",
+]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = "test_*.py"

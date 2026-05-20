@@ -14,3 +14,17 @@ Startup_Valuation.docx
 convert.py
 omml_to_latex.py
 site/
+
+# Internal AI-agent config (opencode)
+AGENTS.md
+constitution.md
+skills/
+
+# Internal SDD artifacts
+specs/
+
+# Playwright MCP test artifacts
+.playwright-mcp/
+
+# Temporary assets
+book-alignment-homepage.png
