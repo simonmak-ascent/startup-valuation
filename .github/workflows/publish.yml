@@ -5,7 +5,8 @@ on:
     types: [created]
 
 permissions:
-  contents: read
+  contents: write
+  id-token: write
 
 jobs:
   build-and-upload:
@@ -37,8 +38,6 @@ jobs:
     environment:
       name: pypi
       url: https://pypi.org/p/startup-valuation
-    permissions:
-      id-token: write
     steps:
       - uses: actions/checkout@v4
 
