@@ -6,6 +6,7 @@ Chapter 4: Advanced Techniques
 from __future__ import annotations
 
 import math
+from typing import Any
 
 import numpy as np
 from scipy import stats
@@ -167,7 +168,7 @@ def monte_carlo_valuation(
     """
     rng = np.random.default_rng(seed)
 
-    def sample(dist: Distribution, n: int) -> np.ndarray:
+    def sample(dist: Distribution, n: int) -> Any:
         if dist.dist_type == "normal":
             return rng.normal(dist.params["mean"], dist.params["std"], n)
         elif dist.dist_type == "uniform":
@@ -274,7 +275,7 @@ def ltv_cac_valuation(
     """
     rng = np.random.default_rng(seed)
 
-    def sample(dist: Distribution, n: int) -> np.ndarray:
+    def sample(dist: Distribution, n: int) -> Any:
         if dist.dist_type == "normal":
             return rng.normal(dist.params["mean"], dist.params["std"], n)
         elif dist.dist_type == "uniform":
