@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "startup-valuation"
-version = "1.0.1"
+version = "1.0.2"
 description = "Comprehensive startup valuation library implementing 80+ formulas from the Startup Valuation textbook. Includes Python library, MCP server, and AI-Agent Skills."
 readme = "README.md"
 license = "MIT"
