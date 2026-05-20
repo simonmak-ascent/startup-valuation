@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] — 2026-05-20
+
 ### Added
+- Book-aligned documentation site with Amazon purchase link
+- Book hero section on homepage with cover image and description
+- Chapter-to-module mapping table
+- Ascent Partners branding (logo, `#0083AB` color, Titillium Web/Open Sans fonts)
 - `expected_value_continuous` — numerical integration for continuous random variables
 - `binomial_valuation` — high-resolution binomial tree (steps=50) for startup options
 - `payment_processor_valuation` — DCF-based payment processor valuation
@@ -35,7 +41,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Split monolithic test files into per-module test files
-- Expanded test suite from 50 to 146 tests
+- Expanded test suite from 50 to 101 tests
+- Bumped to production-stable release
 
 ## [0.1.0] — 2026-05-19
 

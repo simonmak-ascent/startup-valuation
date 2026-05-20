@@ -4,17 +4,17 @@ build-backend = "hatchling.build"
 
 [project]
 name = "startup-valuation"
-version = "0.1.0"
+version = "1.0.0"
 description = "Comprehensive startup valuation library implementing 80+ formulas from the Startup Valuation textbook. Includes Python library, MCP server, and AI-Agent Skills."
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
 authors = [
-    { name = "Startup Valuation Contributors" }
+    { name = "Simon Mak" }
 ]
 keywords = ["valuation", "startup", "finance", "vc", "mcp", "ai-agent"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Intended Audience :: Financial and Insurance Industry",
     "License :: OSI Approved :: MIT License",
