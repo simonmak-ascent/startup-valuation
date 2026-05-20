@@ -35,6 +35,8 @@ theme:
     - search.share
     - content.code.copy
     - content.code.annotate
+  icon:
+    repo: fontawesome/brands/github
 
 extra_css:
   - assets/stylesheets/extra.css
@@ -45,7 +47,8 @@ extra:
       link: https://www.linkedin.com/company/ascent-partners-group-
       name: Ascent Partners on LinkedIn
   generator: false
-  copyright: "© 2026 Ascent Partners Group Ltd, All rights reserved."
+
+copyright: "© 2026 Ascent Partners Group Ltd, All rights reserved."
 
 plugins:
   - search
