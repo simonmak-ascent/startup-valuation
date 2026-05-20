@@ -4,8 +4,12 @@ import pytest
 import scipy.stats
 
 from startup_valuation.probability import (
-    expected_value_discrete, joint_probability, probability_weighted_value,
-    portfolio_expected_return, poisson_probability, expected_value_continuous,
+    expected_value_continuous,
+    expected_value_discrete,
+    joint_probability,
+    poisson_probability,
+    portfolio_expected_return,
+    probability_weighted_value,
 )
 
 

@@ -3,8 +3,12 @@
 import pytest
 
 from startup_valuation.advanced import (
-    black_scholes, binomial_tree, binomial_valuation,
-    monte_carlo_valuation, scenario_analysis, ltv_cac_valuation,
+    binomial_tree,
+    binomial_valuation,
+    black_scholes,
+    ltv_cac_valuation,
+    monte_carlo_valuation,
+    scenario_analysis,
 )
 from startup_valuation.types import Distribution, Scenario
 

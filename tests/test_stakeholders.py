@@ -3,11 +3,20 @@
 import pytest
 
 from startup_valuation.stakeholders import (
-    single_round_dilution, multi_round_dilution, acquisition_value,
-    opm_common_stock, pwerm, common_stock_discount, liquidation_value,
-    venture_debt_dilution, risk_adjusted_synergy, intrinsic_option_value,
-    probability_weighted_employee_value, vesting_adjusted_value,
-    cash_equity_breakeven, max_asset_based_loan,
+    acquisition_value,
+    cash_equity_breakeven,
+    common_stock_discount,
+    intrinsic_option_value,
+    liquidation_value,
+    max_asset_based_loan,
+    multi_round_dilution,
+    opm_common_stock,
+    probability_weighted_employee_value,
+    pwerm,
+    risk_adjusted_synergy,
+    single_round_dilution,
+    venture_debt_dilution,
+    vesting_adjusted_value,
 )
 
 

@@ -1,13 +1,13 @@
 """Startup Valuation — Comprehensive valuation library for startups."""
 
 from startup_valuation.types import (
-    ValuationResult,
     Distribution,
     Scenario,
     SensitivityResult,
+    ValuationResult,
 )
 
-__version__ = "0.1.0"
+__version__ = "1.0.0"
 __all__ = [
     "ValuationResult",
     "Distribution",

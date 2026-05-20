@@ -2,7 +2,7 @@
 
 import pytest
 
-from startup_valuation.capm import capm, portfolio_beta, startup_adjusted_capm, portfolio_variance
+from startup_valuation.capm import capm, portfolio_beta, portfolio_variance, startup_adjusted_capm
 
 
 def test_capm():

@@ -2,9 +2,22 @@
 
 from fastmcp import FastMCP
 
-from startup_valuation import probability, tv, capm, core, advanced, comparables
-from startup_valuation import saas, biotech, fintech, marketplace, hardware, international
-from startup_valuation import stakeholders, emerging
+from startup_valuation import (
+    advanced,
+    biotech,
+    capm,
+    comparables,
+    core,
+    emerging,
+    fintech,
+    hardware,
+    international,
+    marketplace,
+    probability,
+    saas,
+    stakeholders,
+    tv,
+)
 
 mcp = FastMCP("startup-valuation", version="0.1.0")
 
@@ -373,7 +386,9 @@ def valuation_payment_processor(
     discount_rate: float, terminal_multiple: float, years: int = 5,
 ) -> dict:
     """Value a payment processor using DCF of payment revenue."""
-    r = fintech.payment_processor_valuation(transaction_volume, take_rate, growth_rate, discount_rate, terminal_multiple, years)
+    r = fintech.payment_processor_valuation(
+        transaction_volume, take_rate, growth_rate, discount_rate, terminal_multiple, years,
+    )
     return {"value": r.value, "method": r.method}
 
 
@@ -408,7 +423,9 @@ def valuation_risk_adjusted_synergy(
     discount_rate: float = 0.10, years: int = 3,
 ) -> dict:
     """Calculate risk-adjusted synergy value for M&A."""
-    r = stakeholders.risk_adjusted_synergy(revenue_synergies, cost_synergies, prob_revenue, prob_cost, discount_rate, years)
+    r = stakeholders.risk_adjusted_synergy(
+        revenue_synergies, cost_synergies, prob_revenue, prob_cost, discount_rate, years,
+    )
     return {"value": r.value, "method": r.method}
 
 
@@ -433,7 +450,9 @@ def valuation_vesting_adjusted(
     years_remaining: int = 3,
 ) -> dict:
     """Calculate option value adjusted for vesting schedule."""
-    r = stakeholders.vesting_adjusted_value(total_value, vested_fraction, annual_vest_rate, retention_prob, years_remaining)
+    r = stakeholders.vesting_adjusted_value(
+        total_value, vested_fraction, annual_vest_rate, retention_prob, years_remaining,
+    )
     return {"value": r.value, "method": r.method}
 
 
@@ -501,7 +520,9 @@ def valuation_data_moat(
     competitive_advantage_years: float, discount_rate: float = 0.15,
 ) -> dict:
     """Calculate value of data as a competitive moat."""
-    r = emerging.data_moat_value(data_volume, data_uniqueness, monetization_rate, competitive_advantage_years, discount_rate)
+    r = emerging.data_moat_value(
+        data_volume, data_uniqueness, monetization_rate, competitive_advantage_years, discount_rate,
+    )
     return {"value": r.value, "method": r.method}
 
 

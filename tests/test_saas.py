@@ -3,8 +3,15 @@
 import pytest
 
 from startup_valuation.saas import (
-    arr, mrr, cac, ltv_saas, net_revenue_retention,
-    cac_payback_period, magic_number, rule_of_40, saas_revenue_multiple_valuation,
+    arr,
+    cac,
+    cac_payback_period,
+    ltv_saas,
+    magic_number,
+    mrr,
+    net_revenue_retention,
+    rule_of_40,
+    saas_revenue_multiple_valuation,
 )
 
 

@@ -10,7 +10,7 @@ import math
 from startup_valuation.types import ValuationResult
 
 
-def rnPV(
+def rnPV(  # noqa: N802
     cash_flows: list[float],
     probabilities: list[float],
     discount_rate: float,

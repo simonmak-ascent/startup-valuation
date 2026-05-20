@@ -3,8 +3,12 @@
 import pytest
 
 from startup_valuation.comparables import (
-    pe_ratio, ps_ratio, ev_ebitda, ev_revenue,
-    regression_adjusted_multiple, target_valuation_multiple,
+    ev_ebitda,
+    ev_revenue,
+    pe_ratio,
+    ps_ratio,
+    regression_adjusted_multiple,
+    target_valuation_multiple,
 )
 
 

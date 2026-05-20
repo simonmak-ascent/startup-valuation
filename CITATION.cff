@@ -1,11 +1,10 @@
 cff-version: "1.2.0"
 message: "If you use this software, please cite it as below."
 title: "Startup Valuation Engine"
-version: "0.2.0"
+version: "1.0.0"
 authors:
   - family-names: "Mak"
     given-names: "Simon"
-    orcid: "https://orcid.org/0000-0000-0000-0000"
 abstract: >
   A comprehensive Python library implementing 80+ startup valuation formulas
   from the Startup Valuation textbook. Includes an MCP server for AI agents

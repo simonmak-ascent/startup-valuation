@@ -128,8 +128,10 @@ def opm_common_stock(
     )
     d2 = d1 - volatility * math.sqrt(time_to_exit)
 
-    common_value = enterprise_value * stats.norm.cdf(d1) - liquidation_preference * math.exp(-risk_free_rate * time_to_exit) * stats.norm.cdf(d2)
-    discount = (enterprise_value - common_value) / enterprise_value
+    common_value = (
+        enterprise_value * stats.norm.cdf(d1)
+        - liquidation_preference * math.exp(-risk_free_rate * time_to_exit) * stats.norm.cdf(d2)
+    )
 
     return ValuationResult(
         value=common_value,

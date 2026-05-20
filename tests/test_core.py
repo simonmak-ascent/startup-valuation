@@ -3,8 +3,12 @@
 import pytest
 
 from startup_valuation.core import (
-    scorecard_valuation, berkus_valuation, risk_factor_summation,
-    vc_method_post_money, vc_method_pre_money, terminal_value_multiple,
+    berkus_valuation,
+    risk_factor_summation,
+    scorecard_valuation,
+    terminal_value_multiple,
+    vc_method_post_money,
+    vc_method_pre_money,
 )
 
 

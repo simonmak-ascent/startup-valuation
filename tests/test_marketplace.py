@@ -3,8 +3,13 @@
 import pytest
 
 from startup_valuation.marketplace import (
-    gmv, take_rate, liquidity, gmv_multiple_valuation,
-    network_value, buyer_retention, network_density,
+    buyer_retention,
+    gmv,
+    gmv_multiple_valuation,
+    liquidity,
+    network_density,
+    network_value,
+    take_rate,
 )
 
 

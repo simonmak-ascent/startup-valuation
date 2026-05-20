@@ -3,8 +3,10 @@
 import pytest
 
 from startup_valuation.hardware import (
-    trl_adjusted_valuation, gross_margin_hardware,
-    break_even_volume, probability_weighted_dcf,
+    break_even_volume,
+    gross_margin_hardware,
+    probability_weighted_dcf,
+    trl_adjusted_valuation,
 )
 
 

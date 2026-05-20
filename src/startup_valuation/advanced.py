@@ -55,7 +55,10 @@ def black_scholes(
     )
     d2 = d1 - volatility * math.sqrt(time_to_maturity)
 
-    call_value = underlying * stats.norm.cdf(d1) - strike * math.exp(-risk_free_rate * time_to_maturity) * stats.norm.cdf(d2)
+    call_value = (
+        underlying * stats.norm.cdf(d1)
+        - strike * math.exp(-risk_free_rate * time_to_maturity) * stats.norm.cdf(d2)
+    )
 
     return ValuationResult(
         value=call_value,
@@ -188,10 +191,6 @@ def monte_carlo_valuation(
     present_values = present_values[present_values > 0]  # Filter negative values
 
     mean_val = float(np.mean(present_values))
-    p10 = float(np.percentile(present_values, 10))
-    p50 = float(np.percentile(present_values, 50))
-    p90 = float(np.percentile(present_values, 90))
-    std_val = float(np.std(present_values))
 
     return ValuationResult(
         value=mean_val,
@@ -294,9 +293,6 @@ def ltv_cac_valuation(
     valuations = valuations[valuations > 0]
 
     mean_val = float(np.mean(valuations))
-    std_val = float(np.std(valuations))
-    min_val = float(np.min(valuations))
-    max_val = float(np.max(valuations))
 
     return ValuationResult(
         value=mean_val,

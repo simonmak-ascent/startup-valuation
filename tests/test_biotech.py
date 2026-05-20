@@ -3,12 +3,15 @@
 import pytest
 
 from startup_valuation.biotech import (
-    rnPV, decision_tree_ev, peak_sales, pipeline_valuation,
+    decision_tree_ev,
     overall_success_probability,
+    peak_sales,
+    pipeline_valuation,
+    rnPV,
 )
 
 
-def test_rnPV():
+def test_rnPV():  # noqa: N802
     result = rnPV(
         cash_flows=[0, 0, 50_000_000, 100_000_000],
         probabilities=[0.35, 0.21, 0.19, 0.19],

@@ -2,7 +2,7 @@
 
 import pytest
 
-from startup_valuation.tv import present_value, net_present_value, annuity_present_value
+from startup_valuation.tv import annuity_present_value, net_present_value, present_value
 
 
 def test_present_value():

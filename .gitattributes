@@ -1,0 +1,30 @@
+# Auto-detect text files and normalize line endings
+* text=auto eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.whl binary
+*.gz binary
+*.zip binary
+
+# Python
+*.py text
+*.pyi text
+
+# Config
+*.yml text
+*.yaml text
+*.toml text
+*.json text
+*.md text
+*.txt text
+*.cfg text
+*.ini text
+
+# Generated
+site/** -text
+dist/** -text

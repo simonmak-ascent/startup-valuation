@@ -3,11 +3,21 @@
 import pytest
 
 from startup_valuation.emerging import (
-    safe_conversion_discount, safe_conversion_cap, safe_expected_value,
-    equation_of_exchange, nvt_ratio, protocol_value,
-    esg_adjusted_discount_rate, esg_premium_valuation, esg_discount_valuation,
-    metcalfes_law, modified_metcalfes, network_density_valuation,
-    remote_cost_savings_npv, data_moat_value, remote_first_premium,
+    data_moat_value,
+    equation_of_exchange,
+    esg_adjusted_discount_rate,
+    esg_discount_valuation,
+    esg_premium_valuation,
+    metcalfes_law,
+    modified_metcalfes,
+    network_density_valuation,
+    nvt_ratio,
+    protocol_value,
+    remote_cost_savings_npv,
+    remote_first_premium,
+    safe_conversion_cap,
+    safe_conversion_discount,
+    safe_expected_value,
 )
 
 

@@ -5,8 +5,6 @@ Chapter 14: Emerging Topics in Startup Valuation
 
 from __future__ import annotations
 
-import math
-
 from startup_valuation.types import ValuationResult
 
 

@@ -3,8 +3,12 @@
 import pytest
 
 from startup_valuation.fintech import (
-    payment_revenue, max_loan_portfolio, network_effects_value,
-    lending_fintech_valuation, payment_processor_valuation, neobank_valuation,
+    lending_fintech_valuation,
+    max_loan_portfolio,
+    neobank_valuation,
+    network_effects_value,
+    payment_processor_valuation,
+    payment_revenue,
 )
 
 

@@ -3,9 +3,14 @@
 import pytest
 
 from startup_valuation.international import (
-    purchasing_power_parity, interest_rate_parity, currency_adjusted_dcf,
-    country_risk_premium, country_risk_premium_damodaran,
-    adjusted_capm_international, after_tax_cash_flow, sum_of_parts_valuation,
+    adjusted_capm_international,
+    after_tax_cash_flow,
+    country_risk_premium,
+    country_risk_premium_damodaran,
+    currency_adjusted_dcf,
+    interest_rate_parity,
+    purchasing_power_parity,
+    sum_of_parts_valuation,
 )
 
 

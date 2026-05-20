@@ -8,7 +8,8 @@ from __future__ import annotations
 import math
 from collections.abc import Callable
 
-from scipy import integrate, stats as scipy_stats
+from scipy import integrate
+from scipy import stats as scipy_stats
 
 from startup_valuation.types import ValuationResult
 
@@ -206,7 +207,9 @@ def expected_value_continuous(
         >>> round(result.value, 4)
         0.0
     """
-    integrand = lambda x: x * pdf_func(x)
+    def integrand(x: float) -> float:
+        return x * pdf_func(x)
+
     ev, _ = integrate.quad(integrand, lower, upper, limit=200)
 
     return ValuationResult(
