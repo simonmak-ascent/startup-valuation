@@ -1,50 +1,5 @@
 # Startup Valuation: A Comprehensive Guide
 
-<div class="book-hero">
-  <div class="book-cover">
-    <img src="assets/images/book-cover.jpg" alt="Startup Valuation book cover">
-  </div>
-  <div class="book-info">
-    <h2>Startup Valuation</h2>
-    <p class="book-subtitle">A Comprehensive Guide to Valuing Fast-Growing Pre-Revenue Companies</p>
-    <p class="book-subtitle-2">Theory, Methods, Regulation, and Practice</p>
-    <p class="book-series">Valuation in Practice Series by Ascent Partners</p>
-    <p class="book-author">By Simon Mak</p>
-    <p class="book-description">
-      Unlock the secrets of startup valuation with the definitive textbook for finance professionals, investors, founders, and students. Dive deep into probability theory, option pricing, and stochastic processes—explained step-by-step and applied to real startup scenarios.
-    </p>
-    <p class="book-features">
-      15 chapters · 5 appendices · 300+ exercises · 20+ real-world cases · 50+ figures · 100+ tables
-    </p>
-    <a href="https://www.amazon.com/Startup-Valuation-Comprehensive-Fast-Growing-Pre-Revenue-ebook/dp/B0FYTGNVWS/" class="amazon-btn" target="_blank" rel="noopener noreferrer">
-      Buy on Amazon — Kindle $38.80 | Paperback $69.65
-    </a>
-  </div>
-</div>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Startup Valuation",
-  "description": "Comprehensive startup valuation library implementing 80+ formulas from the Startup Valuation textbook. Python library + MCP server + AI-Agent Skills.",
-  "url": "https://simonplmak-cloud.github.io/startup-valuation/",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Python 3.10+",
-  "license": "https://opensource.org/licenses/MIT",
-  "version": "1.0.0",
-  "author": {
-    "@type": "Organization",
-    "name": "Ascent Partners",
-    "url": "https://www.linkedin.com/company/ascent-partners-group-"
-  },
-  "codeRepository": "https://github.com/simonplmak-cloud/startup-valuation",
-  "documentation": "https://simonplmak-cloud.github.io/startup-valuation/",
-  "downloadUrl": "https://pypi.org/project/startup-valuation/",
-  "keywords": ["startup valuation", "finance", "MCP", "AI agents", "DCF", "Black-Scholes", "VC method"]
-}
-</script>
-
 ## Companion Library
 
 This site is the companion documentation for the Python library implementing **80+ formulas** from the Startup Valuation textbook.

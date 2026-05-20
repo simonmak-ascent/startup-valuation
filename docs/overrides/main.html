@@ -13,3 +13,151 @@
   <meta name="twitter:image" content="{{ config.site_url }}assets/images/book-cover.jpg">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com">
 {% endblock %}
+
+{% block site_nav %}
+  <!-- Top Bar Cross-Links -->
+  <div class="top-bar">
+    <div class="top-bar-inner">
+      <a href="https://www.simonmak.com" target="_blank" rel="noopener noreferrer">Simon Mak</a>
+      <span class="top-bar-sep">|</span>
+      <a href="https://ascent-partners.com" target="_blank" rel="noopener noreferrer">Ascent Partners</a>
+      <span class="top-bar-sep">|</span>
+      <a href="https://github.com/simonplmak-cloud/startup-valuation" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </div>
+  {{ super() }}
+{% endblock %}
+
+{% block content %}
+  {% if page and page.file and page.file.src_path == "index.md" %}
+    <!-- Custom Hero Section -->
+    <div class="custom-hero">
+      <div class="hero-content">
+        <h1>Startup Valuation Engine</h1>
+        <p class="hero-subtitle">A Comprehensive Guide to Valuing Fast-Growing Pre-Revenue Companies</p>
+        <p class="hero-tagline">Theory, Methods, Regulation, and Practice — Valuation in Practice Series by Ascent Partners</p>
+        <div class="hero-ctas">
+          <a href="https://www.amazon.com/Startup-Valuation-Comprehensive-Fast-Growing-Pre-Revenue-ebook/dp/B0FYTGNVWS/" class="btn-primary" target="_blank" rel="noopener noreferrer">
+            Buy on Amazon
+          </a>
+          <a href="https://github.com/simonplmak-cloud/startup-valuation" class="btn-secondary" target="_blank" rel="noopener noreferrer">
+            View on GitHub
+          </a>
+        </div>
+      </div>
+      <div class="hero-book-cover">
+        <img src="{{ config.site_url }}assets/images/book-cover.jpg" alt="Startup Valuation book cover">
+      </div>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat-item">
+        <p class="stat-number">80+</p>
+        <p class="stat-label">Valuation Formulas</p>
+      </div>
+      <div class="stat-item">
+        <p class="stat-number">14</p>
+        <p class="stat-label">Python Modules</p>
+      </div>
+      <div class="stat-item">
+        <p class="stat-number">101</p>
+        <p class="stat-label">Unit Tests</p>
+      </div>
+      <div class="stat-item">
+        <p class="stat-number">60+</p>
+        <p class="stat-label">MCP Tools</p>
+      </div>
+    </div>
+
+    <!-- Quick Start Section -->
+    <div class="quick-start-section">
+      <h2>Quick Start</h2>
+      <pre><code class="language-python">pip install startup-valuation</code></pre>
+      <pre><code class="language-python">from startup_valuation.core import scorecard_valuation
+from startup_valuation.types import Scenario
+
+result = scorecard_valuation(
+    average_valuation=1_500_000,
+    weights=[0.30, 0.25, 0.15, 0.10, 0.10, 0.05, 0.05],
+    scores=[1.25, 1.50, 1.20, 0.75, 1.00, 0.90, 1.00],
+)
+print(f"Scorecard: ${result.value:,.0f}")  # $1,800,000</code></pre>
+    </div>
+
+    <!-- Architecture Cards -->
+    <div class="arch-cards">
+      <a href="api/core/" class="arch-card">
+        <div class="arch-card-icon">&#128218;</div>
+        <h3>Python Library</h3>
+        <p>14 modules, 80+ typed functions, all returning ValuationResult with value, assumptions, and sensitivity analysis.</p>
+        <span class="arch-card-link">Explore API Reference &rarr;</span>
+      </a>
+      <a href="https://github.com/simonplmak-cloud/startup-valuation/tree/main/mcp_server" class="arch-card" target="_blank" rel="noopener noreferrer">
+        <div class="arch-card-icon">&#129302;</div>
+        <h3>MCP Server</h3>
+        <p>60+ tools for AI agents (Claude, OpenCode, etc.) via stdio/SSE. Connect any MCP-compatible agent.</p>
+        <span class="arch-card-link">View on GitHub &rarr;</span>
+      </a>
+      <a href="https://github.com/simonplmak-cloud/startup-valuation/tree/main/skills" class="arch-card" target="_blank" rel="noopener noreferrer">
+        <div class="arch-card-icon">&#9889;</div>
+        <h3>AI-Agent Skills</h3>
+        <p>5 skill definitions with workflow guidance for core, advanced, industry, stakeholder, and emerging valuation domains.</p>
+        <span class="arch-card-link">Browse Skills &rarr;</span>
+      </a>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="testimonials">
+      <h2>What People Say</h2>
+      <div class="testimonial-grid">
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"I enthusiastically endorse Simon Mak as a phenomenal leader who masterfully blends the art of attentive listening with a motivational drive to propel their team towards excellence. He strikes an impressive balance between approachability and pushing for progress, fostering innovation and personal development."</p>
+          <p class="testimonial-author">Peter Pham</p>
+          <p class="testimonial-role">Head of Business Valuation</p>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"Working with Simon on projects is the perfect combination of knowledge, experience and creativity. The short response time did not give me the feeling of working in different time zones. Looking forward to work on the next project."</p>
+          <p class="testimonial-author">Alfred Brandner</p>
+          <p class="testimonial-role">Luxembourg</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Startup Valuation",
+      "description": "Comprehensive startup valuation library implementing 80+ formulas from the Startup Valuation textbook. Python library + MCP server + AI-Agent Skills.",
+      "url": "https://simonplmak-cloud.github.io/startup-valuation/",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Python 3.10+",
+      "license": "https://opensource.org/licenses/MIT",
+      "version": "1.0.0",
+      "author": {
+        "@type": "Organization",
+        "name": "Ascent Partners",
+        "url": "https://www.linkedin.com/company/ascent-partners-group-"
+      },
+      "codeRepository": "https://github.com/simonplmak-cloud/startup-valuation",
+      "documentation": "https://simonplmak-cloud.github.io/startup-valuation/",
+      "downloadUrl": "https://pypi.org/project/startup-valuation/",
+      "keywords": ["startup valuation", "finance", "MCP", "AI agents", "DCF", "Black-Scholes", "VC method"]
+    }
+    </script>
+  {% endif %}
+
+  {{ super() }}
+{% endblock %}
+
+{% block footer %}
+  {{ super() }}
+  <div class="footer-crosslinks">
+    <a href="https://www.simonmak.com" class="footer-crosslink" target="_blank" rel="noopener noreferrer">Simon Mak</a>
+    <a href="https://ascent-partners.com" class="footer-crosslink" target="_blank" rel="noopener noreferrer">Ascent Partners</a>
+    <a href="https://github.com/simonplmak-cloud/startup-valuation" class="footer-crosslink" target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href="https://www.linkedin.com/company/ascent-partners-group-" class="footer-crosslink" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  </div>
+{% endblock %}

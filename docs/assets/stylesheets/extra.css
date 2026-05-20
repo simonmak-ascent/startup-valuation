@@ -41,6 +41,32 @@
 }
 
 /* ── Header / Navigation ──────────────────────────────────────────── */
+.top-bar {
+  background-color: #006585;
+  color: #FFFFFF;
+  text-align: center;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.top-bar-inner a {
+  color: #FFFFFF;
+  text-decoration: none;
+  font-weight: 600;
+  transition: opacity 0.2s ease;
+}
+
+.top-bar-inner a:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.top-bar-sep {
+  margin: 0 0.5rem;
+  opacity: 0.5;
+}
+
 .md-header {
   background-color: #FFFFFF;
   color: #373737;
@@ -302,5 +328,370 @@
   .amazon-btn {
     width: 100%;
     text-align: center;
+  }
+}
+
+/* ── Custom Homepage Redesign (simonmak.com style) ───────────────── */
+
+/* Custom Hero Section */
+.custom-hero {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #f5f9fb 0%, #e8f4f8 50%, #ffffff 100%);
+  border-radius: 0;
+  margin: -1.5rem -1.5rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.custom-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(135deg, transparent 0%, rgba(0, 131, 171, 0.05) 100%);
+  pointer-events: none;
+}
+
+.hero-content {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-content h1 {
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #0083AB;
+  margin: 0 0 0.5rem;
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: #373737;
+  margin: 0 0 0.25rem;
+  font-weight: 600;
+}
+
+.hero-tagline {
+  font-size: 1rem;
+  color: #666;
+  margin: 0 0 1.5rem;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.75rem;
+  background: linear-gradient(135deg, #FF9900 0%, #FFB84D 100%);
+  color: #000000;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(255, 153, 0, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #E68A00 0%, #FFA833 100%);
+  color: #000000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 153, 0, 0.4);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.75rem;
+  background: transparent;
+  color: #0083AB;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  border-radius: 8px;
+  border: 2px solid #0083AB;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: #0083AB;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+}
+
+.hero-book-cover {
+  flex-shrink: 0;
+  width: 220px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-book-cover img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Stats Bar */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  padding: 2.5rem 0;
+  margin: 0 0 2rem;
+  border-top: 1px solid #e8e8e8;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #0083AB;
+  margin: 0;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0.5rem 0 0;
+}
+
+/* Architecture Cards */
+.arch-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.arch-card {
+  padding: 2rem;
+  background: #FFFFFF;
+  border-radius: 8px;
+  border: 1px solid #e0eef3;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.arch-card:hover {
+  border-color: #0083AB;
+  box-shadow: 0 4px 16px rgba(0, 131, 171, 0.1);
+  transform: translateY(-2px);
+}
+
+.arch-card-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.arch-card h3 {
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #0083AB;
+  margin: 0 0 0.75rem;
+}
+
+.arch-card p {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.6;
+  margin: 0 0 1rem;
+}
+
+.arch-card-link {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0083AB;
+  text-decoration: none;
+}
+
+.arch-card-link:hover {
+  color: #006585;
+}
+
+/* Testimonials */
+.testimonials {
+  margin: 3rem 0;
+}
+
+.testimonials h2 {
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #373737;
+  text-align: center;
+  margin: 0 0 2rem;
+}
+
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.testimonial-card {
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f9fb 0%, #ffffff 100%);
+  border-radius: 8px;
+  border-left: 4px solid #0083AB;
+}
+
+.testimonial-quote {
+  font-size: 0.95rem;
+  color: #444;
+  line-height: 1.7;
+  font-style: italic;
+  margin: 0 0 1rem;
+}
+
+.testimonial-author {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0083AB;
+  margin: 0;
+}
+
+.testimonial-role {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0.25rem 0 0;
+}
+
+/* Footer Cross-Links */
+.footer-crosslinks {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 1rem;
+}
+
+.footer-crosslink {
+  color: #00a3d4;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.footer-crosslink:hover {
+  color: #FFFFFF;
+}
+
+/* Quick Start Section */
+.quick-start-section {
+  margin: 2rem 0;
+  padding: 2rem;
+  background: #f5f9fb;
+  border-radius: 8px;
+  border: 1px solid #e0eef3;
+}
+
+.quick-start-section h2 {
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #0083AB;
+  margin: 0 0 1rem;
+}
+
+/* Responsive: Homepage Redesign */
+@media (max-width: 1024px) {
+  .custom-hero {
+    padding: 3rem 1.5rem;
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .arch-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .custom-hero {
+    flex-direction: column-reverse;
+    gap: 2rem;
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+
+  .hero-book-cover {
+    width: 160px;
+  }
+
+  .hero-content h1 {
+    font-size: 1.75rem;
+  }
+
+  .hero-ctas {
+    justify-content: center;
+  }
+
+  .stats-bar {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+  }
+
+  .arch-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .testimonial-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-crosslinks {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-ctas {
+    flex-direction: column;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
   }
 }
