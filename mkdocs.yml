@@ -1,7 +1,7 @@
 site_name: Startup Valuation
 site_description: Comprehensive startup valuation library with 80+ formulas, MCP server, and AI-agent skills
 site_author: Ascent Partners
-site_url: https://simonplmak-cloud.github.io/startup-valuation
+site_url: https://simonplmak-cloud.github.io/startup-valuation/
 repo_url: https://github.com/simonplmak-cloud/startup-valuation
 repo_name: simonplmak-cloud/startup-valuation
 edit_uri: edit/main/docs/
