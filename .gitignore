@@ -18,7 +18,6 @@ site/
 # Internal AI-agent config (opencode)
 AGENTS.md
 constitution.md
-skills/
 
 # Internal SDD artifacts
 specs/
