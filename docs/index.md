@@ -86,6 +86,7 @@ Copy the `skills/` directory to your agent's skills folder. Available skills:
 - `valuation-industry` — SaaS, Biotech, Fintech, Marketplace, Hardware
 - `valuation-stakeholder` — Dilution, OPM, PWERM, Liquidation
 - `valuation-emerging` — SAFE, Crypto, ESG, Network Effects
+- `valuation-foundations` — Probability, TVM, CAPM, Comparables, International
 
 ## Development
 

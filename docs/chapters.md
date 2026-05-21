@@ -71,7 +71,7 @@ This index maps every function in the library to its corresponding chapter in th
 | `mrr` | `saas` | Monthly Recurring Revenue |
 | `cac` | `saas` | Customer Acquisition Cost |
 | `ltv_saas` | `saas` | LTV = (ARPU × GM) / Churn |
-| `net_revenue_retention` | `saas` | NRR = Revenue_end / Revenue_start |
+| `net_revenue_retention` | `saas` | NRR = (Revenue_end + Expansion) / Revenue_start |
 | `cac_payback_period` | `saas` | CAC / (MRR × GM) |
 | `magic_number` | `saas` | Net New ARR / S&M Expense |
 | `rule_of_40` | `saas` | Growth + Profit ≥ 40% |

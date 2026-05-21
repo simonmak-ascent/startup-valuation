@@ -10,7 +10,7 @@ Skills are markdown files that define:
 - **MCP tool mappings** — which tools to call and when
 - **Best practices** and common pitfalls
 
-There are 5 skills available:
+There are 6 skills available:
 
 | Skill | Covers |
 |---|---|
@@ -19,6 +19,7 @@ There are 5 skills available:
 | `valuation-industry` | SaaS, Biotech, Fintech, Marketplace, Hardware |
 | `valuation-stakeholder` | Dilution, OPM, PWERM, Liquidation Preference |
 | `valuation-emerging` | SAFE, Crypto (MV=PQ), ESG, Metcalfe's Law |
+| `valuation-foundations` | Probability, TVM, CAPM, Comparables, International |
 
 ## Setup for OpenCode
 
@@ -32,7 +33,7 @@ cp -r /path/to/startup-valuation/skills ~/.config/opencode/skills/
 
 ```bash
 ls ~/.config/opencode/skills/
-# valuation-core  valuation-advanced  valuation-industry  valuation-stakeholder  valuation-emerging
+# valuation-core  valuation-advanced  valuation-industry  valuation-stakeholder  valuation-emerging  valuation-foundations
 ```
 
 3. Start a new OpenCode session — the skills are now available.
