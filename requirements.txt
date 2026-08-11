@@ -1,0 +1,2 @@
+# Vercel Python MCP Server — startup-valuation
+# No external dependencies needed — stdlib only
