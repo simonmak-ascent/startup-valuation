@@ -89,7 +89,7 @@ def network_value(active_users: float, k: float = 1.0, alpha: float = 1.3) -> Va
         ValuationResult with network value.
     """
     return ValuationResult(
-        value=k * (active_users ** alpha),
+        value=k * (active_users**alpha),
         method="Network Value",
         inputs={"active_users": active_users, "k": k, "alpha": alpha},
         assumptions=[f"Network effect exponent α={alpha}"],

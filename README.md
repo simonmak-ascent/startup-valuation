@@ -7,12 +7,35 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Docs](https://img.shields.io/badge/docs-GitHub_Pages-blue)](https://simonplmak-cloud.github.io/startup-valuation/)
+[![Coverage](https://img.shields.io/badge/coverage-88%25-brightgreen)](https://github.com/simonplmak-cloud/startup-valuation/actions/workflows/ci.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/simonplmak-cloud/startup-valuation/badge)](https://scorecard.dev/viewer/?uri=github.com/simonplmak-cloud/startup-valuation)
 
 ## Overview
 
 A production-grade Python library for startup valuation, implementing every formula from the **[Startup Valuation](https://www.amazon.com/Startup-Valuation-Comprehensive-Fast-Growing-Pre-Revenue-ebook/dp/B0FYTGNVWS/)** textbook by Simon Mak (Valuation in Practice Series, Ascent Partners). Designed for developers, financial analysts, and AI agents who need auditable, structured valuation computations.
 
 **Three-layer architecture:**
+
+```mermaid
+graph TB
+    subgraph Library["Python Library"]
+        MOD["14 Modules<br/>80+ Functions"] --> VR["ValuationResult"]
+    end
+    subgraph MCP["MCP Server"]
+        VR --> SVR["FastMCP Server<br/>60+ Tools"]
+    end
+    subgraph Skills["AI-Agent Skills"]
+        SVR --> CORE["Core"]
+        SVR --> ADV["Advanced"]
+        SVR --> IND["Industry"]
+        SVR --> STAKE["Stakeholder"]
+        SVR --> EMER["Emerging"]
+    end
+    style Library fill:#0083AB,color:#fff
+    style MCP fill:#4CAF50,color:#fff
+    style Skills fill:#9C27B0,color:#fff
+```
+
 1. **Python Library** — 14 modules, 80+ typed functions, all returning `ValuationResult` (value + assumptions + sensitivity)
 2. **MCP Server** — 60+ tools for AI agents (Claude, OpenCode, etc.) via stdio/SSE
 3. **AI-Agent Skills** — 5 skill definitions with workflow guidance for valuation domains
@@ -109,7 +132,7 @@ Copy the `skills/` directory to your agent's skills folder:
 # Install dev dependencies
 pip install -e ".[dev]"
 
-# Run tests (101 tests, ~6s)
+# Run tests
 pytest
 
 # Run with coverage
@@ -119,12 +142,13 @@ pytest --cov=startup_valuation --cov-report=term-missing
 ruff check .
 
 # Type check
-mypy src/startup_valuation
+mypy src/startup_valuation --ignore-missing-imports
 ```
 
 ## Documentation
 
 - **API Reference:** [GitHub Pages](https://simonplmak-cloud.github.io/startup-valuation/)
+- **Wiki (Theory & Derivations):** [GitHub Wiki](https://github.com/simonplmak-cloud/startup-valuation/wiki)
 - **PyPI:** [pypi.org/project/startup-valuation](https://pypi.org/project/startup-valuation/)
 - **Chapter Index:** Maps every function to its textbook chapter
 - **Examples:** Interactive code snippets for each valuation category

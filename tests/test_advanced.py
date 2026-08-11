@@ -56,6 +56,7 @@ def test_scenario_analysis_four():
 
 def test_monte_carlo_valuation():
     from startup_valuation.types import Distribution
+
     result = monte_carlo_valuation(
         market_size_dist=Distribution("uniform", {"min": 1_000_000, "max": 10_000_000}),
         market_share_dist=Distribution("uniform", {"min": 0.01, "max": 0.10}),

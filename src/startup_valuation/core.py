@@ -25,6 +25,34 @@ def scorecard_valuation(
     Returns:
         ValuationResult with target valuation.
 
+    Raises:
+        ValueError: If weights don't sum to 1.0 or weights/scores lengths differ.
+
+    Notes:
+        The Scorecard Method adjusts the average regional pre-money valuation
+        by a weighted sum of factor scores. Each factor (team, product, market,
+        competition, marketing, funding need, other) is scored relative to average
+        (1.0 = average). The formula is:
+
+        $$V = V_{avg} \\times \\sum_{i=1}^{n} w_i \\times s_i$$
+
+        where $$\\sum w_i = 1$$ and $$s_i > 0$$.
+
+        Assumptions:
+        - Scores are relative to comparable regional startups (1.0 = average)
+        - Factors are additively independent (no interaction effects)
+        - Linear scaling applies (no diminishing returns)
+        - Weights reflect factor importance at the startup's current stage
+
+    References:
+        Startup Valuation textbook, Chapter 3, Section 3.1 (Scorecard Method).
+        Bill Payne's factor framework (7 standard factors).
+
+    See Also:
+        berkus_valuation : Alternative pre-revenue method using milestone values.
+        risk_factor_summation : Risk-based adjustment of baseline valuation.
+        Theory: https://github.com/simonplmak-cloud/startup-valuation/wiki/Core-Methods
+
     Example:
         >>> result = scorecard_valuation(
         ...     1_500_000,
@@ -56,6 +84,7 @@ def scorecard_valuation(
             "Weights reflect factor importance for this stage",
         ],
         chapter="3",
+        formula_number="3.1",
     )
 
 
@@ -82,6 +111,35 @@ def berkus_valuation(
 
     Returns:
         ValuationResult with Berkus valuation.
+
+    Raises:
+        ValueError: If any factor value is outside [0, max_per_factor].
+
+    Notes:
+        The Berkus Method assigns dollar values to five key risk-reduction
+        milestones. Each milestone can contribute up to $500K (default),
+        with a maximum valuation of $2.5M:
+
+        $$V = \\sum_{i=1}^{5} \\text{Value}_i$$
+
+        where $$0 \\leq \\text{Value}_i \\leq \\text{max\\_per\\_factor}$$.
+
+        Factors: Sound Idea, Prototype, Quality Management Team,
+        Strategic Relationships, Product Rollout/Sales.
+
+        Assumptions:
+        - Applicable to pre-revenue startups only
+        - Maximum per-factor value is $500K (adjustable)
+        - Each factor is independently assessed
+        - Total valuation is additive (no interactions)
+
+    References:
+        Startup Valuation textbook, Chapter 3, Section 3.2 (Berkus Method).
+        Dave Berkus, "The Berkus Method: Valuing an Early Stage Startup."
+
+    See Also:
+        scorecard_valuation : Factor-weighted adjustment of average valuation.
+        Theory: https://github.com/simonplmak-cloud/startup-valuation/wiki/Core-Methods
 
     Example:
         >>> result = berkus_valuation(500_000, 400_000, 500_000, 500_000, 0)
@@ -112,6 +170,7 @@ def berkus_valuation(
             "Each factor is independently assessed",
         ],
         chapter="3",
+        formula_number="3.2",
     )
 
 
@@ -131,6 +190,32 @@ def risk_factor_summation(
 
     Returns:
         ValuationResult with adjusted valuation.
+
+    Raises:
+        ValueError: If risk_ratings length != 12 or ratings outside [-2, +2].
+
+    Notes:
+        The Risk Factor Summation Method starts with a baseline valuation
+        and adjusts up or down for each of 12 risk factors. Each risk unit
+        adjusts the valuation by $250K (default):
+
+        $$V = V_{base} + \\sum_{i=1}^{12} r_i \\times \\text{adjustment\\_per\\_unit}$$
+
+        where $$-2 \\leq r_i \\leq 2$$.
+
+        The 12 risk factors are: Management, Stage of Business,
+        Legislation/Political Risk, Manufacturing Risk, Sales/Marketing Risk,
+        Funding/Capital Raising Risk, Competition Risk, Technology Risk,
+        Litigation Risk, International Risk, Reputation Risk,
+        Exit Value Risk.
+
+    References:
+        Startup Valuation textbook, Chapter 3, Section 3.3
+        (Risk Factor Summation Method).
+
+    See Also:
+        scorecard_valuation : Weighted-factor approach to valuation.
+        Theory: https://github.com/simonplmak-cloud/startup-valuation/wiki/Core-Methods
 
     Example:
         >>> result = risk_factor_summation(2_000_000, [1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0])
@@ -159,6 +244,7 @@ def risk_factor_summation(
             "12 risk factors are assessed independently",
         ],
         chapter="3",
+        formula_number="3.3",
     )
 
 
@@ -176,6 +262,27 @@ def vc_method_post_money(
 
     Returns:
         ValuationResult with post-money valuation.
+
+    Raises:
+        ValueError: If target_return is not positive.
+
+    Notes:
+        The Venture Capital Method works backward from an expected exit
+        value to determine today's post-money valuation:
+
+        $$V_{post} = \\frac{\\text{Terminal Value}}{\\text{Target Return}}$$
+
+        A target return of 10x means the investor expects to 10x their
+        investment by exit. This method assumes a single liquidity event
+        at a known future date.
+
+    References:
+        Startup Valuation textbook, Chapter 3, Section 3.4 (VC Method).
+
+    See Also:
+        vc_method_pre_money : Subtract investment to get pre-money value.
+        terminal_value_multiple : Estimate terminal value from revenue.
+        Theory: https://github.com/simonplmak-cloud/startup-valuation/wiki/Core-Methods
 
     Example:
         >>> result = vc_method_post_money(500_000_000, 10)
@@ -199,6 +306,7 @@ def vc_method_post_money(
             "Target return reflects investor expectations for this stage",
         ],
         chapter="3",
+        formula_number="3.4",
     )
 
 
@@ -217,6 +325,20 @@ def vc_method_pre_money(
     Returns:
         ValuationResult with pre-money valuation.
 
+    Notes:
+        Pre-money valuation is simply post-money minus the investment amount:
+
+        $$V_{pre} = V_{post} - \\text{Investment}$$
+
+        This is the valuation before new capital is injected.
+
+    References:
+        Startup Valuation textbook, Chapter 3, Section 3.4 (VC Method).
+
+    See Also:
+        vc_method_post_money : Calculate post-money from terminal value.
+        Theory: https://github.com/simonplmak-cloud/startup-valuation/wiki/Core-Methods
+
     Example:
         >>> result = vc_method_pre_money(8_000_000, 1_500_000)
         >>> result.value
@@ -230,6 +352,7 @@ def vc_method_pre_money(
         inputs={"post_money": post_money, "investment": investment},
         assumptions=["Investment amount is accurate"],
         chapter="3",
+        formula_number="3.4",
     )
 
 
@@ -248,6 +371,21 @@ def terminal_value_multiple(
     Returns:
         ValuationResult with terminal value.
 
+    Notes:
+        Terminal value using a revenue multiple at exit:
+
+        $$\\text{TV} = \\text{Revenue} \\times \\text{Multiple}$$
+
+        Multiples vary by industry (3-10x for SaaS, 1-3x for services).
+        Used as input to the VC Method for discounting back to present value.
+
+    References:
+        Startup Valuation textbook, Chapter 3, Section 3.4 (VC Method).
+
+    See Also:
+        vc_method_post_money : Discount terminal value to post-money.
+        Theory: https://github.com/simonplmak-cloud/startup-valuation/wiki/Core-Methods
+
     Example:
         >>> result = terminal_value_multiple(20_000_000, 8)
         >>> result.value
@@ -261,4 +399,5 @@ def terminal_value_multiple(
         inputs={"projected_revenue": projected_revenue, "multiple": multiple},
         assumptions=["Multiple is from comparable exits", "Revenue projection is achievable"],
         chapter="3",
+        formula_number="3.4",
     )

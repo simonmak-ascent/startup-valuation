@@ -22,6 +22,9 @@ constitution.md
 # Internal SDD artifacts
 specs/
 
+# Internal VDD artifacts
+vdd/
+
 # Playwright MCP test artifacts
 .playwright-mcp/
 

@@ -83,8 +83,11 @@ def valuation_portfolio_beta(weights: list[float], betas: list[float]) -> dict:
 
 @mcp.tool()
 def valuation_startup_capm(
-    risk_free_rate: float, beta: float, market_risk_premium: float,
-    size_premium: float = 0, startup_premium: float = 0,
+    risk_free_rate: float,
+    beta: float,
+    market_risk_premium: float,
+    size_premium: float = 0,
+    startup_premium: float = 0,
 ) -> dict:
     """Calculate startup-adjusted CAPM with additional premiums."""
     r = capm.startup_adjusted_capm(risk_free_rate, beta, market_risk_premium, size_premium, startup_premium)
@@ -101,8 +104,11 @@ def valuation_scorecard(average_valuation: float, weights: list[float], scores: 
 
 @mcp.tool()
 def valuation_berkus(
-    sound_idea: float = 0, prototype: float = 0, quality_team: float = 0,
-    strategic_relationships: float = 0, product_rollout: float = 0,
+    sound_idea: float = 0,
+    prototype: float = 0,
+    quality_team: float = 0,
+    strategic_relationships: float = 0,
+    product_rollout: float = 0,
 ) -> dict:
     """Berkus valuation. V = Σ vᵢ (max $500K per factor)."""
     r = core.berkus_valuation(sound_idea, prototype, quality_team, strategic_relationships, product_rollout)
@@ -133,8 +139,11 @@ def valuation_vc_pre_money(post_money: float, investment: float) -> dict:
 # ── Advanced ─────────────────────────────────────────────────────────
 @mcp.tool()
 def valuation_black_scholes(
-    underlying: float, strike: float, risk_free_rate: float,
-    volatility: float, time_to_maturity: float,
+    underlying: float,
+    strike: float,
+    risk_free_rate: float,
+    volatility: float,
+    time_to_maturity: float,
 ) -> dict:
     """Black-Scholes call option value. C = N(d₁)S - N(d₂)Ke^(-rT)"""
     r = advanced.black_scholes(underlying, strike, risk_free_rate, volatility, time_to_maturity)
@@ -145,6 +154,7 @@ def valuation_black_scholes(
 def valuation_scenario_analysis(scenarios: list[dict]) -> dict:
     """Scenario analysis expected value. E[V] = Σ pᵢ × Vᵢ. scenarios: [{name, probability, value}]"""
     from startup_valuation.types import Scenario
+
     s = [Scenario(name=s["name"], probability=s["probability"], value=s["value"]) for s in scenarios]
     r = advanced.scenario_analysis(s)
     return {"value": r.value, "method": r.method}
@@ -153,15 +163,27 @@ def valuation_scenario_analysis(scenarios: list[dict]) -> dict:
 # ── Comparables ──────────────────────────────────────────────────────
 @mcp.tool()
 def valuation_regression_multiple(
-    intercept: float, growth_rate: float, growth_coefficient: float,
-    market_maturity: float = 0, maturity_coefficient: float = 0,
-    stage: float = 0, stage_coefficient: float = 0,
-    geography: float = 0, geography_coefficient: float = 0,
+    intercept: float,
+    growth_rate: float,
+    growth_coefficient: float,
+    market_maturity: float = 0,
+    maturity_coefficient: float = 0,
+    stage: float = 0,
+    stage_coefficient: float = 0,
+    geography: float = 0,
+    geography_coefficient: float = 0,
 ) -> dict:
     """Regression-adjusted multiple. Multiple = β₀ + β₁g + β₂M + β₃S + β₄G"""
     r = comparables.regression_adjusted_multiple(
-        intercept, growth_rate, growth_coefficient,
-        market_maturity, maturity_coefficient, stage, stage_coefficient, geography, geography_coefficient,
+        intercept,
+        growth_rate,
+        growth_coefficient,
+        market_maturity,
+        maturity_coefficient,
+        stage,
+        stage_coefficient,
+        geography,
+        geography_coefficient,
     )
     return {"value": r.value, "method": r.method}
 
@@ -366,14 +388,19 @@ def valuation_full_analysis(
 def valuation_expected_value_continuous(lower: float, upper: float) -> dict:
     """Calculate expected value for a continuous random variable using numerical integration."""
     import scipy.stats
+
     r = probability.expected_value_continuous(scipy.stats.norm(0, 1).pdf, lower, upper)
     return {"value": r.value, "method": r.method}
 
 
 @mcp.tool()
 def valuation_binomial(
-    underlying: float, strike: float, risk_free_rate: float,
-    volatility: float, time_to_maturity: float, steps: int = 50,
+    underlying: float,
+    strike: float,
+    risk_free_rate: float,
+    volatility: float,
+    time_to_maturity: float,
+    steps: int = 50,
 ) -> dict:
     """High-resolution binomial tree valuation for startup options."""
     r = advanced.binomial_valuation(underlying, strike, risk_free_rate, volatility, time_to_maturity, steps)
@@ -382,20 +409,32 @@ def valuation_binomial(
 
 @mcp.tool()
 def valuation_payment_processor(
-    transaction_volume: float, take_rate: float, growth_rate: float,
-    discount_rate: float, terminal_multiple: float, years: int = 5,
+    transaction_volume: float,
+    take_rate: float,
+    growth_rate: float,
+    discount_rate: float,
+    terminal_multiple: float,
+    years: int = 5,
 ) -> dict:
     """Value a payment processor using DCF of payment revenue."""
     r = fintech.payment_processor_valuation(
-        transaction_volume, take_rate, growth_rate, discount_rate, terminal_multiple, years,
+        transaction_volume,
+        take_rate,
+        growth_rate,
+        discount_rate,
+        terminal_multiple,
+        years,
     )
     return {"value": r.value, "method": r.method}
 
 
 @mcp.tool()
 def valuation_neobank(
-    customers: int, arpu: float, gross_margin: float,
-    churn_rate: float, pe_multiple: float,
+    customers: int,
+    arpu: float,
+    gross_margin: float,
+    churn_rate: float,
+    pe_multiple: float,
 ) -> dict:
     """Value a neobank using customer-based LTV × P/E model."""
     r = fintech.neobank_valuation(customers, arpu, gross_margin, churn_rate, pe_multiple)
@@ -418,13 +457,21 @@ def valuation_network_density(active_buyers: int, active_sellers: int, total_use
 
 @mcp.tool()
 def valuation_risk_adjusted_synergy(
-    revenue_synergies: float, cost_synergies: float,
-    prob_revenue: float = 0.4, prob_cost: float = 0.8,
-    discount_rate: float = 0.10, years: int = 3,
+    revenue_synergies: float,
+    cost_synergies: float,
+    prob_revenue: float = 0.4,
+    prob_cost: float = 0.8,
+    discount_rate: float = 0.10,
+    years: int = 3,
 ) -> dict:
     """Calculate risk-adjusted synergy value for M&A."""
     r = stakeholders.risk_adjusted_synergy(
-        revenue_synergies, cost_synergies, prob_revenue, prob_cost, discount_rate, years,
+        revenue_synergies,
+        cost_synergies,
+        prob_revenue,
+        prob_cost,
+        discount_rate,
+        years,
     )
     return {"value": r.value, "method": r.method}
 
@@ -445,21 +492,30 @@ def valuation_employee_option(scenarios: list[dict]) -> dict:
 
 @mcp.tool()
 def valuation_vesting_adjusted(
-    total_value: float, vested_fraction: float,
-    annual_vest_rate: float = 0.25, retention_prob: float = 0.8,
+    total_value: float,
+    vested_fraction: float,
+    annual_vest_rate: float = 0.25,
+    retention_prob: float = 0.8,
     years_remaining: int = 3,
 ) -> dict:
     """Calculate option value adjusted for vesting schedule."""
     r = stakeholders.vesting_adjusted_value(
-        total_value, vested_fraction, annual_vest_rate, retention_prob, years_remaining,
+        total_value,
+        vested_fraction,
+        annual_vest_rate,
+        retention_prob,
+        years_remaining,
     )
     return {"value": r.value, "method": r.method}
 
 
 @mcp.tool()
 def valuation_cash_equity_breakeven(
-    salary_reduction: float, equity_value: float,
-    tax_rate: float = 0.30, discount_rate: float = 0.20, years: int = 4,
+    salary_reduction: float,
+    equity_value: float,
+    tax_rate: float = 0.30,
+    discount_rate: float = 0.20,
+    years: int = 4,
 ) -> dict:
     """Calculate breakeven for cash vs equity tradeoff."""
     r = stakeholders.cash_equity_breakeven(salary_reduction, equity_value, tax_rate, discount_rate, years)
@@ -468,8 +524,11 @@ def valuation_cash_equity_breakeven(
 
 @mcp.tool()
 def valuation_max_asset_loan(
-    cash: float = 0, accounts_receivable: float = 0,
-    inventory: float = 0, equipment: float = 0, real_estate: float = 0,
+    cash: float = 0,
+    accounts_receivable: float = 0,
+    inventory: float = 0,
+    equipment: float = 0,
+    real_estate: float = 0,
 ) -> dict:
     """Calculate maximum asset-based loan amount."""
     r = stakeholders.max_asset_based_loan(cash, accounts_receivable, inventory, equipment, real_estate)
@@ -485,8 +544,11 @@ def valuation_safe_cap(cap: float, series_a_price: float) -> dict:
 
 @mcp.tool()
 def valuation_safe_expected(
-    investment: float, cap: float, discount: float,
-    series_a_valuation: float, series_a_price: float,
+    investment: float,
+    cap: float,
+    discount: float,
+    series_a_valuation: float,
+    series_a_price: float,
 ) -> dict:
     """Calculate expected SAFE value across cap and discount scenarios."""
     r = emerging.safe_expected_value(investment, cap, discount, series_a_valuation, series_a_price)
@@ -516,20 +578,29 @@ def valuation_esg_discount(base_valuation: float, esg_risk_score: float, discoun
 
 @mcp.tool()
 def valuation_data_moat(
-    data_volume: float, data_uniqueness: float, monetization_rate: float,
-    competitive_advantage_years: float, discount_rate: float = 0.15,
+    data_volume: float,
+    data_uniqueness: float,
+    monetization_rate: float,
+    competitive_advantage_years: float,
+    discount_rate: float = 0.15,
 ) -> dict:
     """Calculate value of data as a competitive moat."""
     r = emerging.data_moat_value(
-        data_volume, data_uniqueness, monetization_rate, competitive_advantage_years, discount_rate,
+        data_volume,
+        data_uniqueness,
+        monetization_rate,
+        competitive_advantage_years,
+        discount_rate,
     )
     return {"value": r.value, "method": r.method}
 
 
 @mcp.tool()
 def valuation_remote_premium(
-    base_valuation: float, cost_savings_pct: float = 0.20,
-    talent_access_premium: float = 0.10, productivity_gain: float = 0.05,
+    base_valuation: float,
+    cost_savings_pct: float = 0.20,
+    talent_access_premium: float = 0.10,
+    productivity_gain: float = 0.05,
 ) -> dict:
     """Calculate remote-first company valuation premium."""
     r = emerging.remote_first_premium(base_valuation, cost_savings_pct, talent_access_premium, productivity_gain)

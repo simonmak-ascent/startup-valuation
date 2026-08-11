@@ -26,8 +26,9 @@ def test_single_round_dilution():
 
 
 def test_multi_round_dilution():
-    result = multi_round_dilution(1.0, [2_000_000, 5_000_000, 10_000_000, 20_000_000],
-                                   [10_000_000, 25_000_000, 60_000_000, 150_000_000])
+    result = multi_round_dilution(
+        1.0, [2_000_000, 5_000_000, 10_000_000, 20_000_000], [10_000_000, 25_000_000, 60_000_000, 150_000_000]
+    )
     assert round(result.value, 2) == pytest.approx(0.46, abs=0.02)
 
 

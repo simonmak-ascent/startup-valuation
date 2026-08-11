@@ -63,6 +63,7 @@ exclude = [
   "/constitution.md",
   "/skills/",
   "/specs/",
+  "/vdd/",
   "/book-alignment-homepage.png",
   "/.mypy_cache/",
   "/.pytest_cache/",

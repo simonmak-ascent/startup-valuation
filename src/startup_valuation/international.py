@@ -32,6 +32,11 @@ def purchasing_power_parity(
             "inflation_domestic": inflation_domestic,
         },
         chapter="12",
+        assumptions=[
+            "PPP holds in the long run (law of one price)",
+            "Inflation rates are accurate forecasts",
+            "No transaction costs or trade barriers",
+        ],
     )
 
 
@@ -53,6 +58,11 @@ def interest_rate_parity(
             "rate_domestic": rate_domestic,
         },
         chapter="12",
+        assumptions=[
+            "Interest rates reflect market expectations",
+            "No arbitrage opportunities in currency markets",
+            "Capital flows freely between countries",
+        ],
     )
 
 
@@ -69,8 +79,7 @@ def currency_adjusted_dcf(
         raise ValueError("cash_flows_local and exchange_rates must have same length")
 
     pv = sum(
-        (cf / e) / ((1 + discount_rate_usd) ** t)
-        for t, (cf, e) in enumerate(zip(cash_flows_local, exchange_rates))
+        (cf / e) / ((1 + discount_rate_usd) ** t) for t, (cf, e) in enumerate(zip(cash_flows_local, exchange_rates))
     )
 
     return ValuationResult(
@@ -82,6 +91,11 @@ def currency_adjusted_dcf(
             "discount_rate_usd": discount_rate_usd,
         },
         chapter="12",
+        assumptions=[
+            "Exchange rates reflect purchasing power differences",
+            "Cash flows are accurately projected in local currency",
+            "Discount rate in USD properly reflects risk",
+        ],
     )
 
 
@@ -103,6 +117,11 @@ def country_risk_premium(
         method="Country Risk Premium (Sovereign Spread)",
         inputs={"sovereign_yield": sovereign_yield, "us_treasury_yield": us_treasury_yield},
         chapter="12",
+        assumptions=[
+            "Sovereign bond yields reflect country risk",
+            "US Treasury yield is the risk-free benchmark",
+            "Sovereign spread captures default risk alone",
+        ],
     )
 
 
@@ -126,6 +145,11 @@ def country_risk_premium_damodaran(
             "bond_volatility": bond_volatility,
         },
         chapter="12",
+        assumptions=[
+            "Default spread is from sovereign CDS or bond spread",
+            "Equity volatility exceeds bond volatility (leverage effect)",
+            "Relative volatility captures country-specific equity risk",
+        ],
     )
 
 
@@ -154,6 +178,11 @@ def adjusted_capm_international(
             "crp": crp,
         },
         chapter="12",
+        assumptions=[
+            "CAPM framework applies in international context",
+            "Beta captures systematic risk only",
+            "CRP is additive to the standard CAPM equity risk premium",
+        ],
     )
 
 
@@ -175,6 +204,11 @@ def after_tax_cash_flow(
             "withholding_tax_rate": withholding_tax_rate,
         },
         chapter="12",
+        assumptions=[
+            "Local tax rates are accurately known",
+            "Withholding tax rates apply as stated",
+            "No additional indirect tax effects",
+        ],
     )
 
 
@@ -194,4 +228,9 @@ def sum_of_parts_valuation(
         method="Sum-of-Parts Valuation",
         inputs={"market_values": market_values, "market_probabilities": market_probabilities},
         chapter="12",
+        assumptions=[
+            "Market values are independently estimated",
+            "Success probabilities are well-calibrated",
+            "Market outcomes are mutually independent",
+        ],
     )

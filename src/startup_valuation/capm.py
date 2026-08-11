@@ -149,11 +149,7 @@ def portfolio_variance(
     if len(covariances) != n or any(len(row) != n for row in covariances):
         raise ValueError("covariances must be an n×n matrix")
 
-    variance = sum(
-        weights[i] * weights[j] * covariances[i][j]
-        for i in range(n)
-        for j in range(n)
-    )
+    variance = sum(weights[i] * weights[j] * covariances[i][j] for i in range(n) for j in range(n))
 
     return ValuationResult(
         value=variance,

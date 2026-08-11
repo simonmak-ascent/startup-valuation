@@ -128,10 +128,9 @@ def opm_common_stock(
     )
     d2 = d1 - volatility * math.sqrt(time_to_exit)
 
-    common_value = (
-        enterprise_value * stats.norm.cdf(d1)
-        - liquidation_preference * math.exp(-risk_free_rate * time_to_exit) * stats.norm.cdf(d2)
-    )
+    common_value = enterprise_value * stats.norm.cdf(d1) - liquidation_preference * math.exp(
+        -risk_free_rate * time_to_exit
+    ) * stats.norm.cdf(d2)
 
     return ValuationResult(
         value=common_value,
@@ -357,10 +356,7 @@ def probability_weighted_employee_value(
     if abs(total_prob - 1.0) > 0.01:
         raise ValueError(f"scenario probabilities must sum to 1.0, got {total_prob}")
 
-    expected_value = sum(
-        s["probability"] * max(s["fmv"] - s["strike"], 0) * s["shares"]
-        for s in scenarios
-    )
+    expected_value = sum(s["probability"] * max(s["fmv"] - s["strike"], 0) * s["shares"] for s in scenarios)
     return ValuationResult(
         value=expected_value,
         method="Probability-Weighted Employee Option Value",
@@ -401,7 +397,7 @@ def vesting_adjusted_value(
     adjusted_unvested = 0.0
     for t in range(1, years_remaining + 1):
         vest_portion = annual_vest_rate * unvested_value
-        retention = retention_prob ** t
+        retention = retention_prob**t
         adjusted_unvested += vest_portion * retention
 
     return ValuationResult(
@@ -491,13 +487,7 @@ def max_asset_based_loan(
         >>> result.value
         5500000.0
     """
-    max_loan = (
-        cash * 1.0
-        + accounts_receivable * 0.85
-        + inventory * 0.50
-        + equipment * 0.60
-        + real_estate * 0.75
-    )
+    max_loan = cash * 1.0 + accounts_receivable * 0.85 + inventory * 0.50 + equipment * 0.60 + real_estate * 0.75
 
     return ValuationResult(
         value=max_loan,

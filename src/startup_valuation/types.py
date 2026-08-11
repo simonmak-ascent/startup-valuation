@@ -29,6 +29,7 @@ class ValuationResult:
         assumptions: Key assumptions made during calculation.
         sensitivity: Sensitivity analysis for key inputs.
         chapter: Textbook chapter reference.
+        formula_number: Textbook formula number (e.g., '3.1').
     """
 
     value: float
@@ -37,6 +38,7 @@ class ValuationResult:
     assumptions: list[str] = field(default_factory=list)
     sensitivity: dict[str, SensitivityResult] = field(default_factory=dict)
     chapter: str = ""
+    formula_number: str = ""
 
     def __str__(self) -> str:
         return f"{self.method}: ${self.value:,.2f}"

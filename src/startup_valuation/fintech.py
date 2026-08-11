@@ -60,7 +60,7 @@ def network_effects_value(total_users: float, alpha: float = 1.3) -> ValuationRe
         ValuationResult with network value index.
     """
     return ValuationResult(
-        value=total_users ** alpha,
+        value=total_users**alpha,
         method="Network Effects Value",
         inputs={"total_users": total_users, "alpha": alpha},
         assumptions=[f"Network effect exponent α={alpha}"],

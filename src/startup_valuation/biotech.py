@@ -32,10 +32,10 @@ def rnPV(  # noqa: N802
     if len(cash_flows) != len(probabilities):
         raise ValueError("cash_flows and probabilities must have same length")
 
-    rnpv = sum(
-        p * cf / ((1 + discount_rate) ** t)
-        for t, (cf, p) in enumerate(zip(cash_flows, probabilities))
-    ) - development_costs
+    rnpv = (
+        sum(p * cf / ((1 + discount_rate) ** t) for t, (cf, p) in enumerate(zip(cash_flows, probabilities)))
+        - development_costs
+    )
 
     return ValuationResult(
         value=rnpv,

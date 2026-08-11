@@ -34,7 +34,12 @@ def test_lending_fintech_valuation():
 
 def test_payment_processor_valuation():
     result = payment_processor_valuation(
-        640_000_000_000, 0.0116, 0.20, 0.15, 15, 5,
+        640_000_000_000,
+        0.0116,
+        0.20,
+        0.15,
+        15,
+        5,
     )
     assert result.value > 0
 

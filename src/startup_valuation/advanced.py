@@ -55,10 +55,9 @@ def black_scholes(
     )
     d2 = d1 - volatility * math.sqrt(time_to_maturity)
 
-    call_value = (
-        underlying * stats.norm.cdf(d1)
-        - strike * math.exp(-risk_free_rate * time_to_maturity) * stats.norm.cdf(d2)
-    )
+    call_value = underlying * stats.norm.cdf(d1) - strike * math.exp(
+        -risk_free_rate * time_to_maturity
+    ) * stats.norm.cdf(d2)
 
     return ValuationResult(
         value=call_value,
@@ -112,7 +111,7 @@ def binomial_tree(
     p = (math.exp(risk_free_rate * dt) - d) / (u - d)
 
     # Build terminal node values
-    node_values = [max(underlying * (u ** i) * (d ** (steps - i)) - strike, 0) for i in range(steps + 1)]
+    node_values = [max(underlying * (u**i) * (d ** (steps - i)) - strike, 0) for i in range(steps + 1)]
 
     # Backward induction
     for step in range(steps - 1, -1, -1):
@@ -341,7 +340,7 @@ def binomial_valuation(
     p = (math.exp(risk_free_rate * dt) - d) / (u - d)
 
     # Build terminal node values
-    node_values = [max(underlying * (u ** i) * (d ** (steps - i)) - strike, 0) for i in range(steps + 1)]
+    node_values = [max(underlying * (u**i) * (d ** (steps - i)) - strike, 0) for i in range(steps + 1)]
 
     # Backward induction
     for step in range(steps - 1, -1, -1):

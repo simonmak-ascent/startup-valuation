@@ -173,7 +173,7 @@ def poisson_probability(lambda_: float, k: int) -> ValuationResult:
     if k > 170:  # factorial overflows float beyond 170
         prob = scipy_stats.poisson.pmf(k, lambda_)
     else:
-        prob = math.exp(-lambda_) * (lambda_ ** k) / math.factorial(k)
+        prob = math.exp(-lambda_) * (lambda_**k) / math.factorial(k)
 
     return ValuationResult(
         value=prob,
@@ -207,6 +207,7 @@ def expected_value_continuous(
         >>> round(result.value, 4)
         0.0
     """
+
     def integrand(x: float) -> float:
         return x * pdf_func(x)
 

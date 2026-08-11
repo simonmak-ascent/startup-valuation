@@ -36,7 +36,11 @@ def trl_adjusted_valuation(
             "multiple": multiple,
             "trl_discount": trl_discount,
         },
-        assumptions=["TRL discount reflects technology maturity risk"],
+        assumptions=[
+            "TRL discount reflects technology maturity risk",
+            "Market size, share, and margin estimates are accurate",
+            "Revenue multiple is from comparable hardware exits",
+        ],
         chapter="11",
     )
 
@@ -53,6 +57,11 @@ def gross_margin_hardware(asp: float, cogs: float) -> ValuationResult:
         method="Hardware Gross Margin",
         inputs={"asp": asp, "cogs": cogs},
         chapter="11",
+        assumptions=[
+            "ASP reflects market pricing for comparable products",
+            "COGS includes all direct manufacturing costs",
+            "No volume discounts or economies of scale in COGS",
+        ],
     )
 
 
@@ -69,6 +78,11 @@ def break_even_volume(fixed_costs: float, asp: float, variable_cost: float) -> V
         method="Break-Even Volume",
         inputs={"fixed_costs": fixed_costs, "asp": asp, "variable_cost": variable_cost},
         chapter="11",
+        assumptions=[
+            "Fixed costs are accurately estimated",
+            "ASP and variable costs are stable at volume",
+            "Production can scale linearly to meet volume",
+        ],
     )
 
 
@@ -92,4 +106,9 @@ def probability_weighted_dcf(
         method="Probability-Weighted DCF",
         inputs={"probabilities": probabilities, "values": values},
         chapter="11",
+        assumptions=[
+            "Probabilities sum to approximately 1.0",
+            "Scenario values are independently estimated",
+            "No intermediate or partial-success outcomes",
+        ],
     )
