@@ -144,10 +144,10 @@ def handle_request(method, path, body_raw):
     )
 
 
-from http.server import BaseHTTPRequestHandler
+from http.server import BaseHTTPRequestHandler  # noqa: E402
 
 
-class handler(BaseHTTPRequestHandler):
+class handler(BaseHTTPRequestHandler):  # noqa: N801
     def do_GET(self):
         code, headers, body = handle_request("GET", self.path, None)
         self.send_response(code)
