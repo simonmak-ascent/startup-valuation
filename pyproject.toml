@@ -83,6 +83,9 @@ line-length = 120
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
 
+[tool.ruff.lint.per-file-ignores]
+"api/**" = ["E501", "E402", "N801", "E701", "F401"]
+
 [tool.mypy]
 python_version = "3.12"
 strict = true

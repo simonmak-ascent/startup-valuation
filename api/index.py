@@ -1,5 +1,8 @@
 """Vercel serverless MCP server for startup-valuation."""
-import json, sys, os
+import json
+import os
+import sys
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 def dcf(revenue, growth_rate, discount_rate, terminal_growth=0.025, projection_years=5):
@@ -49,6 +52,7 @@ def handle_request(method, path, body_raw):
     return 200, {"Content-Type":"application/json"}, json.dumps({"jsonrpc":"2.0","error":{"code":-32601,"message":f"Unknown method: {req_method}"},"id":body.get("id")}).encode()
 
 from http.server import BaseHTTPRequestHandler
+
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
