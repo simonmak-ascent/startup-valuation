@@ -43,4 +43,4 @@
 
 ---
 
-*Generated from `ValuationResult.chapter` metadata. See [Glossary](https://github.com/simonplmak-cloud/startup-valuation/wiki/Glossary) for term definitions and [Notation](../notation.md) for the symbol table.*
+*Generated from `ValuationResult.chapter` metadata. See [Glossary](https://github.com/simonplmak-cloud/startup-valuation/wiki/Glossary) for term definitions and [Notation](notation.md) for the symbol table.*

@@ -97,5 +97,10 @@ nav:
       - Core Methods: examples/core-methods.md
       - Advanced Methods: examples/advanced-methods.md
       - Industry Models: examples/industry-models.md
+      - Valuing Pre-Revenue SaaS: examples/valuing-pre-revenue-saas.md
+      - Example Template: examples/README.md
   - Chapter Index: chapters.md
+  - Reference:
+      - Notation: notation.md
+      - Cross-Reference: cross-reference.md
   - Troubleshooting: troubleshooting.md

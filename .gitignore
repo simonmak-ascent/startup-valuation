@@ -25,6 +25,9 @@ specs/
 # Internal VDD artifacts
 vdd/
 
+# Wiki canonical sources (pushed separately to wiki repo)
+textbook/
+
 # Playwright MCP test artifacts
 .playwright-mcp/
 
