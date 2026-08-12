@@ -11,16 +11,16 @@ from startup_valuation.types import ValuationResult
 def capm(
     risk_free_rate: float,
     beta: float,
-    market_risk_premium: float,
+    market_return: float,
 ) -> ValuationResult:
     """Calculate expected return using the Capital Asset Pricing Model.
 
-    Formula: E[R] = Rf + β × MRP
+    Formula: E[R] = Rf + β × (Rm - Rf)
 
     Args:
         risk_free_rate: Risk-free rate (Rf), typically 10-year Treasury yield.
         beta: Systematic risk measure relative to market (β).
-        market_risk_premium: Expected market return minus risk-free rate (MRP).
+        market_return: Expected market return (Rm).
 
     Returns:
         ValuationResult with expected return as value.
@@ -28,28 +28,23 @@ def capm(
     Notes:
         The CAPM is the foundational model for risk-adjusted discount rates:
 
-        $$E[R] = R_f + \\beta (E[R_m] - R_f)$$
+        $$E[R] = R_f + \\beta (R_m - R_f)$$
 
         Beta > 1: more volatile than market. Beta < 1: less volatile.
-        Beta = 1: moves with market. Typical startup beta: 1.5-3.0
-        due to illiquidity and business risk.
-
-        The risk-free rate anchors the model; the market risk premium
-        compensates for systematic risk. CAPM assumes: efficient markets,
-        diversified investors, no taxes or transaction costs.
+        Typical startup beta: 1.5-3.0 due to illiquidity and business risk.
 
     References:
         Startup Valuation textbook, Chapter 2, Section 2.5.
-        Sharpe, W. (1964). Capital Asset Prices. Journal of Finance, 19(3).
+        Sharpe, W. (1964). Capital Asset Prices. Journal of Finance.
 
     See Also:
-        startup_adjusted_capm : Adds startup-specific risk premium.
+        startup_adjusted_capm : Adds size/illiquidity premiums.
         portfolio_beta : Weighted beta for multiple assets.
     """
     return ValuationResult(
-        value=risk_free_rate + beta * market_risk_premium,
+        value=risk_free_rate + beta * (market_return - risk_free_rate),
         method="CAPM",
-        inputs={"risk_free_rate": risk_free_rate, "beta": beta, "market_risk_premium": market_risk_premium},
+        inputs={"risk_free_rate": risk_free_rate, "beta": beta, "market_return": market_return},
         assumptions=["CAPM assumptions hold (efficient markets, diversified investors)"],
         chapter="2",
         formula_number="2.5",
@@ -152,29 +147,32 @@ def startup_adjusted_capm(
 
 
 def portfolio_variance(
-    weights: list[float], variances: list[float], covariance_pairs: list[tuple[int, int, float]] | None = None
+    weights: list[float],
+    covariance_matrix: list[list[float]],
 ) -> ValuationResult:
-    """Calculate portfolio variance from individual variances and covariances.
+    """Calculate portfolio variance from a covariance matrix.
 
-    Formula: σ²_p = Σ wᵢ²σ²ᵢ + 2 Σ wᵢwⱼσ_ij
+    Formula: σ²_p = wᵀ Σ w
+
+    Args:
+        weights: Portfolio allocation weights.
+        covariance_matrix: N×N covariance matrix.
 
     Notes:
-        $$\\sigma^2_p = \\sum w_i^2\\sigma_i^2 + 2\\sum_{i<j} w_i w_j\\sigma_{ij}$$
+        $$\\sigma^2_p = \\sum_i \\sum_j w_i w_j \\sigma_{ij}$$
 
-        Portfolio variance accounts for both individual risk and
-        inter-asset correlations. Used in modern portfolio theory
-        for risk assessment of multi-asset portfolios.
+        Full covariance matrix captures both individual variances and
+        inter-asset correlations. Used in modern portfolio theory.
 
     References:
         Startup Valuation textbook, Chapter 2, Section 2.5.
     """
-    var = sum(w**2 * s for w, s in zip(weights, variances))
-    if covariance_pairs:
-        var += 2 * sum(weights[i] * weights[j] * cov for i, j, cov in covariance_pairs)
+    n = len(weights)
+    var = sum(weights[i] * weights[j] * covariance_matrix[i][j] for i in range(n) for j in range(n))
     return ValuationResult(
         value=var,
         method="Portfolio Variance",
-        inputs={"weights": weights, "variances": variances},
+        inputs={"weights": weights, "covariance_matrix": covariance_matrix},
         assumptions=["Variances and covariances are accurately estimated"],
         chapter="2",
         formula_number="2.8",
