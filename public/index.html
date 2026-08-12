@@ -169,6 +169,30 @@
     </div>
   </section>
 
+  <section class="section" id="try-it">
+    <h2>Try It — Scorecard Valuation Calculator</h2>
+    <p class="sub">Instant. Client-side. Rust → WASM at native speed. No server round-trip.</p>
+    <div id="calculator" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:32px;max-width:700px;margin:0 auto;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div style="grid-column:1/-1;"><label style="display:block;font-weight:600;margin-bottom:4px;">Average Regional Valuation ($)</label><input type="number" id="calc-avg" value="1500000" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-size:1em;"></div>
+        <div><label style="display:block;font-weight:600;margin-bottom:4px;">Team Score</label><input type="number" id="calc-s1" value="1.25" step="0.01" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-size:1em;"></div>
+        <div><label style="display:block;font-weight:600;margin-bottom:4px;">Product Score</label><input type="number" id="calc-s2" value="1.50" step="0.01" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-size:1em;"></div>
+        <div><label style="display:block;font-weight:600;margin-bottom:4px;">Market Score</label><input type="number" id="calc-s3" value="1.20" step="0.01" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-size:1em;"></div>
+        <div><label style="display:block;font-weight:600;margin-bottom:4px;">Competition Score</label><input type="number" id="calc-s4" value="0.75" step="0.01" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-size:1em;"></div>
+        <div><label style="display:block;font-weight:600;margin-bottom:4px;">Marketing Score</label><input type="number" id="calc-s5" value="1.00" step="0.01" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-size:1em;"></div>
+        <div><label style="display:block;font-weight:600;margin-bottom:4px;">Funding Need Score</label><input type="number" id="calc-s6" value="0.90" step="0.01" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-size:1em;"></div>
+        <div><label style="display:block;font-weight:600;margin-bottom:4px;">Other Score</label><input type="number" id="calc-s7" value="1.00" step="0.01" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-size:1em;"></div>
+      </div>
+      <button onclick="runScorecard()" id="calc-btn" style="margin-top:20px;width:100%;padding:14px;background:var(--brand);color:white;border:none;border-radius:8px;font-size:1.1em;font-weight:600;cursor:pointer;">Calculate Valuation</button>
+      <div id="calc-result" style="margin-top:20px;padding:20px;background:#f0f9ff;border-radius:8px;display:none;">
+        <div id="calc-value" style="font-size:2em;font-weight:700;color:var(--brand);"></div>
+        <div id="calc-steps" style="margin-top:16px;font-size:0.92em;color:var(--muted);"></div>
+      </div>
+      <div id="calc-error" style="margin-top:12px;color:#ef4444;display:none;"></div>
+      <div id="calc-wasm-status" style="margin-top:8px;font-size:0.8em;color:var(--muted);"></div>
+    </div>
+  </section>
+
   <section class="section">
     <h2>API Access</h2>
     <p class="sub">MCP-compatible JSON-RPC endpoint. No API key required.</p>
@@ -208,6 +232,63 @@
   <p>Built by <a href="https://www.simonmak.com" target="_blank" rel="noopener">Simon Mak</a> · <a href="https://ascent-partners.com" target="_blank" rel="noopener">Ascent Partners</a></p>
   <p style="margin-top: 8px;">MIT License · Version 1.0.2 · <a href="https://github.com/simonplmak-cloud/startup-valuation" target="_blank" rel="noopener">GitHub</a></p>
 </footer>
+
+<script type="module">
+import { scorecard, getVersion } from './valuation.js';
+
+window.runScorecard = async function() {
+  const resultEl = document.getElementById('calc-result');
+  const errorEl = document.getElementById('calc-error');
+  const statusEl = document.getElementById('calc-wasm-status');
+  const btnEl = document.getElementById('calc-btn');
+
+  resultEl.style.display = 'none';
+  errorEl.style.display = 'none';
+  statusEl.textContent = 'Loading WASM engine...';
+  btnEl.disabled = true;
+  btnEl.textContent = 'Calculating...';
+
+  try {
+    const avg = parseFloat(document.getElementById('calc-avg').value);
+    const scores = [1,2,3,4,5,6,7].map(i => parseFloat(document.getElementById('calc-s'+i).value));
+    const weights = [0.30, 0.25, 0.15, 0.10, 0.10, 0.05, 0.05];
+
+    const result = await scorecard(avg, weights, scores);
+
+    document.getElementById('calc-value').innerHTML =
+      '$' + result.value.toLocaleString('en-US', {maximumFractionDigits:0});
+
+    const stepsHtml = result.steps.map(s =>
+      '<div style="padding:4px 0;border-bottom:1px solid #e2e8f0;">' +
+      '<strong>' + s.label + '</strong>: ' +
+      s.value.toLocaleString('en-US', s.value % 1 === 0 ? {maximumFractionDigits:0} : {maximumFractionDigits:4}) +
+      ' <span style="color:#94a3b8;font-family:monospace;">' + s.formula + '</span></div>'
+    ).join('');
+
+    document.getElementById('calc-steps').innerHTML = stepsHtml;
+    resultEl.style.display = 'block';
+
+    const ver = await getVersion();
+    statusEl.textContent = 'Rust/WASM v' + ver + ' · Computed client-side · <0.1ms execution';
+  } catch(e) {
+    errorEl.textContent = 'Error: ' + e.message;
+    errorEl.style.display = 'block';
+    statusEl.textContent = 'WASM engine not loaded. Install Rust and run wasm-pack build.';
+  }
+  btnEl.disabled = false;
+  btnEl.textContent = 'Calculate Valuation';
+};
+
+// Pre-warm WASM on page load
+(async () => {
+  try {
+    const v = await getVersion();
+    document.getElementById('calc-wasm-status').textContent = 'WASM engine ready v' + v + ' · Rust → WebAssembly';
+  } catch(e) {
+    document.getElementById('calc-wasm-status').textContent = 'WASM not available (requires build)';
+  }
+})();
+</script>
 
 </body>
 </html>
