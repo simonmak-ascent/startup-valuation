@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SaaS Metrics calculator — LTV, CAC, NRR, Magic Number, Rule of 40. Free open-source startup valuation.">
+  <title>SaaS Metrics Calculator — ARR, LTV, CAC, Rule of 40 | Ascent Partners</title>
+  <link rel="canonical" href="https://startup-valuation.simonmak.com/methods/saas-metrics">
+  <meta property="og:title" content="SaaS Metrics Calculator — LTV, CAC, Rule of 40">
+  <meta property="og:description" content="Calculate key SaaS metrics: ARR, MRR, LTV, CAC Payback, Magic Number, Rule of 40. Free open-source.">
+  <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments)}</script>
+  <script defer src="https://va.vercel-scripts.com/v1/script.js"></script>
+  <style>
+    :root{--brand:#0083AB;--card:#fff;--text:#1e293b;--muted:#64748b;--border:#e2e8f0}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6;color:var(--text);background:#f8fafc}
+    .hero{background:linear-gradient(135deg,#0083AB 0%,#005f80 100%);color:#fff;padding:60px 20px;text-align:center}
+    .hero h1{font-size:2.5em}.hero .breadcrumb{font-size:.9em;opacity:.8;margin-bottom:16px}.hero .breadcrumb a{color:#fff}
+    .section{max-width:900px;margin:0 auto;padding:48px 20px}
+    .section h2{font-size:1.8em;color:var(--brand);margin-bottom:16px}
+    .section p{color:var(--muted);margin-bottom:8px}.section a{color:var(--brand)}
+    #calculator{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:32px}
+    #calculator input{width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-size:1em}
+    #calculator label{display:block;font-weight:600;margin-bottom:4px}
+    #calculator button{width:100%;padding:14px;background:var(--brand);color:#fff;border:none;border-radius:8px;font-size:1.1em;font-weight:600;cursor:pointer;margin-top:20px}
+    #calc-result{margin-top:20px;padding:20px;background:#f0f9ff;border-radius:8px;display:none}
+    .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:16px}
+    .metric{background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center}
+    .metric .val{font-size:1.5em;font-weight:700;color:var(--brand)}
+    .metric .lbl{font-size:.8em;color:var(--muted)}
+    footer{border-top:1px solid var(--border);padding:24px;text-align:center;color:var(--muted);font-size:.9em}
+    @media(max-width:640px){.hero h1{font-size:1.8em}.section{padding:32px 16px}}
+  </style>
+</head>
+<body>
+<header class="hero">
+  <div class="breadcrumb"><a href="/">Home</a> / SaaS Metrics</div>
+  <h1>SaaS Metrics Calculator</h1>
+  <p>ARR · MRR · LTV · CAC Payback · Magic Number · Rule of 40</p>
+</header>
+<main>
+  <section class="section">
+    <h2>Calculate Your SaaS KPIs</h2>
+    <div id="calculator">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div><label>ARR ($)</label><input type="number" id="calc-arr" value="10000000"></div>
+        <div><label>Churn Rate</label><input type="number" id="calc-churn" value="0.05" step="0.01"></div>
+        <div><label>CAC ($)</label><input type="number" id="calc-cac" value="50000"></div>
+        <div><label>Growth Rate</label><input type="number" id="calc-growth" value="0.30" step="0.01"></div>
+        <div style="grid-column:1/-1"><label>Profit Margin</label><input type="number" id="calc-margin" value="0.10" step="0.01"></div>
+      </div>
+      <button onclick="runSaaS()">Calculate Metrics</button>
+      <div id="calc-result">
+        <div class="metrics" id="calc-metrics"></div>
+        <div id="calc-steps" style="margin-top:16px;font-size:.92em;color:var(--muted);"></div>
+      </div>
+      <div id="calc-status" style="margin-top:8px;font-size:.8em;color:var(--muted);"></div>
+    </div>
+  </section>
+  <section class="section">
+    <h2>Resources</h2>
+    <ul>
+      <li><a href="https://github.com/simonplmak-cloud/startup-valuation/wiki/SaaS-Metrics" target="_blank">SaaS theory on the Wiki</a></li>
+      <li><a href="https://pypi.org/project/startup-valuation/" target="_blank">pip install startup-valuation</a></li>
+    </ul>
+    <a href="/" style="display:inline-block;margin-top:32px;color:var(--brand);font-weight:600;">← Back to Home</a>
+  </section>
+</main>
+<footer><p>MIT · v1.0.2 · <a href="https://github.com/simonplmak-cloud/startup-valuation">GitHub</a></p></footer>
+<script type="module">
+import { saasMetrics } from '/valuation.js';
+window.runSaaS = async () => {
+  const re=document.getElementById('calc-result'),st=document.getElementById('calc-status');
+  re.style.display='none';st.textContent='Computing...';
+  try{
+    const r=await saasMetrics(+document.getElementById('calc-arr').value,+document.getElementById('calc-churn').value,+document.getElementById('calc-cac').value,+document.getElementById('calc-growth').value,+document.getElementById('calc-margin').value);
+    document.getElementById('calc-metrics').innerHTML=Object.entries(r.metrics).map(([k,v])=>`<div class="metric"><div class="val">${typeof v==='number'?v.toLocaleString('en-US',{maximumFractionDigits:2}):v}</div><div class="lbl">${k}</div></div>`).join('');
+    document.getElementById('calc-steps').innerHTML=r.steps.map(s=>`<div style="padding:4px 0;border-bottom:1px solid var(--border);"><strong>${s.label}</strong>: ${s.value.toLocaleString('en-US',{maximumFractionDigits:4})}</div>`).join('');
+    re.style.display='block';st.textContent='Computed client-side · Rust/WASM';
+  }catch(e){st.textContent='Error: '+e.message}
+};
+</script>
+</body>
+</html>
