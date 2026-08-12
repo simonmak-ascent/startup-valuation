@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Scorecard Method valuation calculator for pre-revenue startups. Adjust average regional valuation by weighted factor scores. Step-by-step derivation. Free, open source.">
+  <meta name="keywords" content="scorecard method, startup valuation, pre-revenue valuation, Bill Payne, startup valuation calculator, how to value a pre-revenue startup">
+  <title>Scorecard Method — Startup Valuation Calculator | Ascent Partners</title>
+  <link rel="canonical" href="https://startup-valuation.simonmak.com/methods/scorecard">
+  <meta property="og:title" content="Scorecard Method — Startup Valuation Calculator">
+  <meta property="og:description" content="Valuate your pre-revenue startup with the Scorecard Method. 7 factors, step-by-step derivation, free open-source calculator.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://startup-valuation.simonmak.com/methods/scorecard">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Scorecard Method Startup Valuation",
+    "description": "Valuate a pre-revenue startup by adjusting the average regional valuation using weighted factor scores across 7 dimensions.",
+    "step": [
+      {"@type": "HowToStep", "name": "Find Average Regional Valuation", "text": "Determine the average pre-money valuation for comparable startups in your region and industry."},
+      {"@type": "HowToStep", "name": "Choose Factor Weights", "text": "Assign weights to 7 factors: Team (30%), Product (25%), Market (15%), Competition (10%), Marketing (10%), Funding Need (5%), Other (5%)."},
+      {"@type": "HowToStep", "name": "Score Each Factor", "text": "Rate your startup on each factor relative to average: >1.0 above average, 1.0 average, <1.0 below average."},
+      {"@type": "HowToStep", "name": "Calculate Weighted Sum", "text": "Compute Σ(weight × score) for all 7 factors."},
+      {"@type": "HowToStep", "name": "Apply Multiplier", "text": "Multiply the average valuation by the weighted sum to get the target valuation."}
+    ]
+  }
+  </script>
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="https://va.vercel-scripts.com/v1/script.js"></script>
+  <style>
+    :root { --brand: #0083AB; --brand-dark: #006080; --card: #fff; --text: #1e293b; --muted: #64748b; --border: #e2e8f0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: var(--text); background: #f8fafc; }
+    .hero { background: linear-gradient(135deg, #0083AB 0%, #005f80 100%); color: white; padding: 60px 20px; text-align: center; }
+    .hero h1 { font-size: 2.5em; margin-bottom: 8px; }
+    .hero .breadcrumb { font-size: 0.9em; opacity: 0.8; margin-bottom: 16px; }
+    .hero .breadcrumb a { color: white; }
+    .section { max-width: 900px; margin: 0 auto; padding: 48px 20px; }
+    .section h2 { font-size: 1.8em; color: var(--brand); margin-bottom: 16px; }
+    .section p, .section li { color: var(--muted); margin-bottom: 8px; }
+    .section a { color: var(--brand); }
+    .factors { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .factor { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+    .factor h3 { font-size: 1.1em; margin-bottom: 6px; }
+    .factor .weight { color: var(--brand); font-weight: 600; }
+    #calculator { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 32px; }
+    #calculator input { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 1em; }
+    #calculator label { display: block; font-weight: 600; margin-bottom: 4px; }
+    #calculator button { width: 100%; padding: 14px; background: var(--brand); color: white; border: none; border-radius: 8px; font-size: 1.1em; font-weight: 600; cursor: pointer; margin-top: 20px; }
+    #calc-result { margin-top: 20px; padding: 20px; background: #f0f9ff; border-radius: 8px; display: none; }
+    .back-link { display: inline-block; margin-top: 32px; color: var(--brand); text-decoration: none; font-weight: 600; }
+    footer { border-top: 1px solid var(--border); padding: 24px; text-align: center; color: var(--muted); font-size: 0.9em; }
+    @media (max-width: 640px) { .hero h1 { font-size: 1.8em; } .section { padding: 32px 16px; } }
+  </style>
+</head>
+<body>
+<header class="hero">
+  <div class="breadcrumb"><a href="/">Home</a> / Scorecard Method</div>
+  <h1>Scorecard Method Valuation</h1>
+  <p>Adjust average regional valuation by 7 weighted factor scores for pre-revenue startups.</p>
+</header>
+
+<main>
+  <section class="section">
+    <h2>How It Works</h2>
+    <p>The Scorecard Method, developed by <strong>Bill Payne</strong>, compares a pre-revenue startup to similar funded companies in the region. Seven factors are weighted and scored, producing a target valuation that reflects the startup's specific strengths and weaknesses.</p>
+    <p style="margin-top: 16px;"><strong>Formula:</strong> $$V = V_{avg} \times \sum_{i=1}^{7} w_i \times s_i$$ where $$\sum w_i = 1$$.</p>
+  </section>
+
+  <section class="section">
+    <h2>The 7 Factors</h2>
+    <div class="factors">
+      <div class="factor"><h3>Team <span class="weight">(30%)</span></h3><p>Founders' experience, track record, domain expertise, and ability to execute.</p></div>
+      <div class="factor"><h3>Product/Technology <span class="weight">(25%)</span></h3><p>Product maturity, IP protection, technical differentiation, and defensibility.</p></div>
+      <div class="factor"><h3>Market Size & Growth <span class="weight">(15%)</span></h3><p>Addressable market size, growth rate, and market timing.</p></div>
+      <div class="factor"><h3>Competitive Environment <span class="weight">(10%)</span></h3><p>Number and strength of competitors, barriers to entry, and differentiation.</p></div>
+      <div class="factor"><h3>Marketing/Sales <span class="weight">(10%)</span></h3><p>Go-to-market strategy, sales channels, and customer acquisition plan.</p></div>
+      <div class="factor"><h3>Funding Need <span class="weight">(5%)</span></h3><p>Future capital requirements and dilution risk.</p></div>
+      <div class="factor"><h3>Other Factors <span class="weight">(5%)</span></h3><p>Legal, regulatory, or other considerations specific to the startup.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Interactive Calculator</h2>
+    <p style="margin-bottom: 20px;">Enter your startup's scores (1.0 = average, &gt;1.0 = above average). Uses Rust/WASM for instant client-side computation.</p>
+    <div id="calculator">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div style="grid-column:1/-1;"><label>Average Regional Valuation ($)</label><input type="number" id="calc-avg" value="1500000"></div>
+        <div><label>Team Score</label><input type="number" id="calc-s1" value="1.25" step="0.01"></div>
+        <div><label>Product Score</label><input type="number" id="calc-s2" value="1.50" step="0.01"></div>
+        <div><label>Market Score</label><input type="number" id="calc-s3" value="1.20" step="0.01"></div>
+        <div><label>Competition Score</label><input type="number" id="calc-s4" value="0.75" step="0.01"></div>
+        <div><label>Marketing Score</label><input type="number" id="calc-s5" value="1.00" step="0.01"></div>
+        <div><label>Funding Need Score</label><input type="number" id="calc-s6" value="0.90" step="0.01"></div>
+        <div><label>Other Score</label><input type="number" id="calc-s7" value="1.00" step="0.01"></div>
+      </div>
+      <button onclick="runScorecard()" id="calc-btn">Calculate Valuation</button>
+      <div id="calc-result">
+        <div id="calc-value" style="font-size:2em;font-weight:700;color:var(--brand);"></div>
+        <div id="calc-steps" style="margin-top:16px;font-size:0.92em;color:var(--muted);"></div>
+      </div>
+      <div id="calc-error" style="margin-top:12px;color:#ef4444;display:none;"></div>
+      <div id="calc-status" style="margin-top:8px;font-size:0.8em;color:var(--muted);"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Resources</h2>
+    <ul>
+      <li><a href="https://github.com/simonplmak-cloud/startup-valuation/wiki/Core-Methods" target="_blank" rel="noopener">Full 13-step derivation on the Wiki</a></li>
+      <li><a href="https://simonplmak-cloud.github.io/startup-valuation/api/core/#startup_valuation.core.scorecard_valuation" target="_blank" rel="noopener">Python API reference</a></li>
+      <li><a href="https://github.com/simonplmak-cloud/startup-valuation" target="_blank" rel="noopener">Source code (MIT licensed)</a></li>
+      <li><a href="https://www.amazon.com/Startup-Valuation-Comprehensive-Fast-Growing-Pre-Revenue-ebook/dp/B0FYTGNVWS/" target="_blank" rel="noopener">Companion textbook — Chapter 3</a></li>
+    </ul>
+    <a href="/" class="back-link">← Back to Startup Valuation Engine</a>
+  </section>
+</main>
+
+<footer>
+  <p>MIT License · Version 1.0.2 · <a href="https://github.com/simonplmak-cloud/startup-valuation">GitHub</a> · Built with Rust/WASM</p>
+</footer>
+
+<script type="module">
+import { scorecard, getVersion } from '/valuation.js';
+
+window.runScorecard = async function() {
+  const resultEl = document.getElementById('calc-result');
+  const errorEl = document.getElementById('calc-error');
+  const statusEl = document.getElementById('calc-status');
+  const btn = document.getElementById('calc-btn');
+  resultEl.style.display = 'none'; errorEl.style.display = 'none';
+  statusEl.textContent = 'Loading...'; btn.disabled = true;
+
+  try {
+    const avg = parseFloat(document.getElementById('calc-avg').value);
+    const scores = [1,2,3,4,5,6,7].map(i => parseFloat(document.getElementById('calc-s'+i).value));
+    const weights = [0.30, 0.25, 0.15, 0.10, 0.10, 0.05, 0.05];
+    const r = await scorecard(avg, weights, scores);
+    document.getElementById('calc-value').innerHTML = '$' + r.value.toLocaleString('en-US', {maximumFractionDigits:0});
+    document.getElementById('calc-steps').innerHTML = r.steps.map(s =>
+      `<div style="padding:4px 0;border-bottom:1px solid var(--border);"><strong>${s.label}</strong>: ${s.value.toLocaleString('en-US', s.value%1===0?{maximumFractionDigits:0}:{maximumFractionDigits:4})} <span style="color:#94a3b8;font-family:monospace;font-size:0.85em;">${s.formula}</span></div>`
+    ).join('');
+    resultEl.style.display = 'block';
+    const ver = await getVersion();
+    statusEl.textContent = 'WASM v' + ver + ' · Computed client-side';
+  } catch(e) {
+    errorEl.textContent = 'Error: ' + e.message; errorEl.style.display = 'block';
+    statusEl.textContent = 'WASM not available. Install Rust and run wasm-pack build.';
+  }
+  btn.disabled = false;
+};
+
+(async () => {
+  try { const v = await getVersion(); document.getElementById('calc-status').textContent = 'Engine ready v' + v; }
+  catch(e) { document.getElementById('calc-status').textContent = 'WASM not loaded (requires build)'; }
+})();
+</script>
+</body>
+</html>
