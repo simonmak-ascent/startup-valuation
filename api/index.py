@@ -58,8 +58,12 @@ TOOLS = {
 
 def handle_request(method, path, body_raw):
     body = json.loads(body_raw) if body_raw else {}
-    if method == "GET" and path in ("/health", "/api/health"):
-        return 200, {"Content-Type": "application/json"}, json.dumps({"status": "ok", "version": "1.0.2"}).encode()
+    if method == "GET":
+        return (
+            200,
+            {"Content-Type": "application/json"},
+            json.dumps({"status": "ok", "version": "1.0.2", "tools": list(TOOLS.keys())}).encode(),
+        )
     if method != "POST":
         return 405, {"Content-Type": "application/json"}, b"{}"
     req_method = body.get("method", "")

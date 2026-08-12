@@ -3,304 +3,211 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Startup Valuation MCP Server API - Comprehensive startup valuation library implementing 80+ formulas">
-  <meta name="keywords" content="startup valuation, MCP server, API, finance, valuation">
-  <title>Startup Valuation MCP Server API</title>
-  
-  <!-- Open Graph Meta Tags -->
+  <meta name="description" content="Startup Valuation — The most comprehensive, scientifically rigorous startup valuation resource on the internet. 80+ formulas, step-by-step derivations, open-source Python library.">
+  <meta name="keywords" content="startup valuation, how to value a startup, valuation calculator, DCF, Black-Scholes, scorecard method, venture capital, MCP server, Python library, open source">
+  <title>Startup Valuation Engine — The Global Authority for Startup Valuation</title>
+  <meta name="author" content="Simon Mak, Ascent Partners">
+
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Startup Valuation MCP Server API">
-  <meta property="og:description" content="MCP Server API providing 80+ startup valuation formulas">
-  <meta property="og:url" content="https://startup-valuation.vercel.app">
-  
-  <!-- Vercel Web Analytics -->
+  <meta property="og:title" content="Startup Valuation Engine — 80+ Formulas, Open Source">
+  <meta property="og:description" content="The most credible, detailed, and traceable startup valuation resource available. Every formula with step-by-step derivation.">
+  <meta property="og:url" content="https://startup-valuation.simonmak.com">
+  <meta property="og:image" content="https://startup-valuation.simonmak.com/social-preview.png">
+  <meta property="og:site_name" content="Startup Valuation Engine">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Startup Valuation Engine">
+  <meta name="twitter:description" content="80+ valuation formulas. Scientific rigor. Open source.">
+
+  <link rel="canonical" href="https://startup-valuation.simonmak.com">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Startup Valuation Engine",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Cross-platform",
+    "description": "Open-source Python library implementing 80+ startup valuation formulas with full mathematical derivations.",
+    "url": "https://startup-valuation.simonmak.com",
+    "author": { "@type": "Person", "name": "Simon Mak" },
+    "license": "https://opensource.org/licenses/MIT",
+    "version": "1.0.2"
+  }
+  </script>
+
   <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
   </script>
   <script defer src="https://va.vercel-scripts.com/v1/script.js"></script>
-  
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --brand: #0083AB;
+      --brand-dark: #006080;
+      --success: #10b981;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
     }
-    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       line-height: 1.6;
-      color: #333;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      color: var(--text);
+      background: var(--bg);
     }
-    
-    .container {
-      max-width: 800px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      padding: 40px;
-      animation: fadeIn 0.5s ease-in;
-    }
-    
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    h1 {
-      color: #667eea;
-      font-size: 2.5em;
-      margin-bottom: 10px;
-    }
-    
-    .subtitle {
-      color: #666;
-      font-size: 1.2em;
-      margin-bottom: 30px;
-    }
-    
-    .status {
-      display: inline-block;
-      background: #10b981;
+    .hero {
+      background: linear-gradient(135deg, #0083AB 0%, #005f80 100%);
       color: white;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-weight: 600;
-      margin-bottom: 30px;
+      padding: 80px 20px;
+      text-align: center;
     }
-    
-    .section {
-      margin-bottom: 30px;
-    }
-    
-    h2 {
-      color: #667eea;
-      font-size: 1.5em;
-      margin-bottom: 15px;
-      border-bottom: 2px solid #667eea;
-      padding-bottom: 10px;
-    }
-    
-    .endpoint {
-      background: #f3f4f6;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-      font-family: 'Courier New', monospace;
-    }
-    
-    .method {
-      display: inline-block;
-      background: #667eea;
-      color: white;
-      padding: 4px 12px;
-      border-radius: 4px;
-      font-size: 0.85em;
-      font-weight: 600;
-      margin-right: 10px;
-    }
-    
-    .method.post {
-      background: #10b981;
-    }
-    
-    .description {
-      color: #666;
-      margin-top: 8px;
-    }
-    
-    .links {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-      margin-top: 30px;
-    }
-    
+    .hero h1 { font-size: 3em; margin-bottom: 16px; letter-spacing: -0.5px; }
+    .hero .tagline { font-size: 1.25em; opacity: 0.9; max-width: 700px; margin: 0 auto 32px; }
+    .hero .badges { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 24px; }
+    .hero .badges img { height: 24px; }
+    .hero .cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
     .btn {
-      display: inline-block;
-      padding: 12px 24px;
-      background: #667eea;
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      text-align: center;
+      display: inline-block; padding: 14px 28px; border-radius: 8px; font-weight: 600;
+      text-decoration: none; transition: all 0.2s; font-size: 1em;
     }
-    
-    .btn:hover {
-      background: #5568d3;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-    }
-    
-    .btn.secondary {
-      background: #6b7280;
-    }
-    
-    .btn.secondary:hover {
-      background: #4b5563;
-    }
-    
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
-    }
-    
-    .feature {
-      text-align: center;
-      padding: 20px;
-      background: #f9fafb;
-      border-radius: 8px;
-    }
-    
-    .feature-number {
-      font-size: 2em;
-      font-weight: 700;
-      color: #667eea;
-      margin-bottom: 5px;
-    }
-    
-    .feature-label {
-      color: #666;
-      font-size: 0.9em;
-    }
-    
-    code {
-      background: #f3f4f6;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-family: 'Courier New', monospace;
-      font-size: 0.9em;
-    }
-    
-    @media (max-width: 600px) {
-      .container {
-        padding: 20px;
-      }
-      
-      h1 {
-        font-size: 2em;
-      }
-      
-      .links {
-        flex-direction: column;
-      }
-      
-      .btn {
-        width: 100%;
-      }
+    .btn-primary { background: white; color: var(--brand); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+    .btn-outline { border: 2px solid rgba(255,255,255,0.5); color: white; }
+    .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: white; }
+
+    .section { max-width: 1100px; margin: 0 auto; padding: 64px 20px; }
+    .section h2 { font-size: 2em; margin-bottom: 16px; color: var(--brand); }
+    .section .sub { color: var(--muted); margin-bottom: 40px; font-size: 1.1em; }
+
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px; }
+    .stat { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 32px 24px; text-align: center; }
+    .stat .num { font-size: 2.5em; font-weight: 700; color: var(--brand); }
+    .stat .label { color: var(--muted); margin-top: 4px; }
+
+    .methods { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .method-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; transition: box-shadow 0.2s; }
+    .method-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .method-card h3 { font-size: 1.15em; margin-bottom: 8px; color: var(--text); }
+    .method-card p { color: var(--muted); font-size: 0.92em; }
+    .method-card .tag { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 2px 10px; border-radius: 12px; font-size: 0.8em; margin-right: 6px; }
+
+    .links-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .link-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; text-decoration: none; color: var(--text); transition: all 0.2s; }
+    .link-card:hover { border-color: var(--brand); transform: translateY(-2px); }
+    .link-card h3 { font-size: 1.1em; margin-bottom: 6px; }
+    .link-card p { color: var(--muted); font-size: 0.9em; }
+
+    .api-status { display: inline-flex; align-items: center; gap: 8px; background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; padding: 10px 20px; border-radius: 24px; font-weight: 600; }
+    .api-status .dot { width: 10px; height: 10px; background: var(--success); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    .endpoint-box { background: #1e293b; color: #e2e8f0; padding: 20px; border-radius: 10px; font-family: 'Courier New', monospace; margin-top: 16px; overflow-x: auto; }
+    .endpoint-box .method-tag { display: inline-block; padding: 2px 10px; border-radius: 4px; font-weight: 600; margin-right: 8px; font-size: 0.85em; }
+    .method-tag.get { background: #10b981; color: white; }
+    .method-tag.post { background: #6366f1; color: white; }
+
+    footer { border-top: 1px solid var(--border); padding: 32px 20px; text-align: center; color: var(--muted); font-size: 0.9em; }
+    footer a { color: var(--brand); text-decoration: none; }
+
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 2em; }
+      .hero { padding: 48px 16px; }
+      .section { padding: 40px 16px; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🚀 Startup Valuation</h1>
-    <p class="subtitle">MCP Server API</p>
-    <span class="status">✓ API Online</span>
-    
-    <div class="section">
-      <h2>About</h2>
-      <p>This is the Vercel-hosted MCP (Model Context Protocol) server for the <strong>Startup Valuation</strong> library. It provides a JSON-RPC API implementing 80+ valuation formulas from the Startup Valuation textbook by Simon Mak.</p>
-      
-      <div class="features">
-        <div class="feature">
-          <div class="feature-number">80+</div>
-          <div class="feature-label">Valuation Formulas</div>
-        </div>
-        <div class="feature">
-          <div class="feature-number">14</div>
-          <div class="feature-label">Python Modules</div>
-        </div>
-        <div class="feature">
-          <div class="feature-number">60+</div>
-          <div class="feature-label">MCP Tools</div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="section">
-      <h2>API Endpoints</h2>
-      
-      <div class="endpoint">
-        <span class="method">GET</span>
-        <code>/health</code> or <code>/api/health</code>
-        <div class="description">Health check endpoint - returns API status</div>
-      </div>
-      
-      <div class="endpoint">
-        <span class="method post">POST</span>
-        <code>/api</code>
-        <div class="description">JSON-RPC 2.0 endpoint for MCP protocol methods:<br>
-        • <code>initialize</code> - Initialize MCP connection<br>
-        • <code>tools/list</code> - List available valuation tools<br>
-        • <code>tools/call</code> - Execute valuation calculations</div>
-      </div>
-    </div>
-    
-    <div class="section">
-      <h2>Available Tools</h2>
-      <p>The API provides two main valuation methods:</p>
-      <ul style="margin-left: 20px; margin-top: 10px;">
-        <li style="margin-bottom: 8px;"><strong>valuation_dcf</strong> - Discounted Cash Flow analysis</li>
-        <li style="margin-bottom: 8px;"><strong>valuation_market_multiple</strong> - Market-based valuation using industry multiples</li>
-      </ul>
-    </div>
-    
-    <div class="section">
-      <h2>Resources</h2>
-      <div class="links">
-        <a href="https://simonplmak-cloud.github.io/startup-valuation/" class="btn" target="_blank" rel="noopener noreferrer">📚 Full Documentation</a>
-        <a href="https://github.com/simonplmak-cloud/startup-valuation" class="btn secondary" target="_blank" rel="noopener noreferrer">💻 GitHub Repository</a>
-        <a href="https://pypi.org/project/startup-valuation/" class="btn secondary" target="_blank" rel="noopener noreferrer">📦 PyPI Package</a>
-      </div>
-    </div>
-    
-    <div class="section">
-      <h2>Quick Test</h2>
-      <p>Test the API health endpoint:</p>
-      <div class="endpoint" style="cursor: pointer; margin-top: 10px;" onclick="testHealth()">
-        <span class="method">GET</span>
-        <code id="health-url">/api/health</code>
-        <div class="description" id="health-result" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #ddd;">Click to test →</div>
-      </div>
-    </div>
-    
-    <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #e5e7eb; color: #666; font-size: 0.9em; text-align: center;">
-      <p>Built by <a href="https://www.simonmak.com" style="color: #667eea; text-decoration: none;" target="_blank" rel="noopener noreferrer">Simon Mak</a> • 
-      <a href="https://ascent-partners.com" style="color: #667eea; text-decoration: none;" target="_blank" rel="noopener noreferrer">Ascent Partners</a></p>
-      <p style="margin-top: 8px;">Version 1.0.2 • Licensed under MIT</p>
-    </div>
+
+<header class="hero">
+  <h1>Startup Valuation Engine</h1>
+  <p class="tagline">
+    The most comprehensive, scientifically rigorous, and transparent startup valuation resource available.
+    80+ formulas. Full derivations. Open source.
+  </p>
+  <div class="api-status"><span class="dot"></span> API Online — v1.0.2</div>
+  <div style="margin-top: 24px;">
+    <a href="https://github.com/simonplmak-cloud/startup-valuation" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT" style="height:22px;margin:2px;"></a>
+    <img src="https://img.shields.io/github/stars/simonplmak-cloud/startup-valuation?style=social" alt="Stars" style="height:22px;margin:2px;">
   </div>
-  
-  <script>
-    async function testHealth() {
-      const resultDiv = document.getElementById('health-result');
-      resultDiv.innerHTML = '⏳ Testing...';
-      
-      try {
-        const response = await fetch('/api/health');
-        const data = await response.json();
-        resultDiv.innerHTML = `✅ Response: <code>${JSON.stringify(data)}</code>`;
-        resultDiv.style.color = '#10b981';
-      } catch (error) {
-        resultDiv.innerHTML = `❌ Error: ${error.message}`;
-        resultDiv.style.color = '#ef4444';
-      }
-    }
-  </script>
+  <div class="cta">
+    <a href="https://github.com/simonplmak-cloud/startup-valuation" class="btn btn-primary" target="_blank" rel="noopener">View on GitHub</a>
+    <a href="https://github.com/simonplmak-cloud/startup-valuation/wiki" class="btn btn-outline" target="_blank" rel="noopener">Theory &amp; Derivations</a>
+  </div>
+</header>
+
+<main>
+  <section class="section">
+    <div class="stats">
+      <div class="stat"><div class="num">80+</div><div class="label">Valuation Formulas</div></div>
+      <div class="stat"><div class="num">14</div><div class="label">Python Modules</div></div>
+      <div class="stat"><div class="num">60+</div><div class="label">MCP Tools</div></div>
+      <div class="stat"><div class="num">101</div><div class="label">Unit Tests</div></div>
+      <div class="stat"><div class="num">88%</div><div class="label">Test Coverage</div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Valuation Methods</h2>
+    <p class="sub">Every formula with full mathematical derivation, assumptions audit, worked example, and textbook cross-reference.</p>
+    <div class="methods">
+      <div class="method-card"><h3>Scorecard Method</h3><p>Adjust average valuation by weighted factor scores for pre-revenue startups.</p><span class="tag">Core</span><span class="tag">13-step derivation</span></div>
+      <div class="method-card"><h3>Black-Scholes</h3><p>Option pricing for startup equity as real options. N(d) cumulative normal.</p><span class="tag">Advanced</span></div>
+      <div class="method-card"><h3>VC Method</h3><p>Work backward from expected exit value diluting for target return.</p><span class="tag">Core</span></div>
+      <div class="method-card"><h3>Monte Carlo</h3><p>Simulate thousands of scenarios for probabilistic valuation ranges.</p><span class="tag">Advanced</span></div>
+      <div class="method-card"><h3>SaaS Metrics</h3><p>LTV, CAC, NRR, Magic Number, Rule of 40 — SaaS-specific KPIs.</p><span class="tag">Industry</span></div>
+      <div class="method-card"><h3>Biotech rNPV</h3><p>Risk-adjusted NPV for clinical-stage pharmaceutical assets.</p><span class="tag">Industry</span></div>
+      <div class="method-card"><h3>SAFE Valuation</h3><p>Convertible instruments with cap and discount valuation.</p><span class="tag">Emerging</span></div>
+      <div class="method-card"><h3>CAPM</h3><p>Capital Asset Pricing Model with startup-adjusted beta.</p><span class="tag">Foundation</span></div>
+      <div class="method-card"><h3>Risk Factor Summation</h3><p>Adjust baseline by 12 risk factors, each ±$250K per unit.</p><span class="tag">Core</span></div>
+      <div class="method-card"><h3>ESG Valuation</h3><p>Environmental, social, governance premium and discount impacts.</p><span class="tag">Emerging</span></div>
+      <div class="method-card"><h3>OPM / PWERM</h3><p>Option-pricing and probability-weighted models for stakeholders.</p><span class="tag">Stakeholder</span></div>
+      <div class="method-card"><h3>Metcalfe's Law</h3><p>Network value proportional to n² for crypto and marketplace startups.</p><span class="tag">Emerging</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>API Access</h2>
+    <p class="sub">MCP-compatible JSON-RPC endpoint. No API key required.</p>
+    <div class="endpoint-box">
+      <div style="margin-bottom: 12px;"><span class="method-tag get">GET</span> <code>/api/health</code> — Health check</div>
+      <div><span class="method-tag post">POST</span> <code>/api</code> — JSON-RPC 2.0 (initialize, tools/list, tools/call)</div>
+    </div>
+    <p style="margin-top: 16px; color: var(--muted); font-size: 0.9em;">
+      Connect any MCP-compatible agent. Full 60+ tool library available via the Python package.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>Resources</h2>
+    <div class="links-grid">
+      <a href="https://github.com/simonplmak-cloud/startup-valuation/wiki" class="link-card" target="_blank" rel="noopener">
+        <h3>Wiki — Theory &amp; Derivations</h3>
+        <p>13-step Scorecard derivation, glossary, notation table, and method deep-dives.</p>
+      </a>
+      <a href="https://pypi.org/project/startup-valuation/" class="link-card" target="_blank" rel="noopener">
+        <h3>PyPI Package</h3>
+        <p>pip install startup-valuation. Python 3.10+. MIT licensed.</p>
+      </a>
+      <a href="https://github.com/simonplmak-cloud/startup-valuation#readme" class="link-card" target="_blank" rel="noopener">
+        <h3>GitHub Repository</h3>
+        <p>Source code, CI/CD pipeline, contributing guide, 101 tests.</p>
+      </a>
+      <a href="https://www.amazon.com/Startup-Valuation-Comprehensive-Fast-Growing-Pre-Revenue-ebook/dp/B0FYTGNVWS/" class="link-card" target="_blank" rel="noopener">
+        <h3>Companion Textbook</h3>
+        <p>338 pages · 15 chapters · 300+ exercises · 20+ cases. By Simon Mak.</p>
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Built by <a href="https://www.simonmak.com" target="_blank" rel="noopener">Simon Mak</a> · <a href="https://ascent-partners.com" target="_blank" rel="noopener">Ascent Partners</a></p>
+  <p style="margin-top: 8px;">MIT License · Version 1.0.2 · <a href="https://github.com/simonplmak-cloud/startup-valuation" target="_blank" rel="noopener">GitHub</a></p>
+</footer>
+
 </body>
 </html>
