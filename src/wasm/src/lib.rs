@@ -289,6 +289,82 @@ pub fn dcf_valuation_json(
     })).unwrap()
 }
 
+// ── Berkus Method ───────────────────────────────────────────────────
+
+#[wasm_bindgen]
+pub fn berkus_valuation_json(
+    sound_idea: f64,
+    prototype: f64,
+    quality_team: f64,
+    strategic_relationships: f64,
+    product_rollout: f64,
+) -> String {
+    let val = sound_idea + prototype + quality_team + strategic_relationships + product_rollout;
+
+    let factors: [(&str, f64); 5] = [
+        ("Sound Idea", sound_idea),
+        ("Prototype", prototype),
+        ("Quality Management Team", quality_team),
+        ("Strategic Relationships", strategic_relationships),
+        ("Product Rollout/Sales", product_rollout),
+    ];
+
+    let mut steps: Vec<CalcStep> = factors.iter().map(|(label, v)| CalcStep {
+        label: label.to_string(),
+        value: *v,
+        formula: format!("{} < $500K", label),
+    }).collect();
+
+    steps.push(CalcStep {
+        label: "Berkus Valuation".into(),
+        value: val,
+        formula: format!("V = sum = ${:.0}", val),
+    });
+
+    serde_json::to_string(&output(val, "Berkus Method", steps,
+        vec!["Maximum $500K per factor", "Applicable to pre-revenue startups",
+             "Each factor independently assessed", "Maximum valuation $2.5M"],
+        "3", "3.2")).unwrap()
+}
+
+#[wasm_bindgen]
+pub fn risk_factor_summation_json(base_valuation: f64, risk_ratings_js: &[f64]) -> String {
+    let adj = 250_000.0;
+    let total: f64 = risk_ratings_js.iter().sum();
+    let val = base_valuation + total * adj;
+
+    let names = ["Management","Stage","Legislation","Manufacturing","Sales","Funding","Competition","Technology","Litigation","International","Reputation","Exit"];
+
+    let mut steps: Vec<CalcStep> = risk_ratings_js.iter().enumerate().map(|(i, r)| CalcStep {
+        label: names[i].into(),
+        value: *r,
+        formula: format!("r{} = {:.0}", i+1, r),
+    }).collect();
+
+    steps.push(CalcStep { label: "Total risk score".into(), value: total, formula: format!("sum = {:.0}", total) });
+    steps.push(CalcStep { label: "Dollar adjustment".into(), value: total * adj, formula: format!("{:.0} x ${:.0}", total, adj) });
+    steps.push(CalcStep { label: "Final valuation".into(), value: val, formula: format!("V = {:.0} + {:.0}", base_valuation, total * adj) });
+
+    serde_json::to_string(&output(val, "Risk Factor Summation", steps,
+        vec!["Base valuation from comparable companies",
+             "Each risk unit adjusts by $250K",
+             "12 risk factors assessed independently"],
+        "3", "3.3")).unwrap()
+}
+
+#[wasm_bindgen]
+pub fn terminal_value_multiple_json(revenue: f64, multiple: f64) -> String {
+    let val = revenue * multiple;
+    serde_json::to_string(&output(val, "Terminal Value (Multiple)",
+        vec![
+            CalcStep { label: "Projected revenue".into(), value: revenue, formula: "Revenue".into() },
+            CalcStep { label: "Industry multiple".into(), value: multiple, formula: "Multiple".into() },
+            CalcStep { label: "Terminal value".into(), value: val, formula: "TV = Revenue x Multiple".into() },
+        ],
+        vec!["Multiple is from comparable exits", "Revenue projection is achievable"],
+        "3", "3.4")).unwrap()
+}
+
 // ── Health / Discovery ──────────────────────────────────────────────
 
 #[wasm_bindgen]
@@ -304,6 +380,9 @@ pub fn list_tools_json() -> String {
             {"name": "poisson_probability", "category": "probability"},
             {"name": "saas_metrics", "category": "saas"},
             {"name": "dcf_valuation", "category": "tv"},
+            {"name": "berkus_valuation", "category": "core"},
+            {"name": "risk_factor_summation", "category": "core"},
+            {"name": "terminal_value_multiple", "category": "core"},
         ]
     })).unwrap()
 }

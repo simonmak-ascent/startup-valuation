@@ -51,6 +51,21 @@ export async function dcf(revenue, growthRate, discountRate, terminalGrowth, pro
   return JSON.parse(w.dcf_valuation_json(revenue, growthRate, discountRate, terminalGrowth, projectionYears));
 }
 
+export async function berkus(soundIdea, prototype, qualityTeam, relationships, rollout) {
+  const w = await init();
+  return JSON.parse(w.berkus_valuation_json(soundIdea, prototype, qualityTeam, relationships, rollout));
+}
+
+export async function riskFactorSummation(baseValuation, riskRatings) {
+  const w = await init();
+  return JSON.parse(w.risk_factor_summation_json(baseValuation, riskRatings));
+}
+
+export async function terminalValueMultiple(revenue, multiple) {
+  const w = await init();
+  return JSON.parse(w.terminal_value_multiple_json(revenue, multiple));
+}
+
 export async function listTools() {
   const w = await init();
   return JSON.parse(w.list_tools_json());
