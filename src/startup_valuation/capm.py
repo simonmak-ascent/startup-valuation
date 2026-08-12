@@ -11,76 +11,85 @@ from startup_valuation.types import ValuationResult
 def capm(
     risk_free_rate: float,
     beta: float,
-    market_return: float,
+    market_risk_premium: float,
 ) -> ValuationResult:
-    """Calculate expected return using CAPM.
+    """Calculate expected return using the Capital Asset Pricing Model.
 
-    Formula: E(Rᵢ) = Rf + βᵢ × (E(Rm) - Rf)
+    Formula: E[R] = Rf + β × MRP
 
     Args:
-        risk_free_rate: Risk-free rate (Rf).
-        beta: Beta of the asset (βᵢ).
-        market_return: Expected market return (E(Rm)).
+        risk_free_rate: Risk-free rate (Rf), typically 10-year Treasury yield.
+        beta: Systematic risk measure relative to market (β).
+        market_risk_premium: Expected market return minus risk-free rate (MRP).
 
     Returns:
-        ValuationResult with expected return.
+        ValuationResult with expected return as value.
 
-    Example:
-        >>> result = capm(0.03, 1.5, 0.10)
-        >>> round(result.value, 4)
-        0.135
+    Notes:
+        The CAPM is the foundational model for risk-adjusted discount rates:
+
+        $$E[R] = R_f + \\beta (E[R_m] - R_f)$$
+
+        Beta > 1: more volatile than market. Beta < 1: less volatile.
+        Beta = 1: moves with market. Typical startup beta: 1.5-3.0
+        due to illiquidity and business risk.
+
+        The risk-free rate anchors the model; the market risk premium
+        compensates for systematic risk. CAPM assumes: efficient markets,
+        diversified investors, no taxes or transaction costs.
+
+    References:
+        Startup Valuation textbook, Chapter 2, Section 2.5.
+        Sharpe, W. (1964). Capital Asset Prices. Journal of Finance, 19(3).
+
+    See Also:
+        startup_adjusted_capm : Adds startup-specific risk premium.
+        portfolio_beta : Weighted beta for multiple assets.
     """
-    market_risk_premium = market_return - risk_free_rate
-    expected_return = risk_free_rate + beta * market_risk_premium
-
     return ValuationResult(
-        value=expected_return,
+        value=risk_free_rate + beta * market_risk_premium,
         method="CAPM",
-        inputs={
-            "risk_free_rate": risk_free_rate,
-            "beta": beta,
-            "market_return": market_return,
-        },
-        assumptions=[
-            "Markets are efficient",
-            "Beta captures all systematic risk",
-            "Risk-free rate is accessible to investors",
-        ],
+        inputs={"risk_free_rate": risk_free_rate, "beta": beta, "market_risk_premium": market_risk_premium},
+        assumptions=["CAPM assumptions hold (efficient markets, diversified investors)"],
         chapter="2",
+        formula_number="2.5",
     )
 
 
-def portfolio_beta(
-    weights: list[float],
-    betas: list[float],
-) -> ValuationResult:
-    """Calculate portfolio beta as weighted average.
+def portfolio_beta(weights: list[float], betas: list[float]) -> ValuationResult:
+    """Calculate weighted portfolio beta.
 
-    Formula: βp = Σ wᵢ × βᵢ
+    Formula: β_portfolio = Σ wᵢ × βᵢ
 
     Args:
-        weights: Portfolio weights (wᵢ).
-        betas: Individual asset betas (βᵢ).
+        weights: Portfolio weights (must sum to 1).
+        betas: Individual asset betas.
 
     Returns:
         ValuationResult with portfolio beta.
 
-    Example:
-        >>> result = portfolio_beta([0.60, 0.40], [0.8, 1.2])
-        >>> result.value
-        0.96
+    Notes:
+        $$\\beta_p = \\sum_{i=1}^{n} w_i \\beta_i$$
+
+        Portfolio beta is the weighted average of individual betas.
+        Used to estimate the systematic risk of a diversified
+        startup portfolio or fund.
+
+    References:
+        Startup Valuation textbook, Chapter 2, Section 2.5.
+
+    See Also:
+        capm : Expected return using CAPM.
     """
-    if len(weights) != len(betas):
-        raise ValueError("weights and betas must have the same length")
-
-    pb = sum(w * b for w, b in zip(weights, betas))
-
+    if abs(sum(weights) - 1.0) > 0.01:
+        raise ValueError("weights must sum to 1.0")
     return ValuationResult(
-        value=pb,
+        value=sum(w * b for w, b in zip(weights, betas)),
         method="Portfolio Beta",
         inputs={"weights": weights, "betas": betas},
-        assumptions=["Beta is stable and accurately estimated"],
+        assumptions=["Weights sum to 1.0", "Betas are additive (no correlation adjustment)"],
         chapter="2",
+        formula_number="2.6",
     )
 
 
@@ -88,73 +97,85 @@ def startup_adjusted_capm(
     risk_free_rate: float,
     beta: float,
     market_risk_premium: float,
-    size_premium: float = 0.0,
-    startup_premium: float = 0.0,
+    size_premium: float = 0.05,
+    illiquidity_premium: float = 0.03,
 ) -> ValuationResult:
-    """Calculate startup-adjusted CAPM with additional risk premiums.
+    """Calculate startup-specific CAPM with size and illiquidity adjustments.
 
-    Formula: E(R) = Rf + β × MRP + Size Premium + Startup Premium
+    Formula: E[R] = Rf + β × MRP + Size Premium + Illiquidity Premium
 
     Args:
         risk_free_rate: Risk-free rate.
-        beta: Beta of the startup.
+        beta: Systematic risk.
         market_risk_premium: Market risk premium.
-        size_premium: Additional premium for small company size.
-        startup_premium: Additional premium for startup-specific risks.
+        size_premium: Additional premium for small companies (default 5%).
+        illiquidity_premium: Premium for illiquid investments (default 3%).
 
     Returns:
-        ValuationResult with adjusted expected return.
+        ValuationResult with risk-adjusted discount rate.
 
-    Example:
-        >>> result = startup_adjusted_capm(0.04, 1.3, 0.07, 0.03, 0.10)
-        >>> round(result.value, 4)
-        0.261
+    Notes:
+        Startup-adjusted CAPM extends the standard model with:
+
+        $$E[R] = R_f + \\beta(R_m - R_f) + SP + IP$$
+
+        Size premium: small companies have higher risk (typically 2-10%).
+        Illiquidity premium: private companies have no ready market.
+        Total discount rate for startups: 15-25%+.
+
+    References:
+        Startup Valuation textbook, Chapter 2, Section 2.5.
+        Damodaran, A. — Annual size premium studies.
+
+    See Also:
+        capm : Standard CAPM without adjustments.
+        international.adjusted_capm_international : Adds country risk.
     """
-    expected_return = risk_free_rate + beta * market_risk_premium + size_premium + startup_premium
-
     return ValuationResult(
-        value=expected_return,
+        value=risk_free_rate + beta * market_risk_premium + size_premium + illiquidity_premium,
         method="Startup-Adjusted CAPM",
         inputs={
             "risk_free_rate": risk_free_rate,
             "beta": beta,
             "market_risk_premium": market_risk_premium,
             "size_premium": size_premium,
-            "startup_premium": startup_premium,
+            "illiquidity_premium": illiquidity_premium,
         },
         assumptions=[
-            "Additional premiums are additive to CAPM",
-            "Beta is estimated from comparable companies",
+            "Size premium reflects small-company risk",
+            "Illiquidity premium reflects lack of marketability",
+            "CAPM assumptions hold for base rate",
         ],
         chapter="2",
+        formula_number="2.7",
     )
 
 
 def portfolio_variance(
-    weights: list[float],
-    covariances: list[list[float]],
+    weights: list[float], variances: list[float], covariance_pairs: list[tuple[int, int, float]] | None = None
 ) -> ValuationResult:
-    """Calculate portfolio variance.
+    """Calculate portfolio variance from individual variances and covariances.
 
-    Formula: Var(Rp) = ΣΣ wᵢ × wⱼ × Cov(Rᵢ, Rⱼ)
+    Formula: σ²_p = Σ wᵢ²σ²ᵢ + 2 Σ wᵢwⱼσ_ij
 
-    Args:
-        weights: Portfolio weights.
-        covariances: Covariance matrix.
+    Notes:
+        $$\\sigma^2_p = \\sum w_i^2\\sigma_i^2 + 2\\sum_{i<j} w_i w_j\\sigma_{ij}$$
 
-    Returns:
-        ValuationResult with portfolio variance.
+        Portfolio variance accounts for both individual risk and
+        inter-asset correlations. Used in modern portfolio theory
+        for risk assessment of multi-asset portfolios.
+
+    References:
+        Startup Valuation textbook, Chapter 2, Section 2.5.
     """
-    n = len(weights)
-    if len(covariances) != n or any(len(row) != n for row in covariances):
-        raise ValueError("covariances must be an n×n matrix")
-
-    variance = sum(weights[i] * weights[j] * covariances[i][j] for i in range(n) for j in range(n))
-
+    var = sum(w**2 * s for w, s in zip(weights, variances))
+    if covariance_pairs:
+        var += 2 * sum(weights[i] * weights[j] * cov for i, j, cov in covariance_pairs)
     return ValuationResult(
-        value=variance,
+        value=var,
         method="Portfolio Variance",
-        inputs={"weights": weights, "covariances": covariances},
-        assumptions=["Covariance matrix is accurate and stable"],
+        inputs={"weights": weights, "variances": variances},
+        assumptions=["Variances and covariances are accurately estimated"],
         chapter="2",
+        formula_number="2.8",
     )

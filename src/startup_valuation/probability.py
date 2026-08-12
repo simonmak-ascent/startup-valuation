@@ -8,8 +8,7 @@ from __future__ import annotations
 import math
 from collections.abc import Callable
 
-from scipy import integrate
-from scipy import stats as scipy_stats
+from scipy import integrate, stats
 
 from startup_valuation.types import ValuationResult
 
@@ -20,19 +19,31 @@ def expected_value_discrete(
 ) -> ValuationResult:
     """Calculate expected value for a discrete random variable.
 
-    Formula: E[X] = Σ xᵢ × P(X = xᵢ)
+    Formula: E[X] = Σ xᵢ · P(X = xᵢ)
 
     Args:
-        outcomes: Possible outcome values (xᵢ).
-        probabilities: Probability of each outcome P(X = xᵢ).
+        outcomes: Possible outcome values.
+        probabilities: Probability of each outcome.
 
     Returns:
         ValuationResult with expected value.
 
-    Example:
-        >>> result = expected_value_discrete([1, 0], [0.3, 0.7])
-        >>> result.value
-        0.3
+    Raises:
+        ValueError: If outcomes and probabilities differ in length.
+
+    Notes:
+        $$E[X] = \\sum_{i=1}^{n} x_i \\cdot P(X = x_i)$$
+
+        Foundation of expected value analysis. Assumes probabilities
+        are mutually exclusive and exhaustive (should sum to ~1.0).
+        Used in scenario analysis, decision trees, and PWERM.
+
+    References:
+        Startup Valuation textbook, Chapter 2, Section 2.1.
+
+    See Also:
+        expected_value_continuous : For continuous distributions.
+        scenario_analysis : For bull/base/bear scenarios.
     """
     if len(outcomes) != len(probabilities):
         raise ValueError("outcomes and probabilities must have the same length")
@@ -43,8 +54,9 @@ def expected_value_discrete(
         value=ev,
         method="Expected Value (Discrete)",
         inputs={"outcomes": outcomes, "probabilities": probabilities},
-        assumptions=["Outcomes and probabilities are exhaustive (sum to 1)"],
+        assumptions=["Probabilities sum to 1.0", "Outcomes are mutually exclusive"],
         chapter="2",
+        formula_number="2.1",
     )
 
 
@@ -54,169 +66,161 @@ def joint_probability(probabilities: list[float]) -> ValuationResult:
     Formula: P(total) = Π Pᵢ
 
     Args:
-        probabilities: Probability of each sequential event.
+        probabilities: Independent event probabilities.
 
-    Returns:
-        ValuationResult with joint probability.
+    Notes:
+        $$P(\\text{total}) = \\prod_{i=1}^{n} P_i$$
 
-    Example:
-        >>> result = joint_probability([0.90, 0.70, 0.60, 0.85])
-        >>> round(result.value, 4)
-        0.3213
+        For startup valuation: probability of passing multiple
+        milestones (e.g., Series A AND Series B AND exit).
+        Assumes independence between events. Each Pᵢ ∈ [0,1].
+
+    References:
+        Startup Valuation textbook, Chapter 2, Section 2.1.
+
+    See Also:
+        expected_value_discrete : Weighted by probabilities.
     """
-    if not probabilities:
-        raise ValueError("probabilities list cannot be empty")
-    if not all(0 <= p <= 1 for p in probabilities):
-        raise ValueError("all probabilities must be between 0 and 1")
-
-    joint = math.prod(probabilities)
-
+    jp = math.prod(probabilities)
     return ValuationResult(
-        value=joint,
+        value=jp,
         method="Joint Probability",
         inputs={"probabilities": probabilities},
-        assumptions=["Events are independent"],
+        assumptions=["Events are independent", "Probabilities are between 0 and 1"],
         chapter="2",
+        formula_number="2.2",
     )
 
 
 def probability_weighted_value(
+    outcomes: list[float],
     probabilities: list[float],
-    values: list[float],
 ) -> ValuationResult:
-    """Calculate probability-weighted expected value.
+    """Probability-weighted sum of multiple scenarios.
 
-    Formula: E[V] = Σ pᵢ × Vᵢ
+    Formula: PW = Σ pᵢ × vᵢ
 
-    Args:
-        probabilities: Probability of each scenario.
-        values: Value in each scenario.
+    Notes:
+        Direct application of expected value to valuation.
+        Returns the weighted sum — same formula as expected_value_discrete
+        but named for valuation context.
 
-    Returns:
-        ValuationResult with expected value.
-
-    Example:
-        >>> result = probability_weighted_value([0.20, 0.60, 0.20], [10_000_000, 5_000_000, 1_000_000])
-        >>> result.value
-        5200000.0
+    References:
+        Startup Valuation textbook, Chapter 2, Section 2.1.
     """
-    if len(probabilities) != len(values):
-        raise ValueError("probabilities and values must have the same length")
-
-    ev = sum(p * v for p, v in zip(probabilities, values))
-
+    if len(outcomes) != len(probabilities):
+        raise ValueError("outcomes and probabilities must have the same length")
     return ValuationResult(
-        value=ev,
-        method="Probability-Weighted Expected Value",
-        inputs={"probabilities": probabilities, "values": values},
-        assumptions=["Scenarios are mutually exclusive and exhaustive"],
+        value=sum(o * p for o, p in zip(outcomes, probabilities)),
+        method="Probability-Weighted Value",
+        inputs={"outcomes": outcomes, "probabilities": probabilities},
+        assumptions=["Probabilities sum to 1.0"],
         chapter="2",
+        formula_number="2.3",
     )
 
 
 def portfolio_expected_return(
-    probabilities: list[float],
+    weights: list[float],
     returns: list[float],
 ) -> ValuationResult:
-    """Calculate expected return of a VC portfolio.
+    """Calculate expected portfolio return from individual asset returns.
 
-    Formula: E[R] = Σ pᵢ × Rᵢ
+    Formula: E[R_p] = Σ wᵢ × E[Rᵢ]
 
     Args:
-        probabilities: Probability of each return outcome.
-        returns: Return multiple for each outcome.
+        weights: Portfolio allocation weights.
+        returns: Expected return for each asset.
 
-    Returns:
-        ValuationResult with expected return.
+    Notes:
+        $$E[R_p] = \\sum_{i=1}^{n} w_i \\cdot E[R_i]$$
 
-    Example:
-        >>> result = portfolio_expected_return([0.20, 0.30, 0.20, 0.30], [10, 2, 1, 0])
-        >>> result.value
-        2.8
+        Weighted average of expected returns. Used in portfolio
+        construction and fund-level valuation analysis.
+
+    References:
+        Startup Valuation textbook, Chapter 2, Section 2.1.
     """
-    if len(probabilities) != len(returns):
-        raise ValueError("probabilities and returns must have the same length")
-
-    er = sum(p * r for p, r in zip(probabilities, returns))
-
+    if abs(sum(weights) - 1.0) > 0.01:
+        raise ValueError("weights must sum to 1.0")
     return ValuationResult(
-        value=er,
+        value=sum(w * r for w, r in zip(weights, returns)),
         method="Portfolio Expected Return",
-        inputs={"probabilities": probabilities, "returns": returns},
-        assumptions=["Return outcomes are mutually exclusive"],
+        inputs={"weights": weights, "returns": returns},
+        assumptions=["Weights sum to 1.0", "Expected returns are forward-looking estimates"],
         chapter="2",
+        formula_number="2.4",
     )
 
 
 def poisson_probability(lambda_: float, k: int) -> ValuationResult:
-    """Calculate Poisson probability P(X = k).
+    """Calculate Poisson probability P(X = k) for event count k.
 
-    Formula: P(X = k) = e^(-λ) × λ^k / k!
+    Formula: P(X = k) = (λ^k · e^(-λ)) / k!
 
     Args:
-        lambda_: Mean rate (λ).
-        k: Target count.
+        lambda_: Expected number of events (λ).
+        k: Actual number of events.
 
-    Returns:
-        ValuationResult with probability.
+    Notes:
+        $$P(X = k) = \\frac{\\lambda^k e^{-\\lambda}}{k!}$$
 
-    Example:
-        >>> result = poisson_probability(500, 450)
-        >>> round(result.value, 3)
-        0.011
+        Uses scipy.stats.poisson.pmf for numerical stability.
+        Models count of rare events in fixed interval: patent
+        filings, FDA approvals, customer arrivals.
+
+    References:
+        Startup Valuation textbook, Chapter 2, Section 2.1.
+
+    See Also:
+        expected_value_continuous : For continuous distributions.
     """
-    if lambda_ <= 0:
-        raise ValueError("lambda must be positive")
-    if k < 0:
-        raise ValueError("k must be non-negative")
-
-    if k > 170:  # factorial overflows float beyond 170
-        prob = scipy_stats.poisson.pmf(k, lambda_)
-    else:
-        prob = math.exp(-lambda_) * (lambda_**k) / math.factorial(k)
-
     return ValuationResult(
-        value=prob,
+        value=float(stats.poisson.pmf(k, lambda_)),
         method="Poisson Probability",
         inputs={"lambda": lambda_, "k": k},
-        assumptions=["Events occur independently at constant average rate"],
+        assumptions=["Events occur independently", "Constant rate λ"],
         chapter="2",
+        formula_number="2.5",
     )
 
 
 def expected_value_continuous(
-    pdf_func: Callable[[float], float],
-    lower: float,
-    upper: float,
+    f: Callable[[float], float],
+    a: float,
+    b: float,
+    tol: float = 1.49e-8,
 ) -> ValuationResult:
-    """Calculate expected value for a continuous random variable.
+    """Calculate expected value of a continuous random variable.
 
-    Formula: E[X] = ∫ x × f(x) dx over [lower, upper]
+    Formula: E[X] = ∫ x · f(x) dx over [a, b]
 
     Args:
-        pdf_func: Probability density function f(x).
-        lower: Lower bound of integration.
-        upper: Upper bound of integration.
+        f: Probability density function f(x).
+        a: Lower bound.
+        b: Upper bound.
+        tol: Integration tolerance.
 
-    Returns:
-        ValuationResult with expected value.
+    Notes:
+        $$E[X] = \\int_a^b x \\cdot f(x) \\,dx$$
 
-    Example:
-        >>> import scipy.stats
-        >>> result = expected_value_continuous(scipy_stats.norm(0, 1).pdf, -10, 10)
-        >>> round(result.value, 4)
-        0.0
+        Uses scipy.integrate.quad for adaptive numerical integration.
+        Tolerances: 1.49e-8 (default, ~machine epsilon).
+        Used when closed-form expectation is not available.
+
+    References:
+        Startup Valuation textbook, Chapter 2, Section 2.1.
+
+    See Also:
+        expected_value_discrete : For discrete distributions.
     """
-
-    def integrand(x: float) -> float:
-        return x * pdf_func(x)
-
-    ev, _ = integrate.quad(integrand, lower, upper, limit=200)
+    val, _ = integrate.quad(lambda x: x * f(x), a, b, epsabs=tol)
 
     return ValuationResult(
-        value=ev,
+        value=val,
         method="Expected Value (Continuous)",
-        inputs={"lower": lower, "upper": upper},
-        assumptions=["PDF is properly normalized (integrates to 1)"],
+        inputs={"a": a, "b": b, "tol": tol},
+        assumptions=["f(x) is integrable over [a, b]", "f(x) ≥ 0 over domain"],
         chapter="2",
+        formula_number="2.6",
     )

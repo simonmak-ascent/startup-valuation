@@ -21,6 +21,24 @@ def present_value(future_value: float, rate: float, periods: float) -> Valuation
     Returns:
         ValuationResult with present value.
 
+    Raises:
+        ValueError: If rate < -1.
+
+    Notes:
+        Present value discounts a single future cash flow to today's dollars:
+
+        $$PV = \\frac{C}{(1 + r)^t}$$
+
+        Foundation of all DCF and NPV calculations. Higher discount rates
+        or longer time horizons reduce present value.
+
+    References:
+        Startup Valuation textbook, Chapter 2, Section 2.2.
+
+    See Also:
+        net_present_value : Sum of discounted cash flows.
+        annuity_present_value : Perpetual or fixed-period payments.
+
     Example:
         >>> result = present_value(11000, 0.08, 1)
         >>> round(result.value, 2)
@@ -37,6 +55,7 @@ def present_value(future_value: float, rate: float, periods: float) -> Valuation
         inputs={"future_value": future_value, "rate": rate, "periods": periods},
         assumptions=["Discount rate is constant over the period"],
         chapter="2",
+        formula_number="2.2",
     )
 
 
@@ -55,6 +74,25 @@ def net_present_value(
     Returns:
         ValuationResult with NPV.
 
+    Raises:
+        ValueError: If rate < -1.
+
+    Notes:
+        Net present value sums all discounted cash flows:
+
+        $$NPV = \\sum_{t=0}^{n} \\frac{CF_t}{(1 + r)^t}$$
+
+        The first element is typically negative (initial investment).
+        NPV > 0 indicates value creation. Used in DCF valuation
+        and capital budgeting.
+
+    References:
+        Startup Valuation textbook, Chapter 2, Section 2.3.
+
+    See Also:
+        present_value : Single cash flow discounting.
+        dcf_valuation : Full DCF with terminal value.
+
     Example:
         >>> result = net_present_value([-100000, 30000, 40000, 50000], 0.10)
         >>> round(result.value, 0)
@@ -71,6 +109,7 @@ def net_present_value(
         inputs={"cash_flows": cash_flows, "rate": rate},
         assumptions=["Discount rate is constant across all periods"],
         chapter="2",
+        formula_number="2.3",
     )
 
 
@@ -91,6 +130,20 @@ def annuity_present_value(
     Returns:
         ValuationResult with present value.
 
+    Notes:
+        Present value of equal payments at end of each period:
+
+        $$PV = C \\times \\left[\\frac{1 - (1 + r)^{-n}}{r}\\right]$$
+
+        When r = 0, PV = C × n. Used for valuing fixed-payment
+        streams like lease payments or subscription revenue.
+
+    References:
+        Startup Valuation textbook, Chapter 2, Section 2.4.
+
+    See Also:
+        present_value : Single cash flow. net_present_value : Variable flows.
+
     Example:
         >>> result = annuity_present_value(50000, 0.10, 4)
         >>> round(result.value, 0)
@@ -107,4 +160,5 @@ def annuity_present_value(
         inputs={"payment": payment, "rate": rate, "periods": periods},
         assumptions=["Payments are equal and occur at end of each period"],
         chapter="2",
+        formula_number="2.4",
     )
