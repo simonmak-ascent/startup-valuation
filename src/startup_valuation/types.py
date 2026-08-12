@@ -30,6 +30,7 @@ class ValuationResult:
         sensitivity: Sensitivity analysis for key inputs.
         chapter: Textbook chapter reference.
         formula_number: Textbook formula number (e.g., '3.1').
+        steps: Intermediate calculation steps for traceability.
     """
 
     value: float
@@ -39,6 +40,7 @@ class ValuationResult:
     sensitivity: dict[str, SensitivityResult] = field(default_factory=dict)
     chapter: str = ""
     formula_number: str = ""
+    steps: list[dict[str, str | float]] = field(default_factory=list)
 
     def __str__(self) -> str:
         return f"{self.method}: ${self.value:,.2f}"

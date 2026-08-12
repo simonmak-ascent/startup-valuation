@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://startup-valuation.simonmak.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://startup-valuation.simonmak.com/methods/scorecard</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://startup-valuation.simonmak.com/methods/black-scholes</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://startup-valuation.simonmak.com/methods/dcf</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://startup-valuation.simonmak.com/methods/saas-metrics</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://startup-valuation.simonmak.com/methods/vc-method</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://startup-valuation.simonmak.com/api/health</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>
+</urlset>

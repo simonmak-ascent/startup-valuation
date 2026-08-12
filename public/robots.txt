@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://startup-valuation.simonmak.com/sitemap.xml

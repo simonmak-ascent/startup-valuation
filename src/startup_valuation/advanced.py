@@ -38,6 +38,34 @@ def black_scholes(
     Returns:
         ValuationResult with call option value.
 
+    Raises:
+        ValueError: If underlying, strike, volatility, or time_to_maturity are non-positive.
+
+    Notes:
+        The Black-Scholes model prices a European call option assuming
+        the underlying follows geometric Brownian motion:
+
+        $$C = S \\cdot N(d_1) - K e^{-rT} \\cdot N(d_2)$$
+
+        $$d_1 = \\frac{\\ln(S/K) + (r + \\sigma^2/2)T}{\\sigma\\sqrt{T}}$$
+
+        $$d_2 = d_1 - \\sigma\\sqrt{T}$$
+
+        $$N(d)$$ is the standard normal CDF computed via scipy.stats.norm.cdf.
+
+        Assumptions: European exercise only, constant volatility and risk-free rate,
+        no dividends, continuous trading, no transaction costs.
+
+    References:
+        Startup Valuation textbook, Chapter 4, Section 4.1.
+        Black, F. & Scholes, M. (1973). The Pricing of Options and Corporate Liabilities.
+        Journal of Political Economy, 81(3), 637-654.
+
+    See Also:
+        binomial_valuation : Discrete-time alternative converging to Black-Scholes.
+        monte_carlo_valuation : Probabilistic approach for complex payoffs.
+        Theory: https://github.com/simonplmak-cloud/startup-valuation/wiki/Advanced-Methods
+
     Example:
         >>> result = black_scholes(20_000_000, 5_000_000, 0.05, 0.40, 1.0)
         >>> round(result.value / 1_000_000, 2)
@@ -76,6 +104,7 @@ def black_scholes(
             "Continuous trading",
         ],
         chapter="4",
+        formula_number="4.1",
     )
 
 
@@ -104,6 +133,27 @@ def binomial_tree(
 
     Returns:
         ValuationResult with option value.
+
+    Notes:
+        The binomial tree models asset price as discrete up/down movements.
+        At each step, price can go up (factor u) or down (factor d):
+
+        $$u = e^{\\sigma\\sqrt{\\Delta t}}, \\quad d = e^{-\\sigma\\sqrt{\\Delta t}}$$
+
+        $$p = \\frac{e^{r\\Delta t} - d}{u - d}$$
+
+        Backward induction computes option value from terminal nodes.
+        Converges to Black-Scholes as steps → ∞.
+
+    References:
+        Startup Valuation textbook, Chapter 4, Section 4.2.
+        Cox, Ross & Rubinstein (1979). Option Pricing: A Simplified Approach.
+        Journal of Financial Economics, 7(3), 229-263.
+
+    See Also:
+        black_scholes : Closed-form European option pricing.
+        binomial_valuation : High-resolution variant (50 steps).
+        Theory: https://github.com/simonplmak-cloud/startup-valuation/wiki/Advanced-Methods
     """
     dt = time_to_maturity / steps
     u = math.exp(volatility * math.sqrt(dt))
@@ -138,6 +188,7 @@ def binomial_tree(
             "Binomial tree converges to Black-Scholes as steps → ∞",
         ],
         chapter="4",
+        formula_number="4.2",
     )
 
 
@@ -167,6 +218,27 @@ def monte_carlo_valuation(
 
     Returns:
         ValuationResult with mean, percentiles, and full distribution.
+
+    Notes:
+        Monte Carlo simulation estimates valuation by sampling from input
+        distributions and computing the DCF formula for each sample:
+
+        $$PV_i = \\frac{S_i \\times M_i \\times P_i \\times \\text{Multiple}}{(1 + r)^n}$$
+
+        Results include: mean, standard deviation, 5th/50th/95th percentiles,
+        and the full array of simulated values.
+
+        Supports Normal, Uniform, and Triangular distributions.
+
+    References:
+        Startup Valuation textbook, Chapter 4, Section 4.3.
+        Boyle, P. (1977). Options: A Monte Carlo Approach.
+        Journal of Financial Economics, 4(3), 323-338.
+
+    See Also:
+        scenario_analysis : Discrete probability-weighted scenarios.
+        black_scholes : Closed-form alternative for option pricing.
+        Theory: https://github.com/simonplmak-cloud/startup-valuation/wiki/Advanced-Methods
     """
     rng = np.random.default_rng(seed)
 
@@ -208,6 +280,7 @@ def monte_carlo_valuation(
             "Distributions are independent",
         ],
         chapter="4",
+        formula_number="4.3",
     )
 
 
@@ -247,6 +320,7 @@ def scenario_analysis(scenarios: list[Scenario]) -> ValuationResult:
         inputs={"scenarios": [(s.name, s.probability, s.value) for s in scenarios]},
         assumptions=["Scenarios are mutually exclusive and exhaustive"],
         chapter="4",
+        formula_number="4.4",
     )
 
 
@@ -303,6 +377,7 @@ def ltv_cac_valuation(
         },
         assumptions=["LTV/CAC > 1 for viable business model"],
         chapter="4",
+        formula_number="4.1",
     )
 
 
@@ -367,4 +442,5 @@ def binomial_valuation(
             "European-style option",
         ],
         chapter="4",
+        formula_number="4.6",
     )
