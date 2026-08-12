@@ -24,11 +24,15 @@ def _unwrap(r):
 
 TOOLS = {
     "valuation_scorecard": {
-        "fn": lambda avg, w, s: _unwrap(core.scorecard_valuation(avg, w, s)),
+        "fn": lambda average_valuation, weights, scores: _unwrap(
+            core.scorecard_valuation(average_valuation, weights, scores)
+        ),
         "schema": {"average_valuation": "number", "weights": "array", "scores": "array"},
     },
     "valuation_berkus": {
-        "fn": lambda si, pr, qt, sr, po: _unwrap(core.berkus_valuation(si, pr, qt, sr, po)),
+        "fn": lambda sound_idea, prototype, quality_team, strategic_relationships, product_rollout: _unwrap(
+            core.berkus_valuation(sound_idea, prototype, quality_team, strategic_relationships, product_rollout)
+        ),
         "schema": {
             "sound_idea": "number",
             "prototype": "number",
@@ -38,51 +42,55 @@ TOOLS = {
         },
     },
     "valuation_risk_factor": {
-        "fn": lambda bv, rr: _unwrap(core.risk_factor_summation(bv, rr)),
+        "fn": lambda base_valuation, risk_ratings: _unwrap(core.risk_factor_summation(base_valuation, risk_ratings)),
         "schema": {"base_valuation": "number", "risk_ratings": "array"},
     },
     "valuation_vc_post_money": {
-        "fn": lambda tv, tr: _unwrap(core.vc_method_post_money(tv, tr)),
+        "fn": lambda terminal_value, target_return: _unwrap(core.vc_method_post_money(terminal_value, target_return)),
         "schema": {"terminal_value": "number", "target_return": "number"},
     },
     "valuation_vc_pre_money": {
-        "fn": lambda pm, inv: _unwrap(core.vc_method_pre_money(pm, inv)),
+        "fn": lambda post_money, investment: _unwrap(core.vc_method_pre_money(post_money, investment)),
         "schema": {"post_money": "number", "investment": "number"},
     },
     "valuation_capm": {
-        "fn": lambda rf, beta, mrp: _unwrap(capm.capm(rf, beta, mrp)),
+        "fn": lambda risk_free_rate, beta, market_risk_premium: _unwrap(
+            capm.capm(risk_free_rate, beta, market_risk_premium)
+        ),
         "schema": {"risk_free_rate": "number", "beta": "number", "market_risk_premium": "number"},
     },
     "valuation_saas_ltv": {
-        "fn": lambda arpu, gm, ch: _unwrap(saas.ltv_saas(arpu, gm, ch)),
+        "fn": lambda arpu, gross_margin, churn_rate: _unwrap(saas.ltv_saas(arpu, gross_margin, churn_rate)),
         "schema": {"arpu": "number", "gross_margin": "number", "churn_rate": "number"},
     },
     "valuation_saas_magic_number": {
-        "fn": lambda narr, sme: _unwrap(saas.magic_number(narr, sme)),
+        "fn": lambda net_new_arr, sm_expense_prior: _unwrap(saas.magic_number(net_new_arr, sm_expense_prior)),
         "schema": {"net_new_arr": "number", "sm_expense_prior": "number"},
     },
     "valuation_saas_rule_of_40": {
-        "fn": lambda gr, pm: _unwrap(saas.rule_of_40(gr, pm)),
+        "fn": lambda growth_rate, profit_margin: _unwrap(saas.rule_of_40(growth_rate, profit_margin)),
         "schema": {"growth_rate": "number", "profit_margin": "number"},
     },
     "valuation_saas_cac": {
-        "fn": lambda sme, nc: _unwrap(saas.cac(sme, nc)),
-        "schema": {"sales_marketing_expense": "number", "new_customers": "integer"},
+        "fn": lambda sales_marketing_expense, new_customers: _unwrap(
+            saas.cac(sales_marketing_expense, int(new_customers))
+        ),
+        "schema": {"sales_marketing_expense": "number", "new_customers": "number"},
     },
     "valuation_present_value": {
-        "fn": lambda fv, r, p: _unwrap(tv.present_value(fv, r, p)),
+        "fn": lambda future_value, rate, periods: _unwrap(tv.present_value(future_value, rate, periods)),
         "schema": {"future_value": "number", "rate": "number", "periods": "number"},
     },
     "valuation_expected_value": {
-        "fn": lambda o, p: _unwrap(probability.expected_value_discrete(o, p)),
+        "fn": lambda outcomes, probabilities: _unwrap(probability.expected_value_discrete(outcomes, probabilities)),
         "schema": {"outcomes": "array", "probabilities": "array"},
     },
     "valuation_pe_ratio": {
-        "fn": lambda p, eps: _unwrap(comparables.pe_ratio(p, eps)),
+        "fn": lambda price, earnings_per_share: _unwrap(comparables.pe_ratio(price, earnings_per_share)),
         "schema": {"price": "number", "earnings_per_share": "number"},
     },
     "valuation_terminal_value": {
-        "fn": lambda pr, m: _unwrap(core.terminal_value_multiple(pr, m)),
+        "fn": lambda projected_revenue, multiple: _unwrap(core.terminal_value_multiple(projected_revenue, multiple)),
         "schema": {"projected_revenue": "number", "multiple": "number"},
     },
 }
