@@ -6,52 +6,84 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+# Import pure-Python library modules (no numpy/scipy required)
+from startup_valuation import capm, comparables, core, probability, saas, tv  # noqa: E402
 
-def dcf(revenue, growth_rate, discount_rate, terminal_growth=0.025, projection_years=5):
-    cash_flows = [revenue * (1 + growth_rate) ** i for i in range(projection_years)]
-    terminal_value = cash_flows[-1] * (1 + terminal_growth) / max(discount_rate - terminal_growth, 0.01)
-    pv = sum(cf / (1 + discount_rate) ** (i + 1) for i, cf in enumerate(cash_flows))
-    pv_terminal = terminal_value / (1 + discount_rate) ** projection_years
-    ev = pv + pv_terminal
-    eq = ev * 0.85
+
+def _unwrap(r):
+    """Unwrap ValuationResult to JSON-safe dict."""
     return {
-        "method": "DCF",
-        "low": round(eq * 0.8, 2),
-        "high": round(eq * 1.2, 2),
-        "currency": "HKD",
-        "assumptions": [f"revenue={revenue}", f"growth={growth_rate}", f"wacc={discount_rate}"],
-        "value_low": round(eq * 0.8, 2),
-        "value_high": round(eq * 1.2, 2),
-    }
-
-
-def market_multiple(revenue, ebitda=0, sector="technology"):
-    mult = 8.0 if sector == "technology" else 6.0
-    base = ebitda if ebitda > 0 else revenue * 0.25
-    ev = base * mult
-    return {
-        "method": "Market Multiples",
-        "low": round(ev * 0.8, 2),
-        "high": round(ev * 1.2, 2),
-        "currency": "HKD",
-        "assumptions": [f"sector={sector}", f"multiple={mult}x EV/EBITDA"],
+        "value": r.value,
+        "method": r.method,
+        "inputs": r.inputs,
+        "assumptions": r.assumptions,
+        "chapter": r.chapter,
+        "formula_number": r.formula_number,
     }
 
 
 TOOLS = {
-    "valuation_dcf": {
-        "fn": dcf,
+    "valuation_scorecard": {
+        "fn": lambda avg, w, s: _unwrap(core.scorecard_valuation(avg, w, s)),
+        "schema": {"average_valuation": "number", "weights": "array", "scores": "array"},
+    },
+    "valuation_berkus": {
+        "fn": lambda si, pr, qt, sr, po: _unwrap(core.berkus_valuation(si, pr, qt, sr, po)),
         "schema": {
-            "revenue": "number",
-            "growth_rate": "number",
-            "discount_rate": "number",
-            "terminal_growth": "number",
-            "projection_years": "integer",
+            "sound_idea": "number",
+            "prototype": "number",
+            "quality_team": "number",
+            "strategic_relationships": "number",
+            "product_rollout": "number",
         },
     },
-    "valuation_market_multiple": {
-        "fn": market_multiple,
-        "schema": {"revenue": "number", "ebitda": "number", "sector": "string"},
+    "valuation_risk_factor": {
+        "fn": lambda bv, rr: _unwrap(core.risk_factor_summation(bv, rr)),
+        "schema": {"base_valuation": "number", "risk_ratings": "array"},
+    },
+    "valuation_vc_post_money": {
+        "fn": lambda tv, tr: _unwrap(core.vc_method_post_money(tv, tr)),
+        "schema": {"terminal_value": "number", "target_return": "number"},
+    },
+    "valuation_vc_pre_money": {
+        "fn": lambda pm, inv: _unwrap(core.vc_method_pre_money(pm, inv)),
+        "schema": {"post_money": "number", "investment": "number"},
+    },
+    "valuation_capm": {
+        "fn": lambda rf, beta, mrp: _unwrap(capm.capm(rf, beta, mrp)),
+        "schema": {"risk_free_rate": "number", "beta": "number", "market_risk_premium": "number"},
+    },
+    "valuation_saas_ltv": {
+        "fn": lambda arpu, gm, ch: _unwrap(saas.ltv_saas(arpu, gm, ch)),
+        "schema": {"arpu": "number", "gross_margin": "number", "churn_rate": "number"},
+    },
+    "valuation_saas_magic_number": {
+        "fn": lambda narr, sme: _unwrap(saas.magic_number(narr, sme)),
+        "schema": {"net_new_arr": "number", "sm_expense_prior": "number"},
+    },
+    "valuation_saas_rule_of_40": {
+        "fn": lambda gr, pm: _unwrap(saas.rule_of_40(gr, pm)),
+        "schema": {"growth_rate": "number", "profit_margin": "number"},
+    },
+    "valuation_saas_cac": {
+        "fn": lambda sme, nc: _unwrap(saas.cac(sme, nc)),
+        "schema": {"sales_marketing_expense": "number", "new_customers": "integer"},
+    },
+    "valuation_present_value": {
+        "fn": lambda fv, r, p: _unwrap(tv.present_value(fv, r, p)),
+        "schema": {"future_value": "number", "rate": "number", "periods": "number"},
+    },
+    "valuation_expected_value": {
+        "fn": lambda o, p: _unwrap(probability.expected_value_discrete(o, p)),
+        "schema": {"outcomes": "array", "probabilities": "array"},
+    },
+    "valuation_pe_ratio": {
+        "fn": lambda p, eps: _unwrap(comparables.pe_ratio(p, eps)),
+        "schema": {"price": "number", "earnings_per_share": "number"},
+    },
+    "valuation_terminal_value": {
+        "fn": lambda pr, m: _unwrap(core.terminal_value_multiple(pr, m)),
+        "schema": {"projected_revenue": "number", "multiple": "number"},
     },
 }
 
@@ -62,7 +94,7 @@ def handle_request(method, path, body_raw):
         return (
             200,
             {"Content-Type": "application/json"},
-            json.dumps({"status": "ok", "version": "1.0.2", "tools": list(TOOLS.keys())}).encode(),
+            json.dumps({"status": "ok", "version": "1.0.2", "tools": len(TOOLS)}).encode(),
         )
     if method != "POST":
         return 405, {"Content-Type": "application/json"}, b"{}"
