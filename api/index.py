@@ -30,15 +30,26 @@ def _unwrap(r):
 TOOLS = {
     # === Core ===
     "valuation_scorecard": {
-        "fn": lambda average_valuation, weights, scores: _unwrap(core.scorecard_valuation(average_valuation, weights, scores)),
+        "fn": lambda average_valuation, weights, scores: _unwrap(
+        core.scorecard_valuation(average_valuation, weights, scores)
+    ),
         "schema": {"average_valuation": "number", "weights": "array", "scores": "array"},
-        "description": "Scorecard valuation method: adjust average valuation by weighted factor scores for pre-revenue startups.",
+        "description": (
+        "Scorecard valuation method: adjust average valuation by weighted factor scores for pre-revenue"
+        "startups."
+    ),
     },
     "valuation_berkus": {
         "fn": lambda sound_idea, prototype, quality_team, strategic_relationships, product_rollout: _unwrap(
             core.berkus_valuation(sound_idea, prototype, quality_team, strategic_relationships, product_rollout)
         ),
-        "schema": {"sound_idea": "number", "prototype": "number", "quality_team": "number", "strategic_relationships": "number", "product_rollout": "number"},
+        "schema": {
+            "sound_idea": "number",
+            "prototype": "number",
+            "quality_team": "number",
+            "strategic_relationships": "number",
+            "product_rollout": "number",
+        },
         "description": "Berkus Method: value a pre-revenue startup based on 5 key risk factors ($0–$500K each).",
     },
     "valuation_risk_factor": {
@@ -68,7 +79,9 @@ TOOLS = {
         "description": "SaaS LTV: Lifetime Value = ARPU × Gross Margin ÷ Monthly Churn.",
     },
     "valuation_saas_cac": {
-        "fn": lambda sales_marketing_expense, new_customers: _unwrap(saas.cac(sales_marketing_expense, int(new_customers))),
+        "fn": lambda sales_marketing_expense, new_customers: _unwrap(
+        saas.cac(sales_marketing_expense, int(new_customers))
+    ),
         "schema": {"sales_marketing_expense": "number", "new_customers": "number"},
         "description": "SaaS CAC: Customer Acquisition Cost = Sales & Marketing Expense ÷ New Customers.",
     },
@@ -83,7 +96,9 @@ TOOLS = {
         "description": "SaaS ARR: Annual Recurring Revenue = MRR × 12.",
     },
     "valuation_saas_nrr": {
-        "fn": lambda starting_revenue, ending_revenue, expansion_revenue: _unwrap(saas.net_revenue_retention(starting_revenue, ending_revenue, expansion_revenue)),
+        "fn": lambda starting_revenue, ending_revenue, expansion_revenue: _unwrap(
+        saas.net_revenue_retention(starting_revenue, ending_revenue, expansion_revenue)
+    ),
         "schema": {"starting_revenue": "number", "ending_revenue": "number", "expansion_revenue": "number"},
         "description": "SaaS NRR: Net Revenue Retention = (Start + Expansion - Contraction - Churn) / Start.",
     },
@@ -98,7 +113,9 @@ TOOLS = {
         "description": "SaaS Rule of 40: Revenue Growth Rate + Profit Margin ≥ 40%.",
     },
     "valuation_saas_cac_payback": {
-        "fn": lambda cac, mrr_per_customer, gross_margin: _unwrap(saas.cac_payback_period(cac, mrr_per_customer, gross_margin)),
+        "fn": lambda cac, mrr_per_customer, gross_margin: _unwrap(
+        saas.cac_payback_period(cac, mrr_per_customer, gross_margin)
+    ),
         "schema": {"cac": "number", "mrr_per_customer": "number", "gross_margin": "number"},
         "description": "SaaS CAC Payback Period: Months to recover CAC from customer gross profit.",
     },
@@ -158,7 +175,13 @@ TOOLS = {
         "fn": lambda risk_free_rate, beta, market_risk_premium, size_premium, illiquidity_premium: _unwrap(
             capm.startup_adjusted_capm(risk_free_rate, beta, market_risk_premium, size_premium, illiquidity_premium)
         ),
-        "schema": {"risk_free_rate": "number", "beta": "number", "market_risk_premium": "number", "size_premium": "number", "illiquidity_premium": "number"},
+        "schema": {
+            "risk_free_rate": "number",
+            "beta": "number",
+            "market_risk_premium": "number",
+            "size_premium": "number",
+            "illiquidity_premium": "number",
+        },
         "description": "Startup-Adjusted CAPM: adds size premium and company-specific risk premium.",
     },
     "valuation_portfolio_beta": {
@@ -215,17 +238,23 @@ TOOLS = {
     },
     # === Stakeholders ===
     "valuation_dilution": {
-        "fn": lambda ownership_before, investment, post_money: _unwrap(stakeholders.single_round_dilution(ownership_before, investment, post_money)),
+        "fn": lambda ownership_before, investment, post_money: _unwrap(
+        stakeholders.single_round_dilution(ownership_before, investment, post_money)
+    ),
         "schema": {"ownership_before": "number", "investment": "number", "post_money": "number"},
         "description": "Single-Round Dilution: calculate ownership dilution from a funding round.",
     },
     "valuation_multi_dilution": {
-        "fn": lambda initial_ownership, investments, post_money_vals: _unwrap(stakeholders.multi_round_dilution(initial_ownership, investments, post_money_vals)),
+        "fn": lambda initial_ownership, investments, post_money_vals: _unwrap(
+        stakeholders.multi_round_dilution(initial_ownership, investments, post_money_vals)
+    ),
         "schema": {"initial_ownership": "number", "investments": "array", "post_money_vals": "array"},
         "description": "Multi-Round Dilution: cumulative ownership dilution across multiple funding rounds.",
     },
     "valuation_common_discount": {
-        "fn": lambda preferred_value, common_value: _unwrap(stakeholders.common_stock_discount(preferred_value, common_value)),
+        "fn": lambda preferred_value, common_value: _unwrap(
+        stakeholders.common_stock_discount(preferred_value, common_value)
+    ),
         "schema": {"preferred_value": "number", "common_value": "number"},
         "description": "Common Stock Discount: Common = Preferred × (1 − Discount).",
     },
@@ -235,23 +264,35 @@ TOOLS = {
         "description": "Liquidation Value: weighted recovery value of assets in liquidation scenario.",
     },
     "valuation_acquisition": {
-        "fn": lambda standalone_value, revenue_synergies, cost_synergies, integration_costs, prob_revenue, prob_cost: _unwrap(
-            stakeholders.acquisition_value(standalone_value, revenue_synergies, cost_synergies, integration_costs, prob_revenue, prob_cost)
-        ),
-        "schema": {"standalone_value": "number", "revenue_synergies": "number", "cost_synergies": "number", "integration_costs": "number", "prob_revenue": "number", "prob_cost": "number"},
+        "fn": lambda **kw: _unwrap(stakeholders.acquisition_value(**kw)),
+        "schema": {
+            "standalone_value": "number",
+            "revenue_synergies": "number",
+            "cost_synergies": "number",
+            "integration_costs": "number",
+            "prob_revenue": "number",
+            "prob_cost": "number",
+        },
         "description": "Acquisition Value: value of target company in an M&A transaction.",
     },
     "valuation_opm": {
-        "fn": lambda enterprise_value, liquidation_preference, time_to_exit, volatility, risk_free_rate: _unwrap(
-            stakeholders.opm_common_stock(enterprise_value, liquidation_preference, time_to_exit, volatility, risk_free_rate)
-        ),
-        "schema": {"enterprise_value": "number", "liquidation_preference": "number", "time_to_exit": "number", "volatility": "number", "risk_free_rate": "number"},
+        "fn": lambda **kw: _unwrap(stakeholders.opm_common_stock(**kw)),
+        "schema": {
+            "enterprise_value": "number",
+            "liquidation_preference": "number",
+            "time_to_exit": "number",
+            "volatility": "number",
+            "risk_free_rate": "number",
+        },
         "description": "OPM Common Stock: Option-Pricing Model for common stock valuation (uses scipy.stats.norm).",
     },
     "valuation_pwerm": {
         "fn": lambda scenarios: _unwrap(stakeholders.pwerm(scenarios)),
         "schema": {"outcomes": "array", "probabilities": "array"},
-        "description": "PWERM: Probability-Weighted Expected Return Method for multi-scenario valuation. Each scenario: {probability, value}.",
+        "description": (
+        "PWERM: Probability-Weighted Expected Return Method for multi-scenario valuation. Each scenario:"
+        "{probability, value}."
+    ),
     },
     "valuation_venture_debt": {
         "fn": lambda warrant_coverage, loan_amount, post_money: _unwrap(
@@ -272,7 +313,9 @@ TOOLS = {
         "description": "Take Rate: Revenue ÷ GMV — the platform's commission percentage.",
     },
     "valuation_liquidity": {
-        "fn": lambda successful_transactions, total_attempts: _unwrap(marketplace.liquidity(successful_transactions, total_attempts)),
+        "fn": lambda successful_transactions, total_attempts: _unwrap(
+        marketplace.liquidity(successful_transactions, total_attempts)
+    ),
         "schema": {"successful_transactions": "number", "total_attempts": "number"},
         "description": "Marketplace Liquidity: Completed Transactions ÷ Total Listings.",
     },
