@@ -47,3 +47,4 @@ tsconfig.tsbuildinfo
 
 # SurrealDB CLI history
 history.txt
+.vercel
