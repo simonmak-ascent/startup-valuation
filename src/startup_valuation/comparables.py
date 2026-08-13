@@ -17,9 +17,17 @@ def pe_ratio(market_cap: float, net_income: float) -> ValuationResult:
         raise ValueError("net_income must be positive for P/E ratio")
     return ValuationResult(
         value=market_cap / net_income,
+        steps=[
+            {
+                "label": "P/E Ratio",
+                "value": market_cap / net_income,
+                "formula": r"P/E = market\_cap \div net\_income",
+            },
+        ],
         method="P/E Ratio",
         inputs={"market_cap": market_cap, "net_income": net_income},
         chapter="5",
+        formula_number="5",
     )
 
 
@@ -37,9 +45,17 @@ def ps_ratio(market_cap: float, revenue: float) -> ValuationResult:
         raise ValueError("revenue must be positive")
     return ValuationResult(
         value=market_cap / revenue,
+        steps=[
+            {
+                "label": "P/S Ratio",
+                "value": market_cap / revenue,
+                "formula": r"P/S = market\_cap \div revenue",
+            },
+        ],
         method="P/S Ratio",
         inputs={"market_cap": market_cap, "revenue": revenue},
         chapter="5",
+        formula_number="5",
     )
 
 
@@ -52,9 +68,17 @@ def ev_ebitda(enterprise_value: float, ebitda: float) -> ValuationResult:
         raise ValueError("ebitda must be positive")
     return ValuationResult(
         value=enterprise_value / ebitda,
+        steps=[
+            {
+                "label": "EV/EBITDA",
+                "value": enterprise_value / ebitda,
+                "formula": r"EV/EBITDA = EV \div EBITDA",
+            },
+        ],
         method="EV/EBITDA",
         inputs={"enterprise_value": enterprise_value, "ebitda": ebitda},
         chapter="5",
+        formula_number="5",
     )
 
 
@@ -64,9 +88,17 @@ def ev_revenue(enterprise_value: float, revenue: float) -> ValuationResult:
         raise ValueError("revenue must be positive")
     return ValuationResult(
         value=enterprise_value / revenue,
+        steps=[
+            {
+                "label": "EV/Revenue",
+                "value": enterprise_value / revenue,
+                "formula": r"EV/Revenue = EV \div revenue",
+            },
+        ],
         method="EV/Revenue",
         inputs={"enterprise_value": enterprise_value, "revenue": revenue},
         chapter="5",
+        formula_number="5",
     )
 
 
@@ -114,6 +146,13 @@ def regression_adjusted_multiple(
 
     return ValuationResult(
         value=multiple,
+        steps=[
+            {
+                "label": "Regression-Adjusted Multiple",
+                "value": multiple,
+                "formula": r"Multiple = intercept + coef \times factor",
+            },
+        ],
         method="Regression-Adjusted Multiple",
         inputs={
             "intercept": intercept,
@@ -122,6 +161,7 @@ def regression_adjusted_multiple(
         },
         assumptions=["Regression coefficients are from comparable company analysis"],
         chapter="5",
+        formula_number="5",
     )
 
 
@@ -137,8 +177,16 @@ def target_valuation_multiple(multiple: float, metric: float) -> ValuationResult
     """
     return ValuationResult(
         value=multiple * metric,
+        steps=[
+            {
+                "label": "Target Valuation (Multiple)",
+                "value": multiple * metric,
+                "formula": r"V = multiple \times metric",
+            },
+        ],
         method="Target Valuation (Multiple)",
         inputs={"multiple": multiple, "metric": metric},
         assumptions=["Multiple is from comparable companies"],
         chapter="5",
+        formula_number="5",
     )

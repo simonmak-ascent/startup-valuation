@@ -31,9 +31,17 @@ def single_round_dilution(
     ownership_after = ownership_before * (1 - investment / post_money)
     return ValuationResult(
         value=ownership_after,
+        steps=[
+            {
+                "label": "Single Round Dilution",
+                "value": ownership_after,
+                "formula": r"new\_ownership = investment \div post\_money",
+            },
+        ],
         method="Single Round Dilution",
         inputs={"ownership_before": ownership_before, "investment": investment, "post_money": post_money},
         chapter="13",
+        formula_number="13",
     )
 
 
@@ -59,10 +67,18 @@ def multi_round_dilution(
 
     return ValuationResult(
         value=ownership,
+        steps=[
+            {
+                "label": "Multi-Round Dilution",
+                "value": ownership,
+                "formula": r"cumulative ownership across rounds",
+            },
+        ],
         method="Multi-Round Dilution",
         inputs={"investments": investments, "post_money_vals": post_money_vals},
         assumptions=["No option pool refresh between rounds"],
         chapter="13",
+        formula_number="13",
     )
 
 
@@ -86,6 +102,13 @@ def acquisition_value(
     risk_adj_synergy = revenue_synergies * prob_revenue + cost_synergies * prob_cost
     return ValuationResult(
         value=standalone_value + risk_adj_synergy - integration_costs,
+        steps=[
+            {
+                "label": "Acquisition Value",
+                "value": standalone_value + risk_adj_synergy - integration_costs,
+                "formula": r"V = standalone + synergies - costs",
+            },
+        ],
         method="Acquisition Value",
         inputs={
             "standalone_value": standalone_value,
@@ -94,6 +117,7 @@ def acquisition_value(
             "integration_costs": integration_costs,
         },
         chapter="13",
+        formula_number="13",
     )
 
 
@@ -134,6 +158,13 @@ def opm_common_stock(
 
     return ValuationResult(
         value=common_value,
+        steps=[
+            {
+                "label": "OPM (Common Stock)",
+                "value": common_value,
+                "formula": r"common value via call-option pricing",
+            },
+        ],
         method="OPM (Common Stock)",
         inputs={
             "enterprise_value": enterprise_value,
@@ -143,6 +174,7 @@ def opm_common_stock(
         },
         assumptions=["Common stock valued as call option on enterprise value"],
         chapter="13",
+        formula_number="13",
     )
 
 
@@ -174,9 +206,17 @@ def pwerm(
     expected_value = sum(s["probability"] * s["common_value"] for s in scenarios)
     return ValuationResult(
         value=expected_value,
+        steps=[
+            {
+                "label": "PWERM",
+                "value": expected_value,
+                "formula": r"V = \sum scenario\_value \times prob",
+            },
+        ],
         method="PWERM",
         inputs={"scenarios": scenarios},
         chapter="13",
+        formula_number="13",
     )
 
 
@@ -194,9 +234,17 @@ def common_stock_discount(preferred_value: float, common_value: float) -> Valuat
         raise ValueError("preferred_value must be positive")
     return ValuationResult(
         value=(preferred_value - common_value) / preferred_value,
+        steps=[
+            {
+                "label": "Common Stock Discount",
+                "value": (preferred_value - common_value) / preferred_value,
+                "formula": r"discount = (preferred - common) \div preferred",
+            },
+        ],
         method="Common Stock Discount",
         inputs={"preferred_value": preferred_value, "common_value": common_value},
         chapter="13",
+        formula_number="13",
     )
 
 
@@ -218,9 +266,17 @@ def liquidation_value(
     total = sum(assets.get(k, 0) * recovery_rates.get(k, 0) for k in set(assets) | set(recovery_rates))
     return ValuationResult(
         value=total,
+        steps=[
+            {
+                "label": "Liquidation Value",
+                "value": total,
+                "formula": r"V = \sum asset \times recovery",
+            },
+        ],
         method="Liquidation Value",
         inputs={"assets": str(assets), "recovery_rates": str(recovery_rates)},
         chapter="13",
+        formula_number="13",
     )
 
 
@@ -242,9 +298,17 @@ def venture_debt_dilution(
         raise ValueError("post_money must be positive")
     return ValuationResult(
         value=warrant_coverage * loan_amount / post_money,
+        steps=[
+            {
+                "label": "Venture Debt Dilution",
+                "value": warrant_coverage * loan_amount / post_money,
+                "formula": r"dilution from warrant coverage",
+            },
+        ],
         method="Venture Debt Dilution",
         inputs={"warrant_coverage": warrant_coverage, "loan_amount": loan_amount, "post_money": post_money},
         chapter="13",
+        formula_number="13",
     )
 
 
@@ -281,6 +345,13 @@ def risk_adjusted_synergy(
 
     return ValuationResult(
         value=pv,
+        steps=[
+            {
+                "label": "Risk-Adjusted Synergy",
+                "value": pv,
+                "formula": r"synergies \times probabilities",
+            },
+        ],
         method="Risk-Adjusted Synergy",
         inputs={
             "revenue_synergies": revenue_synergies,
@@ -290,6 +361,7 @@ def risk_adjusted_synergy(
         },
         assumptions=["Synergies are realized evenly over projection period"],
         chapter="13",
+        formula_number="13",
     )
 
 
@@ -318,6 +390,13 @@ def intrinsic_option_value(
     intrinsic = max(fair_market_value - strike_price, 0) * shares
     return ValuationResult(
         value=intrinsic,
+        steps=[
+            {
+                "label": "Intrinsic Option Value",
+                "value": intrinsic,
+                "formula": r"max(0, FMV - strike) \times shares",
+            },
+        ],
         method="Intrinsic Option Value",
         inputs={
             "strike_price": strike_price,
@@ -326,6 +405,7 @@ def intrinsic_option_value(
         },
         assumptions=["FMV reflects current 409A valuation"],
         chapter="13",
+        formula_number="13",
     )
 
 
@@ -359,9 +439,17 @@ def probability_weighted_employee_value(
     expected_value = sum(s["probability"] * max(s["fmv"] - s["strike"], 0) * s["shares"] for s in scenarios)
     return ValuationResult(
         value=expected_value,
+        steps=[
+            {
+                "label": "Probability-Weighted Employee Option Value",
+                "value": expected_value,
+                "formula": r"\sum scenario value \times prob",
+            },
+        ],
         method="Probability-Weighted Employee Option Value",
         inputs={"scenarios": scenarios},
         chapter="13",
+        formula_number="13",
     )
 
 
@@ -402,6 +490,13 @@ def vesting_adjusted_value(
 
     return ValuationResult(
         value=vested_value + adjusted_unvested,
+        steps=[
+            {
+                "label": "Vesting-Adjusted Option Value",
+                "value": vested_value + adjusted_unvested,
+                "formula": r"value \times vested fraction",
+            },
+        ],
         method="Vesting-Adjusted Option Value",
         inputs={
             "total_value": total_value,
@@ -412,6 +507,7 @@ def vesting_adjusted_value(
         },
         assumptions=["Retention probability compounds annually"],
         chapter="13",
+        formula_number="13",
     )
 
 
@@ -448,6 +544,13 @@ def cash_equity_breakeven(
 
     return ValuationResult(
         value=net_benefit,
+        steps=[
+            {
+                "label": "Cash-Equity Breakeven",
+                "value": net_benefit,
+                "formula": r"breakeven between cash and equity",
+            },
+        ],
         method="Cash-Equity Breakeven",
         inputs={
             "salary_reduction": salary_reduction,
@@ -458,6 +561,7 @@ def cash_equity_breakeven(
         },
         assumptions=["Equity value is realized at exit"],
         chapter="13",
+        formula_number="13",
     )
 
 
@@ -491,6 +595,13 @@ def max_asset_based_loan(
 
     return ValuationResult(
         value=max_loan,
+        steps=[
+            {
+                "label": "Max Asset-Based Loan",
+                "value": max_loan,
+                "formula": r"\sum asset \times advance rate",
+            },
+        ],
         method="Max Asset-Based Loan",
         inputs={
             "cash": cash,
@@ -501,4 +612,5 @@ def max_asset_based_loan(
         },
         assumptions=["Standard advance rates: Cash 100%, AR 85%, Inv 50%, Equip 60%, RE 75%"],
         chapter="13",
+        formula_number="13",
     )

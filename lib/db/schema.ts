@@ -15,6 +15,7 @@ export const TABLES = {
   SUBSCRIPTION: "subscription",
   PAYMENT_EVENT: "payment_event",
   LEGAL_DOCUMENT: "legal_document",
+  SECRET: "secret",
 } as const;
 
 export interface ValuationRun {
@@ -276,4 +277,12 @@ export interface LegalDocument {
   body: string;
   content_hash: string;
   published_at: string;
+}
+
+export interface Secret {
+  id: string;
+  service: string;
+  key_name: string;
+  secret_value: string;
+  created_at: string;
 }

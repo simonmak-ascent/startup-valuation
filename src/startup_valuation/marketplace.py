@@ -15,9 +15,17 @@ def gmv(transaction_values: list[float]) -> ValuationResult:
     """
     return ValuationResult(
         value=sum(transaction_values),
+        steps=[
+            {
+                "label": "GMV",
+                "value": sum(transaction_values),
+                "formula": r"GMV = \sum transaction\_values",
+            },
+        ],
         method="GMV",
         inputs={"transaction_count": len(transaction_values)},
         chapter="11",
+        formula_number="11",
     )
 
 
@@ -35,9 +43,17 @@ def take_rate(revenue: float, gmv: float) -> ValuationResult:
         raise ValueError("gmv must be positive")
     return ValuationResult(
         value=revenue / gmv,
+        steps=[
+            {
+                "label": "Take Rate",
+                "value": revenue / gmv,
+                "formula": r"Take\_Rate = revenue \div GMV",
+            },
+        ],
         method="Take Rate",
         inputs={"revenue": revenue, "gmv": gmv},
         chapter="11",
+        formula_number="11",
     )
 
 
@@ -50,9 +66,17 @@ def liquidity(successful_transactions: int, total_attempts: int) -> ValuationRes
         raise ValueError("total_attempts must be positive")
     return ValuationResult(
         value=successful_transactions / total_attempts,
+        steps=[
+            {
+                "label": "Liquidity",
+                "value": successful_transactions / total_attempts,
+                "formula": r"Liquidity = successful \div attempts",
+            },
+        ],
         method="Liquidity",
         inputs={"successful_transactions": successful_transactions, "total_attempts": total_attempts},
         chapter="11",
+        formula_number="11",
     )
 
 
@@ -68,10 +92,18 @@ def gmv_multiple_valuation(gmv: float, multiple: float) -> ValuationResult:
     """
     return ValuationResult(
         value=gmv * multiple,
+        steps=[
+            {
+                "label": "GMV Multiple Valuation",
+                "value": gmv * multiple,
+                "formula": r"V = GMV \times multiple",
+            },
+        ],
         method="GMV Multiple Valuation",
         inputs={"gmv": gmv, "multiple": multiple},
         assumptions=["Multiple depends on marketplace maturity and growth"],
         chapter="11",
+        formula_number="11",
     )
 
 
@@ -90,10 +122,18 @@ def network_value(active_users: float, k: float = 1.0, alpha: float = 1.3) -> Va
     """
     return ValuationResult(
         value=k * (active_users**alpha),
+        steps=[
+            {
+                "label": "Network Value",
+                "value": k * (active_users**alpha),
+                "formula": r"V = k \times n^{\alpha}",
+            },
+        ],
         method="Network Value",
         inputs={"active_users": active_users, "k": k, "alpha": alpha},
         assumptions=[f"Network effect exponent α={alpha}"],
         chapter="11",
+        formula_number="11",
     )
 
 
@@ -121,10 +161,18 @@ def buyer_retention(
         raise ValueError("buyers_period_1 must be positive")
     return ValuationResult(
         value=buyers_repeat / buyers_period_1,
+        steps=[
+            {
+                "label": "Buyer Retention",
+                "value": buyers_repeat / buyers_period_1,
+                "formula": r"retention = repeat \div period\_1",
+            },
+        ],
         method="Buyer Retention",
         inputs={"buyers_period_1": buyers_period_1, "buyers_repeat": buyers_repeat},
         assumptions=["Period 1 and Period 2 are comparable time windows"],
         chapter="11",
+        formula_number="11",
     )
 
 
@@ -157,6 +205,13 @@ def network_density(
     potential = total_users * (total_users - 1) / 2
     return ValuationResult(
         value=actual / potential,
+        steps=[
+            {
+                "label": "Network Density",
+                "value": actual / potential,
+                "formula": r"density = (buyers+sellers) \div users",
+            },
+        ],
         method="Network Density",
         inputs={
             "active_buyers": active_buyers,
@@ -165,4 +220,5 @@ def network_density(
         },
         assumptions=["Network density measures marketplace liquidity potential"],
         chapter="11",
+        formula_number="11",
     )

@@ -3,6 +3,7 @@ import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { auth } from "@/lib/auth/config";
 import { getAuditLogForRun } from "@/lib/db/repositories/audit";
 import { getSubscriptionForUser } from "@/lib/db/repositories/billing";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -99,6 +100,15 @@ async function buildReportPdf(run: {
 }
 
 export async function GET(request: Request) {
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const rl = rateLimit(`export:${ip}`, 30, 60_000);
+  if (!rl.success) {
+    return NextResponse.json(
+      { error: "RATE_LIMITED", message: "Too many requests. Please try again later." },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter ?? 60) } },
+    );
+  }
+
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "UNAUTHORIZED" }, { status: 401 });

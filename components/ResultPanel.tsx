@@ -13,7 +13,7 @@ export function ResultPanel({ value, method, formulaNumber, auditStatus }: Resul
       <div className="text-sm text-muted mb-1">
         Valuation Result — {method} ({formulaNumber})
       </div>
-      <div className="text-[2.5rem] font-bold text-brand leading-tight">
+      <div className="text-[2.5rem] font-bold text-brand leading-tight font-mono tabular-nums">
         {formatCurrency(value)}
       </div>
       <div className="flex items-center gap-2 mt-3">

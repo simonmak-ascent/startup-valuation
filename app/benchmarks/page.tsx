@@ -58,10 +58,16 @@ export default async function BenchmarksPage() {
               {benchmarks.map((b) => (
                 <tr key={b.id} className="border-b border-border">
                   <td className="py-3 px-4 font-medium text-text">{b.stage ?? "All stages"}</td>
-                  <td className="py-3 px-4 text-muted">{formatCurrency(b.p25 ?? 0)}</td>
-                  <td className="py-3 px-4 font-semibold text-brand">{formatCurrency(b.value)}</td>
-                  <td className="py-3 px-4 text-muted">{formatCurrency(b.p75 ?? 0)}</td>
-                  <td className="py-3 px-4 text-muted">{b.count}</td>
+                  <td className="py-3 px-4 text-muted font-mono tabular-nums">
+                    {formatCurrency(b.p25 ?? 0)}
+                  </td>
+                  <td className="py-3 px-4 font-semibold text-brand font-mono tabular-nums">
+                    {formatCurrency(b.value)}
+                  </td>
+                  <td className="py-3 px-4 text-muted font-mono tabular-nums">
+                    {formatCurrency(b.p75 ?? 0)}
+                  </td>
+                  <td className="py-3 px-4 text-muted font-mono tabular-nums">{b.count}</td>
                 </tr>
               ))}
             </tbody>

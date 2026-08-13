@@ -6,7 +6,7 @@ export const gmvMultipleConfig: MethodConfig = {
   category: "Emerging",
   description: "Marketplace valuation = GMV × Market GMV Multiple (typically 0.3–0.5x GMV).",
   textbookChapter: "Chapter 14: Emerging Topics",
-  formulaNumber: "Ch. 11",
+  formulaNumber: "11",
   methodName: "gmv_multiple",
   inputs: [
     { name: "gmv", label: "GMV ($)", type: "number", defaultValue: 100000000 },
@@ -20,7 +20,7 @@ export const networkValueConfig: MethodConfig = {
   category: "Emerging",
   description: "Network value = k × n^α. Theoretical α=2; empirical platforms use α≈1.2–1.5.",
   textbookChapter: "Chapter 14: Emerging Topics",
-  formulaNumber: "Ch. 11",
+  formulaNumber: "11",
   methodName: "network_value",
   inputs: [
     { name: "active_users", label: "Active Users (n)", type: "number", defaultValue: 1000000 },

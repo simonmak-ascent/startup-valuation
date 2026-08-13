@@ -62,7 +62,7 @@ export default async function DashboardPage() {
             <div key={run.id} className="card flex items-center justify-between gap-4">
               <div className="flex-1 min-w-0">
                 <div className="font-semibold text-text">{run.method}</div>
-                <div className="text-muted text-sm">
+                <div className="text-muted text-sm font-mono tabular-nums">
                   {run.result} · {run.formula_number} · {run.created_at?.slice(0, 10)}
                 </div>
               </div>

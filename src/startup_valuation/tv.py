@@ -51,6 +51,13 @@ def present_value(future_value: float, rate: float, periods: float) -> Valuation
 
     return ValuationResult(
         value=pv,
+        steps=[
+            {
+                "label": "Present Value",
+                "value": pv,
+                "formula": r"PV = FV \div (1+r)^n",
+            },
+        ],
         method="Present Value",
         inputs={"future_value": future_value, "rate": rate, "periods": periods},
         assumptions=["Discount rate is constant over the period"],
@@ -105,6 +112,13 @@ def net_present_value(
 
     return ValuationResult(
         value=npv,
+        steps=[
+            {
+                "label": "Net Present Value",
+                "value": npv,
+                "formula": r"NPV = \sum \frac{CF_t}{(1+r)^t}",
+            },
+        ],
         method="Net Present Value",
         inputs={"cash_flows": cash_flows, "rate": rate},
         assumptions=["Discount rate is constant across all periods"],
@@ -156,6 +170,13 @@ def annuity_present_value(
 
     return ValuationResult(
         value=pv,
+        steps=[
+            {
+                "label": "Annuity Present Value",
+                "value": pv,
+                "formula": r"PV = PMT \times \frac{1-(1+r)^{-n}}{r}",
+            },
+        ],
         method="Annuity Present Value",
         inputs={"payment": payment, "rate": rate, "periods": periods},
         assumptions=["Payments are equal and occur at end of each period"],

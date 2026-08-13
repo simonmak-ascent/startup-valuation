@@ -43,6 +43,13 @@ def capm(
     """
     return ValuationResult(
         value=risk_free_rate + beta * (market_return - risk_free_rate),
+        steps=[
+            {
+                "label": "CAPM",
+                "value": risk_free_rate + beta * (market_return - risk_free_rate),
+                "formula": r"E(R) = R_f + \beta(R_m - R_f)",
+            },
+        ],
         method="CAPM",
         inputs={"risk_free_rate": risk_free_rate, "beta": beta, "market_return": market_return},
         assumptions=["CAPM assumptions hold (efficient markets, diversified investors)"],
@@ -80,6 +87,13 @@ def portfolio_beta(weights: list[float], betas: list[float]) -> ValuationResult:
         raise ValueError("weights must sum to 1.0")
     return ValuationResult(
         value=sum(w * b for w, b in zip(weights, betas)),
+        steps=[
+            {
+                "label": "Portfolio Beta",
+                "value": sum(w * b for w, b in zip(weights, betas)),
+                "formula": r"\beta_p = \sum w_i \beta_i",
+            },
+        ],
         method="Portfolio Beta",
         inputs={"weights": weights, "betas": betas},
         assumptions=["Weights sum to 1.0", "Betas are additive (no correlation adjustment)"],
@@ -128,6 +142,13 @@ def startup_adjusted_capm(
     """
     return ValuationResult(
         value=risk_free_rate + beta * market_risk_premium + size_premium + illiquidity_premium,
+        steps=[
+            {
+                "label": "Startup-Adjusted CAPM",
+                "value": risk_free_rate + beta * market_risk_premium + size_premium + illiquidity_premium,
+                "formula": r"E(R) = R_f + \beta MRP + size + illiquidity",
+            },
+        ],
         method="Startup-Adjusted CAPM",
         inputs={
             "risk_free_rate": risk_free_rate,
@@ -171,6 +192,13 @@ def portfolio_variance(
     var = sum(weights[i] * weights[j] * covariance_matrix[i][j] for i in range(n) for j in range(n))
     return ValuationResult(
         value=var,
+        steps=[
+            {
+                "label": "Portfolio Variance",
+                "value": var,
+                "formula": r"\sigma^2_p = w^T \Sigma w",
+            },
+        ],
         method="Portfolio Variance",
         inputs={"weights": weights, "covariance_matrix": covariance_matrix},
         assumptions=["Variances and covariances are accurately estimated"],

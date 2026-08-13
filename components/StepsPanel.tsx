@@ -44,7 +44,9 @@ export function StepsPanel({ steps }: StepsPanelProps) {
                   )}
                 </div>
                 <div className="text-right shrink-0">
-                  <div className={`font-bold ${isFinal ? "text-brand text-lg" : "text-text"}`}>
+                  <div
+                    className={`font-bold font-mono tabular-nums ${isFinal ? "text-brand text-lg" : "text-text"}`}
+                  >
                     {step.value % 1 === 0
                       ? formatCurrency(step.value)
                       : step.value.toLocaleString("en-US", {

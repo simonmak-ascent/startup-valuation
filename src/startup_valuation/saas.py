@@ -27,6 +27,13 @@ def arr(subscription_values: list[float]) -> ValuationResult:
     """
     return ValuationResult(
         value=sum(subscription_values),
+        steps=[
+            {
+                "label": "ARR",
+                "value": sum(subscription_values),
+                "formula": r"ARR = \sum subscription\_values",
+            },
+        ],
         method="ARR",
         inputs={"subscription_count": len(subscription_values)},
         chapter="11",
@@ -53,6 +60,13 @@ def mrr(arr_value: float) -> ValuationResult:
     """
     return ValuationResult(
         value=arr_value / 12,
+        steps=[
+            {
+                "label": "MRR",
+                "value": arr_value / 12,
+                "formula": r"MRR = ARR \div 12",
+            },
+        ],
         method="MRR",
         inputs={"arr": arr_value},
         chapter="11",
@@ -81,6 +95,13 @@ def cac(sales_marketing_expense: float, new_customers: int) -> ValuationResult:
         raise ValueError("new_customers must be positive")
     return ValuationResult(
         value=sales_marketing_expense / new_customers,
+        steps=[
+            {
+                "label": "CAC",
+                "value": sales_marketing_expense / new_customers,
+                "formula": r"CAC = S\&M \div new\_customers",
+            },
+        ],
         method="CAC",
         inputs={"sales_marketing_expense": sales_marketing_expense, "new_customers": new_customers},
         chapter="11",
@@ -115,6 +136,13 @@ def ltv_saas(arpu: float, gross_margin: float, churn_rate: float) -> ValuationRe
     ltv = (arpu * gross_margin) / churn_rate
     return ValuationResult(
         value=ltv,
+        steps=[
+            {
+                "label": "SaaS LTV",
+                "value": ltv,
+                "formula": r"LTV = ARPU \times gross\_margin \div churn",
+            },
+        ],
         method="SaaS LTV",
         inputs={"arpu": arpu, "gross_margin": gross_margin, "churn_rate": churn_rate},
         assumptions=["Churn rate is constant", "Gross margin is stable"],
@@ -149,6 +177,13 @@ def net_revenue_retention(
     nrr = (ending_revenue + expansion_revenue) / starting_revenue
     return ValuationResult(
         value=nrr,
+        steps=[
+            {
+                "label": "Net Revenue Retention",
+                "value": nrr,
+                "formula": r"NRR = (start + expansion - contraction - churn) \div start",
+            },
+        ],
         method="Net Revenue Retention",
         inputs={"starting_revenue": starting_revenue, "ending_revenue": ending_revenue},
         assumptions=["Cohort is consistent over the period"],
@@ -178,6 +213,13 @@ def cac_payback_period(cac: float, mrr_per_customer: float, gross_margin: float)
         raise ValueError("MRR × gross margin must be positive")
     return ValuationResult(
         value=cac / denominator,
+        steps=[
+            {
+                "label": "CAC Payback Period",
+                "value": cac / denominator,
+                "formula": r"Payback = CAC \div (MRR \times GM)",
+            },
+        ],
         method="CAC Payback Period",
         inputs={"cac": cac, "mrr_per_customer": mrr_per_customer, "gross_margin": gross_margin},
         assumptions=["MRR per customer is stable"],
@@ -207,6 +249,13 @@ def magic_number(net_new_arr: float, sm_expense_prior: float) -> ValuationResult
         raise ValueError("S&M expense must be positive")
     return ValuationResult(
         value=net_new_arr / sm_expense_prior,
+        steps=[
+            {
+                "label": "Magic Number",
+                "value": net_new_arr / sm_expense_prior,
+                "formula": r"Magic = Net\_New\_ARR \div S\&M",
+            },
+        ],
         method="Magic Number",
         inputs={"net_new_arr": net_new_arr, "sm_expense_prior": sm_expense_prior},
         assumptions=["Quarterly data is normalized"],
@@ -240,6 +289,13 @@ def rule_of_40(growth_rate: float, profit_margin: float) -> ValuationResult:
     score = growth_rate + profit_margin
     return ValuationResult(
         value=score,
+        steps=[
+            {
+                "label": "Rule of 40",
+                "value": score,
+                "formula": r"Rule\_of\_40 = growth + margin",
+            },
+        ],
         method="Rule of 40",
         inputs={"growth_rate": growth_rate, "profit_margin": profit_margin},
         assumptions=["Growth rate and profit margin are annualized"],
@@ -275,6 +331,13 @@ def saas_revenue_multiple_valuation(
     """
     return ValuationResult(
         value=arr * multiple,
+        steps=[
+            {
+                "label": "SaaS Revenue Multiple Valuation",
+                "value": arr * multiple,
+                "formula": r"V = ARR \times multiple",
+            },
+        ],
         method="SaaS Revenue Multiple Valuation",
         inputs={"arr": arr, "multiple": multiple},
         assumptions=["Multiple is from comparable SaaS companies"],

@@ -7,7 +7,7 @@ export const dilutionConfig: MethodConfig = {
   description:
     "Calculate ownership dilution from a funding round: new ownership = investment ÷ post-money.",
   textbookChapter: "Chapter 13: Stakeholder Valuation",
-  formulaNumber: "Ch. 13",
+  formulaNumber: "13",
   methodName: "dilution",
   inputs: [
     {
@@ -36,7 +36,7 @@ export const commonDiscountConfig: MethodConfig = {
   description:
     "Discount between preferred and common share value (common stock typically 30–80% below preferred).",
   textbookChapter: "Chapter 13: Stakeholder Valuation",
-  formulaNumber: "Ch. 13",
+  formulaNumber: "13",
   methodName: "common_discount",
   inputs: [
     { name: "preferred_value", label: "Preferred Value ($)", type: "number", defaultValue: 10 },
@@ -51,7 +51,7 @@ export const opmConfig: MethodConfig = {
   description:
     "Option-pricing model for common stock valuation — treats common equity as a call option on enterprise value.",
   textbookChapter: "Chapter 13: Stakeholder Valuation",
-  formulaNumber: "Ch. 13",
+  formulaNumber: "13",
   methodName: "opm",
   inputs: [
     {
@@ -90,7 +90,7 @@ export const ventureDebtConfig: MethodConfig = {
   category: "Stakeholder",
   description: "Dilution impact of venture debt warrants on equity value.",
   textbookChapter: "Chapter 13: Stakeholder Valuation",
-  formulaNumber: "Ch. 13",
+  formulaNumber: "13",
   methodName: "venture_debt",
   inputs: [
     {

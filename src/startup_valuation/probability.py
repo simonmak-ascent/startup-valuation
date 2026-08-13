@@ -52,6 +52,13 @@ def expected_value_discrete(
 
     return ValuationResult(
         value=ev,
+        steps=[
+            {
+                "label": "Expected Value (Discrete)",
+                "value": ev,
+                "formula": r"E[X] = \sum x_i p_i",
+            },
+        ],
         method="Expected Value (Discrete)",
         inputs={"outcomes": outcomes, "probabilities": probabilities},
         assumptions=["Probabilities sum to 1.0", "Outcomes are mutually exclusive"],
@@ -84,6 +91,13 @@ def joint_probability(probabilities: list[float]) -> ValuationResult:
     jp = math.prod(probabilities)
     return ValuationResult(
         value=jp,
+        steps=[
+            {
+                "label": "Joint Probability",
+                "value": jp,
+                "formula": r"P(A \cap B) = \prod p_i",
+            },
+        ],
         method="Joint Probability",
         inputs={"probabilities": probabilities},
         assumptions=["Events are independent", "Probabilities are between 0 and 1"],
@@ -112,6 +126,13 @@ def probability_weighted_value(
         raise ValueError("outcomes and probabilities must have the same length")
     return ValuationResult(
         value=sum(o * p for o, p in zip(outcomes, probabilities)),
+        steps=[
+            {
+                "label": "Probability-Weighted Value",
+                "value": sum(o * p for o, p in zip(outcomes, probabilities)),
+                "formula": r"V = \sum v_i p_i",
+            },
+        ],
         method="Probability-Weighted Value",
         inputs={"outcomes": outcomes, "probabilities": probabilities},
         assumptions=["Probabilities sum to 1.0"],
@@ -145,6 +166,13 @@ def portfolio_expected_return(
         raise ValueError("weights must sum to 1.0")
     return ValuationResult(
         value=sum(w * r for w, r in zip(weights, returns)),
+        steps=[
+            {
+                "label": "Portfolio Expected Return",
+                "value": sum(w * r for w, r in zip(weights, returns)),
+                "formula": r"E[R_p] = \sum w_i r_i",
+            },
+        ],
         method="Portfolio Expected Return",
         inputs={"weights": weights, "returns": returns},
         assumptions=["Weights sum to 1.0", "Expected returns are forward-looking estimates"],
@@ -177,6 +205,13 @@ def poisson_probability(lambda_: float, k: int) -> ValuationResult:
     """
     return ValuationResult(
         value=float(stats.poisson.pmf(k, lambda_)),
+        steps=[
+            {
+                "label": "Poisson Probability",
+                "value": float(stats.poisson.pmf(k, lambda_)),
+                "formula": r"P(k) = \frac{\lambda^k e^{-\lambda}}{k!}",
+            },
+        ],
         method="Poisson Probability",
         inputs={"lambda": lambda_, "k": k},
         assumptions=["Events occur independently", "Constant rate λ"],
@@ -218,6 +253,13 @@ def expected_value_continuous(
 
     return ValuationResult(
         value=val,
+        steps=[
+            {
+                "label": "Expected Value (Continuous)",
+                "value": val,
+                "formula": r"E[X] = \int_a^b x f(x) dx",
+            },
+        ],
         method="Expected Value (Continuous)",
         inputs={"a": a, "b": b, "tol": tol},
         assumptions=["f(x) is integrable over [a, b]", "f(x) ≥ 0 over domain"],

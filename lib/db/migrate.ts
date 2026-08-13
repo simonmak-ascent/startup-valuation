@@ -249,6 +249,15 @@ export async function migrate(): Promise<void> {
     DEFINE FIELD published_at ON ${TABLES.LEGAL_DOCUMENT} TYPE datetime DEFAULT time::now();
     DEFINE INDEX idx_legal_slug ON ${TABLES.LEGAL_DOCUMENT} COLUMNS slug, version UNIQUE;
   `);
+
+  await db.query(`
+    DEFINE TABLE ${TABLES.SECRET} SCHEMAFULL;
+    DEFINE FIELD service ON ${TABLES.SECRET} TYPE string;
+    DEFINE FIELD key_name ON ${TABLES.SECRET} TYPE string;
+    DEFINE FIELD secret_value ON ${TABLES.SECRET} TYPE string;
+    DEFINE FIELD created_at ON ${TABLES.SECRET} TYPE datetime DEFAULT time::now();
+    DEFINE INDEX idx_secret_service ON ${TABLES.SECRET} COLUMNS service UNIQUE;
+  `);
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
