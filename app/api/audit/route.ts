@@ -1,17 +1,9 @@
 import { NextResponse } from "next/server";
 import { createAuditLog } from "@/lib/db/repositories/audit";
+import { AuditRequestSchema } from "@/lib/db/validation";
 
 export async function POST(request: Request) {
-  let body: {
-    method?: string;
-    inputs?: Record<string, unknown>;
-    result?: number;
-    steps?: { label: string; value: number; formula: string }[];
-    formula_number?: string;
-    chapter?: string;
-    library_version?: string;
-    git_commit?: string;
-  };
+  let body: unknown;
 
   try {
     body = await request.json();
@@ -22,26 +14,34 @@ export async function POST(request: Request) {
     );
   }
 
-  if (!body.method || body.result === undefined) {
+  const parsed = AuditRequestSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json(
-      { error: "VALIDATION_ERROR", message: "method and result are required" },
+      {
+        error: "VALIDATION_ERROR",
+        message: "Invalid audit request",
+        details: parsed.error.flatten().fieldErrors,
+      },
       { status: 400 },
     );
   }
+
+  const { method, inputs, result, steps, formula_number, chapter, library_version, git_commit } =
+    parsed.data;
 
   try {
     const valuationRunId = `valuation_run:${crypto.randomUUID()}`;
     const audit = await createAuditLog(
       valuationRunId,
       undefined,
-      body.method,
-      body.inputs ?? {},
-      body.result,
-      body.steps ?? [],
-      body.formula_number ?? "",
-      body.chapter ?? "",
-      body.library_version ?? "",
-      body.git_commit ?? "",
+      method,
+      inputs,
+      result,
+      steps,
+      formula_number,
+      chapter,
+      library_version,
+      git_commit || undefined,
       request.headers.get("user-agent") ?? undefined,
     );
 
