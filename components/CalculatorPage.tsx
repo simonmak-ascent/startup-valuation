@@ -5,6 +5,7 @@ import { getMethodBySlug } from "@/lib/methods";
 import { CalculatorForm } from "./CalculatorForm";
 import { ResultPanel } from "./ResultPanel";
 import { StepsPanel } from "./StepsPanel";
+import { SensitivitySliders } from "./SensitivitySliders";
 import { SourcesSection } from "./SourcesSection";
 
 interface CalculatorPageProps {
@@ -25,14 +26,14 @@ export function CalculatorPage({ slug }: CalculatorPageProps) {
     auditId?: string;
     auditStatus: string;
   } | null>(null);
+  const [currentValues, setCurrentValues] = useState<Record<string, number> | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = useCallback(
-    async (values: Record<string, number>) => {
+  const runCalculation = useCallback(
+    async (values: Record<string, number>, logAudit: boolean) => {
       setLoading(true);
       setError(null);
-      setResult(null);
 
       const params = config.toParams ? config.toParams(values) : values;
 
@@ -51,21 +52,23 @@ export function CalculatorPage({ slug }: CalculatorPageProps) {
         const data = await response.json();
         setResult(data);
 
-        // Fire-and-forget audit log to SurrealDB
-        fetch("/api/audit", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            method: config.methodName,
-            inputs: params,
-            result: data.value,
-            steps: data.steps,
-            formula_number: data.formula_number,
-            chapter: data.chapter,
-            library_version: data.library_version,
-            git_commit: data.git_commit,
-          }),
-        }).catch(() => {});
+        if (logAudit) {
+          // Fire-and-forget audit log to SurrealDB (final, user-submitted runs only)
+          fetch("/api/audit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              method: config.methodName,
+              inputs: params,
+              result: data.value,
+              steps: data.steps,
+              formula_number: data.formula_number,
+              chapter: data.chapter,
+              library_version: data.library_version,
+              git_commit: data.git_commit,
+            }),
+          }).catch(() => {});
+        }
       } catch (e) {
         setError(e instanceof Error ? e.message : "An unexpected error occurred");
       } finally {
@@ -73,6 +76,21 @@ export function CalculatorPage({ slug }: CalculatorPageProps) {
       }
     },
     [config.methodName, config.toParams],
+  );
+
+  const handleSubmit = useCallback(
+    (values: Record<string, number>) => {
+      setCurrentValues(values);
+      runCalculation(values, true);
+    },
+    [runCalculation],
+  );
+
+  const handleSensitivityChange = useCallback(
+    (values: Record<string, number>) => {
+      runCalculation(values, false);
+    },
+    [runCalculation],
   );
 
   return (
@@ -132,7 +150,7 @@ export function CalculatorPage({ slug }: CalculatorPageProps) {
             </div>
           )}
 
-          {result && (
+          {result && !loading && (
             <div className="space-y-6">
               <ResultPanel
                 value={result.value}
@@ -145,6 +163,16 @@ export function CalculatorPage({ slug }: CalculatorPageProps) {
           )}
         </div>
       </div>
+
+      {result && currentValues && !loading && (
+        <div className="mt-8">
+          <SensitivitySliders
+            inputs={config.inputs}
+            values={currentValues}
+            onValuesChange={handleSensitivityChange}
+          />
+        </div>
+      )}
 
       {result && (
         <div className="mt-8">
