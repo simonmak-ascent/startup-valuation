@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
-import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default:
-      "Startup Valuation Engine — The Global Authority for Startup Valuation",
+    default: "Startup Valuation Engine — The Global Authority for Startup Valuation",
     template: "%s — Startup Valuation Engine",
   },
   description:
@@ -71,19 +69,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className="antialiased">
-          {children}
-          <Analytics />
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body className="antialiased">
+        {children}
+        <Analytics />
+      </body>
+    </html>
   );
 }
