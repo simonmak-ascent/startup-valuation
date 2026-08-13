@@ -46,6 +46,22 @@ export function CalculatorPage({ config }: CalculatorPageProps) {
 
         const data = await response.json();
         setResult(data);
+
+        // Fire-and-forget audit log to SurrealDB
+        fetch("/api/audit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            method: config.slug,
+            inputs: params,
+            result: data.value,
+            steps: data.steps,
+            formula_number: data.formula_number,
+            chapter: data.chapter,
+            library_version: data.library_version,
+            git_commit: data.git_commit,
+          }),
+        }).catch(() => {});
       } catch (e) {
         setError(e instanceof Error ? e.message : "An unexpected error occurred");
       } finally {
