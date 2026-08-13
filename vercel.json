@@ -1,13 +1,17 @@
 {
   "cleanUrls": true,
+  "framework": "nextjs",
   "functions": {
     "api/index.py": {
+      "memory": 512,
+      "maxDuration": 30
+    },
+    "api/calculate.py": {
       "memory": 512,
       "maxDuration": 30
     }
   },
   "rewrites": [
-    { "source": "/health", "destination": "/api" },
     { "source": "/api/health", "destination": "/api" },
     { "source": "/api", "destination": "/api" }
   ]

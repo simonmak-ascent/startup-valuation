@@ -33,3 +33,14 @@ textbook/
 
 # Temporary assets
 book-alignment-homepage.png
+
+# Node.js / Next.js
+node_modules/
+.next/
+.env*.local
+.env
+*.tsbuildinfo
+next-env.d.ts
+
+# TypeScript
+tsconfig.tsbuildinfo
