@@ -16,9 +16,8 @@ export async function createAuditLog(
 ): Promise<AuditLog> {
   const db = await getDb();
 
-  const auditRecord = {
+  const data: Record<string, unknown> = {
     valuation_run: valuationRunId,
-    user: userId ?? null,
     action: "calculate",
     method,
     inputs,
@@ -27,13 +26,14 @@ export async function createAuditLog(
     formula_number: formulaNumber,
     chapter,
     library_version: libraryVersion,
-    git_commit: gitCommit ?? null,
-    user_agent: userAgent ?? null,
   };
+  if (userId) data.user = userId;
+  if (gitCommit) data.git_commit = gitCommit;
+  if (userAgent) data.user_agent = userAgent;
 
   const [rows] = await db.query<[AuditLog[]]>(
     `CREATE ${TABLES.AUDIT_LOG} CONTENT $data RETURN AFTER`,
-    { data: auditRecord },
+    { data },
   );
   const created = rows[0];
   if (!created) {
