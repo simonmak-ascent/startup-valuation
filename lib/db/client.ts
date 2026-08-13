@@ -63,15 +63,11 @@ export async function getDb(): Promise<Surreal> {
 
 export async function healthCheck(): Promise<{
   status: "connected" | "disconnected";
-  version?: string;
 }> {
   try {
     const db = await getDb();
-    const result = await db.query<[string]>("RETURN <string>info();");
-    return {
-      status: "connected",
-      version: result[0],
-    };
+    await db.query("RETURN 1;");
+    return { status: "connected" };
   } catch {
     return { status: "disconnected" };
   }
