@@ -74,6 +74,34 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className="antialiased">
+        <nav className="bg-white border-b border-border">
+          <div className="max-w-[1100px] mx-auto px-5 py-3 flex items-center gap-5 text-sm overflow-x-auto">
+            <a href="/" className="font-semibold text-text hover:no-underline whitespace-nowrap">
+              Startup Valuation
+            </a>
+            <a href="/#methods" className="text-muted hover:text-brand whitespace-nowrap">
+              Methods
+            </a>
+            <a href="/ai-advisor" className="text-muted hover:text-brand whitespace-nowrap">
+              AI Advisor
+            </a>
+            <a href="/benchmarks" className="text-muted hover:text-brand whitespace-nowrap">
+              Benchmarks
+            </a>
+            <a href="/public-companies" className="text-muted hover:text-brand whitespace-nowrap">
+              Public Companies
+            </a>
+            <a href="/api/playground" className="text-muted hover:text-brand whitespace-nowrap">
+              API Playground
+            </a>
+            <a href="/skills" className="text-muted hover:text-brand whitespace-nowrap">
+              Skills
+            </a>
+            <a href="/why-open-source" className="text-muted hover:text-brand whitespace-nowrap">
+              Why Open Source
+            </a>
+          </div>
+        </nav>
         <SessionProvider>{children}</SessionProvider>
         <Analytics />
       </body>

@@ -1,0 +1,32 @@
+{
+  "name": "@simonmak/startup-valuation",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for the Startup Valuation Engine — 27+ valuation methods with full traceability.",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.ts",
+  "types": "index.ts",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "files": [
+    "client.ts",
+    "index.ts"
+  ],
+  "scripts": {
+    "build": "tsup client.ts index.ts --format esm --dts",
+    "check": "tsc --noEmit"
+  },
+  "keywords": [
+    "valuation",
+    "startup",
+    "finance",
+    "sdk",
+    "mcp"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/simonplmak-cloud/startup-valuation.git",
+    "directory": "lib/sdk"
+  }
+}
