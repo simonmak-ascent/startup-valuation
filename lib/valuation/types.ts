@@ -1,5 +1,3 @@
-import type { z } from "zod";
-
 export interface MethodConfig {
   slug: string;
   name: string;
@@ -7,8 +5,11 @@ export interface MethodConfig {
   description: string;
   textbookChapter: string;
   formulaNumber: string;
+  /** Key in api/calculate.py `_NAMED_TOOLS` — what's sent as `method` in the POST body. */
   methodName: string;
   inputs: InputField[];
+  /** Transform form values (flattened) into the API's expected `params`. */
+  toParams?: (values: Record<string, number>) => Record<string, unknown>;
 }
 
 export interface InputField {

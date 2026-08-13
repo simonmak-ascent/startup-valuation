@@ -1,5 +1,7 @@
 import type { MethodConfig } from "../valuation/types";
 
+const WEIGHTS = [0.3, 0.25, 0.15, 0.1, 0.1, 0.05, 0.05];
+
 export const scorecardConfig: MethodConfig = {
   slug: "scorecard",
   name: "Scorecard Method",
@@ -8,7 +10,12 @@ export const scorecardConfig: MethodConfig = {
     "Adjust average valuation by weighted factor scores for pre-revenue startups. Uses 7 factors (Team, Product, Market, Competition, Marketing, Funding Need, Other) with standard weights from the textbook.",
   textbookChapter: "Chapter 3: Scorecard Valuation Method",
   formulaNumber: "3.1",
-  methodName: "valuation_scorecard",
+  methodName: "scorecard",
+  toParams: (values) => ({
+    average_valuation: values.average_valuation,
+    weights: WEIGHTS,
+    scores: [values.w0, values.w1, values.w2, values.w3, values.w4, values.w5, values.w6],
+  }),
   inputs: [
     {
       name: "average_valuation",

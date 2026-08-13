@@ -5,7 +5,7 @@ import type { InputField } from "@/lib/valuation/types";
 
 interface CalculatorFormProps {
   inputs: InputField[];
-  onSubmit: (params: Record<string, unknown>) => void;
+  onSubmit: (values: Record<string, number>) => void;
   loading: boolean;
 }
 
@@ -34,7 +34,7 @@ export function CalculatorForm({ inputs, onSubmit, loading }: CalculatorFormProp
     e.preventDefault();
 
     const newErrors: Record<string, string> = {};
-    const params: Record<string, unknown> = {};
+    const params: Record<string, number> = {};
 
     for (const input of inputs) {
       const raw = values[input.name];

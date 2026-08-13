@@ -73,18 +73,18 @@ TOOLS = {
         "description": "SaaS CAC: Customer Acquisition Cost = Sales & Marketing Expense ÷ New Customers.",
     },
     "valuation_saas_mrr": {
-        "fn": lambda total_customers, arpu: _unwrap(saas.mrr(total_customers, arpu)),
-        "schema": {"total_customers": "number", "arpu": "number"},
+        "fn": lambda arr_value: _unwrap(saas.mrr(arr_value)),
+        "schema": {"arr_value": "number"},
         "description": "SaaS MRR: Monthly Recurring Revenue = Total Customers × ARPU.",
     },
     "valuation_saas_arr": {
-        "fn": lambda mrr: _unwrap(saas.arr(mrr)),
-        "schema": {"mrr": "number"},
+        "fn": lambda subscription_values: _unwrap(saas.arr(subscription_values)),
+        "schema": {"subscription_values": "array"},
         "description": "SaaS ARR: Annual Recurring Revenue = MRR × 12.",
     },
     "valuation_saas_nrr": {
-        "fn": lambda starting_arr, expansion_arr, contraction_arr, churn_arr: _unwrap(saas.net_revenue_retention(starting_arr, expansion_arr, contraction_arr, churn_arr)),
-        "schema": {"starting_arr": "number", "expansion_arr": "number", "contraction_arr": "number", "churn_arr": "number"},
+        "fn": lambda starting_revenue, ending_revenue, expansion_revenue: _unwrap(saas.net_revenue_retention(starting_revenue, ending_revenue, expansion_revenue)),
+        "schema": {"starting_revenue": "number", "ending_revenue": "number", "expansion_revenue": "number"},
         "description": "SaaS NRR: Net Revenue Retention = (Start + Expansion - Contraction - Churn) / Start.",
     },
     "valuation_saas_magic_number": {
@@ -98,8 +98,8 @@ TOOLS = {
         "description": "SaaS Rule of 40: Revenue Growth Rate + Profit Margin ≥ 40%.",
     },
     "valuation_saas_cac_payback": {
-        "fn": lambda cac, arpu, gross_margin: _unwrap(saas.cac_payback_period(cac, arpu, gross_margin)),
-        "schema": {"cac": "number", "arpu": "number", "gross_margin": "number"},
+        "fn": lambda cac, mrr_per_customer, gross_margin: _unwrap(saas.cac_payback_period(cac, mrr_per_customer, gross_margin)),
+        "schema": {"cac": "number", "mrr_per_customer": "number", "gross_margin": "number"},
         "description": "SaaS CAC Payback Period: Months to recover CAC from customer gross profit.",
     },
     "valuation_saas_revenue_multiple": {
@@ -109,8 +109,8 @@ TOOLS = {
     },
     # === Comparables ===
     "valuation_pe_ratio": {
-        "fn": lambda price, earnings_per_share: _unwrap(comparables.pe_ratio(price, earnings_per_share)),
-        "schema": {"price": "number", "earnings_per_share": "number"},
+        "fn": lambda market_cap, net_income: _unwrap(comparables.pe_ratio(market_cap, net_income)),
+        "schema": {"market_cap": "number", "net_income": "number"},
         "description": "P/E Ratio: Price per Share ÷ Earnings per Share.",
     },
     "valuation_ps_ratio": {
@@ -129,28 +129,36 @@ TOOLS = {
         "description": "EV/Revenue: Enterprise Value ÷ Revenue.",
     },
     "valuation_regression_multiple": {
-        "fn": lambda intercept, growth_coef, growth, margin_coef, margin: _unwrap(
-            comparables.regression_adjusted_multiple(intercept, growth_coef, growth, margin_coef, margin)
+        "fn": lambda intercept, growth_rate, growth_coefficient, market_maturity, maturity_coefficient: _unwrap(
+            comparables.regression_adjusted_multiple(
+                intercept, growth_rate, growth_coefficient, market_maturity, maturity_coefficient
+            )
         ),
-        "schema": {"intercept": "number", "growth_coef": "number", "growth": "number", "margin_coef": "number", "margin": "number"},
-        "description": "Regression-Adjusted Multiple: statistical multiple adjusted for growth and margin factors.",
+        "schema": {
+            "intercept": "number",
+            "growth_rate": "number",
+            "growth_coefficient": "number",
+            "market_maturity": "number",
+            "maturity_coefficient": "number",
+        },
+        "description": "Regression-Adjusted Multiple: statistical multiple adjusted for growth and market maturity.",
     },
     "valuation_target_multiple": {
-        "fn": lambda comparable_multiple, target_metric: _unwrap(comparables.target_valuation_multiple(comparable_multiple, target_metric)),
-        "schema": {"comparable_multiple": "number", "target_metric": "number"},
+        "fn": lambda multiple, metric: _unwrap(comparables.target_valuation_multiple(multiple, metric)),
+        "schema": {"multiple": "number", "metric": "number"},
         "description": "Target Valuation: Comparable Multiple × Target Company Metric.",
     },
     # === CAPM ===
     "valuation_capm": {
-        "fn": lambda risk_free_rate, beta, market_risk_premium: _unwrap(capm.capm(risk_free_rate, beta, market_risk_premium)),
-        "schema": {"risk_free_rate": "number", "beta": "number", "market_risk_premium": "number"},
+        "fn": lambda risk_free_rate, beta, market_return: _unwrap(capm.capm(risk_free_rate, beta, market_return)),
+        "schema": {"risk_free_rate": "number", "beta": "number", "market_return": "number"},
         "description": "CAPM: Cost of Equity = Rf + β × (Rm − Rf).",
     },
     "valuation_startup_capm": {
-        "fn": lambda risk_free_rate, beta, market_risk_premium, size_premium, specific_risk: _unwrap(
-            capm.startup_adjusted_capm(risk_free_rate, beta, market_risk_premium, size_premium, specific_risk)
+        "fn": lambda risk_free_rate, beta, market_risk_premium, size_premium, illiquidity_premium: _unwrap(
+            capm.startup_adjusted_capm(risk_free_rate, beta, market_risk_premium, size_premium, illiquidity_premium)
         ),
-        "schema": {"risk_free_rate": "number", "beta": "number", "market_risk_premium": "number", "size_premium": "number", "specific_risk": "number"},
+        "schema": {"risk_free_rate": "number", "beta": "number", "market_risk_premium": "number", "size_premium": "number", "illiquidity_premium": "number"},
         "description": "Startup-Adjusted CAPM: adds size premium and company-specific risk premium.",
     },
     "valuation_portfolio_beta": {
@@ -159,8 +167,8 @@ TOOLS = {
         "description": "Portfolio Beta: weighted average of individual asset betas.",
     },
     "valuation_portfolio_variance": {
-        "fn": lambda weights, variances, covariance_matrix: _unwrap(capm.portfolio_variance(weights, variances, covariance_matrix)),
-        "schema": {"weights": "array", "variances": "array", "covariance_matrix": "array"},
+        "fn": lambda weights, covariance_matrix: _unwrap(capm.portfolio_variance(weights, covariance_matrix)),
+        "schema": {"weights": "array", "covariance_matrix": "array"},
         "description": "Portfolio Variance: weighted variance with covariance adjustments.",
     },
     # === Time Value ===
@@ -170,8 +178,8 @@ TOOLS = {
         "description": "Present Value: PV = FV ÷ (1 + r)^n.",
     },
     "valuation_npv": {
-        "fn": lambda initial_investment, cash_flows, rate: _unwrap(tv.net_present_value(initial_investment, cash_flows, rate)),
-        "schema": {"initial_investment": "number", "cash_flows": "array", "rate": "number"},
+        "fn": lambda cash_flows, rate: _unwrap(tv.net_present_value(cash_flows, rate)),
+        "schema": {"cash_flows": "array", "rate": "number"},
         "description": "Net Present Value: NPV = −Investment + Σ CF_t ÷ (1 + r)^t.",
     },
     "valuation_annuity": {
@@ -186,13 +194,13 @@ TOOLS = {
         "description": "Expected Value (Discrete): Σ outcome_i × probability_i.",
     },
     "valuation_joint_probability": {
-        "fn": lambda prob_a, prob_b, independent: _unwrap(probability.joint_probability(prob_a, prob_b, independent)),
-        "schema": {"prob_a": "number", "prob_b": "number", "independent": "boolean"},
+        "fn": lambda probabilities: _unwrap(probability.joint_probability(probabilities)),
+        "schema": {"probabilities": "array"},
         "description": "Joint Probability: P(A∩B) = P(A)×P(B) if independent, else P(A|B)×P(B).",
     },
     "valuation_prob_weighted": {
-        "fn": lambda scenarios: _unwrap(probability.probability_weighted_value(scenarios)),
-        "schema": {"scenarios": "array"},
+        "fn": lambda outcomes, probabilities: _unwrap(probability.probability_weighted_value(outcomes, probabilities)),
+        "schema": {"outcomes": "array", "probabilities": "array"},
         "description": "Probability-Weighted Value: Σ scenario_value × scenario_probability.",
     },
     "valuation_portfolio_return": {
@@ -201,8 +209,8 @@ TOOLS = {
         "description": "Portfolio Expected Return: weighted average of individual asset returns.",
     },
     "valuation_poisson": {
-        "fn": lambda rate, k: _unwrap(probability.poisson_probability(rate, k)),
-        "schema": {"rate": "number", "k": "number"},
+        "fn": lambda lambda_, k: _unwrap(probability.poisson_probability(lambda_, k)),
+        "schema": {"lambda_": "number", "k": "number"},
         "description": "Poisson Probability: probability of k events given rate λ (uses scipy.stats).",
     },
     # === Stakeholders ===
@@ -217,8 +225,8 @@ TOOLS = {
         "description": "Multi-Round Dilution: cumulative ownership dilution across multiple funding rounds.",
     },
     "valuation_common_discount": {
-        "fn": lambda preferred_price, discount_rate: _unwrap(stakeholders.common_stock_discount(preferred_price, discount_rate)),
-        "schema": {"preferred_price": "number", "discount_rate": "number"},
+        "fn": lambda preferred_value, common_value: _unwrap(stakeholders.common_stock_discount(preferred_value, common_value)),
+        "schema": {"preferred_value": "number", "common_value": "number"},
         "description": "Common Stock Discount: Common = Preferred × (1 − Discount).",
     },
     "valuation_liquidation": {
@@ -234,15 +242,15 @@ TOOLS = {
         "description": "Acquisition Value: value of target company in an M&A transaction.",
     },
     "valuation_opm": {
-        "fn": lambda strike_price, current_value, volatility, time_to_exit, risk_free_rate: _unwrap(
-            stakeholders.opm_common_stock(strike_price, current_value, volatility, time_to_exit, risk_free_rate)
+        "fn": lambda enterprise_value, liquidation_preference, time_to_exit, volatility, risk_free_rate: _unwrap(
+            stakeholders.opm_common_stock(enterprise_value, liquidation_preference, time_to_exit, volatility, risk_free_rate)
         ),
-        "schema": {"strike_price": "number", "current_value": "number", "volatility": "number", "time_to_exit": "number", "risk_free_rate": "number"},
+        "schema": {"enterprise_value": "number", "liquidation_preference": "number", "time_to_exit": "number", "volatility": "number", "risk_free_rate": "number"},
         "description": "OPM Common Stock: Option-Pricing Model for common stock valuation (uses scipy.stats.norm).",
     },
     "valuation_pwerm": {
         "fn": lambda scenarios: _unwrap(stakeholders.pwerm(scenarios)),
-        "schema": {"scenarios": "array"},
+        "schema": {"outcomes": "array", "probabilities": "array"},
         "description": "PWERM: Probability-Weighted Expected Return Method for multi-scenario valuation. Each scenario: {probability, value}.",
     },
     "valuation_venture_debt": {
@@ -254,8 +262,8 @@ TOOLS = {
     },
     # === Marketplace ===
     "valuation_gmv": {
-        "fn": lambda total_transactions, avg_transaction_value: _unwrap(marketplace.gmv(total_transactions, avg_transaction_value)),
-        "schema": {"total_transactions": "number", "avg_transaction_value": "number"},
+        "fn": lambda transaction_values: _unwrap(marketplace.gmv(transaction_values)),
+        "schema": {"transaction_values": "array"},
         "description": "GMV: Gross Merchandise Value = Total Transactions × Average Transaction Value.",
     },
     "valuation_take_rate": {
@@ -264,8 +272,8 @@ TOOLS = {
         "description": "Take Rate: Revenue ÷ GMV — the platform's commission percentage.",
     },
     "valuation_liquidity": {
-        "fn": lambda completed_transactions, total_listings: _unwrap(marketplace.liquidity(completed_transactions, total_listings)),
-        "schema": {"completed_transactions": "number", "total_listings": "number"},
+        "fn": lambda successful_transactions, total_attempts: _unwrap(marketplace.liquidity(successful_transactions, total_attempts)),
+        "schema": {"successful_transactions": "number", "total_attempts": "number"},
         "description": "Marketplace Liquidity: Completed Transactions ÷ Total Listings.",
     },
     "valuation_gmv_multiple": {

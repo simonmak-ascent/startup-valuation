@@ -38,5 +38,5 @@ export default async function MethodPage({ params }: MethodPageProps) {
     notFound();
   }
 
-  return <CalculatorPage config={method} />;
+  return <CalculatorPage slug={slug} />;
 }

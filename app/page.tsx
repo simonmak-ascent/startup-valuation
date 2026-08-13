@@ -1,100 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getAllMethods } from "@/lib/methods";
 
-const methods = [
-  {
-    name: "Scorecard Method",
-    description:
-      "Adjust average valuation by weighted factor scores for pre-revenue startups.",
-    category: "Core",
-    detail: "13-step derivation",
-    slug: "scorecard",
-  },
-  {
-    name: "VC Method",
-    description:
-      "Work backward from expected exit value diluting for target return.",
-    category: "Core",
-    detail: "",
-    slug: "vc-method",
-  },
-  {
-    name: "Black-Scholes",
-    description:
-      "Option pricing for startup equity as real options. N(d) cumulative normal.",
-    category: "Advanced",
-    detail: "",
-    slug: "black-scholes",
-  },
-  {
-    name: "Monte Carlo",
-    description:
-      "Simulate thousands of scenarios for probabilistic valuation ranges.",
-    category: "Advanced",
-    detail: "",
-    slug: "monte-carlo",
-  },
-  {
-    name: "SaaS Metrics",
-    description:
-      "LTV, CAC, NRR, Magic Number, Rule of 40 — SaaS-specific KPIs.",
-    category: "Industry",
-    detail: "",
-    slug: "saas-ltv",
-  },
-  {
-    name: "Biotech rNPV",
-    description: "Risk-adjusted NPV for clinical-stage pharmaceutical assets.",
-    category: "Industry",
-    detail: "",
-    slug: "biotech-rnpv",
-  },
-  {
-    name: "CAPM",
-    description: "Capital Asset Pricing Model with startup-adjusted beta.",
-    category: "Foundation",
-    detail: "",
-    slug: "capm",
-  },
-  {
-    name: "Risk Factor Summation",
-    description: "Adjust baseline by 12 risk factors, each ±$250K per unit.",
-    category: "Core",
-    detail: "",
-    slug: "risk-factor",
-  },
-  {
-    name: "SAFE Valuation",
-    description: "Convertible instruments with cap and discount valuation.",
-    category: "Emerging",
-    detail: "",
-    slug: "safe",
-  },
-  {
-    name: "ESG Valuation",
-    description:
-      "Environmental, social, governance premium and discount impacts.",
-    category: "Emerging",
-    detail: "",
-    slug: "esg",
-  },
-  {
-    name: "OPM / PWERM",
-    description:
-      "Option-pricing and probability-weighted models for stakeholders.",
-    category: "Stakeholder",
-    detail: "",
-    slug: "opm-pwerm",
-  },
-  {
-    name: "Metcalfe's Law",
-    description:
-      "Network value proportional to n² for crypto and marketplace startups.",
-    category: "Emerging",
-    detail: "",
-    slug: "metcalfe",
-  },
-];
+const methods = getAllMethods().map((m) => ({
+  name: m.name,
+  description: m.description,
+  category: m.category,
+  slug: m.slug,
+}));
 
 const stats = [
   { num: "80+", label: "Valuation Formulas" },
@@ -107,8 +20,7 @@ const stats = [
 const resources = [
   {
     title: "Wiki — Theory & Derivations",
-    description:
-      "13-step Scorecard derivation, glossary, notation table, and method deep-dives.",
+    description: "13-step Scorecard derivation, glossary, notation table, and method deep-dives.",
     href: "https://github.com/simonplmak-cloud/startup-valuation/wiki",
   },
   {
@@ -118,14 +30,12 @@ const resources = [
   },
   {
     title: "GitHub Repository",
-    description:
-      "Source code, CI/CD pipeline, contributing guide, open source.",
+    description: "Source code, CI/CD pipeline, contributing guide, open source.",
     href: "https://github.com/simonplmak-cloud/startup-valuation",
   },
   {
     title: "Companion Textbook",
-    description:
-      "338 pages · 15 chapters · 300+ exercises · 20+ cases. By Simon Mak.",
+    description: "338 pages · 15 chapters · 300+ exercises · 20+ cases. By Simon Mak.",
     href: "https://www.amazon.com/Startup-Valuation-Comprehensive-Fast-Growing-Pre-Revenue-ebook/dp/B0FYTGNVWS/",
   },
 ];
@@ -143,13 +53,10 @@ export default function HomePage() {
   return (
     <>
       <header className="hero-gradient text-white py-20 px-5 text-center">
-        <h1 className="text-5xl mb-4 font-bold tracking-tight">
-          Startup Valuation Engine
-        </h1>
+        <h1 className="text-5xl mb-4 font-bold tracking-tight">Startup Valuation Engine</h1>
         <p className="text-xl opacity-90 max-w-[700px] mx-auto mb-8">
-          The most comprehensive, scientifically rigorous, and transparent
-          startup valuation resource available. 80+ formulas. Full derivations.
-          Open source. Audit trail. AI-powered.
+          The most comprehensive, scientifically rigorous, and transparent startup valuation
+          resource available. 80+ formulas. Full derivations. Open source. Audit trail. AI-powered.
         </p>
         <div className="inline-flex items-center gap-2 bg-green-50 text-green-700 border border-green-200 px-5 py-2.5 rounded-full font-semibold mb-6">
           <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" />
@@ -178,9 +85,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
             {stats.map((stat) => (
               <div key={stat.label} className="card text-center py-8 px-6">
-                <div className="text-[2.5rem] font-bold text-[#0083AB]">
-                  {stat.num}
-                </div>
+                <div className="text-[2.5rem] font-bold text-[#0083AB]">{stat.num}</div>
                 <div className="text-muted mt-1">{stat.label}</div>
               </div>
             ))}
@@ -190,8 +95,8 @@ export default function HomePage() {
         <section className="section">
           <h2 className="section-title">Valuation Methods</h2>
           <p className="section-subtitle">
-            Every formula with full mathematical derivation, assumptions audit,
-            worked example, and textbook cross-reference.
+            Every formula with full mathematical derivation, assumptions audit, worked example, and
+            textbook cross-reference.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {methods.map((method) => (
@@ -205,17 +110,11 @@ export default function HomePage() {
                 <div className="flex gap-1.5 flex-wrap">
                   <span
                     className={`inline-block px-2.5 py-0.5 rounded-xl text-xs font-medium ${
-                      categoryColors[method.category] ??
-                      "bg-gray-50 text-gray-700"
+                      categoryColors[method.category] ?? "bg-gray-50 text-gray-700"
                     }`}
                   >
                     {method.category}
                   </span>
-                  {method.detail && (
-                    <span className="inline-block bg-brand/10 text-brand px-2.5 py-0.5 rounded-xl text-xs font-medium">
-                      {method.detail}
-                    </span>
-                  )}
                 </div>
               </Link>
             ))}
@@ -224,12 +123,10 @@ export default function HomePage() {
 
         <section className="section">
           <div className="card max-w-[700px] mx-auto p-8">
-            <h2 className="text-2xl font-bold mb-4 text-[#0083AB]">
-              API Access — Free &amp; Open
-            </h2>
+            <h2 className="text-2xl font-bold mb-4 text-[#0083AB]">API Access — Free &amp; Open</h2>
             <p className="text-muted mb-6">
-              MCP-compatible JSON-RPC endpoint. No API key required. 45+ tools
-              available on Vercel. Full 60+ tool library via Python package.
+              MCP-compatible JSON-RPC endpoint. No API key required. 45+ tools available on Vercel.
+              Full 60+ tool library via Python package.
             </p>
             <div className="bg-slate-800 text-slate-200 p-5 rounded-lg font-mono text-sm overflow-x-auto">
               <div className="mb-3">
@@ -242,15 +139,14 @@ export default function HomePage() {
                 <span className="inline-block px-2 py-0.5 rounded bg-indigo-500 text-white text-xs font-bold mr-2">
                   POST
                 </span>
-                <code>/api</code> — MCP JSON-RPC 2.0 (initialize, tools/list,
-                tools/call)
+                <code>/api</code> — MCP JSON-RPC 2.0 (initialize, tools/list, tools/call)
               </div>
               <div>
                 <span className="inline-block px-2 py-0.5 rounded bg-indigo-500 text-white text-xs font-bold mr-2">
                   POST
                 </span>
-                <code>/api/calculate</code> — Generic calculator endpoint with
-                step-by-step traceability
+                <code>/api/calculate</code> — Generic calculator endpoint with step-by-step
+                traceability
               </div>
             </div>
             <div className="mt-4">
@@ -281,13 +177,10 @@ export default function HomePage() {
 
         <section className="section">
           <div className="card text-center px-8 py-10">
-            <h2 className="text-2xl font-bold mb-3 text-[#0083AB]">
-              Why Open Source?
-            </h2>
+            <h2 className="text-2xl font-bold mb-3 text-[#0083AB]">Why Open Source?</h2>
             <p className="text-muted max-w-[600px] mx-auto mb-6">
-              Every formula is auditable. Every number traces to a textbook
-              source. No black boxes. No proprietary math. Trusted by the
-              auditor community.
+              Every formula is auditable. Every number traces to a textbook source. No black boxes.
+              No proprietary math. Trusted by the auditor community.
             </p>
             <Link href="/why-open-source" className="btn-brand">
               Compare vs. Equidam, Carta &amp; PitchBook

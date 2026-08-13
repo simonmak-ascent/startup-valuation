@@ -1,17 +1,19 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import type { MethodConfig } from "@/lib/valuation/types";
+import { getMethodBySlug } from "@/lib/methods";
 import { CalculatorForm } from "./CalculatorForm";
 import { ResultPanel } from "./ResultPanel";
 import { StepsPanel } from "./StepsPanel";
 import { SourcesSection } from "./SourcesSection";
 
 interface CalculatorPageProps {
-  config: MethodConfig;
+  slug: string;
 }
 
-export function CalculatorPage({ config }: CalculatorPageProps) {
+export function CalculatorPage({ slug }: CalculatorPageProps) {
+  // Parent server component guarantees the slug resolves (notFound() otherwise).
+  const config = getMethodBySlug(slug)!;
   const [result, setResult] = useState<{
     value: number;
     steps: { label: string; value: number; formula: string }[];
@@ -27,16 +29,18 @@ export function CalculatorPage({ config }: CalculatorPageProps) {
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = useCallback(
-    async (params: Record<string, unknown>) => {
+    async (values: Record<string, number>) => {
       setLoading(true);
       setError(null);
       setResult(null);
+
+      const params = config.toParams ? config.toParams(values) : values;
 
       try {
         const response = await fetch("/api/calculate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ method: config.slug, params }),
+          body: JSON.stringify({ method: config.methodName, params }),
         });
 
         if (!response.ok) {
@@ -52,7 +56,7 @@ export function CalculatorPage({ config }: CalculatorPageProps) {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            method: config.slug,
+            method: config.methodName,
             inputs: params,
             result: data.value,
             steps: data.steps,
@@ -68,7 +72,7 @@ export function CalculatorPage({ config }: CalculatorPageProps) {
         setLoading(false);
       }
     },
-    [config.slug],
+    [config.methodName, config.toParams],
   );
 
   return (

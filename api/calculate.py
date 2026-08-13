@@ -31,6 +31,7 @@ def _unwrap(r):
 
 
 _NAMED_TOOLS: dict[str, tuple] = {
+    # Core
     "scorecard": (core.scorecard_valuation, ["average_valuation", "weights", "scores"]),
     "berkus": (
         core.berkus_valuation,
@@ -40,42 +41,44 @@ _NAMED_TOOLS: dict[str, tuple] = {
     "vc_post_money": (core.vc_method_post_money, ["terminal_value", "target_return"]),
     "vc_pre_money": (core.vc_method_pre_money, ["post_money", "investment"]),
     "terminal_value": (core.terminal_value_multiple, ["projected_revenue", "multiple"]),
+    # SaaS
     "saas_ltv": (saas.ltv_saas, ["arpu", "gross_margin", "churn_rate"]),
     "saas_cac": (saas.cac, ["sales_marketing_expense", "new_customers"]),
-    "saas_mrr": (saas.mrr, ["total_customers", "arpu"]),
-    "saas_arr": (saas.arr, ["mrr"]),
-    "saas_nrr": (saas.net_revenue_retention, ["starting_arr", "expansion_arr", "contraction_arr", "churn_arr"]),
+    "saas_mrr": (saas.mrr, ["arr_value"]),
+    "saas_arr": (saas.arr, ["subscription_values"]),
+    "saas_nrr": (saas.net_revenue_retention, ["starting_revenue", "ending_revenue", "expansion_revenue"]),
     "saas_magic_number": (saas.magic_number, ["net_new_arr", "sm_expense_prior"]),
     "saas_rule_of_40": (saas.rule_of_40, ["growth_rate", "profit_margin"]),
-    "saas_cac_payback": (saas.cac_payback_period, ["cac", "arpu", "gross_margin"]),
-    "saas_revenue_multiple": (saas.saas_revenue_multiple_valuation, ["arr", "revenue_multiple"]),
-    "pe_ratio": (comparables.pe_ratio, ["price", "earnings_per_share"]),
+    "saas_cac_payback": (saas.cac_payback_period, ["cac", "mrr_per_customer", "gross_margin"]),
+    "saas_revenue_multiple": (saas.saas_revenue_multiple_valuation, ["arr", "multiple"]),
+    # Comparables
+    "pe_ratio": (comparables.pe_ratio, ["market_cap", "net_income"]),
     "ps_ratio": (comparables.ps_ratio, ["market_cap", "revenue"]),
     "ev_ebitda": (comparables.ev_ebitda, ["enterprise_value", "ebitda"]),
     "ev_revenue": (comparables.ev_revenue, ["enterprise_value", "revenue"]),
-    "regression_multiple": (
-        comparables.regression_adjusted_multiple,
-        ["intercept", "growth_coef", "growth", "margin_coef", "margin"],
-    ),
-    "target_multiple": (comparables.target_valuation_multiple, ["comparable_multiple", "target_metric"]),
-    "capm": (capm.capm, ["risk_free_rate", "beta", "market_risk_premium"]),
+    "target_multiple": (comparables.target_valuation_multiple, ["multiple", "metric"]),
+    # CAPM
+    "capm": (capm.capm, ["risk_free_rate", "beta", "market_return"]),
     "startup_capm": (
         capm.startup_adjusted_capm,
-        ["risk_free_rate", "beta", "market_risk_premium", "size_premium", "specific_risk"],
+        ["risk_free_rate", "beta", "market_risk_premium", "size_premium", "illiquidity_premium"],
     ),
     "portfolio_beta": (capm.portfolio_beta, ["weights", "betas"]),
-    "portfolio_variance": (capm.portfolio_variance, ["weights", "variances", "covariance_matrix"]),
+    "portfolio_variance": (capm.portfolio_variance, ["weights", "covariance_matrix"]),
+    # Time value
     "present_value": (tv.present_value, ["future_value", "rate", "periods"]),
-    "npv": (tv.net_present_value, ["initial_investment", "cash_flows", "rate"]),
+    "npv": (tv.net_present_value, ["cash_flows", "rate"]),
     "annuity": (tv.annuity_present_value, ["payment", "rate", "periods"]),
+    # Probability
     "expected_value": (probability.expected_value_discrete, ["outcomes", "probabilities"]),
-    "joint_probability": (probability.joint_probability, ["prob_a", "prob_b", "independent"]),
-    "prob_weighted": (probability.probability_weighted_value, ["scenarios"]),
+    "joint_probability": (probability.joint_probability, ["probabilities"]),
+    "prob_weighted": (probability.probability_weighted_value, ["outcomes", "probabilities"]),
     "portfolio_return": (probability.portfolio_expected_return, ["weights", "returns"]),
-    "poisson": (probability.poisson_probability, ["rate", "k"]),
+    "poisson": (probability.poisson_probability, ["lambda_", "k"]),
+    # Stakeholders
     "dilution": (stakeholders.single_round_dilution, ["ownership_before", "investment", "post_money"]),
     "multi_dilution": (stakeholders.multi_round_dilution, ["initial_ownership", "investments", "post_money_vals"]),
-    "common_discount": (stakeholders.common_stock_discount, ["preferred_price", "discount_rate"]),
+    "common_discount": (stakeholders.common_stock_discount, ["preferred_value", "common_value"]),
     "liquidation": (stakeholders.liquidation_value, ["assets", "recovery_rates"]),
     "acquisition": (
         stakeholders.acquisition_value,
@@ -83,13 +86,14 @@ _NAMED_TOOLS: dict[str, tuple] = {
     ),
     "opm": (
         stakeholders.opm_common_stock,
-        ["strike_price", "current_value", "volatility", "time_to_exit", "risk_free_rate"],
+        ["enterprise_value", "liquidation_preference", "time_to_exit", "volatility", "risk_free_rate"],
     ),
     "pwerm": (stakeholders.pwerm, ["scenarios"]),
     "venture_debt": (stakeholders.venture_debt_dilution, ["warrant_coverage", "loan_amount", "post_money"]),
-    "gmv": (marketplace.gmv, ["total_transactions", "avg_transaction_value"]),
+    # Marketplace
+    "gmv": (marketplace.gmv, ["transaction_values"]),
     "take_rate": (marketplace.take_rate, ["revenue", "gmv"]),
-    "liquidity": (marketplace.liquidity, ["completed_transactions", "total_listings"]),
+    "liquidity": (marketplace.liquidity, ["successful_transactions", "total_attempts"]),
     "gmv_multiple": (marketplace.gmv_multiple_valuation, ["gmv", "multiple"]),
     "network_value": (marketplace.network_value, ["active_users", "k", "alpha"]),
 }

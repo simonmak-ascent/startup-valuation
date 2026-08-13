@@ -8,7 +8,7 @@ export const vcMethodConfig: MethodConfig = {
     "Work backward from expected exit value to determine current post-money and pre-money valuation. Uses target return multiple to discount terminal value.",
   textbookChapter: "Chapter 4: Venture Capital Method",
   formulaNumber: "4.1",
-  methodName: "valuation_vc_post_money",
+  methodName: "vc_post_money",
   inputs: [
     {
       name: "terminal_value",
