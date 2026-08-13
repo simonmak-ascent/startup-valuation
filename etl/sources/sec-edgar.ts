@@ -22,7 +22,7 @@ export async function importSecEdgar(filePath = "etl/data/sec-edgar.csv") {
       const ticker = row.ticker?.toUpperCase();
 
       await db.query(
-        `UPSERT type::thing("public_company", $id) MERGE {
+        `UPSERT type::record("public_company", $id) MERGE {
           name: $name,
           ticker: $ticker,
           sector: $sector,

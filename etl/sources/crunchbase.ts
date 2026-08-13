@@ -21,7 +21,7 @@ export async function importCrunchbase(filePath = "etl/data/crunchbase.csv") {
       const slug = (row.company_name ?? "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
       await db.query(
-        `UPSERT type::thing("public_company", $id) MERGE {
+        `UPSERT type::record("public_company", $id) MERGE {
           name: $name,
           source_url: $source_url,
           source_name: $source_name,

@@ -46,7 +46,7 @@ export async function importMethods(): Promise<{ imported: number; rejected: num
     };
 
     try {
-      await db.query(`UPSERT type::thing("method", $id) MERGE $data`, { id: m.slug, data: record });
+      await db.query(`UPSERT type::record("method", $id) MERGE $data`, { id: m.slug, data: record });
       imported++;
     } catch {
       rejected++;
@@ -61,7 +61,7 @@ export async function seedDataSources(): Promise<number> {
   const db = await getDb();
 
   for (const s of RECOGNIZED_SOURCES) {
-    await db.query(`UPSERT type::thing("data_source", $id) MERGE $data`, {
+    await db.query(`UPSERT type::record("data_source", $id) MERGE $data`, {
       id: s.slug,
       data: {
         name: s.name,

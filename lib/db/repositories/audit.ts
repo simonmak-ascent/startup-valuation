@@ -22,7 +22,7 @@ export async function createAuditLog(
     : valuationRunId;
 
   const clauses = [
-    "valuation_run = type::thing('valuation_run', $vr_id)",
+    "valuation_run = type::record('valuation_run', $vr_id)",
     "action = $action",
     "method = $method",
     "inputs = $inputs",
@@ -45,7 +45,7 @@ export async function createAuditLog(
   };
 
   if (userId) {
-    clauses.push("user = type::thing('user', $user_id)");
+    clauses.push("user = type::record('user', $user_id)");
     bindings.user_id = userId.startsWith("user:") ? userId.slice(5) : userId;
   }
   if (gitCommit) {

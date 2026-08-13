@@ -41,7 +41,7 @@ export async function importCitations(): Promise<{ imported: number; rejected: n
   for (const c of CITATIONS) {
     try {
       validateProvenance(c);
-      await db.query(`UPSERT type::thing("citation", $id) MERGE $data`, {
+      await db.query(`UPSERT type::record("citation", $id) MERGE $data`, {
         id: c.id.replace("citation:", ""),
         data: {
           title: c.title,
