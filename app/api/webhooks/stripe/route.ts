@@ -53,7 +53,11 @@ export async function POST(request: Request) {
     event.type === "customer.subscription.updated" ||
     event.type === "customer.subscription.deleted"
   ) {
-    const sub = event.data.object as { id: string; status: string; customer?: string };
+    const sub = event.data.object as {
+      id: string;
+      status: string;
+      customer: string | { id: string } | null;
+    };
     const stripe = getStripe();
     const customerId = typeof sub.customer === "string" ? sub.customer : sub.customer?.id;
     if (customerId) {

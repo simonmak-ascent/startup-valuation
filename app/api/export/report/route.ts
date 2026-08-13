@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { PDFDocument, StandardFonts } from "pdf-lib";
+import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { auth } from "@/lib/auth/config";
 import { getAuditLogForRun } from "@/lib/db/repositories/audit";
 import { getSubscriptionForUser } from "@/lib/db/repositories/billing";
@@ -63,7 +63,6 @@ async function buildReportPdf(run: {
       pdf.addPage([595, 842]);
     }
   };
-  const rgb = (r: number, g: number, b: number) => ({ r, g, b }) as never;
 
   line("Startup Valuation Engine — Audit Report", 18, bold);
   line("Generated: " + new Date().toISOString(), 10);
