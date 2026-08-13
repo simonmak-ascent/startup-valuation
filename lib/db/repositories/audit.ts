@@ -16,8 +16,24 @@ export async function createAuditLog(
 ): Promise<AuditLog> {
   const db = await getDb();
 
-  const data: Record<string, unknown> = {
-    valuation_run: valuationRunId,
+  // Extract the raw UUID (valuation_run:<uuid> → <uuid>).
+  const vrId = valuationRunId.startsWith("valuation_run:")
+    ? valuationRunId.slice("valuation_run:".length)
+    : valuationRunId;
+
+  const clauses = [
+    "valuation_run = type::thing('valuation_run', $vr_id)",
+    "action = $action",
+    "method = $method",
+    "inputs = $inputs",
+    "result = $result",
+    "steps = $steps",
+    "formula_number = $formula_number",
+    "chapter = $chapter",
+    "library_version = $library_version",
+  ];
+  const bindings: Record<string, unknown> = {
+    vr_id: vrId,
     action: "calculate",
     method,
     inputs,
@@ -27,13 +43,23 @@ export async function createAuditLog(
     chapter,
     library_version: libraryVersion,
   };
-  if (userId) data.user = userId;
-  if (gitCommit) data.git_commit = gitCommit;
-  if (userAgent) data.user_agent = userAgent;
+
+  if (userId) {
+    clauses.push("user = type::thing('user', $user_id)");
+    bindings.user_id = userId.startsWith("user:") ? userId.slice(5) : userId;
+  }
+  if (gitCommit) {
+    clauses.push("git_commit = $git_commit");
+    bindings.git_commit = gitCommit;
+  }
+  if (userAgent) {
+    clauses.push("user_agent = $user_agent");
+    bindings.user_agent = userAgent;
+  }
 
   const [rows] = await db.query<[AuditLog[]]>(
-    `CREATE ${TABLES.AUDIT_LOG} CONTENT $data RETURN AFTER`,
-    { data },
+    `CREATE ${TABLES.AUDIT_LOG} SET ${clauses.join(", ")} RETURN AFTER`,
+    bindings,
   );
   const created = rows[0];
   if (!created) {
