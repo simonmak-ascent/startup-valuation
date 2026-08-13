@@ -98,7 +98,7 @@ export default function SignInPage() {
         </div>
 
         <p className="text-xs text-muted text-center mt-6">
-          Demo credentials: demo@startup-valuation.com / valuation2026
+          One account for the whole Ascent Partners ecosystem.
         </p>
       </div>
     </div>
