@@ -29,7 +29,6 @@ export async function createAuditLog(
     library_version: libraryVersion,
     git_commit: gitCommit ?? null,
     user_agent: userAgent ?? null,
-    created_at: new Date().toISOString(),
   };
 
   const [rows] = await db.query<[AuditLog[]]>(
