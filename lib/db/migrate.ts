@@ -8,9 +8,9 @@ export async function migrate(): Promise<void> {
     DEFINE TABLE ${TABLES.VALUATION_RUN} SCHEMAFULL;
     DEFINE FIELD method ON ${TABLES.VALUATION_RUN} TYPE record<${TABLES.METHOD}>;
     DEFINE FIELD user ON ${TABLES.VALUATION_RUN} TYPE option<record<${TABLES.USER}>>;
-    DEFINE FIELD inputs ON ${TABLES.VALUATION_RUN} TYPE object;
+    DEFINE FIELD inputs ON ${TABLES.VALUATION_RUN} TYPE string;
     DEFINE FIELD result ON ${TABLES.VALUATION_RUN} TYPE float;
-    DEFINE FIELD steps ON ${TABLES.VALUATION_RUN} TYPE array;
+    DEFINE FIELD steps ON ${TABLES.VALUATION_RUN} TYPE string;
     DEFINE FIELD formula_number ON ${TABLES.VALUATION_RUN} TYPE string;
     DEFINE FIELD chapter ON ${TABLES.VALUATION_RUN} TYPE string;
     DEFINE FIELD library_version ON ${TABLES.VALUATION_RUN} TYPE string;
@@ -73,9 +73,9 @@ export async function migrate(): Promise<void> {
     DEFINE FIELD user ON ${TABLES.AUDIT_LOG} TYPE option<record<${TABLES.USER}>>;
     DEFINE FIELD action ON ${TABLES.AUDIT_LOG} TYPE string;
     DEFINE FIELD method ON ${TABLES.AUDIT_LOG} TYPE string;
-    DEFINE FIELD inputs ON ${TABLES.AUDIT_LOG} TYPE object;
+    DEFINE FIELD inputs ON ${TABLES.AUDIT_LOG} TYPE string;
     DEFINE FIELD result ON ${TABLES.AUDIT_LOG} TYPE float;
-    DEFINE FIELD steps ON ${TABLES.AUDIT_LOG} TYPE array;
+    DEFINE FIELD steps ON ${TABLES.AUDIT_LOG} TYPE string;
     DEFINE FIELD formula_number ON ${TABLES.AUDIT_LOG} TYPE string;
     DEFINE FIELD chapter ON ${TABLES.AUDIT_LOG} TYPE string;
     DEFINE FIELD library_version ON ${TABLES.AUDIT_LOG} TYPE string;
