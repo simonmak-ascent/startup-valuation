@@ -32,8 +32,11 @@ export async function createAuditLog(
     created_at: new Date().toISOString(),
   };
 
-  const [created] = await db.create<AuditLog>(TABLES.AUDIT_LOG, auditRecord);
-  return created;
+  const [created] = await db.create(TABLES.AUDIT_LOG, auditRecord);
+  if (!created) {
+    throw new Error("Failed to create audit log entry");
+  }
+  return created as unknown as AuditLog;
 }
 
 export async function getAuditLogForRun(valuationRunId: string): Promise<AuditLog | null> {
