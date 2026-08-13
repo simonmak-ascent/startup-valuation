@@ -5,6 +5,9 @@
   --color-brand: #0083ab;
   --color-brand-dark: #005f80;
   --color-success: #10b981;
+  --color-error: #ef4444;
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
   --color-bg: #f8fafc;
   --color-card: #ffffff;
   --color-text: #1e293b;
@@ -135,7 +138,7 @@
   }
 
   .input-error {
-    border-color: #ef4444;
+    border-color: var(--color-error);
   }
 
   .label {

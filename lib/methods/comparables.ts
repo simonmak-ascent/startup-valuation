@@ -5,8 +5,8 @@ export const peRatioConfig: MethodConfig = {
   name: "P/E Ratio",
   category: "Foundation",
   description: "Price-to-Earnings ratio: Market Capitalization ÷ Net Income.",
-  textbookChapter: "Chapter 2: Valuation Foundations",
-  formulaNumber: "comparables.pe_ratio",
+  textbookChapter: "Chapter 5: Market Comparables",
+  formulaNumber: "Ch. 5",
   methodName: "pe_ratio",
   inputs: [
     {
@@ -24,8 +24,8 @@ export const psRatioConfig: MethodConfig = {
   name: "P/S Ratio",
   category: "Foundation",
   description: "Price-to-Sales ratio: Market Capitalization ÷ Revenue.",
-  textbookChapter: "Chapter 2: Valuation Foundations",
-  formulaNumber: "comparables.ps_ratio",
+  textbookChapter: "Chapter 5: Market Comparables",
+  formulaNumber: "Ch. 5",
   methodName: "ps_ratio",
   inputs: [
     {
@@ -43,8 +43,8 @@ export const evEbitdaConfig: MethodConfig = {
   name: "EV/EBITDA",
   category: "Foundation",
   description: "Enterprise Value ÷ EBITDA — a capital-structure-neutral multiple.",
-  textbookChapter: "Chapter 2: Valuation Foundations",
-  formulaNumber: "comparables.ev_ebitda",
+  textbookChapter: "Chapter 5: Market Comparables",
+  formulaNumber: "Ch. 5",
   methodName: "ev_ebitda",
   inputs: [
     {
@@ -62,8 +62,8 @@ export const evRevenueConfig: MethodConfig = {
   name: "EV/Revenue",
   category: "Foundation",
   description: "Enterprise Value ÷ Revenue — for growth-stage companies without profits.",
-  textbookChapter: "Chapter 2: Valuation Foundations",
-  formulaNumber: "comparables.ev_revenue",
+  textbookChapter: "Chapter 5: Market Comparables",
+  formulaNumber: "Ch. 5",
   methodName: "ev_revenue",
   inputs: [
     {

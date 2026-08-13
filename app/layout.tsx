@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { SessionProvider } from "@/components/SessionProvider";
+import { CookieConsent } from "@/components/CookieConsent";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -103,6 +104,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </nav>
         <SessionProvider>{children}</SessionProvider>
+        <CookieConsent />
+        <footer className="border-t border-border py-6 px-5 text-center text-muted text-xs">
+          <div className="flex gap-4 justify-center flex-wrap mb-2">
+            <a href="/legal/terms" className="hover:text-brand">
+              Terms of Service
+            </a>
+            <a href="/legal/privacy" className="hover:text-brand">
+              Privacy Policy
+            </a>
+            <a href="/legal/cookies" className="hover:text-brand">
+              Cookie Policy
+            </a>
+          </div>
+          <p>
+            © {new Date().getFullYear()} Ascent Partners · Startup Valuation Engine · MIT License
+          </p>
+        </footer>
         <Analytics />
       </body>
     </html>

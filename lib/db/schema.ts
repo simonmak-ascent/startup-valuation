@@ -12,6 +12,9 @@ export const TABLES = {
   BENCHMARK: "benchmark",
   CITATION: "citation",
   ETL_RUN: "etl_run",
+  SUBSCRIPTION: "subscription",
+  PAYMENT_EVENT: "payment_event",
+  LEGAL_DOCUMENT: "legal_document",
 } as const;
 
 export interface ValuationRun {
@@ -243,4 +246,34 @@ export interface CalculatorResponse {
   git_commit: string;
   audit_id?: string;
   audit_status: "logged" | "failed" | "skipped";
+}
+
+export interface Subscription {
+  id: string;
+  user_id: string;
+  stripe_subscription_id: string;
+  stripe_customer_id: string;
+  tier: "free" | "pro" | "enterprise";
+  status: string;
+  current_period_end?: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+export interface PaymentEvent {
+  id: string;
+  stripe_event_id: string;
+  type: string;
+  payload: string;
+  processed_at: string;
+}
+
+export interface LegalDocument {
+  id: string;
+  slug: string;
+  version: string;
+  title: string;
+  body: string;
+  content_hash: string;
+  published_at: string;
 }

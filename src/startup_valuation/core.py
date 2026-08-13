@@ -85,6 +85,18 @@ def scorecard_valuation(
         ],
         chapter="3",
         formula_number="3.1",
+        steps=[
+            {
+                "label": "Weighted score (Σ wᵢ × sᵢ)",
+                "value": weighted_score,
+                "formula": "\\sum_{i=1}^{n} w_i \\times s_i",
+            },
+            {
+                "label": "Valuation (V_avg × weighted score)",
+                "value": valuation,
+                "formula": "V = V_{avg} \\times \\sum_{i=1}^{n} w_i \\times s_i",
+            },
+        ],
     )
 
 
@@ -171,6 +183,13 @@ def berkus_valuation(
         ],
         chapter="3",
         formula_number="3.2",
+        steps=[
+            {
+                "label": "Total milestone value (Σ vᵢ)",
+                "value": valuation,
+                "formula": "V = \\sum_{i=1}^{5} \\text{Value}_i",
+            },
+        ],
     )
 
 
@@ -245,6 +264,18 @@ def risk_factor_summation(
         ],
         chapter="3",
         formula_number="3.3",
+        steps=[
+            {
+                "label": "Total risk adjustment (Σ rᵢ × unit)",
+                "value": total_adjustment,
+                "formula": "\\sum_{i=1}^{12} r_i \\times \\text{adjustment\\_per\\_unit}",
+            },
+            {
+                "label": "Adjusted valuation",
+                "value": valuation,
+                "formula": "V = V_{base} + \\sum_{i=1}^{12} r_i \\times \\text{adjustment\\_per\\_unit}",
+            },
+        ],
     )
 
 
@@ -307,6 +338,13 @@ def vc_method_post_money(
         ],
         chapter="3",
         formula_number="3.4",
+        steps=[
+            {
+                "label": "Post-money valuation (TV ÷ target return)",
+                "value": post_money,
+                "formula": "V_{post} = \\frac{\\text{Terminal Value}}{\\text{Target Return}}",
+            },
+        ],
     )
 
 
@@ -353,6 +391,13 @@ def vc_method_pre_money(
         assumptions=["Investment amount is accurate"],
         chapter="3",
         formula_number="3.4",
+        steps=[
+            {
+                "label": "Pre-money valuation (post-money − investment)",
+                "value": pre_money,
+                "formula": "V_{pre} = V_{post} - \\text{Investment}",
+            },
+        ],
     )
 
 
@@ -400,4 +445,11 @@ def terminal_value_multiple(
         assumptions=["Multiple is from comparable exits", "Revenue projection is achievable"],
         chapter="3",
         formula_number="3.4",
+        steps=[
+            {
+                "label": "Terminal value (revenue × multiple)",
+                "value": tv,
+                "formula": "\\text{TV} = \\text{Revenue} \\times \\text{Multiple}",
+            },
+        ],
     )

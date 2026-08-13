@@ -79,9 +79,10 @@ export async function getAuditLogForRun(valuationRunId: string): Promise<AuditLo
 
 export async function getAuditLogsForUser(userId: string, limit = 50): Promise<AuditLog[]> {
   const db = await getDb();
+  const rawId = userId.startsWith("user:") ? userId.slice(5) : userId;
   const [result] = await db.query<[AuditLog[]]>(
-    `SELECT * FROM ${TABLES.AUDIT_LOG} WHERE user = $userId ORDER BY created_at DESC LIMIT $limit`,
-    { userId, limit },
+    `SELECT * FROM ${TABLES.AUDIT_LOG} WHERE user = type::record('user', $userId) ORDER BY created_at DESC LIMIT $limit`,
+    { userId: rawId, limit },
   );
   return result;
 }

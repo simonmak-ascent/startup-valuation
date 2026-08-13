@@ -6,8 +6,8 @@ export const berkusConfig: MethodConfig = {
   category: "Core",
   description:
     "Value a very early-stage (idea to prototype) startup by scoring 5 key risk factors, each worth up to $500K (max $2.5M).",
-  textbookChapter: "Chapter 5: Berkus Method",
-  formulaNumber: "core.berkus_valuation",
+  textbookChapter: "Chapter 3: Berkus Method",
+  formulaNumber: "3.2",
   methodName: "berkus",
   inputs: [
     {
@@ -54,8 +54,8 @@ export const vcPreMoneyConfig: MethodConfig = {
   category: "Core",
   description:
     "Determine pre-money valuation by subtracting the investment amount from the post-money valuation.",
-  textbookChapter: "Chapter 4: Venture Capital Method",
-  formulaNumber: "core.vc_method_pre_money",
+  textbookChapter: "Chapter 3: Venture Capital Method",
+  formulaNumber: "3.4",
   methodName: "vc_pre_money",
   inputs: [
     {
@@ -74,8 +74,8 @@ export const terminalValueConfig: MethodConfig = {
   category: "Core",
   description:
     "Estimate terminal value by multiplying projected revenue by an industry exit multiple.",
-  textbookChapter: "Chapter 2: Valuation Foundations",
-  formulaNumber: "core.terminal_value_multiple",
+  textbookChapter: "Chapter 3: Venture Capital Method",
+  formulaNumber: "3.4",
   methodName: "terminal_value",
   inputs: [
     {

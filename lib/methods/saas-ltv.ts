@@ -6,8 +6,8 @@ export const saasLtvConfig: MethodConfig = {
   category: "Industry",
   description:
     "Calculate the Lifetime Value of a SaaS customer based on Average Revenue Per User (ARPU), gross margin, and monthly churn rate.",
-  textbookChapter: "Chapter 10: SaaS Valuation Metrics",
-  formulaNumber: "10.3",
+  textbookChapter: "Chapter 11: SaaS Valuation Metrics",
+  formulaNumber: "11.2",
   methodName: "saas_ltv",
   inputs: [
     {

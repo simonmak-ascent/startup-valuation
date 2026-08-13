@@ -5,8 +5,8 @@ export const saasCacConfig: MethodConfig = {
   name: "SaaS CAC (Customer Acquisition Cost)",
   category: "Industry",
   description: "Customer Acquisition Cost = Sales & Marketing Expense ÷ New Customers acquired.",
-  textbookChapter: "Chapter 10: SaaS Valuation Metrics",
-  formulaNumber: "saas.cac",
+  textbookChapter: "Chapter 11: SaaS Valuation Metrics",
+  formulaNumber: "11.2",
   methodName: "saas_cac",
   inputs: [
     {
@@ -23,8 +23,8 @@ export const saasNrrConfig: MethodConfig = {
   name: "SaaS NRR (Net Revenue Retention)",
   category: "Industry",
   description: "Net Revenue Retention accounts for expansion within the existing customer base.",
-  textbookChapter: "Chapter 10: SaaS Valuation Metrics",
-  formulaNumber: "saas.net_revenue_retention",
+  textbookChapter: "Chapter 11: SaaS Valuation Metrics",
+  formulaNumber: "11.3",
   methodName: "saas_nrr",
   inputs: [
     {
@@ -49,8 +49,8 @@ export const saasMagicNumberConfig: MethodConfig = {
   category: "Industry",
   description:
     "Magic Number = Net New ARR ÷ Prior-Quarter Sales & Marketing expense. >0.75 is efficient growth.",
-  textbookChapter: "Chapter 10: SaaS Valuation Metrics",
-  formulaNumber: "saas.magic_number",
+  textbookChapter: "Chapter 11: SaaS Valuation Metrics",
+  formulaNumber: "11.4",
   methodName: "saas_magic_number",
   inputs: [
     { name: "net_new_arr", label: "Net New ARR ($)", type: "number", defaultValue: 400000 },
@@ -69,8 +69,8 @@ export const saasRuleOf40Config: MethodConfig = {
   category: "Industry",
   description:
     "Rule of 40 = Revenue Growth Rate + Profit Margin. ≥40% signals healthy balance of growth and profitability.",
-  textbookChapter: "Chapter 10: SaaS Valuation Metrics",
-  formulaNumber: "saas.rule_of_40",
+  textbookChapter: "Chapter 11: SaaS Valuation Metrics",
+  formulaNumber: "11.4",
   methodName: "saas_rule_of_40",
   inputs: [
     {
@@ -95,8 +95,8 @@ export const saasCacPaybackConfig: MethodConfig = {
   name: "SaaS CAC Payback Period",
   category: "Industry",
   description: "Months to recover CAC from a customer's monthly gross profit.",
-  textbookChapter: "Chapter 10: SaaS Valuation Metrics",
-  formulaNumber: "saas.cac_payback_period",
+  textbookChapter: "Chapter 11: SaaS Valuation Metrics",
+  formulaNumber: "11.2",
   methodName: "saas_cac_payback",
   inputs: [
     { name: "cac", label: "CAC ($)", type: "number", defaultValue: 1000 },
@@ -123,8 +123,8 @@ export const saasRevenueMultipleConfig: MethodConfig = {
   name: "SaaS Revenue Multiple Valuation",
   category: "Industry",
   description: "Valuation = ARR × Market Revenue Multiple (SaaS typically 5–15x ARR).",
-  textbookChapter: "Chapter 10: SaaS Valuation Metrics",
-  formulaNumber: "saas.saas_revenue_multiple_valuation",
+  textbookChapter: "Chapter 11: SaaS Valuation Metrics",
+  formulaNumber: "11.5",
   methodName: "saas_revenue_multiple",
   inputs: [
     { name: "arr", label: "ARR ($)", type: "number", defaultValue: 5000000 },

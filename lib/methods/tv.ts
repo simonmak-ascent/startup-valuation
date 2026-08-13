@@ -6,7 +6,7 @@ export const presentValueConfig: MethodConfig = {
   category: "Foundation",
   description: "PV = FV ÷ (1 + r)^n — discount a future cash flow to today.",
   textbookChapter: "Chapter 2: Valuation Foundations",
-  formulaNumber: "tv.present_value",
+  formulaNumber: "2.2",
   methodName: "present_value",
   inputs: [
     { name: "future_value", label: "Future Value ($)", type: "number", defaultValue: 1000000 },
@@ -27,7 +27,7 @@ export const annuityConfig: MethodConfig = {
   category: "Foundation",
   description: "PV of a series of equal periodic payments.",
   textbookChapter: "Chapter 2: Valuation Foundations",
-  formulaNumber: "tv.annuity_present_value",
+  formulaNumber: "2.4",
   methodName: "annuity",
   inputs: [
     { name: "payment", label: "Periodic Payment ($)", type: "number", defaultValue: 100000 },

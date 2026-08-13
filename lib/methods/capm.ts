@@ -6,7 +6,7 @@ export const capmConfig: MethodConfig = {
   category: "Foundation",
   description: "Cost of equity: E(R) = Rf + β × (Market Return − Rf). Returns a decimal rate.",
   textbookChapter: "Chapter 2: Valuation Foundations",
-  formulaNumber: "capm.capm",
+  formulaNumber: "2.5",
   methodName: "capm",
   inputs: [
     {
@@ -34,7 +34,7 @@ export const startupCapmConfig: MethodConfig = {
   description:
     "Adds size premium and illiquidity premium to the base CAPM for early-stage companies.",
   textbookChapter: "Chapter 2: Valuation Foundations",
-  formulaNumber: "capm.startup_adjusted_capm",
+  formulaNumber: "2.7",
   methodName: "startup_capm",
   inputs: [
     {

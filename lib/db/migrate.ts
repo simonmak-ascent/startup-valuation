@@ -209,6 +209,46 @@ export async function migrate(): Promise<void> {
     DEFINE FIELD created_at ON ${TABLES.ETL_RUN} TYPE datetime DEFAULT time::now();
     DEFINE INDEX idx_etl_job ON ${TABLES.ETL_RUN} COLUMNS job_name, started_at;
   `);
+
+  await db.query(`
+    DEFINE TABLE ${TABLES.SUBSCRIPTION} SCHEMAFULL;
+    DEFINE FIELD user_id ON ${TABLES.SUBSCRIPTION} TYPE string;
+    DEFINE FIELD stripe_subscription_id ON ${TABLES.SUBSCRIPTION} TYPE string;
+    DEFINE FIELD stripe_customer_id ON ${TABLES.SUBSCRIPTION} TYPE string;
+    DEFINE FIELD tier ON ${TABLES.SUBSCRIPTION} TYPE string DEFAULT 'free';
+    DEFINE FIELD status ON ${TABLES.SUBSCRIPTION} TYPE string;
+    DEFINE FIELD current_period_end ON ${TABLES.SUBSCRIPTION} TYPE option<datetime>;
+    DEFINE FIELD created_at ON ${TABLES.SUBSCRIPTION} TYPE datetime DEFAULT time::now();
+    DEFINE FIELD updated_at ON ${TABLES.SUBSCRIPTION} TYPE option<datetime>;
+    DEFINE INDEX idx_subscription_stripe ON ${TABLES.SUBSCRIPTION} COLUMNS stripe_subscription_id UNIQUE;
+    DEFINE INDEX idx_subscription_user ON ${TABLES.SUBSCRIPTION} COLUMNS user_id;
+  `);
+
+  await db.query(`
+    DEFINE TABLE ${TABLES.PAYMENT_EVENT} SCHEMAFULL;
+    DEFINE FIELD stripe_event_id ON ${TABLES.PAYMENT_EVENT} TYPE string;
+    DEFINE FIELD type ON ${TABLES.PAYMENT_EVENT} TYPE string;
+    DEFINE FIELD payload ON ${TABLES.PAYMENT_EVENT} TYPE string;
+    DEFINE FIELD processed_at ON ${TABLES.PAYMENT_EVENT} TYPE datetime DEFAULT time::now();
+    DEFINE INDEX idx_payment_event_stripe ON ${TABLES.PAYMENT_EVENT} COLUMNS stripe_event_id UNIQUE;
+  `);
+
+  await db.query(`
+    DEFINE EVENT payment_event_immutable ON TABLE ${TABLES.PAYMENT_EVENT}
+      WHEN $event = "UPDATE" OR $event = "DELETE" THEN
+        THROW "payment_event is append-only";
+  `);
+
+  await db.query(`
+    DEFINE TABLE ${TABLES.LEGAL_DOCUMENT} SCHEMAFULL;
+    DEFINE FIELD slug ON ${TABLES.LEGAL_DOCUMENT} TYPE string;
+    DEFINE FIELD version ON ${TABLES.LEGAL_DOCUMENT} TYPE string;
+    DEFINE FIELD title ON ${TABLES.LEGAL_DOCUMENT} TYPE string;
+    DEFINE FIELD body ON ${TABLES.LEGAL_DOCUMENT} TYPE string;
+    DEFINE FIELD content_hash ON ${TABLES.LEGAL_DOCUMENT} TYPE string;
+    DEFINE FIELD published_at ON ${TABLES.LEGAL_DOCUMENT} TYPE datetime DEFAULT time::now();
+    DEFINE INDEX idx_legal_slug ON ${TABLES.LEGAL_DOCUMENT} COLUMNS slug, version UNIQUE;
+  `);
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

@@ -17,6 +17,23 @@ from startup_valuation import capm, comparables, core, marketplace, probability,
 LIBRARY_VERSION = "1.0.2"
 _AVAILABLE_METHODS: list[str] = []
 
+# In-memory sliding-window rate limiter (per warm Vercel instance).
+_RATE_BUCKETS: dict[str, list[float]] = {}
+_RATE_LIMIT = 60
+_RATE_WINDOW_S = 60.0
+
+
+def _rate_limited(key: str) -> bool:
+    now = _time.time()
+    window_start = now - _RATE_WINDOW_S
+    timestamps = [t for t in _RATE_BUCKETS.get(key, []) if t > window_start]
+    if len(timestamps) >= _RATE_LIMIT:
+        _RATE_BUCKETS[key] = timestamps
+        return True
+    timestamps.append(now)
+    _RATE_BUCKETS[key] = timestamps
+    return False
+
 
 def _unwrap(r):
     return {
@@ -169,6 +186,9 @@ def handle_request(http_method, _path, body_raw):
     body = _json.loads(body_raw) if body_raw else {}
     method = body.get("method", "")
     params = body.get("params", {})
+
+    if _rate_limited("calculate"):
+        return _error(429, "RATE_LIMITED", "Too many requests. Please try again later.")
 
     if not method:
         return _error(400, "VALIDATION_ERROR", "method is required")
