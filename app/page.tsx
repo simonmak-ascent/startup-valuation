@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getAllMethods } from "@/lib/methods";
+import { OpenSourceBadge } from "@/components/OpenSourceBadge";
 
 const methods = getAllMethods().map((m) => ({
   name: m.name,
@@ -61,6 +62,9 @@ export default function HomePage() {
         <div className="inline-flex items-center gap-2 bg-green-50 text-green-700 border border-green-200 px-5 py-2.5 rounded-full font-semibold mb-6">
           <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" />
           API Online — v1.0.2 — 45+ MCP Tools
+        </div>
+        <div className="flex justify-center mb-6">
+          <OpenSourceBadge />
         </div>
         <div className="flex gap-4 justify-center flex-wrap">
           <Link href="/methods/scorecard" className="btn-primary">

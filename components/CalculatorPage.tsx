@@ -7,6 +7,7 @@ import { ResultPanel } from "./ResultPanel";
 import { StepsPanel } from "./StepsPanel";
 import { SensitivitySliders } from "./SensitivitySliders";
 import { SourcesSection } from "./SourcesSection";
+import { OpenSourceBadge } from "./OpenSourceBadge";
 
 interface CalculatorPageProps {
   slug: string;
@@ -119,6 +120,9 @@ export function CalculatorPage({ slug }: CalculatorPageProps) {
           <span className="inline-block bg-amber-50 text-amber-700 px-2.5 py-0.5 rounded-xl text-xs font-medium">
             Formula {config.formulaNumber}
           </span>
+        </div>
+        <div className="mb-4">
+          <OpenSourceBadge compact />
         </div>
         <p className="text-muted text-lg">{config.description}</p>
       </div>
