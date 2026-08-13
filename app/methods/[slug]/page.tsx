@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CalculatorPage } from "@/components/CalculatorPage";
 import { getMethodBySlug, getAllMethods } from "@/lib/methods";
+import { buildHowToJsonLd } from "@/lib/seo";
 
 interface MethodPageProps {
   params: Promise<{ slug: string }>;
@@ -23,6 +24,12 @@ export async function generateMetadata({ params }: MethodPageProps): Promise<Met
       title: `${method.name} — Startup Valuation Calculator`,
       description: method.description,
       url: `https://startup-valuation.simonmak.com/methods/${slug}`,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${method.name} — Startup Valuation Calculator`,
+      description: method.description,
     },
     alternates: {
       canonical: `https://startup-valuation.simonmak.com/methods/${slug}`,
@@ -38,5 +45,13 @@ export default async function MethodPage({ params }: MethodPageProps) {
     notFound();
   }
 
-  return <CalculatorPage slug={slug} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildHowToJsonLd(method)) }}
+      />
+      <CalculatorPage slug={slug} />
+    </>
+  );
 }
