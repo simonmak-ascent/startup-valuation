@@ -143,7 +143,7 @@ export async function GET(request: Request) {
     id: run.id,
   });
 
-  return new NextResponse(pdfBytes, {
+  return new NextResponse(pdfBytes as unknown as BodyInit, {
     headers: {
       "Content-Type": "application/pdf",
       "Content-Disposition": `attachment; filename="valuation-report-${runId.replace(/\W/g, "")}.pdf"`,
