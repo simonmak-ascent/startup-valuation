@@ -35,7 +35,7 @@ export async function importMethods(): Promise<{ imported: number; rejected: num
       name: m.name,
       slug: m.slug,
       module: moduleName ?? "",
-      function: functionName ?? m.methodName,
+      function_name: functionName ?? m.methodName,
       category: m.category,
       description: m.description,
       inputs_schema: inputsSchema,

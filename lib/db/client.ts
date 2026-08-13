@@ -37,11 +37,11 @@ async function createConnection(): Promise<Surreal> {
     await db.connect(config.url, {
       namespace: config.namespace,
       database: config.database,
-      auth: { username: config.user, password: config.password },
+      authentication: { username: config.user, password: config.password },
     });
     return db;
   } catch (error) {
-    await db.close();
+    await db.close().catch(() => undefined);
     throw error;
   }
 }

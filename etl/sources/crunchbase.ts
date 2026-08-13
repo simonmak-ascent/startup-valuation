@@ -42,7 +42,7 @@ export async function importCrunchbase(filePath = "etl/data/crunchbase.csv") {
         `CREATE valuation_event CONTENT {
           company: $company,
           valuation_amount: $amount,
-          valuation_date: $date,
+          valuation_date: time::from::iso8601($date),
           event_type: $event_type,
           stage: $stage,
           currency: $currency,

@@ -27,7 +27,7 @@ export async function migrate(): Promise<void> {
     DEFINE FIELD name ON ${TABLES.METHOD} TYPE string;
     DEFINE FIELD slug ON ${TABLES.METHOD} TYPE string;
     DEFINE FIELD module ON ${TABLES.METHOD} TYPE string;
-    DEFINE FIELD function ON ${TABLES.METHOD} TYPE string;
+    DEFINE FIELD function_name ON ${TABLES.METHOD} TYPE string;
     DEFINE FIELD category ON ${TABLES.METHOD} TYPE string;
     DEFINE FIELD description ON ${TABLES.METHOD} TYPE string;
     DEFINE FIELD inputs_schema ON ${TABLES.METHOD} TYPE object;

@@ -41,7 +41,7 @@ export interface Method {
   name: string;
   slug: string;
   module: string;
-  function: string;
+  function_name: string;
   category: string;
   description: string;
   inputs_schema: Record<string, unknown>;

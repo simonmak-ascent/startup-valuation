@@ -23,7 +23,7 @@ export async function importDamodaran(filePath = "etl/data/damodaran.csv") {
           name: $name,
           value: $value,
           unit: $unit,
-          valid_from: $valid_from,
+          valid_from: time::from::iso8601($valid_from),
           source_url: $source_url,
           source_name: $source_name,
           source_retrieved_at: $source_retrieved_at,

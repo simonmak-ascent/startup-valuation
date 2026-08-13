@@ -48,7 +48,7 @@ export async function importPublicData(): Promise<void> {
       records_imported: $imported,
       records_rejected: $rejected,
       errors: $errors,
-      started_at: $started_at,
+      started_at: time::from::iso8601($started_at),
       completed_at: time::now(),
       created_at: time::now()
     }`,

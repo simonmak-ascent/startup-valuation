@@ -59,7 +59,7 @@ export async function importSecEdgar(filePath = "etl/data/sec-edgar.csv") {
             metric_value: $metric_value,
             unit: $unit,
             period: $period,
-            filing_date: $filing_date,
+            filing_date: time::from::iso8601($filing_date),
             source_url: $source_url,
             source_name: $source_name,
             source_retrieved_at: $source_retrieved_at,

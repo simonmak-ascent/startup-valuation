@@ -44,3 +44,6 @@ next-env.d.ts
 
 # TypeScript
 tsconfig.tsbuildinfo
+
+# SurrealDB CLI history
+history.txt
