@@ -9,12 +9,7 @@ export const peRatioConfig: MethodConfig = {
   formulaNumber: "5",
   methodName: "pe_ratio",
   inputs: [
-    {
-      name: "market_cap",
-      label: "Market Capitalization ($)",
-      type: "number",
-      defaultValue: 500000000,
-    },
+    { name: "market_cap", label: "Market Capitalization ($)", type: "number", defaultValue: 500000000 },
     { name: "net_income", label: "Net Income ($)", type: "number", defaultValue: 25000000 },
   ],
 };
@@ -28,12 +23,7 @@ export const psRatioConfig: MethodConfig = {
   formulaNumber: "5",
   methodName: "ps_ratio",
   inputs: [
-    {
-      name: "market_cap",
-      label: "Market Capitalization ($)",
-      type: "number",
-      defaultValue: 1000000000,
-    },
+    { name: "market_cap", label: "Market Capitalization ($)", type: "number", defaultValue: 1000000000 },
     { name: "revenue", label: "Revenue ($)", type: "number", defaultValue: 100000000 },
   ],
 };
@@ -47,12 +37,7 @@ export const evEbitdaConfig: MethodConfig = {
   formulaNumber: "5",
   methodName: "ev_ebitda",
   inputs: [
-    {
-      name: "enterprise_value",
-      label: "Enterprise Value ($)",
-      type: "number",
-      defaultValue: 500000000,
-    },
+    { name: "enterprise_value", label: "Enterprise Value ($)", type: "number", defaultValue: 500000000 },
     { name: "ebitda", label: "EBITDA ($)", type: "number", defaultValue: 50000000 },
   ],
 };
@@ -66,12 +51,7 @@ export const evRevenueConfig: MethodConfig = {
   formulaNumber: "5",
   methodName: "ev_revenue",
   inputs: [
-    {
-      name: "enterprise_value",
-      label: "Enterprise Value ($)",
-      type: "number",
-      defaultValue: 500000000,
-    },
+    { name: "enterprise_value", label: "Enterprise Value ($)", type: "number", defaultValue: 500000000 },
     { name: "revenue", label: "Revenue ($)", type: "number", defaultValue: 100000000 },
   ],
 };

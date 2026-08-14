@@ -1,0 +1,43 @@
+name: Deploy Canary
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  canary:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for Vercel production deploy
+        run: |
+          echo "Waiting up to 8 minutes for the production deploy to become healthy..."
+          for i in $(seq 1 32); do
+            code=$(curl -s -o /dev/null -w "%{http_code}" https://startup-valuation.simonmak.com/ || echo "000")
+            if [ "$code" = "200" ]; then
+              echo "Home 200 after ${i}x15s"
+              exit 0
+            fi
+            echo "attempt $i: home returned $code — waiting 15s"
+            sleep 15
+          done
+          echo "Timed out waiting for production deploy"
+          exit 1
+
+      - name: Health endpoint
+        run: |
+          curl -sf https://startup-valuation.simonmak.com/api/health || (echo "health failed" && exit 1)
+
+      - name: Calculator canary (scorecard)
+        run: |
+          body=$(curl -sf -X POST https://startup-valuation.simonmak.com/api/calculate \
+            -H "Content-Type: application/json" \
+            -d '{"method":"scorecard","params":{"average_valuation":1500000,"weights":[0.3,0.25,0.15,0.1,0.1,0.05,0.05],"scores":[1.25,1.5,1.2,0.75,1.0,0.9,1.0]}}')
+          echo "$body"
+          echo "$body" | grep -q '"value"' || (echo "calculator canary failed: no value in response" && exit 1)

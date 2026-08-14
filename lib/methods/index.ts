@@ -1,31 +1,28 @@
 import type { MethodConfig } from "../valuation/types";
-import { scorecardConfig } from "./scorecard";
-import { vcMethodConfig } from "./vc-method";
-import { saasLtvConfig } from "./saas-ltv";
-import { berkusConfig, vcPreMoneyConfig, terminalValueConfig } from "./core";
-import {
-  saasCacConfig,
-  saasNrrConfig,
-  saasMagicNumberConfig,
-  saasRuleOf40Config,
-  saasCacPaybackConfig,
-  saasRevenueMultipleConfig,
-} from "./saas";
-import { peRatioConfig, psRatioConfig, evEbitdaConfig, evRevenueConfig } from "./comparables";
 import { capmConfig, startupCapmConfig } from "./capm";
-import { presentValueConfig, annuityConfig } from "./tv";
-import { poissonConfig } from "./probability";
-import { dilutionConfig, commonDiscountConfig, opmConfig, ventureDebtConfig } from "./stakeholders";
+import { peRatioConfig, psRatioConfig, evEbitdaConfig, evRevenueConfig } from "./comparables";
+import { scorecardConfig, berkusConfig, vcMethodConfig, vcPreMoneyConfig, terminalValueConfig } from "./core";
 import { gmvMultipleConfig, networkValueConfig } from "./marketplace";
+import { poissonConfig } from "./probability";
+import { saasLtvConfig, saasCacConfig, saasNrrConfig, saasMagicNumberConfig, saasRuleOf40Config, saasCacPaybackConfig, saasRevenueMultipleConfig } from "./saas";
+import { dilutionConfig, commonDiscountConfig, opmConfig, ventureDebtConfig } from "./stakeholders";
+import { presentValueConfig, annuityConfig } from "./tv";
 
 const methodConfigs: MethodConfig[] = [
-  // Core
+  capmConfig,
+  startupCapmConfig,
+  peRatioConfig,
+  psRatioConfig,
+  evEbitdaConfig,
+  evRevenueConfig,
   scorecardConfig,
   berkusConfig,
   vcMethodConfig,
   vcPreMoneyConfig,
   terminalValueConfig,
-  // SaaS
+  gmvMultipleConfig,
+  networkValueConfig,
+  poissonConfig,
   saasLtvConfig,
   saasCacConfig,
   saasNrrConfig,
@@ -33,25 +30,12 @@ const methodConfigs: MethodConfig[] = [
   saasRuleOf40Config,
   saasCacPaybackConfig,
   saasRevenueMultipleConfig,
-  // Comparables
-  peRatioConfig,
-  psRatioConfig,
-  evEbitdaConfig,
-  evRevenueConfig,
-  // CAPM / TV / Probability
-  capmConfig,
-  startupCapmConfig,
-  presentValueConfig,
-  annuityConfig,
-  poissonConfig,
-  // Stakeholders
   dilutionConfig,
   commonDiscountConfig,
   opmConfig,
   ventureDebtConfig,
-  // Marketplace / Emerging
-  gmvMultipleConfig,
-  networkValueConfig,
+  presentValueConfig,
+  annuityConfig,
 ];
 
 export function getAllMethods(): MethodConfig[] {

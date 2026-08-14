@@ -1,12 +1,5 @@
-import { buildSystemPrompt } from "./prompts";
-
 const DEEPSEEK_URL = "https://api.deepseek.com/chat/completions";
 const MODEL = "deepseek-chat";
-
-export interface AdvisorResponse {
-  text: string;
-  error?: string;
-}
 
 /**
  * DeepSeek LLM client — OpenAI-compatible chat completions. Temperature 0.1 for
@@ -44,17 +37,4 @@ export async function chatCompletion(
   };
 
   return data.choices?.[0]?.message?.content ?? "";
-}
-
-/** One-shot valuation advisor: recommend methods for a natural-language query. */
-export async function analyzeValuation(query: string): Promise<AdvisorResponse> {
-  try {
-    const text = await chatCompletion([
-      { role: "system", content: buildSystemPrompt() },
-      { role: "user", content: query },
-    ]);
-    return { text };
-  } catch (e) {
-    return { text: "", error: (e as Error).message };
-  }
 }

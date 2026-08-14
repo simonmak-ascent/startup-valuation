@@ -10,13 +10,7 @@ export const presentValueConfig: MethodConfig = {
   methodName: "present_value",
   inputs: [
     { name: "future_value", label: "Future Value ($)", type: "number", defaultValue: 1000000 },
-    {
-      name: "rate",
-      label: "Discount Rate (decimal)",
-      type: "number",
-      defaultValue: 0.1,
-      step: 0.01,
-    },
+    { name: "rate", label: "Discount Rate (decimal)", type: "number", defaultValue: 0.1, step: 0.01 },
     { name: "periods", label: "Periods (years)", type: "number", defaultValue: 5, min: 0 },
   ],
 };
@@ -31,13 +25,7 @@ export const annuityConfig: MethodConfig = {
   methodName: "annuity",
   inputs: [
     { name: "payment", label: "Periodic Payment ($)", type: "number", defaultValue: 100000 },
-    {
-      name: "rate",
-      label: "Discount Rate (decimal)",
-      type: "number",
-      defaultValue: 0.08,
-      step: 0.01,
-    },
+    { name: "rate", label: "Discount Rate (decimal)", type: "number", defaultValue: 0.08, step: 0.01 },
     { name: "periods", label: "Number of Periods", type: "number", defaultValue: 10, min: 1 },
   ],
 };

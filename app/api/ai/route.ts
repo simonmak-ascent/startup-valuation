@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { analyzeValuation } from "@/lib/ai/deepseek";
+import { analyzeValuationOrchestrated } from "@/lib/ai/orchestrator";
 
 export const dynamic = "force-dynamic";
 
@@ -20,10 +20,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Query too long (max 2000 chars)" }, { status: 400 });
   }
 
-  const result = await analyzeValuation(query);
+  const result = await analyzeValuationOrchestrated(query);
   if (result.error) {
     return NextResponse.json({ error: result.error }, { status: 502 });
   }
 
-  return NextResponse.json({ text: result.text });
+  return NextResponse.json({ text: result.text, recommendations: result.recommendations });
 }

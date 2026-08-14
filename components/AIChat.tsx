@@ -2,24 +2,20 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { getAllMethods } from "@/lib/methods";
 import { AI_DISCLAIMER } from "@/lib/ai/prompts";
+
+interface Citation {
+  slug: string;
+  name: string;
+  chapter: string;
+  formulaNumber: string;
+  description: string;
+}
 
 interface Message {
   role: "user" | "assistant";
   content: string;
-}
-
-const methodSlugs = new Set(getAllMethods().map((m) => m.slug));
-
-function extractMethodLinks(text: string): string[] {
-  const found = new Set<string>();
-  for (const slug of methodSlugs) {
-    if (text.toLowerCase().includes(slug.replace(/-/g, " ").toLowerCase())) {
-      found.add(slug);
-    }
-  }
-  return [...found];
+  recommendations?: Citation[];
 }
 
 export function AIChat() {
@@ -40,9 +36,20 @@ export function AIChat() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query }),
       });
-      const data = await res.json();
+      const data = (await res.json()) as {
+        text?: string;
+        recommendations?: Citation[];
+        error?: string;
+      };
       if (!res.ok) throw new Error(data.error ?? "AI request failed");
-      setMessages((m) => [...m, { role: "assistant", content: data.text }]);
+      setMessages((m) => [
+        ...m,
+        {
+          role: "assistant",
+          content: data.text ?? "",
+          recommendations: data.recommendations ?? [],
+        },
+      ]);
     } catch (e) {
       setMessages((m) => [...m, { role: "assistant", content: `Error: ${(e as Error).message}` }]);
     } finally {
@@ -75,15 +82,18 @@ export function AIChat() {
               {m.role === "user" ? "You" : "Advisor"}
             </div>
             <div className="text-sm whitespace-pre-wrap">{m.content}</div>
-            {m.role === "assistant" && (
-              <div className="mt-3 flex flex-wrap gap-2">
-                {extractMethodLinks(m.content).map((slug) => (
+            {m.role === "assistant" && (m.recommendations?.length ?? 0) > 0 && (
+              <div className="mt-3 flex flex-col gap-2">
+                {m.recommendations!.map((r) => (
                   <Link
-                    key={slug}
-                    href={`/methods/${slug}`}
-                    className="inline-block bg-brand text-white px-3 py-1 rounded-full text-xs font-medium hover:no-underline"
+                    key={r.slug}
+                    href={`/methods/${r.slug}`}
+                    className="inline-flex items-center gap-2 bg-brand text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:no-underline"
                   >
-                    Run {slug.replace(/-/g, " ")} valuation →
+                    <span>Run {r.name} →</span>
+                    <span className="opacity-80">
+                      {r.chapter} · Formula {r.formulaNumber}
+                    </span>
                   </Link>
                 ))}
               </div>
