@@ -11,6 +11,7 @@ import NextAuth from "next-auth";
  * lib/auth/vendor/config.ts createAuthConfig().
  */
 export const { auth: edgeAuth } = NextAuth({
+  providers: [],
   secret: process.env.AUTH_SECRET,
   session: { strategy: "jwt" },
   pages: { signIn: "/sign-in" },
