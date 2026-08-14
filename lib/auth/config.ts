@@ -1,10 +1,11 @@
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
-import { createAuthConfig } from "@simonplmak-cloud/auth";
+import { createAuthConfig } from "./vendor";
 
 /**
- * startup-valuation site auth — built on the shared `@simonplmak-cloud/auth`
- * package (SurrealDB 3.x identity store + Auth.js v5).
+ * startup-valuation site auth — built on the vendored `@simonplmak-cloud/auth`
+ * package (SurrealDB 3.x identity store + Auth.js v5), inlined under
+ * `./vendor` to remove the private GitHub Packages registry dependency.
  *
  * Email/password credentials come from the shared config factory (bcrypt-hashed
  * passwords stored in the central `identity` database). GitHub OAuth is added

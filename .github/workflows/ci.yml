@@ -55,10 +55,6 @@ jobs:
     permissions:
       contents: read
     runs-on: ubuntu-latest
-    # Gate on NPM_TOKEN (private @simonplmak-cloud/auth registry). Add it as a
-    # GitHub Actions secret to enable the TypeScript + vitest quality gate.
-    env:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
@@ -70,12 +66,14 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Install + type-check + unit tests
-        if: env.NPM_TOKEN != ''
-        run: |
-          pnpm install --no-frozen-lockfile
-          pnpm check
-          pnpm test
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Type check (tsc)
+        run: pnpm check
+
+      - name: Unit tests (vitest)
+        run: pnpm test
 
   build:
     permissions:
