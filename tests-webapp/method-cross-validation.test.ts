@@ -35,11 +35,11 @@ describe("method registry cross-validation", () => {
   });
 
   it("flagship methods have correct formula numbers", () => {
-    const bySlug = Object.fromEntries(methods.map((m) => [m.slug, m]));
-    expect(bySlug.scorecard.formulaNumber).toBe("3.1");
-    expect(bySlug.berkus.formulaNumber).toBe("3.2");
-    expect(bySlug["vc-method"].formulaNumber).toBe("3.4");
-    expect(bySlug["saas-ltv"].formulaNumber).toBe("11.2");
-    expect(bySlug.capm.formulaNumber).toBe("2.5");
+    const bySlug = new Map(methods.map((m) => [m.slug, m]));
+    expect(bySlug.get("scorecard")!.formulaNumber).toBe("3.1");
+    expect(bySlug.get("berkus")!.formulaNumber).toBe("3.2");
+    expect(bySlug.get("vc-method")!.formulaNumber).toBe("3.4");
+    expect(bySlug.get("saas-ltv")!.formulaNumber).toBe("11.2");
+    expect(bySlug.get("capm")!.formulaNumber).toBe("2.5");
   });
 });
