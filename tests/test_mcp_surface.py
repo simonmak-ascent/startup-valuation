@@ -88,6 +88,16 @@ def test_method_enum_matches_input_schema():
             pytest.approx(1000.0),
         ),
         (
+            "valuation_time_value",
+            {"method": "compound_growth", "starting_value": 1_000_000, "growth_rate": 0.4, "periods": 3},
+            pytest.approx(2_744_000.0),
+        ),
+        (
+            "valuation_time_value",
+            {"method": "cagr", "starting_value": 1_000_000, "ending_value": 2_744_000, "periods": 3},
+            pytest.approx(0.4, abs=1e-9),
+        ),
+        (
             "valuation_capm",
             {"method": "capm", "risk_free_rate": 0.04, "beta": 1.0, "market_return": 0.10},
             pytest.approx(0.10),

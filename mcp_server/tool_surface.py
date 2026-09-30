@@ -102,6 +102,14 @@ PARAMS: dict[str, dict[str, Any]] = {
         "description": "Cash flows by period, first element at t=1; negatives allowed for outflows.",
     },
     "payment": {"type": "number", "description": "Recurring payment per period, in currency units."},
+    "starting_value": {
+        "type": "number",
+        "description": "Value at t=0 (revenue or cash flow) to grow forward, in currency units.",
+    },
+    "ending_value": {
+        "type": "number",
+        "description": "Value at t=n to compare against the starting value, in currency units.",
+    },
     # capm
     "risk_free_rate": {"type": "number", "description": "Risk-free rate as a decimal (e.g. 0.04 for 4%)."},
     "beta": {"type": "number", "description": "Systematic risk beta (market = 1.0)."},
@@ -363,7 +371,10 @@ TOOLS: list[dict[str, Any]] = [
             "flows use valuation_time_value. Parameters apply per method: expected_value_discrete and "
             "probability_weighted need outcomes + probabilities; portfolio_return needs weights + "
             "returns; poisson needs mean_events + k; expected_value_continuous needs lower + upper. "
-            "outcomes and probabilities must be equal length, and the probabilities should sum to 1."
+            "outcomes and probabilities must be equal length, and the probabilities should sum to 1. "
+            "Routing: use valuation_advanced method 'scenario_analysis' for named bull/base/bear "
+            "scenario tables, and its black_scholes/binomial methods for option pricing; use this tool "
+            "for arbitrary outcome lists and probability-weighted central estimates."
         ),
         "tags": ["probability", "expected-value", "risk"],
         "methods": [
@@ -421,15 +432,19 @@ TOOLS: list[dict[str, Any]] = [
         "name": "valuation_time_value",
         "title": "Time Value of Money",
         "description": (
-            "Discount future cash to present value: single future value PV, net present value of a "
-            "cash-flow stream, and annuity present value. Method selects the formula. Use to convert "
-            "any future cash flows to today's value; get the discount rate from valuation_capm or "
-            "valuation_international. Parameters apply per method: present_value needs future_value + "
-            "rate + periods; npv needs cash_flows + rate; annuity needs payment + rate + periods. Not for "
-            "option values (use valuation_advanced) or for expected values over outcomes (use "
-            "valuation_probability)."
+            "Discount, compound, and forecast value over time: single future value PV, net present "
+            "value of a cash-flow stream, annuity present value, constant-rate compound growth of "
+            "revenue or cash flow, and the implied compound annual growth rate (CAGR). Method selects "
+            "the formula. Use to convert future cash to today's value, to project a revenue or "
+            "cash-flow series forward, or to derive the growth rate implied by two values; get the "
+            "discount rate from valuation_capm or valuation_international. Parameters apply per method: "
+            "present_value needs future_value + rate + periods; npv needs cash_flows + rate; annuity "
+            "needs payment + rate + periods; compound_growth needs starting_value + growth_rate + "
+            "periods; cagr needs starting_value + ending_value + periods. growth_rate must be greater "
+            "than -1, and cagr requires starting_value > 0 and periods > 0. Not for option values (use "
+            "valuation_advanced) or for expected values over outcomes (use valuation_probability)."
         ),
-        "tags": ["dcf", "discounting", "time-value"],
+        "tags": ["dcf", "discounting", "time-value", "growth", "forecasting"],
         "methods": [
             {
                 "key": "present_value",
@@ -454,6 +469,30 @@ TOOLS: list[dict[str, Any]] = [
                 "module": "tv",
                 "function": "annuity_present_value",
                 "args": {"payment": "payment", "rate": "rate", "periods": "periods"},
+            },
+            {
+                "key": "compound_growth",
+                "label": "Compound growth",
+                "summary": "V_n = V_0 (1+g)^n.",
+                "module": "growth",
+                "function": "compound_growth",
+                "args": {
+                    "starting_value": "starting_value",
+                    "growth_rate": "growth_rate",
+                    "periods": "periods",
+                },
+            },
+            {
+                "key": "cagr",
+                "label": "Compound annual growth rate",
+                "summary": "CAGR = (V_n / V_0)^(1/n) - 1.",
+                "module": "growth",
+                "function": "compound_annual_growth_rate",
+                "args": {
+                    "starting_value": "starting_value",
+                    "ending_value": "ending_value",
+                    "periods": "periods",
+                },
             },
         ],
     },
@@ -512,7 +551,9 @@ TOOLS: list[dict[str, Any]] = [
             "base_valuation + risk_ratings; vc_post_money needs terminal_value + target_return; "
             "vc_pre_money needs post_money + investment; terminal_value needs projected_revenue + "
             "multiple; triangulated needs the scorecard inputs plus terminal_value/target_return/investment. "
-            "Not for public-comparable multiples — for those use valuation_comparables."
+            "Routing: for SAFEs, tokens, ESG, network effects, or data-moat methods use "
+            "valuation_emerging; for options or bull/base/bear scenario tables use valuation_advanced; "
+            "for public-comparable multiples use valuation_comparables."
         ),
         "tags": ["pre-revenue", "core", "scorecard", "berkus", "vc-method"],
         "methods": [
@@ -591,8 +632,9 @@ TOOLS: list[dict[str, Any]] = [
         "title": "Options & Scenario Analysis",
         "description": (
             "Advanced techniques: Black-Scholes call value, binomial-tree option value, and scenario "
-            "analysis. Method selects the technique. For a quick expected value over scenarios, prefer "
-            "valuation_probability with method 'probability_weighted'. Parameters apply per method: "
+            "analysis. Method selects the technique. For a quick expected value over arbitrary outcome "
+            "lists, prefer valuation_probability with method 'probability_weighted'; scenario_analysis "
+            "here is for explicit named bull/base/bear scenario tables. Parameters apply per method: "
             "black_scholes and binomial need underlying + strike + risk_free_rate + volatility + "
             "time_to_maturity (binomial adds steps); scenario_analysis needs scenarios. Not for plain "
             "discounted cash flow — for that use valuation_time_value."
@@ -1184,7 +1226,9 @@ TOOLS: list[dict[str, Any]] = [
             "investment + cap + discount + series_a_valuation + series_a_price; token_value needs "
             "transaction_volume + price_per_tx + velocity + supply; metcalfe needs n; esg_* need "
             "base_valuation + a score; data_moat needs data_volume + data_uniqueness + monetization_rate + "
-            "competitive_advantage_years. Not for classic pre-revenue methods — for those use valuation_core."
+            "competitive_advantage_years. Routing: for classic pre-revenue methods (Scorecard, Berkus, "
+            "Risk-Factor Summation, VC Method) use valuation_core; for options or scenario tables use "
+            "valuation_advanced; for public-comparable multiples use valuation_comparables."
         ),
         "tags": ["safe", "crypto", "esg", "network-effects", "data"],
         "methods": [
@@ -1335,18 +1379,18 @@ _TYPE_MAP: dict[str, dict[str, Any]] = {
 #: consequences beyond the structured hints.
 _RETURNS_NOTE = (
     " Returns an object with value, method, inputs, assumptions, chapter, formula_number and "
-    "calculation steps. It is a deterministic, side-effect-free computation: identical inputs always "
-    "return an identical value; no files or network resources are created, read, or destroyed; and no "
-    "authentication, credentials, or rate limits apply. Supplying an unknown method, or leaving unset "
-    "a parameter that the chosen method requires, returns an error instead of a value."
+    "calculation steps. Pure arithmetic: no I/O and no external calls, and numeric results are "
+    "returned rounded to 2 decimals. No authentication, credentials, or rate limits apply. "
+    "Supplying an unknown method, or leaving unset a parameter that the chosen method requires, "
+    "returns an error instead of a value."
 )
 
 
 #: Completeness clause: callers routinely need to know that only `method` is
 #: mandatory and the rest of the (large) parameter set is conditional.
 _PARAMS_NOTE = (
-    " Only method is required; every other parameter is method-dependent, so supply just the ones "
-    "named for the selected method and leave the rest unset."
+    " Only method is required; other parameters are method-dependent, so supply those named for the "
+    "selected method and omit the rest (documented defaults apply where defined)."
 )
 
 
