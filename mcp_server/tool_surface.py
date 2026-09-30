@@ -1321,6 +1321,22 @@ _TYPE_MAP: dict[str, dict[str, Any]] = {
 }
 
 
+#: Behavioural clause appended to every tool description. The annotation hints
+#: cover the safety profile; this covers *error* behaviour, which annotations and
+#: the output schema do not — the TDQS Behavioral Transparency dimension asks for
+#: consequences beyond the structured hints.
+_RETURNS_NOTE = (
+    " Returns an object with value, method, inputs, assumptions, chapter, formula_number and "
+    "calculation steps. Supplying an unknown method, or leaving unset a parameter that the chosen "
+    "method requires, returns an error instead of a value."
+)
+
+
+def describe(tool: dict[str, Any]) -> str:
+    """Full description as advertised to clients (base text + behavioural clause)."""
+    return tool["description"] + _RETURNS_NOTE
+
+
 def _param_schema(key: str) -> dict[str, Any]:
     spec = PARAMS[key]
     schema = dict(_TYPE_MAP[spec["type"]])
@@ -1361,7 +1377,7 @@ def tool_definition(tool: dict[str, Any]) -> dict[str, Any]:
     return {
         "name": tool["name"],
         "title": tool["title"],
-        "description": tool["description"],
+        "description": describe(tool),
         "inputSchema": input_schema(tool),
         "outputSchema": OUTPUT_SCHEMA,
         "annotations": COMMON_ANNOTATIONS,

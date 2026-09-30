@@ -63,7 +63,7 @@ def _emit_tool(tool: dict, lines: list[str]) -> None:
     lines.append("@mcp.tool(")
     lines.append(f"    name={name!r},")
     lines.append(f"    title={tool['title']!r},")
-    lines.append(f"    description={tool['description']!r},")
+    lines.append(f"    description={ts.describe(tool)!r},")
     lines.append("    output_schema=OUTPUT_SCHEMA,")
     lines.append("    annotations=COMMON_ANNOTATIONS,")
     lines.append(f"    tags={{{tags}}},")
