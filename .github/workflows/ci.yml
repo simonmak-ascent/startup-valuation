@@ -43,10 +43,12 @@ jobs:
       - name: Type check
         run: mypy src/startup_valuation --ignore-missing-imports
 
-      - name: Registry determinism gate
+      - name: Registry + MCP surface determinism gate
         run: |
           python scripts/generate.py
+          python scripts/generate_mcp.py
           git diff --exit-code -- lib/methods/ || (echo "lib/methods/*.ts are out of date; run 'python scripts/generate.py'." && exit 1)
+          git diff --exit-code -- mcp_server/server.py || (echo "mcp_server/server.py is out of date; run 'python scripts/generate_mcp.py'." && exit 1)
 
       - name: Run tests
         run: pytest --cov=startup_valuation --cov-report=term-missing --cov-fail-under=85 -v
