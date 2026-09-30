@@ -34,6 +34,9 @@ dependencies = [
 mcp = [
     "fastmcp>=0.1.0",
 ]
+sentry = [
+    "sentry-sdk>=1.40.0",
+]
 docs = [
     "mkdocs>=1.5.0",
     "mkdocstrings[python]>=0.24.0",
@@ -79,9 +82,16 @@ python_functions = "test_*"
 [tool.ruff]
 target-version = "py310"
 line-length = 120
+# Generated stdio server: emit from mcp_server/tool_surface.py via
+# scripts/generate_mcp.py. Excluded from lint/format so codegen stays byte-stable.
+extend-exclude = ["mcp_server/server.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+# Canonical tool surface: long single-line description strings are data, not code.
+"mcp_server/tool_surface.py" = ["E501"]
 
 [tool.mypy]
 python_version = "3.12"

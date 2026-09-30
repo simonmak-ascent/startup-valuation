@@ -1,0 +1,19 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.simonplmak-cloud/startup-valuation",
+  "title": "Startup Valuation MCP Server",
+  "description": "14 MCP tools for startup valuation: probability, time value, CAPM, pre-revenue (Scorecard/Berkus/VC Method), options, comparables, SaaS, marketplace, fintech, biotech, hardware, international, stakeholder equity, and emerging methods. 80+ textbook formulas, one method argument away.",
+  "version": "2.0.0",
+  "repository": {
+    "url": "https://github.com/simonplmak-cloud/startup-valuation",
+    "source": "github",
+    "subfolder": "mcp_server"
+  },
+  "websiteUrl": "https://startup-valuation.simonmak.com",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://startup-valuation.simonmak.com/api"
+    }
+  ]
+}

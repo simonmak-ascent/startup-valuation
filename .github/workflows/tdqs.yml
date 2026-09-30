@@ -1,0 +1,36 @@
+name: MCP Tool Definition Quality
+
+on:
+  pull_request:
+    paths:
+      - "mcp_server/**"
+      - "api/index.py"
+      - "scripts/generate_mcp.py"
+  push:
+    branches: [main]
+    paths:
+      - "mcp_server/**"
+      - "api/index.py"
+
+permissions:
+  contents: read
+
+jobs:
+  tdqs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install library + MCP deps
+        run: pip install -e ".[mcp]"
+
+      - name: Score the MCP tool surface (Glama TDQS)
+        run: npx --yes mcp-tdqs@0.2.0 score --command "python mcp_server/server.py" --fail-under B
