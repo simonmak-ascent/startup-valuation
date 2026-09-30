@@ -18,3 +18,17 @@ def test_net_present_value():
 def test_annuity_present_value():
     result = annuity_present_value(50_000, 0.10, 4)
     assert round(result.value, 0) == pytest.approx(158_493, abs=5)
+
+
+def test_dcf_valuation_with_terminal_value():
+    from startup_valuation.tv import dcf_valuation
+
+    result = dcf_valuation([100_000, 120_000, 140_000], 0.12, 0.03)
+    assert round(result.value, 1) == pytest.approx(1_425_028.3, abs=1)
+
+
+def test_dcf_valuation_rejects_rate_below_terminal_growth():
+    from startup_valuation.tv import dcf_valuation
+
+    with pytest.raises(ValueError, match="terminal_growth"):
+        dcf_valuation([100_000], 0.02, 0.03)

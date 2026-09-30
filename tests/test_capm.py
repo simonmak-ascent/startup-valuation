@@ -23,3 +23,17 @@ def test_startup_adjusted_capm():
 def test_portfolio_variance():
     result = portfolio_variance([0.5, 0.5], [[0.04, 0.01], [0.01, 0.09]])
     assert result.value == pytest.approx(0.0375)
+
+
+def test_wacc_blends_after_tax_costs():
+    from startup_valuation.capm import wacc
+
+    result = wacc(700_000, 300_000, 0.18, 0.08, 0.25)
+    assert round(result.value, 4) == pytest.approx(0.144, abs=1e-6)
+
+
+def test_wacc_rejects_zero_capital():
+    from startup_valuation.capm import wacc
+
+    with pytest.raises(ValueError, match="must be > 0"):
+        wacc(0, 0, 0.18, 0.08, 0.25)

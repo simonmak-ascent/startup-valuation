@@ -61,13 +61,13 @@ def valuation_probability(
 @mcp.tool(
     name='valuation_time_value',
     title='Time Value of Money',
-    description="Discount, compound, and forecast value over time: single future value PV, net present value of a cash-flow stream, annuity present value, constant-rate compound growth of revenue or cash flow, and the implied compound annual growth rate (CAGR). Method selects the formula. Use to convert future cash to today's value, to project a revenue or cash-flow series forward, or to derive the growth rate implied by two values; get the discount rate from valuation_capm or valuation_international. Parameters apply per method: present_value needs future_value + rate + periods; npv needs cash_flows + rate; annuity needs payment + rate + periods; compound_growth needs starting_value + growth_rate + periods; cagr needs starting_value + ending_value + periods. growth_rate must be greater than -1, and cagr requires starting_value > 0 and periods > 0. Not for option values (use valuation_advanced) or for expected values over outcomes (use valuation_probability). Only method is required; other parameters are method-dependent, so supply those named for the selected method and omit the rest (documented defaults apply where defined). Returns an object with value, method, inputs, assumptions, chapter, formula_number and calculation steps. Pure arithmetic: no I/O and no external calls, and numeric results are returned rounded to 2 decimals. No authentication, credentials, or rate limits apply. Supplying an unknown method, or leaving unset a parameter that the chosen method requires, returns an error instead of a value.",
+    description="Discount, compound, and forecast value over time: single future value PV, net present value of a cash-flow stream, annuity present value, discounted cash flow with a Gordon terminal value, constant-rate compound growth of revenue or cash flow, and the implied compound annual growth rate (CAGR). Method selects the formula. Use to convert future cash to today's value, to value a full forecast with a terminal value (dcf), to project a revenue or cash-flow series forward, or to derive the growth rate implied by two values; get the discount rate from valuation_capm or valuation_international. Parameters apply per method: present_value needs future_value + rate + periods; npv needs cash_flows + rate; annuity needs payment + rate + periods; dcf needs cash_flows + rate (optional: terminal_growth); compound_growth needs starting_value + growth_rate + periods; cagr needs starting_value + ending_value + periods. growth_rate must be greater than -1, cagr requires starting_value > 0 and periods > 0, and dcf requires rate greater than terminal_growth. Not for option values (use valuation_advanced) or for expected values over outcomes (use valuation_probability). Only method is required; other parameters are method-dependent, so supply those named for the selected method and omit the rest (documented defaults apply where defined). Returns an object with value, method, inputs, assumptions, chapter, formula_number and calculation steps. Pure arithmetic: no I/O and no external calls, and numeric results are returned rounded to 2 decimals. No authentication, credentials, or rate limits apply. Supplying an unknown method, or leaving unset a parameter that the chosen method requires, returns an error instead of a value.",
     output_schema=OUTPUT_SCHEMA,
     annotations=COMMON_ANNOTATIONS,
     tags={'dcf', 'discounting', 'time-value', 'growth', 'forecasting'},
 )
 def valuation_time_value(
-    method: Annotated[Literal['present_value', 'npv', 'annuity', 'compound_growth', 'cagr'], Field(description='Formula to apply. Options: present_value = PV = C / (1+r)^t.; npv = NPV = Σ Cₜ / (1+r)^t.; annuity = PV = P·[1-(1+r)^-n]/r.; compound_growth = V_n = V_0 (1+g)^n.; cagr = CAGR = (V_n / V_0)^(1/n) - 1.')],
+    method: Annotated[Literal['present_value', 'npv', 'annuity', 'compound_growth', 'cagr', 'dcf'], Field(description='Formula to apply. Options: present_value = PV = C / (1+r)^t.; npv = NPV = Σ Cₜ / (1+r)^t.; annuity = PV = P·[1-(1+r)^-n]/r.; compound_growth = V_n = V_0 (1+g)^n.; cagr = CAGR = (V_n / V_0)^(1/n) - 1.; dcf = DCF = Σ Cₜ/(1+r)^t + [C_n(1+g)/(r−g)]/(1+r)^n.')],
     future_value: Annotated[Optional[float], Field(description='Future cash amount to discount, in currency units.')] = None,
     rate: Annotated[Optional[float], Field(description='Per-period discount rate as a decimal (0.10 = 10%).')] = None,
     periods: Annotated[Optional[float], Field(description='Number of compounding periods (may be fractional).')] = None,
@@ -76,21 +76,22 @@ def valuation_time_value(
     starting_value: Annotated[Optional[float], Field(description='Value at t=0 (revenue or cash flow) to grow forward, in currency units.')] = None,
     growth_rate: Annotated[Optional[float], Field(description='Revenue growth rate as a decimal (0.40 = 40%).')] = None,
     ending_value: Annotated[Optional[float], Field(description='Value at t=n to compare against the starting value, in currency units.')] = None,
+    terminal_growth: Annotated[Optional[float], Field(description='Perpetual growth rate g applied after the forecast window, as a decimal.')] = None,
 ) -> dict:
-    """Discount, compound, and forecast value over time: single future value PV, net present value of a cash-flow stream, annuity present value, constant-rate compound growth of revenue or cash flow, and the implied compound annual growth rate (CAGR)."""
-    return call_tool('valuation_time_value', {'method': method, 'future_value': future_value, 'rate': rate, 'periods': periods, 'cash_flows': cash_flows, 'payment': payment, 'starting_value': starting_value, 'growth_rate': growth_rate, 'ending_value': ending_value})
+    """Discount, compound, and forecast value over time: single future value PV, net present value of a cash-flow stream, annuity present value, discounted cash flow with a Gordon terminal value, constant-rate compound growth of revenue or cash flow, and the implied compound annual growth rate (CAGR)."""
+    return call_tool('valuation_time_value', {'method': method, 'future_value': future_value, 'rate': rate, 'periods': periods, 'cash_flows': cash_flows, 'payment': payment, 'starting_value': starting_value, 'growth_rate': growth_rate, 'ending_value': ending_value, 'terminal_growth': terminal_growth})
 
 
 @mcp.tool(
     name='valuation_capm',
     title='CAPM & Cost of Equity',
-    description='Estimate the cost of equity: standard CAPM, startup-adjusted CAPM with size and illiquidity premiums, and portfolio beta from weighted asset betas. Method selects the formula. Use to derive the discount rate that feeds valuation_time_value and DCF models; for cross-border rates add valuation_international. Parameters apply per method: capm needs risk_free_rate + beta + market_return; startup_capm adds size_premium and liquidity_premium; portfolio_beta needs weights + betas, which must be equal length. Only method is required; other parameters are method-dependent, so supply those named for the selected method and omit the rest (documented defaults apply where defined). Returns an object with value, method, inputs, assumptions, chapter, formula_number and calculation steps. Pure arithmetic: no I/O and no external calls, and numeric results are returned rounded to 2 decimals. No authentication, credentials, or rate limits apply. Supplying an unknown method, or leaving unset a parameter that the chosen method requires, returns an error instead of a value.',
+    description='Estimate the cost of capital: standard CAPM, startup-adjusted CAPM with size and illiquidity premiums, portfolio beta from weighted asset betas, and WACC blending after-tax cost of equity and debt. Method selects the formula. Use to derive the discount rate that feeds valuation_time_value and DCF models; for cross-border rates add valuation_international. Parameters apply per method: capm needs risk_free_rate + beta + market_return; startup_capm adds size_premium and liquidity_premium; portfolio_beta needs weights + betas, which must be equal length; wacc needs equity_value + debt_value + cost_of_equity + cost_of_debt + tax_rate. Only method is required; other parameters are method-dependent, so supply those named for the selected method and omit the rest (documented defaults apply where defined). Returns an object with value, method, inputs, assumptions, chapter, formula_number and calculation steps. Pure arithmetic: no I/O and no external calls, and numeric results are returned rounded to 2 decimals. No authentication, credentials, or rate limits apply. Supplying an unknown method, or leaving unset a parameter that the chosen method requires, returns an error instead of a value.',
     output_schema=OUTPUT_SCHEMA,
     annotations=COMMON_ANNOTATIONS,
-    tags={'capm', 'cost-of-equity', 'beta'},
+    tags={'capm', 'cost-of-equity', 'beta', 'wacc', 'cost-of-capital'},
 )
 def valuation_capm(
-    method: Annotated[Literal['capm', 'startup_capm', 'portfolio_beta'], Field(description='Formula to apply. Options: capm = E(R) = Rf + β·(E(Rm) - Rf).; startup_capm = r = Rf + β·MRP + size premium + illiquidity premium.; portfolio_beta = βp = Σ wᵢ·βᵢ.')],
+    method: Annotated[Literal['capm', 'startup_capm', 'portfolio_beta', 'wacc'], Field(description='Formula to apply. Options: capm = E(R) = Rf + β·(E(Rm) - Rf).; startup_capm = r = Rf + β·MRP + size premium + illiquidity premium.; portfolio_beta = βp = Σ wᵢ·βᵢ.; wacc = WACC = (E/V)·Re + (D/V)·Rd·(1 − T).')],
     risk_free_rate: Annotated[Optional[float], Field(description='Risk-free rate as a decimal (e.g. 0.04 for 4%).')] = None,
     beta: Annotated[Optional[float], Field(description='Systematic risk beta (market = 1.0).')] = None,
     market_return: Annotated[Optional[float], Field(description='Expected market return as a decimal (e.g. 0.10 for 10%).')] = None,
@@ -99,9 +100,14 @@ def valuation_capm(
     liquidity_premium: Annotated[Optional[float], Field(description='Illiquidity premium as a decimal.')] = None,
     weights: Annotated[Optional[list[float]], Field(description='Portfolio or factor weights, each in [0,1] and summing to 1 (same order as the paired value list).')] = None,
     betas: Annotated[Optional[list[float]], Field(description='Asset betas aligned with weights.')] = None,
+    equity_value: Annotated[Optional[float], Field(description='Value of equity offered, currency units.')] = None,
+    debt_value: Annotated[Optional[float], Field(description='Market value of debt, in currency units.')] = None,
+    cost_of_equity: Annotated[Optional[float], Field(description='After-tax cost of equity Re as a decimal.')] = None,
+    cost_of_debt: Annotated[Optional[float], Field(description='Pre-tax cost of debt Rd as a decimal.')] = None,
+    tax_rate: Annotated[Optional[float], Field(description='Effective tax rate as a decimal.')] = None,
 ) -> dict:
-    """Estimate the cost of equity: standard CAPM, startup-adjusted CAPM with size and illiquidity premiums, and portfolio beta from weighted asset betas."""
-    return call_tool('valuation_capm', {'method': method, 'risk_free_rate': risk_free_rate, 'beta': beta, 'market_return': market_return, 'market_risk_premium': market_risk_premium, 'size_premium': size_premium, 'liquidity_premium': liquidity_premium, 'weights': weights, 'betas': betas})
+    """Estimate the cost of capital: standard CAPM, startup-adjusted CAPM with size and illiquidity premiums, portfolio beta from weighted asset betas, and WACC blending after-tax cost of equity and debt."""
+    return call_tool('valuation_capm', {'method': method, 'risk_free_rate': risk_free_rate, 'beta': beta, 'market_return': market_return, 'market_risk_premium': market_risk_premium, 'size_premium': size_premium, 'liquidity_premium': liquidity_premium, 'weights': weights, 'betas': betas, 'equity_value': equity_value, 'debt_value': debt_value, 'cost_of_equity': cost_of_equity, 'cost_of_debt': cost_of_debt, 'tax_rate': tax_rate})
 
 
 @mcp.tool(
