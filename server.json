@@ -3,7 +3,7 @@
   "name": "io.github.simonplmak-cloud/startup-valuation",
   "title": "Startup Valuation MCP Server",
   "description": "Startup valuation for AI agents: 14 tools, 80+ pre-revenue formulas.",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "repository": {
     "url": "https://github.com/simonplmak-cloud/startup-valuation",
     "source": "github"
