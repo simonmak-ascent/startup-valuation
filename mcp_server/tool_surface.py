@@ -362,7 +362,8 @@ TOOLS: list[dict[str, Any]] = [
             "bull/base/bear tables or option pricing use valuation_advanced, and to discount cash "
             "flows use valuation_time_value. Parameters apply per method: expected_value_discrete and "
             "probability_weighted need outcomes + probabilities; portfolio_return needs weights + "
-            "returns; poisson needs mean_events + k; expected_value_continuous needs lower + upper."
+            "returns; poisson needs mean_events + k; expected_value_continuous needs lower + upper. "
+            "outcomes and probabilities must be equal length, and the probabilities should sum to 1."
         ),
         "tags": ["probability", "expected-value", "risk"],
         "methods": [
@@ -424,7 +425,9 @@ TOOLS: list[dict[str, Any]] = [
             "cash-flow stream, and annuity present value. Method selects the formula. Use to convert "
             "any future cash flows to today's value; get the discount rate from valuation_capm or "
             "valuation_international. Parameters apply per method: present_value needs future_value + "
-            "rate + periods; npv needs cash_flows + rate; annuity needs payment + rate + periods."
+            "rate + periods; npv needs cash_flows + rate; annuity needs payment + rate + periods. Not for "
+            "option values (use valuation_advanced) or for expected values over outcomes (use "
+            "valuation_probability)."
         ),
         "tags": ["dcf", "discounting", "time-value"],
         "methods": [
@@ -463,7 +466,7 @@ TOOLS: list[dict[str, Any]] = [
             "formula. Use to derive the discount rate that feeds valuation_time_value and DCF models; "
             "for cross-border rates add valuation_international. Parameters apply per method: capm "
             "needs risk_free_rate + beta + market_return; startup_capm adds size_premium and "
-            "liquidity_premium; portfolio_beta needs weights + betas."
+            "liquidity_premium; portfolio_beta needs weights + betas, which must be equal length."
         ),
         "tags": ["capm", "cost-of-equity", "beta"],
         "methods": [
@@ -508,7 +511,8 @@ TOOLS: list[dict[str, Any]] = [
             "average_valuation + weights + scores; berkus takes five factor awards; risk_factor needs "
             "base_valuation + risk_ratings; vc_post_money needs terminal_value + target_return; "
             "vc_pre_money needs post_money + investment; terminal_value needs projected_revenue + "
-            "multiple; triangulated needs the scorecard inputs plus terminal_value/target_return/investment."
+            "multiple; triangulated needs the scorecard inputs plus terminal_value/target_return/investment. "
+            "Not for public-comparable multiples — for those use valuation_comparables."
         ),
         "tags": ["pre-revenue", "core", "scorecard", "berkus", "vc-method"],
         "methods": [
@@ -590,7 +594,8 @@ TOOLS: list[dict[str, Any]] = [
             "analysis. Method selects the technique. For a quick expected value over scenarios, prefer "
             "valuation_probability with method 'probability_weighted'. Parameters apply per method: "
             "black_scholes and binomial need underlying + strike + risk_free_rate + volatility + "
-            "time_to_maturity (binomial adds steps); scenario_analysis needs scenarios."
+            "time_to_maturity (binomial adds steps); scenario_analysis needs scenarios. Not for plain "
+            "discounted cash flow — for that use valuation_time_value."
         ),
         "tags": ["options", "black-scholes", "binomial", "scenarios"],
         "methods": [
@@ -711,7 +716,7 @@ TOOLS: list[dict[str, Any]] = [
             "payments/lending use valuation_fintech. Parameters apply per method: ltv needs arpu + "
             "gross_margin + churn_rate; cac needs sales_marketing_expense + new_customers; arr needs "
             "subscription_values; nrr needs starting_revenue + ending_revenue; revenue_multiple needs "
-            "arr + revenue_multiple."
+            "arr + revenue_multiple. Not for company-level pre-revenue value — for that use valuation_core."
         ),
         "tags": ["saas", "arr", "ltv", "cac", "retention"],
         "methods": [
@@ -909,7 +914,8 @@ TOOLS: list[dict[str, Any]] = [
             "rNPV across drugs. Method selects the model. Use for pharma/drug pipelines; for hardware or "
             "deep tech use valuation_hardware. Parameters apply per method: peak_sales needs "
             "patient_population + penetration + price; decision_tree needs probabilities + terminal_value; "
-            "pipeline needs drugs + discount_rate."
+            "pipeline needs drugs + discount_rate. Not for hardware or deep tech — for that use "
+            "valuation_hardware."
         ),
         "tags": ["biotech", "pharma", "pipeline", "rnpv"],
         "methods": [
@@ -952,7 +958,8 @@ TOOLS: list[dict[str, Any]] = [
             "volume. Method selects the metric. Use for hardware and deep tech with technology-readiness "
             "risk; for drug pipelines use valuation_biotech. Parameters apply per method: trl needs "
             "market_size + market_share + margin + multiple + trl_discount; gross_margin needs asp + "
-            "variable_cost; break_even_volume needs fixed_costs + asp + variable_cost."
+            "variable_cost; break_even_volume needs fixed_costs + asp + variable_cost. Not for drug "
+            "pipelines — for those use valuation_biotech."
         ),
         "tags": ["hardware", "trl", "unit-economics"],
         "methods": [
@@ -996,7 +1003,8 @@ TOOLS: list[dict[str, Any]] = [
             "CAPM. Method selects the adjustment. Use for cross-border cash flows and country risk; pair "
             "with valuation_capm and valuation_time_value. Parameters apply per method: ppp needs "
             "spot_rate + inflation_foreign + inflation_domestic; country_risk_premium needs sovereign_yield "
-            "+ us_treasury_yield; intl_capm needs risk_free_rate + beta + mrp + crp."
+            "+ us_treasury_yield; intl_capm needs risk_free_rate + beta + mrp + crp. Not for the domestic "
+            "cost of equity — for that use valuation_capm."
         ),
         "tags": ["international", "fx", "country-risk"],
         "methods": [
@@ -1176,7 +1184,7 @@ TOOLS: list[dict[str, Any]] = [
             "investment + cap + discount + series_a_valuation + series_a_price; token_value needs "
             "transaction_volume + price_per_tx + velocity + supply; metcalfe needs n; esg_* need "
             "base_valuation + a score; data_moat needs data_volume + data_uniqueness + monetization_rate + "
-            "competitive_advantage_years."
+            "competitive_advantage_years. Not for classic pre-revenue methods — for those use valuation_core."
         ),
         "tags": ["safe", "crypto", "esg", "network-effects", "data"],
         "methods": [
@@ -1327,14 +1335,24 @@ _TYPE_MAP: dict[str, dict[str, Any]] = {
 #: consequences beyond the structured hints.
 _RETURNS_NOTE = (
     " Returns an object with value, method, inputs, assumptions, chapter, formula_number and "
-    "calculation steps. Supplying an unknown method, or leaving unset a parameter that the chosen "
-    "method requires, returns an error instead of a value."
+    "calculation steps. It is a deterministic, side-effect-free computation: identical inputs always "
+    "return an identical value; no files or network resources are created, read, or destroyed; and no "
+    "authentication, credentials, or rate limits apply. Supplying an unknown method, or leaving unset "
+    "a parameter that the chosen method requires, returns an error instead of a value."
+)
+
+
+#: Completeness clause: callers routinely need to know that only `method` is
+#: mandatory and the rest of the (large) parameter set is conditional.
+_PARAMS_NOTE = (
+    " Only method is required; every other parameter is method-dependent, so supply just the ones "
+    "named for the selected method and leave the rest unset."
 )
 
 
 def describe(tool: dict[str, Any]) -> str:
-    """Full description as advertised to clients (base text + behavioural clause)."""
-    return tool["description"] + _RETURNS_NOTE
+    """Full description as advertised to clients (base text + shared clauses)."""
+    return tool["description"] + _PARAMS_NOTE + _RETURNS_NOTE
 
 
 def _param_schema(key: str) -> dict[str, Any]:
