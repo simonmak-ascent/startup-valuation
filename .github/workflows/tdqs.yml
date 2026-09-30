@@ -32,5 +32,7 @@ jobs:
       - name: Install library + MCP deps
         run: pip install -e ".[mcp]"
 
-      - name: Score the MCP tool surface (Glama TDQS)
-        run: npx --yes mcp-tdqs@0.2.0 score --command "python mcp_server/server.py" --fail-under B
+      # Deterministic stages only (context signals, hard gates, shadow prefilter).
+      # The model-graded `score` runs on Glama's sweep and needs an API key.
+      - name: Lint the MCP tool surface (Glama TDQS)
+        run: npx --yes mcp-tdqs@0.2.0 lint --command "python mcp_server/server.py" --fail-on error

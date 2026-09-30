@@ -78,6 +78,8 @@ exclude = [
 testpaths = ["tests"]
 python_files = "test_*.py"
 python_functions = "test_*"
+# Make the repo root importable so tests can import the `mcp_server` package.
+pythonpath = ["."]
 
 [tool.ruff]
 target-version = "py310"
