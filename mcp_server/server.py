@@ -38,7 +38,7 @@ mcp = FastMCP(SERVER_NAME, version=SERVER_VERSION)
 @mcp.tool(
     name='valuation_probability',
     title='Probability & Expected Value',
-    description='Compute expected value and probability-weighted outcomes for startup scenarios: discrete E[X], joint probability of sequential events, probability-weighted value, VC portfolio expected return, Poisson event probability, and continuous E[X] over a range. Method selects the formula.',
+    description='Compute expected value and probability-weighted outcomes for startup scenarios: discrete E[X], joint probability of sequential events, probability-weighted value, VC portfolio expected return, Poisson event probability, and continuous E[X] over a range. Method selects the formula. Use for probability-weighted central estimates; for named bull/base/bear tables or option pricing use valuation_advanced, and to discount cash flows use valuation_time_value. Parameters apply per method: expected_value_discrete and probability_weighted need outcomes + probabilities; portfolio_return needs weights + returns; poisson needs mean_events + k; expected_value_continuous needs lower + upper.',
     output_schema=OUTPUT_SCHEMA,
     annotations=COMMON_ANNOTATIONS,
     tags={'probability', 'expected-value', 'risk'},
@@ -61,7 +61,7 @@ def valuation_probability(
 @mcp.tool(
     name='valuation_time_value',
     title='Time Value of Money',
-    description='Discount future cash to present value: single future value PV, net present value of a cash-flow stream, and annuity present value. Method selects the formula.',
+    description="Discount future cash to present value: single future value PV, net present value of a cash-flow stream, and annuity present value. Method selects the formula. Use to convert any future cash flows to today's value; get the discount rate from valuation_capm or valuation_international. Parameters apply per method: present_value needs future_value + rate + periods; npv needs cash_flows + rate; annuity needs payment + rate + periods.",
     output_schema=OUTPUT_SCHEMA,
     annotations=COMMON_ANNOTATIONS,
     tags={'dcf', 'discounting', 'time-value'},
@@ -81,7 +81,7 @@ def valuation_time_value(
 @mcp.tool(
     name='valuation_capm',
     title='CAPM & Cost of Equity',
-    description='Estimate the cost of equity: standard CAPM, startup-adjusted CAPM with size and illiquidity premiums, and portfolio beta from weighted asset betas. Method selects the formula.',
+    description='Estimate the cost of equity: standard CAPM, startup-adjusted CAPM with size and illiquidity premiums, and portfolio beta from weighted asset betas. Method selects the formula. Use to derive the discount rate that feeds valuation_time_value and DCF models; for cross-border rates add valuation_international. Parameters apply per method: capm needs risk_free_rate + beta + market_return; startup_capm adds size_premium and liquidity_premium; portfolio_beta needs weights + betas.',
     output_schema=OUTPUT_SCHEMA,
     annotations=COMMON_ANNOTATIONS,
     tags={'capm', 'cost-of-equity', 'beta'},
@@ -104,7 +104,7 @@ def valuation_capm(
 @mcp.tool(
     name='valuation_core',
     title='Pre-Revenue Core Methods',
-    description="The textbook's pre-revenue methods: Scorecard, Berkus, Risk-Factor Summation, VC Method (post- and pre-money), and exit terminal value. Use these first for early-stage startups. Method selects the formula.",
+    description="The textbook's pre-revenue methods: Scorecard, Berkus, Risk-Factor Summation, VC Method (post- and pre-money), and exit terminal value. Use these first for early-stage startups. Method selects the formula, and each method names its own parameters: scorecard needs average_valuation + weights + scores; berkus takes five factor awards; risk_factor needs base_valuation + risk_ratings; vc_post_money needs terminal_value + target_return; vc_pre_money needs post_money + investment; terminal_value needs projected_revenue + multiple; triangulated needs the scorecard inputs plus terminal_value/target_return/investment.",
     output_schema=OUTPUT_SCHEMA,
     annotations=COMMON_ANNOTATIONS,
     tags={'pre-revenue', 'core', 'scorecard', 'berkus', 'vc-method'},
@@ -135,7 +135,7 @@ def valuation_core(
 @mcp.tool(
     name='valuation_advanced',
     title='Options & Scenario Analysis',
-    description="Advanced techniques: Black-Scholes call value, binomial-tree option value, and scenario analysis. Method selects the technique. For a quick expected value over scenarios, prefer valuation_probability with method 'probability_weighted'.",
+    description="Advanced techniques: Black-Scholes call value, binomial-tree option value, and scenario analysis. Method selects the technique. For a quick expected value over scenarios, prefer valuation_probability with method 'probability_weighted'. Parameters apply per method: black_scholes and binomial need underlying + strike + risk_free_rate + volatility + time_to_maturity (binomial adds steps); scenario_analysis needs scenarios.",
     output_schema=OUTPUT_SCHEMA,
     annotations=COMMON_ANNOTATIONS,
     tags={'options', 'black-scholes', 'binomial', 'scenarios'},
@@ -157,7 +157,7 @@ def valuation_advanced(
 @mcp.tool(
     name='valuation_comparables',
     title='Comparable Multiples',
-    description='Market multiples from comparables: P/E, P/S, EV/EBITDA, EV/Revenue, and a regression-adjusted multiple. Method selects the ratio. Use when public comparables exist.',
+    description='Market multiples from comparables: P/E, P/S, EV/EBITDA, EV/Revenue, and a regression-adjusted multiple. Method selects the ratio. Use when public comparables exist; for pre-revenue or private startups use valuation_core. Parameters apply per method: pe_ratio needs market_cap + net_income; ps_ratio needs market_cap + revenue; ev_ebitda needs enterprise_value + ebitda; ev_revenue needs enterprise_value + revenue; regression_multiple needs intercept + growth_rate + growth_coefficient (plus optional maturity/stage/geography terms).',
     output_schema=OUTPUT_SCHEMA,
     annotations=COMMON_ANNOTATIONS,
     tags={'multiples', 'comparables', 'market'},
@@ -186,7 +186,7 @@ def valuation_comparables(
 @mcp.tool(
     name='valuation_saas',
     title='SaaS Metrics & Valuation',
-    description='SaaS unit economics and valuation: LTV, CAC, MRR, ARR, net revenue retention, magic number, Rule of 40, CAC payback, and ARR revenue-multiple valuation. Method selects the metric.',
+    description='SaaS unit economics and valuation: LTV, CAC, MRR, ARR, net revenue retention, magic number, Rule of 40, CAC payback, and ARR revenue-multiple valuation. Method selects the metric. Use for subscription software; for marketplace GMV metrics use valuation_marketplace and for payments/lending use valuation_fintech. Parameters apply per method: ltv needs arpu + gross_margin + churn_rate; cac needs sales_marketing_expense + new_customers; arr needs subscription_values; nrr needs starting_revenue + ending_revenue; revenue_multiple needs arr + revenue_multiple.',
     output_schema=OUTPUT_SCHEMA,
     annotations=COMMON_ANNOTATIONS,
     tags={'saas', 'arr', 'ltv', 'cac', 'retention'},
@@ -219,7 +219,7 @@ def valuation_saas(
 @mcp.tool(
     name='valuation_marketplace',
     title='Marketplace Metrics',
-    description='Marketplace health and valuation: take rate, GMV revenue-multiple valuation, buyer retention, and network density. Method selects the metric.',
+    description='Marketplace health and valuation: take rate, GMV revenue-multiple valuation, buyer retention, and network density. Method selects the metric. Use for two-sided transaction marketplaces; for subscription software use valuation_saas. Parameters apply per method: take_rate needs revenue + gmv; gmv_multiple needs gmv + multiple; buyer_retention needs buyers_period_1 + buyers_repeat; network_density needs active_buyers + active_sellers + total_users.',
     output_schema=OUTPUT_SCHEMA,
     annotations=COMMON_ANNOTATIONS,
     tags={'marketplace', 'gmv', 'network-effects'},
@@ -242,7 +242,7 @@ def valuation_marketplace(
 @mcp.tool(
     name='valuation_fintech',
     title='Fintech Valuation',
-    description='Value and size fintech business models: payment revenue, lending valuation, payment-processor DCF, and neobank customer-based valuation. Method selects the model.',
+    description='Value and size fintech business models: payment revenue, lending valuation, payment-processor DCF, and neobank customer-based valuation. Method selects the model. Use for payments, lending, and neobanks; for SaaS-style unit economics use valuation_saas. Parameters apply per method: payment_revenue needs transaction_volume + take_rate; lending needs loan_book + roe + pe_multiple; payment_processor adds growth_rate + discount_rate + terminal_multiple; neobank needs customers + arpu + gross_margin + churn_rate + pe_multiple.',
     output_schema=OUTPUT_SCHEMA,
     annotations=COMMON_ANNOTATIONS,
     tags={'fintech', 'payments', 'lending', 'neobank'},
@@ -271,7 +271,7 @@ def valuation_fintech(
 @mcp.tool(
     name='valuation_biotech',
     title='Biotech Pipeline Valuation',
-    description='Risk-adjusted biotech valuation: peak sales, decision-tree expected value, and full pipeline rNPV across drugs. Method selects the model.',
+    description='Risk-adjusted biotech valuation: peak sales, decision-tree expected value, and full pipeline rNPV across drugs. Method selects the model. Use for pharma/drug pipelines; for hardware or deep tech use valuation_hardware. Parameters apply per method: peak_sales needs patient_population + penetration + price; decision_tree needs probabilities + terminal_value; pipeline needs drugs + discount_rate.',
     output_schema=OUTPUT_SCHEMA,
     annotations=COMMON_ANNOTATIONS,
     tags={'biotech', 'pharma', 'pipeline', 'rnpv'},
@@ -294,7 +294,7 @@ def valuation_biotech(
 @mcp.tool(
     name='valuation_hardware',
     title='Hardware & Unit Economics',
-    description='Hardware and deep-tech valuation: TRL-risk-adjusted valuation, gross margin, and break-even volume. Method selects the metric.',
+    description='Hardware and deep-tech valuation: TRL-risk-adjusted valuation, gross margin, and break-even volume. Method selects the metric. Use for hardware and deep tech with technology-readiness risk; for drug pipelines use valuation_biotech. Parameters apply per method: trl needs market_size + market_share + margin + multiple + trl_discount; gross_margin needs asp + variable_cost; break_even_volume needs fixed_costs + asp + variable_cost.',
     output_schema=OUTPUT_SCHEMA,
     annotations=COMMON_ANNOTATIONS,
     tags={'hardware', 'trl', 'unit-economics'},
@@ -317,7 +317,7 @@ def valuation_hardware(
 @mcp.tool(
     name='valuation_international',
     title='International Valuation',
-    description='Cross-border adjustments: purchasing-power parity, country risk premium, and international CAPM. Method selects the adjustment.',
+    description='Cross-border adjustments: purchasing-power parity, country risk premium, and international CAPM. Method selects the adjustment. Use for cross-border cash flows and country risk; pair with valuation_capm and valuation_time_value. Parameters apply per method: ppp needs spot_rate + inflation_foreign + inflation_domestic; country_risk_premium needs sovereign_yield + us_treasury_yield; intl_capm needs risk_free_rate + beta + mrp + crp.',
     output_schema=OUTPUT_SCHEMA,
     annotations=COMMON_ANNOTATIONS,
     tags={'international', 'fx', 'country-risk'},
@@ -341,7 +341,7 @@ def valuation_international(
 @mcp.tool(
     name='valuation_stakeholder',
     title='Stakeholder & Equity Allocation',
-    description='Allocate value across stakeholders and equity classes: single-round dilution, OPM common stock, PWERM, liquidation value, M&A synergy, employee-option values, vesting adjustment, cash-vs-equity break-even, and asset-based loan capacity. Method selects the model.',
+    description='Allocate value across stakeholders and equity classes: single-round dilution, OPM common stock, PWERM, liquidation value, M&A synergy, employee-option values, vesting adjustment, cash-vs-equity break-even, and asset-based loan capacity. Method selects the model. Use only after the company-level value is known (from valuation_core, valuation_saas, or valuation_comparables) to split that value across the cap table; for the company value itself do not use this tool. Parameters apply per method: dilution needs ownership_before + investment + post_money; opm needs enterprise_value + liquidation_pref + time_to_exit + volatility; pwerm and employee_option need scenarios; liquidation needs assets + recovery_rates; risk_adjusted_synergy needs revenue_synergies + cost_synergies; vesting_adjusted needs total_value + vested_fraction; max_asset_loan takes collateral values.',
     output_schema=OUTPUT_SCHEMA,
     annotations=COMMON_ANNOTATIONS,
     tags={'dilution', 'opm', 'pwerm', 'options', 'cap-table'},
@@ -388,7 +388,7 @@ def valuation_stakeholder(
 @mcp.tool(
     name='valuation_emerging',
     title='Emerging & Alternative Methods',
-    description='Modern and alternative valuation: SAFE conversion (discount, cap, expected value), token valuation (equation of exchange, NVT), ESG adjustments (rate, premium, discount), Metcalfe network value, data-moat value, and remote-first premium/NPV. Method selects the model.',
+    description='Modern and alternative valuation: SAFE conversion (discount, cap, expected value), token valuation (equation of exchange, NVT), ESG adjustments (rate, premium, discount), Metcalfe network value, data-moat value, and remote-first premium/NPV. Method selects the model. Use for SAFEs, tokens, ESG, network effects, data moats, and remote-first adjustments; for classic pre-revenue methods use valuation_core. Parameters apply per method: safe_discount needs series_a_price + discount; safe_cap needs cap + series_a_price; safe_expected needs investment + cap + discount + series_a_valuation + series_a_price; token_value needs transaction_volume + price_per_tx + velocity + supply; metcalfe needs n; esg_* need base_valuation + a score; data_moat needs data_volume + data_uniqueness + monetization_rate + competitive_advantage_years.',
     output_schema=OUTPUT_SCHEMA,
     annotations=COMMON_ANNOTATIONS,
     tags={'safe', 'crypto', 'esg', 'network-effects', 'data'},
