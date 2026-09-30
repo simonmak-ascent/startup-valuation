@@ -1417,8 +1417,8 @@ _TYPE_MAP: dict[str, dict[str, Any]] = {
 #: consequences beyond the structured hints.
 _RETURNS_NOTE = (
     " Returns value, method, inputs, assumptions, chapter, formula_number and calculation steps; pure "
-    "arithmetic (no I/O), rounded to 2 decimals, with no auth or rate limits. An unknown method, or a "
-    "missing method-required parameter, returns an error instead of a value."
+    "arithmetic — no I/O and no external calls — rounded to 2 decimals, with no auth or rate limits. An "
+    "unknown method, or a missing method-required parameter, returns an error instead of a value."
 )
 
 
