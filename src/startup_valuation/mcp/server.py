@@ -6,31 +6,18 @@ Regenerate with: python scripts/generate_mcp.py
 
 from __future__ import annotations
 
-import os
-import sys
-from typing import Annotated, Literal, Optional
+from typing import Annotated, Any, Literal, Optional
 
 from fastmcp import FastMCP
 from pydantic import Field
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-try:  # run from the repo root (python mcp_server/server.py)
-    from mcp_server.tool_surface import (
-        COMMON_ANNOTATIONS,
-        OUTPUT_SCHEMA,
-        SERVER_NAME,
-        SERVER_VERSION,
-        call_tool,
-    )
-except ImportError:  # installed as a top-level module (pip install startup-valuation-mcp)
-    from tool_surface import (  # type: ignore[no-redef]
-        COMMON_ANNOTATIONS,
-        OUTPUT_SCHEMA,
-        SERVER_NAME,
-        SERVER_VERSION,
-        call_tool,
-    )
+from startup_valuation.mcp.tool_surface import (
+    COMMON_ANNOTATIONS,
+    OUTPUT_SCHEMA,
+    SERVER_NAME,
+    SERVER_VERSION,
+    call_tool,
+)
 
 mcp = FastMCP(SERVER_NAME, version=SERVER_VERSION)
 
@@ -53,7 +40,7 @@ def valuation_probability(
     k: Annotated[Optional[int], Field(description='Number of events k for the Poisson probability P(X=k).')] = None,
     lower: Annotated[Optional[float], Field(description='Lower integration bound (standard-normal domain, e.g. -1.0).')] = None,
     upper: Annotated[Optional[float], Field(description='Upper integration bound (standard-normal domain, e.g. 1.0).')] = None,
-) -> dict:
+) -> dict[str, Any]:
     """Compute expected value and probability-weighted outcomes for startup scenarios: discrete E[X], joint probability of sequential events, probability-weighted value, VC portfolio expected return, Poisson event probability, and continuous E[X] over a range."""
     return call_tool('valuation_probability', {'method': method, 'outcomes': outcomes, 'probabilities': probabilities, 'weights': weights, 'returns': returns, 'mean_events': mean_events, 'k': k, 'lower': lower, 'upper': upper})
 
@@ -77,7 +64,7 @@ def valuation_time_value(
     growth_rate: Annotated[Optional[float], Field(description='Revenue growth rate as a decimal (0.40 = 40%).')] = None,
     ending_value: Annotated[Optional[float], Field(description='Value at t=n to compare against the starting value, in currency units.')] = None,
     terminal_growth: Annotated[Optional[float], Field(description='Perpetual growth rate g applied after the forecast window, as a decimal.')] = None,
-) -> dict:
+) -> dict[str, Any]:
     """Discount, compound, and forecast value over time: single future value PV, net present value of a cash-flow stream, annuity present value, discounted cash flow with a Gordon terminal value, constant-rate compound growth of revenue or cash flow, and the implied compound annual growth rate (CAGR)."""
     return call_tool('valuation_time_value', {'method': method, 'future_value': future_value, 'rate': rate, 'periods': periods, 'cash_flows': cash_flows, 'payment': payment, 'starting_value': starting_value, 'growth_rate': growth_rate, 'ending_value': ending_value, 'terminal_growth': terminal_growth})
 
@@ -105,7 +92,7 @@ def valuation_capm(
     cost_of_equity: Annotated[Optional[float], Field(description='After-tax cost of equity Re as a decimal.')] = None,
     cost_of_debt: Annotated[Optional[float], Field(description='Pre-tax cost of debt Rd as a decimal.')] = None,
     tax_rate: Annotated[Optional[float], Field(description='Effective tax rate as a decimal.')] = None,
-) -> dict:
+) -> dict[str, Any]:
     """Estimate the cost of capital: standard CAPM, startup-adjusted CAPM with size and illiquidity premiums, portfolio beta from weighted asset betas, and WACC blending after-tax cost of equity and debt."""
     return call_tool('valuation_capm', {'method': method, 'risk_free_rate': risk_free_rate, 'beta': beta, 'market_return': market_return, 'market_risk_premium': market_risk_premium, 'size_premium': size_premium, 'liquidity_premium': liquidity_premium, 'weights': weights, 'betas': betas, 'equity_value': equity_value, 'debt_value': debt_value, 'cost_of_equity': cost_of_equity, 'cost_of_debt': cost_of_debt, 'tax_rate': tax_rate})
 
@@ -136,7 +123,7 @@ def valuation_core(
     investment: Annotated[Optional[float], Field(description='Amount invested, currency units.')] = None,
     projected_revenue: Annotated[Optional[float], Field(description='Projected revenue at exit, currency units.')] = None,
     multiple: Annotated[Optional[float], Field(description='Exit or market multiple applied to the metric.')] = None,
-) -> dict:
+) -> dict[str, Any]:
     """The textbook's pre-revenue methods: Scorecard, Berkus, Risk-Factor Summation, VC Method (post- and pre-money), and exit terminal value."""
     return call_tool('valuation_core', {'method': method, 'average_valuation': average_valuation, 'weights': weights, 'scores': scores, 'sound_idea': sound_idea, 'prototype': prototype, 'quality_team': quality_team, 'strategic_relationships': strategic_relationships, 'product_rollout': product_rollout, 'base_valuation': base_valuation, 'risk_ratings': risk_ratings, 'terminal_value': terminal_value, 'target_return': target_return, 'post_money': post_money, 'investment': investment, 'projected_revenue': projected_revenue, 'multiple': multiple})
 
@@ -157,8 +144,8 @@ def valuation_advanced(
     volatility: Annotated[Optional[float], Field(description='Annualised volatility σ as a decimal (0.80 = 80%).')] = None,
     time_to_maturity: Annotated[Optional[float], Field(description='Time to expiry in years T.')] = None,
     steps: Annotated[Optional[int], Field(description='Binomial tree time steps (higher = more accurate).')] = None,
-    scenarios: Annotated[Optional[list[dict]], Field(description='Scenario objects: {name: str, probability: 0-1, value: currency}; probabilities should sum to 1.')] = None,
-) -> dict:
+    scenarios: Annotated[Optional[list[dict[str, Any]]], Field(description='Scenario objects: {name: str, probability: 0-1, value: currency}; probabilities should sum to 1.')] = None,
+) -> dict[str, Any]:
     """Advanced techniques: Black-Scholes call value, binomial-tree option value, and scenario analysis."""
     return call_tool('valuation_advanced', {'method': method, 'underlying': underlying, 'strike': strike, 'risk_free_rate': risk_free_rate, 'volatility': volatility, 'time_to_maturity': time_to_maturity, 'steps': steps, 'scenarios': scenarios})
 
@@ -187,7 +174,7 @@ def valuation_comparables(
     stage_coefficient: Annotated[Optional[float], Field(description='Regression slope on stage.')] = None,
     geography: Annotated[Optional[float], Field(description='Geography indicator.')] = None,
     geography_coefficient: Annotated[Optional[float], Field(description='Regression slope on geography.')] = None,
-) -> dict:
+) -> dict[str, Any]:
     """Market multiples from comparables: P/E, P/S, EV/EBITDA, EV/Revenue, and a regression-adjusted multiple."""
     return call_tool('valuation_comparables', {'method': method, 'market_cap': market_cap, 'net_income': net_income, 'revenue': revenue, 'enterprise_value': enterprise_value, 'ebitda': ebitda, 'intercept': intercept, 'growth_rate': growth_rate, 'growth_coefficient': growth_coefficient, 'market_maturity': market_maturity, 'maturity_coefficient': maturity_coefficient, 'stage': stage, 'stage_coefficient': stage_coefficient, 'geography': geography, 'geography_coefficient': geography_coefficient})
 
@@ -220,7 +207,7 @@ def valuation_saas(
     mrr_per_customer: Annotated[Optional[float], Field(description='Monthly recurring revenue per customer, currency units.')] = None,
     arr: Annotated[Optional[float], Field(description='Annual recurring revenue, currency units.')] = None,
     revenue_multiple: Annotated[Optional[float], Field(description='SaaS revenue multiple (e.g. 8 for 8x ARR).')] = None,
-) -> dict:
+) -> dict[str, Any]:
     """SaaS unit economics and valuation: LTV, CAC, MRR, ARR, net revenue retention, magic number, Rule of 40, CAC payback, and ARR revenue-multiple valuation."""
     return call_tool('valuation_saas', {'method': method, 'arpu': arpu, 'gross_margin': gross_margin, 'churn_rate': churn_rate, 'sales_marketing_expense': sales_marketing_expense, 'new_customers': new_customers, 'arr_value': arr_value, 'subscription_values': subscription_values, 'starting_revenue': starting_revenue, 'ending_revenue': ending_revenue, 'expansion_revenue': expansion_revenue, 'net_new_arr': net_new_arr, 'sm_expense_prior': sm_expense_prior, 'growth_rate': growth_rate, 'profit_margin': profit_margin, 'cac': cac, 'mrr_per_customer': mrr_per_customer, 'arr': arr, 'revenue_multiple': revenue_multiple})
 
@@ -243,7 +230,7 @@ def valuation_marketplace(
     active_buyers: Annotated[Optional[int], Field(description='Active buyers in the period.')] = None,
     active_sellers: Annotated[Optional[int], Field(description='Active sellers in the period.')] = None,
     total_users: Annotated[Optional[int], Field(description='Total users (buyers + sellers) in the period.')] = None,
-) -> dict:
+) -> dict[str, Any]:
     """Marketplace health and valuation: take rate, GMV revenue-multiple valuation, buyer retention, and network density."""
     return call_tool('valuation_marketplace', {'method': method, 'revenue': revenue, 'gmv': gmv, 'multiple': multiple, 'buyers_period_1': buyers_period_1, 'buyers_repeat': buyers_repeat, 'active_buyers': active_buyers, 'active_sellers': active_sellers, 'total_users': total_users})
 
@@ -272,7 +259,7 @@ def valuation_fintech(
     arpu: Annotated[Optional[float], Field(description='Average revenue per user per month, currency units.')] = None,
     gross_margin: Annotated[Optional[float], Field(description='Gross margin as a decimal (0.80 = 80%).')] = None,
     churn_rate: Annotated[Optional[float], Field(description='Periodic churn rate as a decimal (0.02 = 2% per month).')] = None,
-) -> dict:
+) -> dict[str, Any]:
     """Value and size fintech business models: payment revenue, lending valuation, payment-processor DCF, and neobank customer-based valuation."""
     return call_tool('valuation_fintech', {'method': method, 'transaction_volume': transaction_volume, 'take_rate': take_rate, 'loan_book': loan_book, 'roe': roe, 'pe_multiple': pe_multiple, 'npl_reserves': npl_reserves, 'growth_rate': growth_rate, 'discount_rate': discount_rate, 'terminal_multiple': terminal_multiple, 'years': years, 'customers': customers, 'arpu': arpu, 'gross_margin': gross_margin, 'churn_rate': churn_rate})
 
@@ -293,9 +280,9 @@ def valuation_biotech(
     compliance: Annotated[Optional[float], Field(description='Compliance / adherence rate as a decimal.')] = None,
     probabilities: Annotated[Optional[list[float]], Field(description='Probability of each outcome or stage, each in [0,1]; the list must sum to 1 where it is exhaustive.')] = None,
     terminal_value: Annotated[Optional[float], Field(description='Expected exit / terminal value, currency units.')] = None,
-    drugs: Annotated[Optional[list[dict]], Field(description='Pipeline drugs: {name, peak_sales, probability, years_to_market, multiple(optional)}.')] = None,
+    drugs: Annotated[Optional[list[dict[str, Any]]], Field(description='Pipeline drugs: {name, peak_sales, probability, years_to_market, multiple(optional)}.')] = None,
     discount_rate: Annotated[Optional[float], Field(description='Discount rate as a decimal (0.12 = 12%).')] = None,
-) -> dict:
+) -> dict[str, Any]:
     """Risk-adjusted biotech valuation: peak sales, decision-tree expected value, and full pipeline rNPV across drugs."""
     return call_tool('valuation_biotech', {'method': method, 'patient_population': patient_population, 'penetration': penetration, 'price': price, 'compliance': compliance, 'probabilities': probabilities, 'terminal_value': terminal_value, 'drugs': drugs, 'discount_rate': discount_rate})
 
@@ -318,7 +305,7 @@ def valuation_hardware(
     asp: Annotated[Optional[float], Field(description='Average selling price per unit, currency units.')] = None,
     variable_cost: Annotated[Optional[float], Field(description='Variable cost per unit, currency units.')] = None,
     fixed_costs: Annotated[Optional[float], Field(description='Fixed costs for the period, currency units.')] = None,
-) -> dict:
+) -> dict[str, Any]:
     """Hardware and deep-tech valuation: TRL-risk-adjusted valuation, gross margin, and break-even volume."""
     return call_tool('valuation_hardware', {'method': method, 'market_size': market_size, 'market_share': market_share, 'margin': margin, 'multiple': multiple, 'trl_discount': trl_discount, 'asp': asp, 'variable_cost': variable_cost, 'fixed_costs': fixed_costs})
 
@@ -342,7 +329,7 @@ def valuation_international(
     beta: Annotated[Optional[float], Field(description='Systematic risk beta (market = 1.0).')] = None,
     mrp: Annotated[Optional[float], Field(description='Market risk premium as a decimal.')] = None,
     crp: Annotated[Optional[float], Field(description='Country risk premium as a decimal.')] = None,
-) -> dict:
+) -> dict[str, Any]:
     """Cross-border adjustments: purchasing-power parity, country risk premium, and international CAPM."""
     return call_tool('valuation_international', {'method': method, 'spot_rate': spot_rate, 'inflation_foreign': inflation_foreign, 'inflation_domestic': inflation_domestic, 'sovereign_yield': sovereign_yield, 'us_treasury_yield': us_treasury_yield, 'risk_free_rate': risk_free_rate, 'beta': beta, 'mrp': mrp, 'crp': crp})
 
@@ -364,9 +351,9 @@ def valuation_stakeholder(
     liquidation_pref: Annotated[Optional[float], Field(description='Liquidation preference amount, currency units.')] = None,
     time_to_exit: Annotated[Optional[float], Field(description='Expected time to exit / liquidity in years.')] = None,
     volatility: Annotated[Optional[float], Field(description='Annualised volatility σ as a decimal (0.80 = 80%).')] = None,
-    scenarios: Annotated[Optional[list[dict]], Field(description='Scenario objects: {name: str, probability: 0-1, value: currency}; probabilities should sum to 1.')] = None,
-    assets: Annotated[Optional[dict], Field(description='Map of asset name to book value, e.g. {"cash": 500000}.')] = None,
-    recovery_rates: Annotated[Optional[dict], Field(description='Map of asset name to recovery rate in [0,1], matching assets.')] = None,
+    scenarios: Annotated[Optional[list[dict[str, Any]]], Field(description='Scenario objects: {name: str, probability: 0-1, value: currency}; probabilities should sum to 1.')] = None,
+    assets: Annotated[Optional[dict[str, Any]], Field(description='Map of asset name to book value, e.g. {"cash": 500000}.')] = None,
+    recovery_rates: Annotated[Optional[dict[str, Any]], Field(description='Map of asset name to recovery rate in [0,1], matching assets.')] = None,
     revenue_synergies: Annotated[Optional[float], Field(description='Revenue synergy value, currency units.')] = None,
     cost_synergies: Annotated[Optional[float], Field(description='Cost synergy value, currency units.')] = None,
     prob_revenue: Annotated[Optional[float], Field(description='Probability of realising revenue synergies, 0-1.')] = None,
@@ -389,7 +376,7 @@ def valuation_stakeholder(
     inventory: Annotated[Optional[float], Field(description='Inventory, currency units.')] = None,
     equipment: Annotated[Optional[float], Field(description='Equipment, currency units.')] = None,
     real_estate: Annotated[Optional[float], Field(description='Real estate, currency units.')] = None,
-) -> dict:
+) -> dict[str, Any]:
     """Allocate value across stakeholders and equity classes: single-round dilution, OPM common stock, PWERM, liquidation value, M&A synergy, employee-option values, vesting adjustment, cash-vs-equity break-even, and asset-based loan capacity."""
     return call_tool('valuation_stakeholder', {'method': method, 'ownership_before': ownership_before, 'investment': investment, 'post_money': post_money, 'enterprise_value': enterprise_value, 'liquidation_pref': liquidation_pref, 'time_to_exit': time_to_exit, 'volatility': volatility, 'scenarios': scenarios, 'assets': assets, 'recovery_rates': recovery_rates, 'revenue_synergies': revenue_synergies, 'cost_synergies': cost_synergies, 'prob_revenue': prob_revenue, 'prob_cost': prob_cost, 'discount_rate': discount_rate, 'years': years, 'strike_price': strike_price, 'fair_market_value': fair_market_value, 'shares': shares, 'total_value': total_value, 'vested_fraction': vested_fraction, 'annual_vest_rate': annual_vest_rate, 'retention_prob': retention_prob, 'years_remaining': years_remaining, 'salary_reduction': salary_reduction, 'equity_value': equity_value, 'tax_rate': tax_rate, 'cash': cash, 'accounts_receivable': accounts_receivable, 'inventory': inventory, 'equipment': equipment, 'real_estate': real_estate})
 
@@ -433,7 +420,7 @@ def valuation_emerging(
     cost_savings_pct: Annotated[Optional[float], Field(description='Cost savings as a fraction of baseline.')] = None,
     talent_access_premium: Annotated[Optional[float], Field(description='Talent-access premium as a decimal.')] = None,
     productivity_gain: Annotated[Optional[float], Field(description='Productivity gain as a decimal.')] = None,
-) -> dict:
+) -> dict[str, Any]:
     """Modern and alternative valuation: SAFE conversion (discount, cap, expected value), token valuation (equation of exchange, NVT), ESG adjustments (rate, premium, discount), Metcalfe network value, data-moat value, and remote-first premium/NPV."""
     return call_tool('valuation_emerging', {'method': method, 'series_a_price': series_a_price, 'discount': discount, 'cap': cap, 'investment': investment, 'series_a_valuation': series_a_valuation, 'transaction_volume': transaction_volume, 'price_per_tx': price_per_tx, 'velocity': velocity, 'supply': supply, 'market_cap': market_cap, 'rate': rate, 'esg_risk_premium': esg_risk_premium, 'esg_opportunity_discount': esg_opportunity_discount, 'base_valuation': base_valuation, 'esg_score': esg_score, 'premium_per_point': premium_per_point, 'esg_risk_score': esg_risk_score, 'discount_per_point': discount_per_point, 'n': n, 'k': k, 'data_volume': data_volume, 'data_uniqueness': data_uniqueness, 'monetization_rate': monetization_rate, 'competitive_advantage_years': competitive_advantage_years, 'discount_rate': discount_rate, 'annual_savings': annual_savings, 'cost_savings_pct': cost_savings_pct, 'talent_access_premium': talent_access_premium, 'productivity_gain': productivity_gain})
 

@@ -1,4 +1,23 @@
 {
   "$schema": "https://glama.ai/mcp/schemas/server.json",
-  "maintainers": ["simonplmak-cloud"]
+  "maintainers": ["simonplmak-cloud"],
+  "name": "startup-valuation",
+  "description": "Startup and pre-revenue company valuation for AI agents — 14 tools covering 80+ textbook formulas: probability, time value, CAPM, Scorecard/Berkus/VC Method, options, comparables, SaaS, marketplace, fintech, biotech, hardware, international, stakeholder equity, and emerging methods. Read-only, pure arithmetic.",
+  "repository": "https://github.com/simonplmak-cloud/startup-valuation",
+  "license": "MIT",
+  "runtime": "python",
+  "installInstructions": {
+    "pip": "pip install 'startup-valuation[mcp]' && startup-valuation-mcp",
+    "uvx": "uvx --from startup-valuation startup-valuation-mcp"
+  },
+  "categories": ["finance", "education-and-learning-tools", "research-and-data"],
+  "keywords": [
+    "valuation",
+    "startup",
+    "pre-revenue",
+    "finance",
+    "vc",
+    "mcp",
+    "model-context-protocol"
+  ]
 }

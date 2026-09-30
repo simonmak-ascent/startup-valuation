@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "startup-valuation"
-version = "1.0.2"
+version = "2.0.0"
 description = "Comprehensive startup valuation library implementing 80+ formulas from the Startup Valuation textbook. Includes Python library, MCP server, and AI-Agent Skills."
 readme = "README.md"
 license = "MIT"
@@ -32,7 +32,7 @@ dependencies = [
 
 [project.optional-dependencies]
 mcp = [
-    "fastmcp>=0.1.0",
+    "fastmcp>=2.0.0",
 ]
 sentry = [
     "sentry-sdk>=1.40.0",
@@ -49,6 +49,9 @@ dev = [
     "ruff>=0.1.0",
     "mypy>=1.0.0",
 ]
+
+[project.scripts]
+startup-valuation-mcp = "startup_valuation.mcp.server:main"
 
 [project.urls]
 Homepage = "https://github.com/simonplmak-cloud/startup-valuation"
@@ -78,22 +81,23 @@ exclude = [
 testpaths = ["tests"]
 python_files = "test_*.py"
 python_functions = "test_*"
-# Make the repo root importable so tests can import the `mcp_server` package.
-pythonpath = ["."]
+# Make the library importable so tests can import `startup_valuation` (and
+# `startup_valuation.mcp`) without an install step.
+pythonpath = ["src"]
 
 [tool.ruff]
 target-version = "py310"
 line-length = 120
-# Generated stdio server: emit from mcp_server/tool_surface.py via
+# Generated stdio server: emit from src/startup_valuation/mcp/tool_surface.py via
 # scripts/generate_mcp.py. Excluded from lint/format so codegen stays byte-stable.
-extend-exclude = ["mcp_server/server.py"]
+extend-exclude = ["src/startup_valuation/mcp/server.py"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
 
 [tool.ruff.lint.per-file-ignores]
 # Canonical tool surface: long single-line description strings are data, not code.
-"mcp_server/tool_surface.py" = ["E501"]
+"src/startup_valuation/mcp/tool_surface.py" = ["E501"]
 
 [tool.mypy]
 python_version = "3.12"

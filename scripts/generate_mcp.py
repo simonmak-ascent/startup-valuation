@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Codegen: emit the stdio MCP server from the canonical tool surface.
 
-Reads ``mcp_server/tool_surface.py`` and writes ``mcp_server/server.py`` with
-one typed FastMCP tool per family. Deterministic — running twice produces
-byte-identical output. The hosted HTTP endpoint (``api/index.py``) consumes the
-same spec at runtime, so the two surfaces stay in sync.
+Reads ``src/startup_valuation/mcp/tool_surface.py`` and writes
+``src/startup_valuation/mcp/server.py`` with one typed FastMCP tool per family.
+Deterministic — running twice produces byte-identical output. The hosted HTTP
+endpoint (``api/index.py``) consumes the same spec at runtime, so the two
+surfaces stay in sync.
 """
 
 from __future__ import annotations
@@ -12,18 +13,25 @@ from __future__ import annotations
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(_ROOT, "src"))
 
-from mcp_server import tool_surface as ts  # noqa: E402
+from startup_valuation.mcp import tool_surface as ts  # noqa: E402
 
-OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "mcp_server", "server.py")
+OUT = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "src",
+    "startup_valuation",
+    "mcp",
+    "server.py",
+)
 
 _PY_TYPE = {
     "number": "float",
     "integer": "int",
     "array:number": "list[float]",
-    "array:object": "list[dict]",
-    "object": "dict",
+    "array:object": "list[dict[str, Any]]",
+    "object": "dict[str, Any]",
 }
 
 
@@ -71,7 +79,7 @@ def _emit_tool(tool: dict, lines: list[str]) -> None:
     lines.append(f"def {name}(")
     for entry in sig:
         lines.append(f"    {entry},")
-    lines.append(") -> dict:")
+    lines.append(") -> dict[str, Any]:")
     lines.append('    """' + tool["description"].split(". ")[0] + '."""')
     arg_pairs = ", ".join(f"{repr(n)}: {n}" for n in call_names)
     lines.append(f"    return call_tool({name!r}, {{{arg_pairs}}})")
@@ -86,31 +94,18 @@ Regenerate with: python scripts/generate_mcp.py
 
 from __future__ import annotations
 
-import os
-import sys
-from typing import Annotated, Literal, Optional
+from typing import Annotated, Any, Literal, Optional
 
 from fastmcp import FastMCP
 from pydantic import Field
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-try:  # run from the repo root (python mcp_server/server.py)
-    from mcp_server.tool_surface import (
-        COMMON_ANNOTATIONS,
-        OUTPUT_SCHEMA,
-        SERVER_NAME,
-        SERVER_VERSION,
-        call_tool,
-    )
-except ImportError:  # installed as a top-level module (pip install startup-valuation-mcp)
-    from tool_surface import (  # type: ignore[no-redef]
-        COMMON_ANNOTATIONS,
-        OUTPUT_SCHEMA,
-        SERVER_NAME,
-        SERVER_VERSION,
-        call_tool,
-    )
+from startup_valuation.mcp.tool_surface import (
+    COMMON_ANNOTATIONS,
+    OUTPUT_SCHEMA,
+    SERVER_NAME,
+    SERVER_VERSION,
+    call_tool,
+)
 
 mcp = FastMCP(SERVER_NAME, version=SERVER_VERSION)
 '''
