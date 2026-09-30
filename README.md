@@ -9,6 +9,8 @@
 [![Docs](https://img.shields.io/badge/docs-GitHub_Pages-blue)](https://simonplmak-cloud.github.io/startup-valuation/)
 [![Coverage](https://img.shields.io/badge/coverage-88%25-brightgreen)](https://github.com/simonplmak-cloud/startup-valuation/actions/workflows/ci.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/simonplmak-cloud/startup-valuation/badge)](https://scorecard.dev/viewer/?uri=github.com/simonplmak-cloud/startup-valuation)
+[![Glama MCP](https://glama.ai/mcp/servers/simonplmak-cloud/startup-valuation/badges/score.svg)](https://glama.ai/mcp/servers/simonplmak-cloud/startup-valuation)
+[![MCP tools](https://img.shields.io/badge/MCP-14%20tools-4CAF50)](https://startup-valuation.simonmak.com/api)
 
 ## Overview
 
@@ -22,7 +24,7 @@ graph TB
         MOD["14 Modules<br/>80+ Functions"] --> VR["ValuationResult"]
     end
     subgraph MCP["MCP Server"]
-        VR --> SVR["FastMCP Server<br/>60+ Tools"]
+        VR --> SVR["FastMCP Server<br/>14 Tools"]
     end
     subgraph Skills["AI-Agent Skills"]
         SVR --> CORE["Core"]
@@ -37,8 +39,8 @@ graph TB
 ```
 
 1. **Python Library** — 14 modules, 80+ typed functions, all returning `ValuationResult` (value + assumptions + sensitivity)
-2. **MCP Server** — 60+ tools for AI agents (Claude, OpenCode, etc.) via stdio/SSE
-3. **AI-Agent Skills** — 5 skill definitions with workflow guidance for valuation domains
+2. **MCP Server** — 14 folded tools (80+ formulas) for AI agents via stdio and hosted Streamable HTTP
+3. **AI-Agent Skills** — 6 skill definitions with workflow guidance for valuation domains
 
 ## Installation
 
@@ -84,16 +86,49 @@ print(f"Expected value: ${result.value:,.0f}")  # $5,200,000
 
 ### MCP Server (for AI Agents)
 
+The server exposes **14 tools**, each folding a family of formulas behind a `method`
+argument — probability, time value, CAPM, core pre-revenue methods, options,
+comparables, SaaS, marketplaces, fintech, biotech, hardware, international,
+stakeholder equity, emerging methods, and a triangulated full analysis.
+
+**Local (stdio):**
+
 ```bash
-cd mcp_server && python server.py
+pip install "startup-valuation[mcp]"
+python mcp_server/server.py
 ```
 
-Connect with any MCP-compatible AI agent. All 60+ valuation tools available.
+**Hosted (Streamable HTTP)** — no install, no API key:
+
+```
+https://startup-valuation.simonmak.com/api
+```
+
+**OpenCode** — add to `opencode.json`:
+
+```json
+"startup-valuation": {
+  "type": "remote",
+  "url": "https://startup-valuation.simonmak.com/api",
+  "timeout": 60000
+}
+```
+
+**Claude Desktop / Cursor** — add the HTTP URL `https://startup-valuation.simonmak.com/api`
+as an MCP server, or run the stdio entrypoint above.
+
+**MCP Registry** — published as `io.github.simonplmak-cloud/startup-valuation`
+(manifest: [`server.json`](server.json)) and listed on
+[Glama](https://glama.ai/mcp/servers/simonplmak-cloud/startup-valuation) and the
+[Official MCP Registry](https://registry.modelcontextprotocol.io). The
+[`glama.json`](glama.json) file holds the Glama maintainer entry.
 
 ### AI-Agent Skills
 
 Copy the `skills/` directory to your agent's skills folder:
+
 - **`valuation-core`** — Scorecard, Berkus, VC Method, Risk Factor Summation
+- **`valuation-foundations`** — Probability, time value, CAPM, comparables
 - **`valuation-advanced`** — Black-Scholes, Binomial, Monte Carlo, Scenario Analysis
 - **`valuation-industry`** — SaaS, Biotech, Fintech, Marketplace, Hardware
 - **`valuation-stakeholder`** — Dilution, OPM, PWERM, Liquidation Preference
@@ -101,22 +136,22 @@ Copy the `skills/` directory to your agent's skills folder:
 
 ## Valuation Methods by Category
 
-| Category | Methods | Chapter |
-|----------|---------|---------|
-| **Probability** | Expected value, joint probability, Poisson | 2 |
-| **Time Value** | PV, NPV, annuity | 2 |
-| **CAPM** | CAPM, portfolio beta, startup-adjusted | 2 |
-| **Core** | Scorecard, Berkus, Risk Factor, VC Method | 3 |
-| **Advanced** | Black-Scholes, Binomial, Monte Carlo, Scenario | 4 |
-| **Comparables** | P/E, P/S, EV/EBITDA, regression-adjusted | 5 |
-| **SaaS** | LTV, CAC, NRR, Magic Number, Rule of 40 | 11 |
-| **Biotech** | rNPV, decision tree, peak sales, pipeline | 11 |
-| **Fintech** | Payment revenue, lending, neobank, network effects | 11 |
-| **Marketplace** | GMV, take rate, liquidity, network density | 11 |
-| **Hardware** | TRL-adjusted, break-even, P-weighted DCF | 11 |
-| **International** | PPP, CRP, currency-adjusted DCF, Damodaran | 12 |
-| **Stakeholders** | Dilution, OPM, PWERM, liquidation, synergies | 13 |
-| **Emerging** | SAFE, MV=PQ, ESG, Metcalfe's, data moat | 14 |
+| Category          | Methods                                            | Chapter |
+| ----------------- | -------------------------------------------------- | ------- |
+| **Probability**   | Expected value, joint probability, Poisson         | 2       |
+| **Time Value**    | PV, NPV, annuity                                   | 2       |
+| **CAPM**          | CAPM, portfolio beta, startup-adjusted             | 2       |
+| **Core**          | Scorecard, Berkus, Risk Factor, VC Method          | 3       |
+| **Advanced**      | Black-Scholes, Binomial, Monte Carlo, Scenario     | 4       |
+| **Comparables**   | P/E, P/S, EV/EBITDA, regression-adjusted           | 5       |
+| **SaaS**          | LTV, CAC, NRR, Magic Number, Rule of 40            | 11      |
+| **Biotech**       | rNPV, decision tree, peak sales, pipeline          | 11      |
+| **Fintech**       | Payment revenue, lending, neobank, network effects | 11      |
+| **Marketplace**   | GMV, take rate, liquidity, network density         | 11      |
+| **Hardware**      | TRL-adjusted, break-even, P-weighted DCF           | 11      |
+| **International** | PPP, CRP, currency-adjusted DCF, Damodaran         | 12      |
+| **Stakeholders**  | Dilution, OPM, PWERM, liquidation, synergies       | 13      |
+| **Emerging**      | SAFE, MV=PQ, ESG, Metcalfe's, data moat            | 14      |
 
 ## Why This Library?
 
@@ -156,7 +191,7 @@ mypy src/startup_valuation --ignore-missing-imports
 ## Companion Textbook
 
 **[Startup Valuation: A Comprehensive Guide to Valuing Fast-Growing Pre-Revenue Companies](https://www.amazon.com/Startup-Valuation-Comprehensive-Fast-Growing-Pre-Revenue-ebook/dp/B0FYTGNVWS/)**  
-*Theory, Methods, Regulation, and Practice* — Valuation in Practice Series by Ascent Partners  
+_Theory, Methods, Regulation, and Practice_ — Valuation in Practice Series by Ascent Partners  
 By Simon Mak · 338 pages · 15 chapters · 300+ exercises · 20+ real-world cases
 
 ## Citing This Project
