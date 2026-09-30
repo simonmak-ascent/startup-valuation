@@ -38,5 +38,11 @@
       "type": "streamable-http",
       "url": "https://startup-valuation.simonmak.com/api"
     }
+  ],
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/simonplmak-cloud/startup-valuation/main/public/social-preview.png",
+      "mimeType": "image/png"
+    }
   ]
 }
