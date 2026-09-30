@@ -183,3 +183,73 @@ def annuity_present_value(
         chapter="2",
         formula_number="2.4",
     )
+
+
+def dcf_valuation(
+    cash_flows: list[float],
+    rate: float,
+    terminal_growth: float = 0.0,
+) -> ValuationResult:
+    """Discounted cash flow with an explicit forecast plus a Gordon terminal value.
+
+    Formula: DCF = Σ Cₜ/(1+r)^t + [C_n (1+g)/(r−g)] / (1+r)^n
+
+    Args:
+        cash_flows: Forecast free cash flows for periods t=1..n, in currency units.
+        rate: Discount rate (r), must exceed terminal_growth.
+        terminal_growth: Perpetual growth rate (g) applied after the forecast window.
+
+    Returns:
+        ValuationResult with the DCF value (enterprise value).
+
+    Raises:
+        ValueError: If cash_flows is empty, or rate <= terminal_growth.
+
+    Notes:
+        The explicit forecast is discounted period by period and a Gordon growth
+        terminal value captures all cash flows beyond the horizon:
+
+        $$DCF = \\sum_{t=1}^{n} \\frac{CF_t}{(1+r)^t}
+        + \\frac{CF_n (1+g)}{(r-g)(1+r)^n}$$
+
+        Set ``terminal_growth=0`` for a flat perpetuity. Standard for discounting
+        projected startup cash flows when a terminal value is material.
+
+    References:
+        Startup Valuation textbook, Chapter 2, Section 2.3.
+
+    See Also:
+        net_present_value : NPV without a terminal value.
+        wacc : Build the discount rate (r) from cost of equity and debt.
+
+    Example:
+        >>> result = dcf_valuation([100000, 120000, 140000], 0.12, 0.03)
+        >>> round(result.value, 0)
+        1425028.0
+    """
+    if not cash_flows:
+        raise ValueError("cash_flows must contain at least one period")
+    if rate <= terminal_growth:
+        raise ValueError("rate must be greater than terminal_growth")
+
+    pv_explicit = sum(cf / ((1 + rate) ** t) for t, cf in enumerate(cash_flows, start=1))
+    terminal_value = cash_flows[-1] * (1 + terminal_growth) / (rate - terminal_growth)
+    pv_terminal = terminal_value / ((1 + rate) ** len(cash_flows))
+    value = pv_explicit + pv_terminal
+
+    return ValuationResult(
+        value=value,
+        method="Discounted Cash Flow",
+        inputs={"cash_flows": cash_flows, "rate": rate, "terminal_growth": terminal_growth},
+        assumptions=[
+            "Cash flows are forecast for periods 1..n and discounted at a constant rate",
+            "Terminal value uses the Gordon growth model",
+        ],
+        chapter="2",
+        formula_number="2.3",
+        steps=[
+            {"label": "PV of explicit cash flows", "value": pv_explicit, "formula": r"\sum C_t/(1+r)^t"},
+            {"label": "Terminal value", "value": terminal_value, "formula": r"C_n(1+g)/(r-g)"},
+            {"label": "PV of terminal value", "value": pv_terminal, "formula": r"TV/(1+r)^n"},
+        ],
+    )

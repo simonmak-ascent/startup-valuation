@@ -110,6 +110,14 @@ PARAMS: dict[str, dict[str, Any]] = {
         "type": "number",
         "description": "Value at t=n to compare against the starting value, in currency units.",
     },
+    "terminal_growth": {
+        "type": "number",
+        "description": "Perpetual growth rate g applied after the forecast window, as a decimal.",
+        "default": 0.0,
+    },
+    "debt_value": {"type": "number", "description": "Market value of debt, in currency units."},
+    "cost_of_equity": {"type": "number", "description": "After-tax cost of equity Re as a decimal."},
+    "cost_of_debt": {"type": "number", "description": "Pre-tax cost of debt Rd as a decimal."},
     # capm
     "risk_free_rate": {"type": "number", "description": "Risk-free rate as a decimal (e.g. 0.04 for 4%)."},
     "beta": {"type": "number", "description": "Systematic risk beta (market = 1.0)."},
@@ -433,15 +441,20 @@ TOOLS: list[dict[str, Any]] = [
         "title": "Time Value of Money",
         "description": (
             "Discount, compound, and forecast value over time: single future value PV, net present "
-            "value of a cash-flow stream, annuity present value, constant-rate compound growth of "
-            "revenue or cash flow, and the implied compound annual growth rate (CAGR). Method selects "
-            "the formula. Use to convert future cash to today's value, to project a revenue or "
-            "cash-flow series forward, or to derive the growth rate implied by two values; get the "
+            "value of a cash-flow stream, annuity present value, discounted cash flow with a Gordon "
+            "terminal value, constant-rate compound growth of revenue or cash flow, and the implied "
+            "compound annual growth rate (CAGR). Method selects "
+            "the formula. Use to convert future cash to today's value, to value a full forecast with "
+            "a terminal value (dcf), to project a revenue or cash-flow series forward, or to derive "
+            "the growth rate implied by two values; get the "
             "discount rate from valuation_capm or valuation_international. Parameters apply per method: "
             "present_value needs future_value + rate + periods; npv needs cash_flows + rate; annuity "
-            "needs payment + rate + periods; compound_growth needs starting_value + growth_rate + "
-            "periods; cagr needs starting_value + ending_value + periods. growth_rate must be greater "
-            "than -1, and cagr requires starting_value > 0 and periods > 0. Not for option values (use "
+            "needs payment + rate + periods; dcf needs cash_flows + rate (optional: terminal_growth); "
+            "compound_growth needs "
+            "starting_value + growth_rate + periods; cagr needs starting_value + ending_value + "
+            "periods. growth_rate must be greater "
+            "than -1, cagr requires starting_value > 0 and periods > 0, and dcf requires rate greater "
+            "than terminal_growth. Not for option values (use "
             "valuation_advanced) or for expected values over outcomes (use valuation_probability)."
         ),
         "tags": ["dcf", "discounting", "time-value", "growth", "forecasting"],
@@ -494,20 +507,31 @@ TOOLS: list[dict[str, Any]] = [
                     "periods": "periods",
                 },
             },
+            {
+                "key": "dcf",
+                "label": "Discounted cash flow",
+                "summary": "DCF = Σ Cₜ/(1+r)^t + [C_n(1+g)/(r−g)]/(1+r)^n.",
+                "module": "tv",
+                "function": "dcf_valuation",
+                "args": {"cash_flows": "cash_flows", "rate": "rate"},
+                "opt": {"terminal_growth": "terminal_growth"},
+            },
         ],
     },
     {
         "name": "valuation_capm",
         "title": "CAPM & Cost of Equity",
         "description": (
-            "Estimate the cost of equity: standard CAPM, startup-adjusted CAPM with size and "
-            "illiquidity premiums, and portfolio beta from weighted asset betas. Method selects the "
+            "Estimate the cost of capital: standard CAPM, startup-adjusted CAPM with size and "
+            "illiquidity premiums, portfolio beta from weighted asset betas, and WACC blending "
+            "after-tax cost of equity and debt. Method selects the "
             "formula. Use to derive the discount rate that feeds valuation_time_value and DCF models; "
             "for cross-border rates add valuation_international. Parameters apply per method: capm "
             "needs risk_free_rate + beta + market_return; startup_capm adds size_premium and "
-            "liquidity_premium; portfolio_beta needs weights + betas, which must be equal length."
+            "liquidity_premium; portfolio_beta needs weights + betas, which must be equal length; "
+            "wacc needs equity_value + debt_value + cost_of_equity + cost_of_debt + tax_rate."
         ),
-        "tags": ["capm", "cost-of-equity", "beta"],
+        "tags": ["capm", "cost-of-equity", "beta", "wacc", "cost-of-capital"],
         "methods": [
             {
                 "key": "capm",
@@ -537,6 +561,20 @@ TOOLS: list[dict[str, Any]] = [
                 "module": "capm",
                 "function": "portfolio_beta",
                 "args": {"weights": "weights", "betas": "betas"},
+            },
+            {
+                "key": "wacc",
+                "label": "WACC",
+                "summary": "WACC = (E/V)·Re + (D/V)·Rd·(1 − T).",
+                "module": "capm",
+                "function": "wacc",
+                "args": {
+                    "equity_value": "equity_value",
+                    "debt_value": "debt_value",
+                    "cost_of_equity": "cost_of_equity",
+                    "cost_of_debt": "cost_of_debt",
+                    "tax_rate": "tax_rate",
+                },
             },
         ],
     },

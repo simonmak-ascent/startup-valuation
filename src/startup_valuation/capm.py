@@ -205,3 +205,81 @@ def portfolio_variance(
         chapter="2",
         formula_number="2.8",
     )
+
+
+def wacc(
+    equity_value: float,
+    debt_value: float,
+    cost_of_equity: float,
+    cost_of_debt: float,
+    tax_rate: float,
+) -> ValuationResult:
+    """Calculate the weighted average cost of capital (WACC).
+
+    Formula: WACC = (E/V)·Re + (D/V)·Rd·(1 − T)
+
+    Args:
+        equity_value: Market value of equity (E), in currency units.
+        debt_value: Market value of debt (D), in currency units.
+        cost_of_equity: After-tax cost of equity (Re) as a decimal.
+        cost_of_debt: Pre-tax cost of debt (Rd) as a decimal.
+        tax_rate: Marginal corporate tax rate (T) as a decimal.
+
+    Returns:
+        ValuationResult with WACC as value.
+
+    Raises:
+        ValueError: If equity_value or debt_value is negative, or E + D <= 0.
+
+    Notes:
+        WACC blends the after-tax cost of each capital source by its market-value
+        weight, and is the discount rate used to value the whole firm:
+
+        $$WACC = \\frac{E}{V} R_e + \\frac{D}{V} R_d (1 - T)$$
+
+        The interest tax shield is captured by ``(1 - T)`` on the debt term.
+
+    References:
+        Startup Valuation textbook, Chapter 2, Section 2.5.
+
+    See Also:
+        capm : Estimate the cost of equity (Re).
+
+    Example:
+        >>> result = wacc(700000, 300000, 0.18, 0.08, 0.25)
+        >>> round(result.value, 4)
+        0.144
+    """
+    if equity_value < 0 or debt_value < 0:
+        raise ValueError("equity_value and debt_value must be >= 0")
+    total = equity_value + debt_value
+    if total <= 0:
+        raise ValueError("equity_value + debt_value must be > 0")
+
+    equity_weight = equity_value / total
+    debt_weight = debt_value / total
+    value = equity_weight * cost_of_equity + debt_weight * cost_of_debt * (1 - tax_rate)
+
+    return ValuationResult(
+        value=value,
+        method="Weighted Average Cost of Capital",
+        inputs={
+            "equity_value": equity_value,
+            "debt_value": debt_value,
+            "cost_of_equity": cost_of_equity,
+            "cost_of_debt": cost_of_debt,
+            "tax_rate": tax_rate,
+        },
+        assumptions=["Capital structure weights use market values and stay constant"],
+        chapter="2",
+        formula_number="2.5",
+        steps=[
+            {"label": "Equity weight × Re", "value": equity_weight * cost_of_equity, "formula": r"(E/V)\cdot R_e"},
+            {
+                "label": "Debt weight × Rd × (1−T)",
+                "value": debt_weight * cost_of_debt * (1 - tax_rate),
+                "formula": r"(D/V)\cdot R_d(1-T)",
+            },
+            {"label": "WACC", "value": value, "formula": r"WACC = (E/V)R_e + (D/V)R_d(1-T)"},
+        ],
+    )

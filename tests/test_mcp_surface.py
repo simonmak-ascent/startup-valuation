@@ -98,6 +98,23 @@ def test_method_enum_matches_input_schema():
             pytest.approx(0.4, abs=1e-9),
         ),
         (
+            "valuation_time_value",
+            {"method": "dcf", "cash_flows": [100_000, 120_000, 140_000], "rate": 0.12, "terminal_growth": 0.03},
+            pytest.approx(1_425_028.3, abs=1),
+        ),
+        (
+            "valuation_capm",
+            {
+                "method": "wacc",
+                "equity_value": 700_000,
+                "debt_value": 300_000,
+                "cost_of_equity": 0.18,
+                "cost_of_debt": 0.08,
+                "tax_rate": 0.25,
+            },
+            pytest.approx(0.144, abs=1e-9),
+        ),
+        (
             "valuation_capm",
             {"method": "capm", "risk_free_rate": 0.04, "beta": 1.0, "market_return": 0.10},
             pytest.approx(0.10),
