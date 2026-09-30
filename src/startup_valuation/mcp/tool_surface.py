@@ -1416,19 +1416,18 @@ _TYPE_MAP: dict[str, dict[str, Any]] = {
 #: the output schema do not — the TDQS Behavioral Transparency dimension asks for
 #: consequences beyond the structured hints.
 _RETURNS_NOTE = (
-    " Returns an object with value, method, inputs, assumptions, chapter, formula_number and "
-    "calculation steps. Pure arithmetic: no I/O and no external calls, and numeric results are "
-    "returned rounded to 2 decimals. No authentication, credentials, or rate limits apply. "
-    "Supplying an unknown method, or leaving unset a parameter that the chosen method requires, "
-    "returns an error instead of a value."
+    " Returns value, method, inputs, assumptions, chapter, formula_number and calculation steps; pure "
+    "arithmetic (no I/O), rounded to 2 decimals, with no auth or rate limits. An unknown method, or a "
+    "missing method-required parameter, returns an error instead of a value."
 )
 
 
 #: Completeness clause: callers routinely need to know that only `method` is
 #: mandatory and the rest of the (large) parameter set is conditional.
 _PARAMS_NOTE = (
-    " Only method is required; other parameters are method-dependent, so supply those named for the "
-    "selected method and omit the rest (documented defaults apply where defined)."
+    " Only method is required; all other parameters are method-dependent, so supply those the selected "
+    "method names and omit the rest (defaults apply where defined). Rate and decimal inputs are fractions "
+    "(0.10 = 10%); probability and weight lists are in [0,1] and sum to 1."
 )
 
 
