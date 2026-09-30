@@ -50,7 +50,7 @@ pip install --upgrade startup-valuation
 
 1. **Server not running** — Start the server first:
    ```bash
-   cd mcp_server && python server.py
+   startup-valuation-mcp
    ```
 
 2. **Wrong transport mode** — stdio mode doesn't use network ports. If you're trying to connect via HTTP, configure SSE transport:
@@ -71,7 +71,7 @@ pip install --upgrade startup-valuation
    - ❌ `valuation_score_card`
    - ❌ `scorecard_valuation` (this is the library function name, not the MCP tool name)
 
-2. **Check the [tool reference](mcp-server.md#tool-reference)** for the complete list of 60+ tools.
+2. **Check the [tool reference](mcp-server.md#tool-reference)** for the complete list of 14 tools.
 
 ### Server crashes on startup
 

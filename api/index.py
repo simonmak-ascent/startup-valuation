@@ -1,6 +1,6 @@
 """Vercel serverless MCP endpoint for startup-valuation — 15 folded tools.
 
-The tool surface is defined once in ``mcp_server/tool_surface.py`` and shared
+The tool surface is defined once in ``startup_valuation/mcp/tool_surface.py`` and shared
 with the stdio server, so the hosted endpoint and the local server advertise
 byte-identical tool definitions (name, title, description, JSON Schemas,
 annotations). Model Context Protocol (MCP) JSON-RPC 2.0 over POST:
@@ -14,9 +14,13 @@ import json as _json
 import os as _os
 import sys as _sys
 
-_sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+_ROOT = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
+# Repo root (for a bundled src/ tree) and src/ (so `startup_valuation` resolves
+# whether or not the package is pip-installed in the function environment).
+_sys.path.insert(0, _os.path.join(_ROOT, "src"))
+_sys.path.insert(0, _ROOT)
 
-from mcp_server.tool_surface import (  # noqa: E402
+from startup_valuation.mcp.tool_surface import (  # noqa: E402
     SERVER_NAME,
     SERVER_VERSION,
     call_tool,

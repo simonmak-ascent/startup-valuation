@@ -35,7 +35,7 @@ mypy src/startup_valuation --ignore-missing-imports
    - Test edge cases and error conditions
    - Use `pytest.approx()` for floating-point comparisons
 
-3. **Add an MCP tool** in `mcp_server/server.py`
+3. **Add an MCP tool** in `src/startup_valuation/mcp/tool_surface.py`
    - Wrap the library function and return a plain dict for agent consumption
    - Include a descriptive docstring
 

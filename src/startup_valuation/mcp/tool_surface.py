@@ -2,7 +2,7 @@
 
 Single source of truth for every MCP tool definition — descriptions,
 parameter semantics, JSON Schemas, annotations, and dispatch. Both the
-stdio server (``mcp_server/server.py``) and the hosted HTTP endpoint
+stdio server (``startup_valuation/mcp/server.py``) and the hosted HTTP endpoint
 (``api/index.py``) consume this module, so the two surfaces cannot drift.
 
 Design notes (Glama / TDQS Tool Definition Quality Score):
@@ -1434,7 +1434,7 @@ _PARAMS_NOTE = (
 
 def describe(tool: dict[str, Any]) -> str:
     """Full description as advertised to clients (base text + shared clauses)."""
-    return tool["description"] + _PARAMS_NOTE + _RETURNS_NOTE
+    return f"{tool['description']}{_PARAMS_NOTE}{_RETURNS_NOTE}"
 
 
 def _param_schema(key: str) -> dict[str, Any]:
@@ -1495,7 +1495,7 @@ def list_tools() -> list[dict[str, Any]]:
 # --------------------------------------------------------------------------
 
 
-def _resolve(module_name: str, function_name: str):
+def _resolve(module_name: str, function_name: str) -> tuple[Any, dict[str, Any]]:
     import importlib
 
     if function_name == "expected_value_continuous_std_normal":
@@ -1528,7 +1528,8 @@ def _unwrap(result: Any) -> dict[str, Any]:
 def _find_method(tool: dict[str, Any], method_key: str) -> dict[str, Any]:
     for method in tool.get("methods", []):
         if method["key"] == method_key:
-            return method
+            found: dict[str, Any] = method
+            return found
     raise ValueError(f"Unknown method '{method_key}' for tool '{tool['name']}'")
 
 

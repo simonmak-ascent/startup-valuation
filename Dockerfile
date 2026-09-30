@@ -11,11 +11,10 @@ ENV PYTHONUNBUFFERED=1 \
 WORKDIR /app
 
 # Install the library + MCP extra (fastmcp). Build context is the repo root.
+# The MCP server ships inside the library (startup_valuation.mcp) and installs
+# the `startup-valuation-mcp` console script.
 COPY pyproject.toml README.md LICENSE ./
 COPY src ./src
 RUN pip install ".[mcp]"
 
-# The tool surface + stdio entrypoint. Regenerate with scripts/generate_mcp.py.
-COPY mcp_server ./mcp_server
-
-CMD ["python", "mcp_server/server.py"]
+CMD ["startup-valuation-mcp"]

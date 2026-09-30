@@ -1,2 +1,5 @@
-# Vercel Python MCP Server — startup-valuation
-# No external dependencies needed — stdlib only
+# Vercel Python runtime deps for the hosted MCP endpoint (api/index.py).
+# The endpoint imports the library from the bundled src/ tree (added to
+# sys.path in api/index.py); these are the library's runtime dependencies.
+numpy>=1.24.0
+scipy>=1.10.0

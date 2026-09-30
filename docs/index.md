@@ -29,19 +29,19 @@ print(f"Option value: ${result.value:,.0f}")  # $15,240,000
 
 ## Book Chapters → Library Modules
 
-| Chapter | Topic | Library Module |
-|---------|-------|----------------|
-| 1 | Introduction to Startup Valuation | — |
-| 2 | Probability, TVM, CAPM | `probability`, `tv`, `capm` |
-| 3 | Core Valuation Methods | `core` |
-| 4 | Advanced Methods | `advanced` |
-| 5 | Comparables & Multiples | `comparables` |
-| 6–10 | Specialized Topics | See textbook |
-| 11 | Industry-Specific Models | `saas`, `biotech`, `fintech`, `marketplace`, `hardware` |
-| 12 | International Valuation | `international` |
-| 13 | Stakeholder Analysis | `stakeholders` |
-| 14 | Emerging Methods | `emerging` |
-| 15 | Conclusion & Best Practices | — |
+| Chapter | Topic                             | Library Module                                          |
+| ------- | --------------------------------- | ------------------------------------------------------- |
+| 1       | Introduction to Startup Valuation | —                                                       |
+| 2       | Probability, TVM, CAPM            | `probability`, `tv`, `capm`                             |
+| 3       | Core Valuation Methods            | `core`                                                  |
+| 4       | Advanced Methods                  | `advanced`                                              |
+| 5       | Comparables & Multiples           | `comparables`                                           |
+| 6–10    | Specialized Topics                | See textbook                                            |
+| 11      | Industry-Specific Models          | `saas`, `biotech`, `fintech`, `marketplace`, `hardware` |
+| 12      | International Valuation           | `international`                                         |
+| 13      | Stakeholder Analysis              | `stakeholders`                                          |
+| 14      | Emerging Methods                  | `emerging`                                              |
+| 15      | Conclusion & Best Practices       | —                                                       |
 
 ## Features
 
@@ -53,34 +53,37 @@ print(f"Option value: ${result.value:,.0f}")  # $15,240,000
 
 ## Modules
 
-| Module | Methods | Chapter |
-|--------|---------|---------|
-| `probability` | Expected value, joint probability, Poisson | 2 |
-| `tv` | PV, NPV, annuity | 2 |
-| `capm` | CAPM, portfolio beta, startup-adjusted | 2 |
-| `core` | Scorecard, Berkus, Risk Factor, VC Method | 3 |
-| `advanced` | Black-Scholes, Binomial, Monte Carlo, Scenario | 4 |
-| `comparables` | Multiples, regression-adjusted | 5 |
-| `saas` | LTV, CAC, NRR, Magic Number, Rule of 40 | 11 |
-| `biotech` | rNPV, decision tree, peak sales, pipeline | 11 |
-| `fintech` | Payment revenue, lending, network effects | 11 |
-| `marketplace` | GMV, take rate, liquidity, network density | 11 |
-| `hardware` | TRL-adjusted, break-even, P-weighted DCF | 11 |
-| `international` | PPP, CRP, currency-adjusted DCF | 12 |
-| `stakeholders` | Dilution, OPM, PWERM, liquidation | 13 |
-| `emerging` | SAFE, MV=PQ, ESG, Metcalfe's Law | 14 |
+| Module          | Methods                                        | Chapter |
+| --------------- | ---------------------------------------------- | ------- |
+| `probability`   | Expected value, joint probability, Poisson     | 2       |
+| `tv`            | PV, NPV, annuity                               | 2       |
+| `capm`          | CAPM, portfolio beta, startup-adjusted         | 2       |
+| `core`          | Scorecard, Berkus, Risk Factor, VC Method      | 3       |
+| `advanced`      | Black-Scholes, Binomial, Monte Carlo, Scenario | 4       |
+| `comparables`   | Multiples, regression-adjusted                 | 5       |
+| `saas`          | LTV, CAC, NRR, Magic Number, Rule of 40        | 11      |
+| `biotech`       | rNPV, decision tree, peak sales, pipeline      | 11      |
+| `fintech`       | Payment revenue, lending, network effects      | 11      |
+| `marketplace`   | GMV, take rate, liquidity, network density     | 11      |
+| `hardware`      | TRL-adjusted, break-even, P-weighted DCF       | 11      |
+| `international` | PPP, CRP, currency-adjusted DCF                | 12      |
+| `stakeholders`  | Dilution, OPM, PWERM, liquidation              | 13      |
+| `emerging`      | SAFE, MV=PQ, ESG, Metcalfe's Law               | 14      |
 
 ## MCP Server
 
 ```bash
-cd mcp_server && python server.py
+pip install "startup-valuation[mcp]"
+startup-valuation-mcp          # stdio server; or: uvx --from startup-valuation startup-valuation-mcp
 ```
 
-Connect with any MCP-compatible AI agent. All 60+ valuation tools are available.
+Connect with any MCP-compatible AI agent. All 14 valuation tools are available.
+The hosted Streamable HTTP endpoint needs no install: `https://startup-valuation.simonmak.com/api`.
 
 ## AI-Agent Skills
 
 Copy the `skills/` directory to your agent's skills folder. Available skills:
+
 - `valuation-core` — Scorecard, Berkus, VC Method, Risk Factor
 - `valuation-advanced` — Black-Scholes, Monte Carlo, Scenario Analysis
 - `valuation-industry` — SaaS, Biotech, Fintech, Marketplace, Hardware

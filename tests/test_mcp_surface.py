@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from mcp_server import tool_surface as ts
+from startup_valuation.mcp import tool_surface as ts
 
 EXPECTED_TOOLS = [
     "valuation_probability",
@@ -181,7 +181,7 @@ def test_stdio_surface_parity_with_spec():
     pytest.importorskip("fastmcp")
     import asyncio
 
-    from mcp_server import server
+    from startup_valuation.mcp import server
 
     tools = {t.name: t for t in asyncio.run(server.mcp.list_tools())}
     assert set(tools) == set(EXPECTED_TOOLS)

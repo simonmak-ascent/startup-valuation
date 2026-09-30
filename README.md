@@ -1,5 +1,7 @@
 # Startup Valuation Engine
 
+<!-- mcp-name: io.github.simonplmak-cloud/startup-valuation -->
+
 > Comprehensive startup valuation library implementing **80+ formulas** from the Startup Valuation textbook. Python library + MCP server + AI-Agent Skills.
 
 [![PyPI](https://img.shields.io/pypi/v/startup-valuation.svg)](https://pypi.org/project/startup-valuation/)
@@ -95,7 +97,9 @@ stakeholder equity, emerging methods, and a triangulated full analysis.
 
 ```bash
 pip install "startup-valuation[mcp]"
-python mcp_server/server.py
+startup-valuation-mcp          # console script installed with the [mcp] extra
+# or: python -m startup_valuation.mcp
+# or ephemeral, no clone: uvx --from startup-valuation startup-valuation-mcp
 ```
 
 **Hosted (Streamable HTTP)** — no install, no API key:

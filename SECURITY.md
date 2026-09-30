@@ -34,7 +34,7 @@ We take security seriously. If you discover a security vulnerability in the Star
 
 This policy covers:
 - Python library (`src/startup_valuation/`)
-- MCP Server (`mcp_server/`)
+- MCP Server (`src/startup_valuation/mcp/`)
 - Documentation site (GitHub Pages)
 - Build and CI/CD workflows
 
