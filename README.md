@@ -212,6 +212,14 @@ By Simon Mak · 338 pages · 15 chapters · 300+ exercises · 20+ real-world cas
 
 Based on formulas from the **Startup Valuation** textbook. See `output/` for the full textbook source in markdown.
 
+## Use with Context7
+
+Up-to-date Startup Valuation Engine documentation is indexed on [Context7](https://context7.com/simonplmak-cloud/startup-valuation), so coding agents can pull it into context on demand. With the Context7 MCP server or `ctx7` CLI installed, name the library in your prompt:
+
+```text
+use library /simonplmak-cloud/startup-valuation for API and docs
+```
+
 ## License
 
 MIT — see [LICENSE](LICENSE) for details.

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "Startup Valuation Engine",
+  "description": "Python library and MCP server implementing 80+ startup valuation formulas (Scorecard, Berkus, VC Method, DCF, CAPM/WACC, Black-Scholes, comparables, SaaS, marketplace, fintech, biotech rNPV, SAFE conversion) as 14 read-only, deterministic MCP tools.",
+  "folders": [
+    "docs",
+    "skills"
+  ],
+  "rules": [
+    "Install with `pip install 'startup-valuation[mcp]'`; run the stdio server with `startup-valuation-mcp` or `uvx --from startup-valuation startup-valuation-mcp`.",
+    "The hosted Streamable HTTP endpoint is https://startup-valuation.simonmak.com/api and needs no API key.",
+    "All 14 MCP tools (`valuation_*`) are pure arithmetic: read-only, idempotent, no I/O; results are rounded to 2 decimal places.",
+    "Each tool is a dispatcher: pass a `method` plus that method's parameters; unknown methods or missing required parameters return an error.",
+    "Use `valuation_core` for pre-revenue methods (Scorecard, Berkus, Risk-Factor Summation, VC Method), `valuation_probability` for expected-value lists, and `valuation_advanced` for options and scenarios."
+  ],
+  "excludeFolders": [
+    "node_modules",
+    "dist",
+    "build",
+    ".next",
+    ".cache",
+    "tests",
+    "tests-webapp",
+    "e2e",
+    "test-results",
+    "**/__pycache__",
+    ".github",
+    ".opencode",
+    ".devcontainer",
+    "specs",
+    "marketing",
+    "overrides"
+  ],
+  "excludeFiles": [
+    "CHANGELOG.md",
+    "CODE_OF_CONDUCT.md",
+    "LICENSE",
+    "LICENSE.md",
+    "LICENSE-CONTENT.md",
+    "SECURITY.md",
+    "GITHUB_SETUP.md",
+    "VERCEL_PROTECTION_FIX.md"
+  ]
+}
