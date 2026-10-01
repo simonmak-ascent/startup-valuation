@@ -30,7 +30,19 @@ from startup_valuation.types import Scenario
 # --------------------------------------------------------------------------
 
 SERVER_NAME = "startup-valuation"
-SERVER_VERSION = "2.0.0"
+
+
+def _package_version() -> str:
+    """Installed distribution version, so serverInfo never drifts from the release."""
+    try:
+        from importlib.metadata import PackageNotFoundError, version
+
+        return version("startup-valuation")
+    except PackageNotFoundError:  # running from a source checkout without install
+        return "2.1.0"
+
+
+SERVER_VERSION = _package_version()
 
 #: Behaviour shared by every tool: pure arithmetic, no I/O.
 COMMON_ANNOTATIONS: dict[str, Any] = {
@@ -56,6 +68,11 @@ OUTPUT_SCHEMA: dict[str, Any] = {
         "formula_number": {"type": "string", "description": "Source textbook formula number (e.g. '3.1')."},
         "steps": {"type": "array", "items": {"type": "object"}, "description": "Intermediate steps for traceability."},
         "error": {"type": "string", "description": "Error message when the call fails."},
+        "defaults_applied": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Optional parameters that were not supplied, so their documented defaults were used.",
+        },
     },
     "required": ["value"],
 }
@@ -1573,10 +1590,16 @@ def call_tool(name: str, arguments: dict[str, Any]) -> dict[str, Any]:
         if mcp_name not in arguments or arguments[mcp_name] is None:
             raise ValueError(f"method '{method['key']}' requires parameter '{mcp_name}'")
         kwargs[fn_param] = arguments[mcp_name]
+    defaults_applied: list[str] = []
     for fn_param, mcp_name in method.get("opt", {}).items():
         value = arguments.get(mcp_name)
         if value is not None:
             kwargs[fn_param] = value
+        else:
+            defaults_applied.append(mcp_name)
+    if method.get("opt") and not method.get("args") and not kwargs:
+        # Every input would default (often to 0), which yields a meaningless value.
+        raise ValueError(f"method '{method['key']}' needs at least one of: " + ", ".join(method["opt"].values()))
 
     if method.get("adapter") == "scenarios":
         field = next(iter(method["args"]))
@@ -1586,8 +1609,10 @@ def call_tool(name: str, arguments: dict[str, Any]) -> dict[str, Any]:
         ]
 
     fn, injected = _resolve(method["module"], method["function"])
-    result = fn(**injected, **kwargs)
-    return _unwrap(result)
+    result = _unwrap(fn(**injected, **kwargs))
+    if defaults_applied:
+        result = {**result, "defaults_applied": defaults_applied}
+    return result
 
 
 def tool_count() -> int:

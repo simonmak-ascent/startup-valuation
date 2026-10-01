@@ -98,6 +98,12 @@ stakeholder equity, emerging methods, and a triangulated full analysis.
 ```bash
 pip install "startup-valuation[mcp]"
 startup-valuation-mcp          # console script installed with the [mcp] extra
+
+**Prompts and resources.** Besides the 14 tools, the server offers three guided
+prompts (`value_pre_revenue_startup`, `value_saas_startup`, `model_funding_round`)
+and a machine-readable method catalog at `startup-valuation://methods`, so agents
+can see every method's required parameters before calling a tool.
+
 # or: python -m startup_valuation.mcp
 # or ephemeral, no clone: uvx --from startup-valuation startup-valuation-mcp
 ```
