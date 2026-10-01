@@ -88,7 +88,10 @@ PARAMS: dict[str, dict[str, Any]] = {
         "type": "array:number",
         "description": "Value of each asset or scenario in currency units, aligned with probabilities.",
     },
-    "betas": {"type": "array:number", "description": "Asset betas aligned with weights; typically 0.5–3.0 (market = 1.0)."},
+    "betas": {
+        "type": "array:number",
+        "description": "Asset betas aligned with weights; typically 0.5–3.0 (market = 1.0).",
+    },
     "mean_events": {"type": "number", "description": "Poisson mean λ = expected number of events in the interval."},
     "k": {"type": "integer", "description": "Number of events k for the Poisson probability P(X=k); integer ≥ 0."},
     "lower": {"type": "number", "description": "Lower integration bound (standard-normal domain, e.g. -1.0)."},
@@ -175,7 +178,11 @@ PARAMS: dict[str, dict[str, Any]] = {
     "strike": {"type": "number", "description": "Strike / exercise price K, currency units."},
     "volatility": {"type": "number", "description": "Annualised volatility σ as a decimal (0.80 = 80%)."},
     "time_to_maturity": {"type": "number", "description": "Time to expiry in years T, must be ≥ 0."},
-    "steps": {"type": "integer", "description": "Binomial tree time steps (integer ≥ 1; higher = more accurate).", "default": 50},
+    "steps": {
+        "type": "integer",
+        "description": "Binomial tree time steps (integer ≥ 1; higher = more accurate).",
+        "default": 50,
+    },
     "scenarios": {
         "type": "array:object",
         "description": "Scenario objects: {name: str, probability: 0-1, value: currency}; probabilities should sum to 1.",
