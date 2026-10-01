@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-10-01
+
+### Added
+
+- **MCP prompts**: `value_pre_revenue_startup`, `value_saas_startup` and
+  `model_funding_round`, guided multi-method workflows whose tool/method steps and
+  parameter lists are generated from the canonical tool surface.
+- **MCP resources**: `startup-valuation://methods` (full method catalog with
+  required and optional parameters) plus one resource per tool. Served by both the
+  stdio server and the hosted endpoint (`prompts/*`, `resources/*`).
+- Tool results now include `defaults_applied`, listing optional inputs that fell
+  back to their defaults.
+
+### Fixed
+
+- A method whose inputs are all optional (for example `berkus`) no longer returns
+  a silent 0 when called with no inputs; it returns an error naming the inputs.
+- `serverInfo.version` is read from the installed package, so it no longer drifts
+  from the release (it reported 2.0.0); hosted `instructions` said 15 tools (14).
+
 ### Changed — MCP server 2.0.0 (breaking)
 
 - **Folded 60 MCP tools into 14 family tools**, each taking a `method` argument.

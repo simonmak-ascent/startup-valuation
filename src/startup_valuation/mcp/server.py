@@ -16,6 +16,7 @@ from typing import Annotated, Any, Literal, Optional
 from fastmcp import FastMCP
 from pydantic import Field
 
+from startup_valuation.mcp import agent_guides
 from startup_valuation.mcp.tool_surface import (
     COMMON_ANNOTATIONS,
     OUTPUT_SCHEMA,
@@ -25,6 +26,7 @@ from startup_valuation.mcp.tool_surface import (
 )
 
 mcp = FastMCP(SERVER_NAME, version=SERVER_VERSION)
+agent_guides.register(mcp)
 
 
 @mcp.tool(
