@@ -2,7 +2,7 @@
 
 <!-- mcp-name: io.github.simonplmak-cloud/startup-valuation -->
 
-> Comprehensive startup valuation library implementing **80+ formulas** from the *Startup Valuation* textbook. Python library + MCP server + AI-agent skills.
+> **A comprehensive startup valuation library** implementing 80+ formulas from the *Startup Valuation* textbook — Python library, MCP server, and AI-agent skills.
 
 [![CI](https://github.com/simonplmak-cloud/startup-valuation/actions/workflows/ci.yml/badge.svg)](https://github.com/simonplmak-cloud/startup-valuation/actions/workflows/ci.yml)
 [![PyPI](https://img.shields.io/pypi/v/startup-valuation.svg)](https://pypi.org/project/startup-valuation/)
