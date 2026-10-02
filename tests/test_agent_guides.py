@@ -7,7 +7,11 @@ import re
 from pathlib import Path
 
 import pytest
-import tomllib
+
+try:
+    import tomllib
+except ModuleNotFoundError:  # Python 3.10
+    import tomli as tomllib
 
 from startup_valuation.mcp import agent_guides as g
 from startup_valuation.mcp import tool_surface as ts
