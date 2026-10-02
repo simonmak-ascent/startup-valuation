@@ -2,17 +2,17 @@
 
 <!-- mcp-name: io.github.simonplmak-cloud/startup-valuation -->
 
-> Comprehensive startup valuation library implementing **80+ formulas** from the Startup Valuation textbook. Python library + MCP server + AI-Agent Skills.
+> Comprehensive startup valuation library implementing **80+ formulas** from the *Startup Valuation* textbook. Python library + MCP server + AI-agent skills.
 
-[![PyPI](https://img.shields.io/pypi/v/startup-valuation.svg)](https://pypi.org/project/startup-valuation/)
 [![CI](https://github.com/simonplmak-cloud/startup-valuation/actions/workflows/ci.yml/badge.svg)](https://github.com/simonplmak-cloud/startup-valuation/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/startup-valuation.svg)](https://pypi.org/project/startup-valuation/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Docs](https://img.shields.io/badge/docs-GitHub_Pages-blue)](https://simonplmak-cloud.github.io/startup-valuation/)
 [![Coverage](https://img.shields.io/badge/coverage-88%25-brightgreen)](https://github.com/simonplmak-cloud/startup-valuation/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/docs-GitHub_Pages-blue)](https://simonplmak-cloud.github.io/startup-valuation/)
+[![MCP tools](https://img.shields.io/badge/MCP-14%20tools-4CAF50)](https://startup-valuation.simonmak.com/api)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/simonplmak-cloud/startup-valuation/badge)](https://scorecard.dev/viewer/?uri=github.com/simonplmak-cloud/startup-valuation)
 [![Glama MCP](https://glama.ai/mcp/servers/simonplmak-cloud/startup-valuation/badges/score.svg)](https://glama.ai/mcp/servers/simonplmak-cloud/startup-valuation)
-[![MCP tools](https://img.shields.io/badge/MCP-14%20tools-4CAF50)](https://startup-valuation.simonmak.com/api)
 
 ## Overview
 
@@ -228,4 +228,8 @@ use library /simonplmak-cloud/startup-valuation for API and docs
 
 ## License
 
-MIT — see [LICENSE](LICENSE) for details.
+MIT — see [LICENSE](LICENSE).
+
+---
+
+If this saves you time, a ⭐ on GitHub helps others find it.
