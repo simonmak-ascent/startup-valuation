@@ -8,7 +8,7 @@ import { StartupValuationClient, type ValuationResult } from "./client";
  * step-by-step derivation, and formula/chapter traceability.
  *
  * Usage:
- *   import { scorecard, capm } from "@simonmak/startup-valuation";
+ *   import { scorecard, capm } from "@simonmak-ascent/startup-valuation";
  *   const r = await scorecard(1500000, [0.3,0.25,...], [1.25,1.5,...]);
  */
 

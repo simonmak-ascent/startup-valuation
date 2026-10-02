@@ -1,5 +1,5 @@
 {
-  "name": "@simonmak/startup-valuation",
+  "name": "@simonmak-ascent/startup-valuation",
   "version": "0.1.0",
   "description": "TypeScript SDK for the Startup Valuation Engine — 27+ valuation methods with full traceability.",
   "license": "MIT",

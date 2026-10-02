@@ -27,7 +27,7 @@ export default function ApiPlaygroundPage() {
           <div className="mb-2">
             <span className="text-green-400"># TypeScript SDK</span>
           </div>
-          <pre className="whitespace-pre-wrap">{`import { scorecard } from "@simonmak/startup-valuation";
+          <pre className="whitespace-pre-wrap">{`import { scorecard } from "@simonmak-ascent/startup-valuation";
 const r = await scorecard(1500000, [0.3,0.25,0.15,0.1,0.1,0.05,0.05], [1.25,1.5,1.2,0.75,1,0.9,1]);
 console.log(r.value); // 1800000`}</pre>
         </div>
