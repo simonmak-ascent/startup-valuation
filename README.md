@@ -1,18 +1,18 @@
 # Startup Valuation Engine
 
-<!-- mcp-name: io.github.simonplmak-cloud/startup-valuation -->
+<!-- mcp-name: io.github.simonmak-ascent/startup-valuation -->
 
 > **A comprehensive startup valuation library** implementing 80+ formulas from the *Startup Valuation* textbook — Python library, MCP server, and AI-agent skills.
 
-[![CI](https://github.com/simonplmak-cloud/startup-valuation/actions/workflows/ci.yml/badge.svg)](https://github.com/simonplmak-cloud/startup-valuation/actions/workflows/ci.yml)
+[![CI](https://github.com/simonmak-ascent/startup-valuation/actions/workflows/ci.yml/badge.svg)](https://github.com/simonmak-ascent/startup-valuation/actions/workflows/ci.yml)
 [![PyPI](https://img.shields.io/pypi/v/startup-valuation.svg)](https://pypi.org/project/startup-valuation/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Coverage](https://img.shields.io/badge/coverage-88%25-brightgreen)](https://github.com/simonplmak-cloud/startup-valuation/actions/workflows/ci.yml)
-[![Docs](https://img.shields.io/badge/docs-GitHub_Pages-blue)](https://simonplmak-cloud.github.io/startup-valuation/)
+[![Coverage](https://img.shields.io/badge/coverage-88%25-brightgreen)](https://github.com/simonmak-ascent/startup-valuation/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/docs-GitHub_Pages-blue)](https://simonmak-ascent.github.io/startup-valuation/)
 [![MCP tools](https://img.shields.io/badge/MCP-14%20tools-4CAF50)](https://startup-valuation.simonmak.com/api)
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/simonplmak-cloud/startup-valuation/badge)](https://scorecard.dev/viewer/?uri=github.com/simonplmak-cloud/startup-valuation)
-[![Glama MCP](https://glama.ai/mcp/servers/simonplmak-cloud/startup-valuation/badges/score.svg)](https://glama.ai/mcp/servers/simonplmak-cloud/startup-valuation)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/simonmak-ascent/startup-valuation/badge)](https://scorecard.dev/viewer/?uri=github.com/simonmak-ascent/startup-valuation)
+[![Glama MCP](https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation/badges/score.svg)](https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation)
 
 ## Overview
 
@@ -127,9 +127,9 @@ https://startup-valuation.simonmak.com/api
 **Claude Desktop / Cursor** — add the HTTP URL `https://startup-valuation.simonmak.com/api`
 as an MCP server, or run the stdio entrypoint above.
 
-**MCP Registry** — published as `io.github.simonplmak-cloud/startup-valuation`
+**MCP Registry** — published as `io.github.simonmak-ascent/startup-valuation`
 (manifest: [`server.json`](server.json)) and listed on
-[Glama](https://glama.ai/mcp/servers/simonplmak-cloud/startup-valuation) and the
+[Glama](https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation) and the
 [Official MCP Registry](https://registry.modelcontextprotocol.io). The
 [`glama.json`](glama.json) file holds the Glama maintainer entry.
 
@@ -192,8 +192,8 @@ mypy src/startup_valuation --ignore-missing-imports
 
 ## Documentation
 
-- **API Reference:** [GitHub Pages](https://simonplmak-cloud.github.io/startup-valuation/)
-- **Wiki (Theory & Derivations):** [GitHub Wiki](https://github.com/simonplmak-cloud/startup-valuation/wiki)
+- **API Reference:** [GitHub Pages](https://simonmak-ascent.github.io/startup-valuation/)
+- **Wiki (Theory & Derivations):** [GitHub Wiki](https://github.com/simonmak-ascent/startup-valuation/wiki)
 - **PyPI:** [pypi.org/project/startup-valuation](https://pypi.org/project/startup-valuation/)
 - **Chapter Index:** Maps every function to its textbook chapter
 - **Examples:** Interactive code snippets for each valuation category
@@ -211,7 +211,7 @@ By Simon Mak · 338 pages · 15 chapters · 300+ exercises · 20+ real-world cas
   author = {Mak, Simon},
   title = {Startup Valuation Engine},
   year = {2026},
-  url = {https://github.com/simonplmak-cloud/startup-valuation},
+  url = {https://github.com/simonmak-ascent/startup-valuation},
   license = {MIT},
 }
 ```
@@ -220,10 +220,10 @@ Based on formulas from the **Startup Valuation** textbook.
 
 ## Use with Context7
 
-Up-to-date Startup Valuation Engine documentation is indexed on [Context7](https://context7.com/simonplmak-cloud/startup-valuation), so coding agents can pull it into context on demand. With the Context7 MCP server or `ctx7` CLI installed, name the library in your prompt:
+Up-to-date Startup Valuation Engine documentation is indexed on [Context7](https://context7.com/simonmak-ascent/startup-valuation), so coding agents can pull it into context on demand. With the Context7 MCP server or `ctx7` CLI installed, name the library in your prompt:
 
 ```text
-use library /simonplmak-cloud/startup-valuation for API and docs
+use library /simonmak-ascent/startup-valuation for API and docs
 ```
 
 ## License

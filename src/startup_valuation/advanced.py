@@ -64,7 +64,7 @@ def black_scholes(
     See Also:
         binomial_valuation : Discrete-time alternative converging to Black-Scholes.
         monte_carlo_valuation : Probabilistic approach for complex payoffs.
-        Theory: https://github.com/simonplmak-cloud/startup-valuation/wiki/Advanced-Methods
+        Theory: https://github.com/simonmak-ascent/startup-valuation/wiki/Advanced-Methods
 
     Example:
         >>> result = black_scholes(20_000_000, 5_000_000, 0.05, 0.40, 1.0)
@@ -153,7 +153,7 @@ def binomial_tree(
     See Also:
         black_scholes : Closed-form European option pricing.
         binomial_valuation : High-resolution variant (50 steps).
-        Theory: https://github.com/simonplmak-cloud/startup-valuation/wiki/Advanced-Methods
+        Theory: https://github.com/simonmak-ascent/startup-valuation/wiki/Advanced-Methods
     """
     dt = time_to_maturity / steps
     u = math.exp(volatility * math.sqrt(dt))
@@ -238,7 +238,7 @@ def monte_carlo_valuation(
     See Also:
         scenario_analysis : Discrete probability-weighted scenarios.
         black_scholes : Closed-form alternative for option pricing.
-        Theory: https://github.com/simonplmak-cloud/startup-valuation/wiki/Advanced-Methods
+        Theory: https://github.com/simonmak-ascent/startup-valuation/wiki/Advanced-Methods
     """
     rng = np.random.default_rng(seed)
 

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://simonplmak-cloud.github.io/startup-valuation/sitemap.xml
+Sitemap: https://simonmak-ascent.github.io/startup-valuation/sitemap.xml

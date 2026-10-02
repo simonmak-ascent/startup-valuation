@@ -72,7 +72,7 @@ export const RECOGNIZED_SOURCES = [
   {
     slug: "citation-cff",
     name: "Startup Valuation Engine CITATION.cff",
-    url: "https://github.com/simonplmak-cloud/startup-valuation/blob/main/CITATION.cff",
+    url: "https://github.com/simonmak-ascent/startup-valuation/blob/main/CITATION.cff",
     reputation: "High",
     description: "Canonical software citation metadata.",
     access_method: "Manual Curation",

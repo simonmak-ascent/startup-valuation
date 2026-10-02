@@ -81,7 +81,7 @@ export default function WhyOpenSourcePage() {
                 Try the Calculators
               </Link>
               <a
-                href="https://github.com/simonplmak-cloud/startup-valuation"
+                href="https://github.com/simonmak-ascent/startup-valuation"
                 className="btn-outline text-brand border-brand/40 hover:text-brand"
                 target="_blank"
                 rel="noopener noreferrer"

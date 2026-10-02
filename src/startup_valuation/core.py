@@ -51,7 +51,7 @@ def scorecard_valuation(
     See Also:
         berkus_valuation : Alternative pre-revenue method using milestone values.
         risk_factor_summation : Risk-based adjustment of baseline valuation.
-        Theory: https://github.com/simonplmak-cloud/startup-valuation/wiki/Core-Methods
+        Theory: https://github.com/simonmak-ascent/startup-valuation/wiki/Core-Methods
 
     Example:
         >>> result = scorecard_valuation(
@@ -151,7 +151,7 @@ def berkus_valuation(
 
     See Also:
         scorecard_valuation : Factor-weighted adjustment of average valuation.
-        Theory: https://github.com/simonplmak-cloud/startup-valuation/wiki/Core-Methods
+        Theory: https://github.com/simonmak-ascent/startup-valuation/wiki/Core-Methods
 
     Example:
         >>> result = berkus_valuation(500_000, 400_000, 500_000, 500_000, 0)
@@ -234,7 +234,7 @@ def risk_factor_summation(
 
     See Also:
         scorecard_valuation : Weighted-factor approach to valuation.
-        Theory: https://github.com/simonplmak-cloud/startup-valuation/wiki/Core-Methods
+        Theory: https://github.com/simonmak-ascent/startup-valuation/wiki/Core-Methods
 
     Example:
         >>> result = risk_factor_summation(2_000_000, [1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0])
@@ -313,7 +313,7 @@ def vc_method_post_money(
     See Also:
         vc_method_pre_money : Subtract investment to get pre-money value.
         terminal_value_multiple : Estimate terminal value from revenue.
-        Theory: https://github.com/simonplmak-cloud/startup-valuation/wiki/Core-Methods
+        Theory: https://github.com/simonmak-ascent/startup-valuation/wiki/Core-Methods
 
     Example:
         >>> result = vc_method_post_money(500_000_000, 10)
@@ -375,7 +375,7 @@ def vc_method_pre_money(
 
     See Also:
         vc_method_post_money : Calculate post-money from terminal value.
-        Theory: https://github.com/simonplmak-cloud/startup-valuation/wiki/Core-Methods
+        Theory: https://github.com/simonmak-ascent/startup-valuation/wiki/Core-Methods
 
     Example:
         >>> result = vc_method_pre_money(8_000_000, 1_500_000)
@@ -429,7 +429,7 @@ def terminal_value_multiple(
 
     See Also:
         vc_method_post_money : Discount terminal value to post-money.
-        Theory: https://github.com/simonplmak-cloud/startup-valuation/wiki/Core-Methods
+        Theory: https://github.com/simonmak-ascent/startup-valuation/wiki/Core-Methods
 
     Example:
         >>> result = terminal_value_multiple(20_000_000, 8)

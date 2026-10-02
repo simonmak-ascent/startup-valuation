@@ -6,7 +6,7 @@ Thank you for your interest in contributing! This project implements 80+ valuati
 
 ```bash
 # Clone and install
-git clone https://github.com/simonplmak-cloud/startup-valuation.git
+git clone https://github.com/simonmak-ascent/startup-valuation.git
 cd startup-valuation
 pip install -e ".[dev]"
 

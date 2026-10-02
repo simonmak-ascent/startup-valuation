@@ -6,23 +6,23 @@
 
 | Function | Textbook | Wiki | Example | API Docs |
 |---|---|---|---|---|
-| `scorecard_valuation` | Ch. 3, §3.1 | [Core Methods](https://github.com/simonplmak-cloud/startup-valuation/wiki/Core-Methods) | [Pre-Revenue SaaS](https://github.com/simonplmak-cloud/startup-valuation/blob/main/docs/examples/valuing-pre-revenue-saas.md) | [API](https://simonplmak-cloud.github.io/startup-valuation/api/core/#startup_valuation.core.scorecard_valuation) |
-| `berkus_valuation` | Ch. 3, §3.2 | [Core Methods](https://github.com/simonplmak-cloud/startup-valuation/wiki/Core-Methods) | — | [API](https://simonplmak-cloud.github.io/startup-valuation/api/core/#startup_valuation.core.berkus_valuation) |
-| `risk_factor_summation` | Ch. 3, §3.3 | [Core Methods](https://github.com/simonplmak-cloud/startup-valuation/wiki/Core-Methods) | — | [API](https://simonplmak-cloud.github.io/startup-valuation/api/core/#startup_valuation.core.risk_factor_summation) |
-| `vc_method_post_money` | Ch. 3, §3.4 | [Core Methods](https://github.com/simonplmak-cloud/startup-valuation/wiki/Core-Methods) | — | [API](https://simonplmak-cloud.github.io/startup-valuation/api/core/#startup_valuation.core.vc_method_post_money) |
-| `vc_method_pre_money` | Ch. 3, §3.4 | [Core Methods](https://github.com/simonplmak-cloud/startup-valuation/wiki/Core-Methods) | — | [API](https://simonplmak-cloud.github.io/startup-valuation/api/core/#startup_valuation.core.vc_method_pre_money) |
-| `terminal_value_multiple` | Ch. 3, §3.4 | [Core Methods](https://github.com/simonplmak-cloud/startup-valuation/wiki/Core-Methods) | — | [API](https://simonplmak-cloud.github.io/startup-valuation/api/core/#startup_valuation.core.terminal_value_multiple) |
+| `scorecard_valuation` | Ch. 3, §3.1 | [Core Methods](https://github.com/simonmak-ascent/startup-valuation/wiki/Core-Methods) | [Pre-Revenue SaaS](https://github.com/simonmak-ascent/startup-valuation/blob/main/docs/examples/valuing-pre-revenue-saas.md) | [API](https://simonmak-ascent.github.io/startup-valuation/api/core/#startup_valuation.core.scorecard_valuation) |
+| `berkus_valuation` | Ch. 3, §3.2 | [Core Methods](https://github.com/simonmak-ascent/startup-valuation/wiki/Core-Methods) | — | [API](https://simonmak-ascent.github.io/startup-valuation/api/core/#startup_valuation.core.berkus_valuation) |
+| `risk_factor_summation` | Ch. 3, §3.3 | [Core Methods](https://github.com/simonmak-ascent/startup-valuation/wiki/Core-Methods) | — | [API](https://simonmak-ascent.github.io/startup-valuation/api/core/#startup_valuation.core.risk_factor_summation) |
+| `vc_method_post_money` | Ch. 3, §3.4 | [Core Methods](https://github.com/simonmak-ascent/startup-valuation/wiki/Core-Methods) | — | [API](https://simonmak-ascent.github.io/startup-valuation/api/core/#startup_valuation.core.vc_method_post_money) |
+| `vc_method_pre_money` | Ch. 3, §3.4 | [Core Methods](https://github.com/simonmak-ascent/startup-valuation/wiki/Core-Methods) | — | [API](https://simonmak-ascent.github.io/startup-valuation/api/core/#startup_valuation.core.vc_method_pre_money) |
+| `terminal_value_multiple` | Ch. 3, §3.4 | [Core Methods](https://github.com/simonmak-ascent/startup-valuation/wiki/Core-Methods) | — | [API](https://simonmak-ascent.github.io/startup-valuation/api/core/#startup_valuation.core.terminal_value_multiple) |
 
 ## Advanced Methods (`advanced.py`)
 
 | Function | Textbook | Wiki | API Docs |
 |---|---|---|---|
-| `black_scholes` | Ch. 4, §4.1 | — (Phase 2) | [API](https://simonplmak-cloud.github.io/startup-valuation/api/advanced/#startup_valuation.advanced.black_scholes) |
-| `binomial_valuation` | Ch. 4, §4.2 | — (Phase 2) | [API](https://simonplmak-cloud.github.io/startup-valuation/api/advanced/#startup_valuation.advanced.binomial_valuation) |
-| `monte_carlo_valuation` | Ch. 4, §4.3 | — (Phase 2) | [API](https://simonplmak-cloud.github.io/startup-valuation/api/advanced/#startup_valuation.advanced.monte_carlo_valuation) |
-| `scenario_analysis` | Ch. 4, §4.4 | — (Phase 2) | [API](https://simonplmak-cloud.github.io/startup-valuation/api/advanced/#startup_valuation.advanced.scenario_analysis) |
-| `real_options_valuation` | Ch. 4, §4.5 | — (Phase 2) | [API](https://simonplmak-cloud.github.io/startup-valuation/api/advanced/#startup_valuation.advanced.real_options_valuation) |
-| `expected_value_continuous` | Ch. 2 | — (Phase 2) | [API](https://simonplmak-cloud.github.io/startup-valuation/api/advanced/#startup_valuation.advanced.expected_value_continuous) |
+| `black_scholes` | Ch. 4, §4.1 | — (Phase 2) | [API](https://simonmak-ascent.github.io/startup-valuation/api/advanced/#startup_valuation.advanced.black_scholes) |
+| `binomial_valuation` | Ch. 4, §4.2 | — (Phase 2) | [API](https://simonmak-ascent.github.io/startup-valuation/api/advanced/#startup_valuation.advanced.binomial_valuation) |
+| `monte_carlo_valuation` | Ch. 4, §4.3 | — (Phase 2) | [API](https://simonmak-ascent.github.io/startup-valuation/api/advanced/#startup_valuation.advanced.monte_carlo_valuation) |
+| `scenario_analysis` | Ch. 4, §4.4 | — (Phase 2) | [API](https://simonmak-ascent.github.io/startup-valuation/api/advanced/#startup_valuation.advanced.scenario_analysis) |
+| `real_options_valuation` | Ch. 4, §4.5 | — (Phase 2) | [API](https://simonmak-ascent.github.io/startup-valuation/api/advanced/#startup_valuation.advanced.real_options_valuation) |
+| `expected_value_continuous` | Ch. 2 | — (Phase 2) | [API](https://simonmak-ascent.github.io/startup-valuation/api/advanced/#startup_valuation.advanced.expected_value_continuous) |
 
 ## Other Modules (Phase 2)
 
@@ -43,4 +43,4 @@
 
 ---
 
-*Generated from `ValuationResult.chapter` metadata. See [Glossary](https://github.com/simonplmak-cloud/startup-valuation/wiki/Glossary) for term definitions and [Notation](notation.md) for the symbol table.*
+*Generated from `ValuationResult.chapter` metadata. See [Glossary](https://github.com/simonmak-ascent/startup-valuation/wiki/Glossary) for term definitions and [Notation](notation.md) for the symbol table.*

@@ -52,7 +52,7 @@ export function SourcesSection({
               <div className="font-medium text-text">Source Commit</div>
               <div className="text-muted font-mono text-xs">
                 <a
-                  href={`https://github.com/simonplmak-cloud/startup-valuation/commit/${gitCommit}`}
+                  href={`https://github.com/simonmak-ascent/startup-valuation/commit/${gitCommit}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-brand hover:underline"
@@ -69,7 +69,7 @@ export function SourcesSection({
         <div className="text-xs text-muted">
           All formulas are open source and auditable.{" "}
           <a
-            href="https://github.com/simonplmak-cloud/startup-valuation"
+            href="https://github.com/simonmak-ascent/startup-valuation"
             target="_blank"
             rel="noopener noreferrer"
             className="text-brand hover:underline"

@@ -1,11 +1,11 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.simonplmak-cloud/startup-valuation",
+  "name": "io.github.simonmak-ascent/startup-valuation",
   "title": "Startup Valuation MCP Server",
   "description": "Startup valuation for AI agents: 14 tools, 80+ pre-revenue formulas.",
   "version": "2.1.0",
   "repository": {
-    "url": "https://github.com/simonplmak-cloud/startup-valuation",
+    "url": "https://github.com/simonmak-ascent/startup-valuation",
     "source": "github"
   },
   "websiteUrl": "https://startup-valuation.simonmak.com",
@@ -41,7 +41,7 @@
   ],
   "icons": [
     {
-      "src": "https://raw.githubusercontent.com/simonplmak-cloud/startup-valuation/main/public/social-preview.png",
+      "src": "https://raw.githubusercontent.com/simonmak-ascent/startup-valuation/main/public/social-preview.png",
       "mimeType": "image/png"
     }
   ]

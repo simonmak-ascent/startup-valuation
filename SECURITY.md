@@ -14,7 +14,7 @@ We take security seriously. If you discover a security vulnerability in the Star
 ### How to Report
 
 1. **Do NOT open a public issue** — security reports should be private
-2. Go to [GitHub Security Advisories](https://github.com/simonplmak-cloud/startup-valuation/security/advisories/new) and submit a draft advisory
+2. Go to [GitHub Security Advisories](https://github.com/simonmak-ascent/startup-valuation/security/advisories/new) and submit a draft advisory
 3. Alternatively, contact the maintainer directly via the repository
 
 ### What to Include

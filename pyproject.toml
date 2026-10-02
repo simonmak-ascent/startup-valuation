@@ -55,10 +55,10 @@ dev = [
 startup-valuation-mcp = "startup_valuation.mcp.server:main"
 
 [project.urls]
-Homepage = "https://github.com/simonplmak-cloud/startup-valuation"
-Documentation = "https://simonplmak-cloud.github.io/startup-valuation"
-Repository = "https://github.com/simonplmak-cloud/startup-valuation"
-"Bug Tracker" = "https://github.com/simonplmak-cloud/startup-valuation/issues"
+Homepage = "https://github.com/simonmak-ascent/startup-valuation"
+Documentation = "https://simonmak-ascent.github.io/startup-valuation"
+Repository = "https://github.com/simonmak-ascent/startup-valuation"
+"Bug Tracker" = "https://github.com/simonmak-ascent/startup-valuation/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/startup_valuation"]

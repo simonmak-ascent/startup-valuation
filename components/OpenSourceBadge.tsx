@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const REPO = "simonplmak-cloud/startup-valuation";
+const REPO = "simonmak-ascent/startup-valuation";
 
 interface OpenSourceBadgeProps {
   showStars?: boolean;

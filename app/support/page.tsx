@@ -31,7 +31,7 @@ export default function SupportPage() {
           <p className="text-muted text-sm">
             See the{" "}
             <a
-              href="https://simonplmak-cloud.github.io/startup-valuation"
+              href="https://simonmak-ascent.github.io/startup-valuation"
               target="_blank"
               rel="noopener noreferrer"
               className="text-brand hover:underline"
@@ -40,7 +40,7 @@ export default function SupportPage() {
             </a>{" "}
             and{" "}
             <a
-              href="https://github.com/simonplmak-cloud/startup-valuation/wiki"
+              href="https://github.com/simonmak-ascent/startup-valuation/wiki"
               target="_blank"
               rel="noopener noreferrer"
               className="text-brand hover:underline"
@@ -59,7 +59,7 @@ export default function SupportPage() {
             </a>{" "}
             or use the{" "}
             <a
-              href="https://github.com/simonplmak-cloud/startup-valuation"
+              href="https://github.com/simonmak-ascent/startup-valuation"
               target="_blank"
               rel="noopener noreferrer"
               className="text-brand hover:underline"

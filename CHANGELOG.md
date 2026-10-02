@@ -43,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `annotations` (`readOnlyHint`, `idempotentHint`, `openWorldHint=false`), tags,
   and a documented description; every parameter carries a description.
 - **Distribution**: added `glama.json`, `server.json` (Official MCP Registry
-  manifest for `io.github.simonplmak-cloud/startup-valuation`), and a `Dockerfile`.
+  manifest for `io.github.simonmak-ascent/startup-valuation`), and a `Dockerfile`.
   Hosted Streamable HTTP endpoint at `https://startup-valuation.simonmak.com/api`.
 - **Packaged MCP server (breaking)**: the MCP server now ships **inside** the
   `startup-valuation` distribution as the `startup_valuation.mcp` subpackage, so

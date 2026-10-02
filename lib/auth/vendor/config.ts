@@ -32,7 +32,7 @@ export interface CreateAuthConfigOptions {
  * Usage per site:
  *   // app/api/auth/[...nextauth]/route.ts
  *   import NextAuth from "next-auth";
- *   import { createAuthConfig } from "@simonplmak-cloud/auth";
+ *   import { createAuthConfig } from "@simonmak-ascent/auth";
  *   export const { handlers, auth, signIn, signOut } = NextAuth(createAuthConfig({ ... }));
  */
 export function createAuthConfig(

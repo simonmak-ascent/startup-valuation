@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   },
 };
 
-const GITHUB_BASE = "https://github.com/simonplmak-cloud/startup-valuation/blob/main/skills";
+const GITHUB_BASE = "https://github.com/simonmak-ascent/startup-valuation/blob/main/skills";
 
 const skills = [
   {

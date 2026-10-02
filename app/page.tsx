@@ -22,7 +22,7 @@ const resources = [
   {
     title: "Wiki — Theory & Derivations",
     description: "13-step Scorecard derivation, glossary, notation table, and method deep-dives.",
-    href: "https://github.com/simonplmak-cloud/startup-valuation/wiki",
+    href: "https://github.com/simonmak-ascent/startup-valuation/wiki",
   },
   {
     title: "PyPI Package",
@@ -32,7 +32,7 @@ const resources = [
   {
     title: "GitHub Repository",
     description: "Source code, CI/CD pipeline, contributing guide, open source.",
-    href: "https://github.com/simonplmak-cloud/startup-valuation",
+    href: "https://github.com/simonmak-ascent/startup-valuation",
   },
   {
     title: "Companion Textbook",
@@ -74,7 +74,7 @@ export default function HomePage() {
             Why Open Source?
           </Link>
           <a
-            href="https://github.com/simonplmak-cloud/startup-valuation"
+            href="https://github.com/simonmak-ascent/startup-valuation"
             className="btn-outline"
             target="_blank"
             rel="noopener noreferrer"
@@ -217,7 +217,7 @@ export default function HomePage() {
         <p className="mt-2">
           MIT License · Version 1.0.2 ·{" "}
           <a
-            href="https://github.com/simonplmak-cloud/startup-valuation"
+            href="https://github.com/simonmak-ascent/startup-valuation"
             target="_blank"
             rel="noopener noreferrer"
             className="text-brand"

@@ -3,7 +3,7 @@ import GitHub from "next-auth/providers/github";
 import { createAuthConfig } from "./vendor";
 
 /**
- * startup-valuation site auth — built on the vendored `@simonplmak-cloud/auth`
+ * startup-valuation site auth — built on the vendored `@simonmak-ascent/auth`
  * package (SurrealDB 3.x identity store + Auth.js v5), inlined under
  * `./vendor` to remove the private GitHub Packages registry dependency.
  *
