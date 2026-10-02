@@ -3,7 +3,7 @@
   "name": "io.github.simonmak-ascent/startup-valuation",
   "title": "Startup Valuation MCP Server",
   "description": "Startup valuation for AI agents: 14 tools, 80+ pre-revenue formulas.",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "repository": {
     "url": "https://github.com/simonmak-ascent/startup-valuation",
     "source": "github"
@@ -13,7 +13,7 @@
     {
       "registryType": "pypi",
       "identifier": "startup-valuation",
-      "version": "2.1.0",
+      "version": "2.1.1",
       "runtimeHint": "uvx",
       "runtimeArguments": [
         {
