@@ -28,7 +28,7 @@ graph TB
     subgraph MCP["MCP Server"]
         VR --> SVR["FastMCP Server<br/>14 Tools"]
     end
-    subgraph Skills["AI-Agent Skills"]
+    subgraph Skills["AI-agent skills"]
         SVR --> CORE["Core"]
         SVR --> ADV["Advanced"]
         SVR --> IND["Industry"]
@@ -42,7 +42,7 @@ graph TB
 
 1. **Python Library** — 14 modules, 80+ typed functions, all returning `ValuationResult` (value + assumptions + sensitivity)
 2. **MCP Server** — 14 folded tools (80+ formulas) for AI agents via stdio and hosted Streamable HTTP
-3. **AI-Agent Skills** — 6 skill definitions with workflow guidance for valuation domains
+3. **AI-agent skills** — 6 skill definitions with workflow guidance for valuation domains
 
 ## Installation
 
@@ -133,7 +133,7 @@ as an MCP server, or run the stdio entrypoint above.
 [Official MCP Registry](https://registry.modelcontextprotocol.io). The
 [`glama.json`](glama.json) file holds the Glama maintainer entry.
 
-### AI-Agent Skills
+### AI-agent skills
 
 Copy the `skills/` directory to your agent's skills folder:
 
