@@ -216,7 +216,7 @@ By Simon Mak · 338 pages · 15 chapters · 300+ exercises · 20+ real-world cas
 }
 ```
 
-Based on formulas from the **Startup Valuation** textbook. See `output/` for the full textbook source in markdown.
+Based on formulas from the **Startup Valuation** textbook.
 
 ## Use with Context7
 
