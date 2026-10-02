@@ -232,4 +232,6 @@ MIT — see [LICENSE](LICENSE).
 
 ---
 
+By [Ascent Partners](https://www.ascent.partners) — part of the Valuation in Practice Series.
+
 If this saves you time, a ⭐ on GitHub helps others find it.
