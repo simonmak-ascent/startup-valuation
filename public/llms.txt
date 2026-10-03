@@ -1,12 +1,35 @@
 # Startup Valuation Engine
 
-> A comprehensive startup valuation library implementing 80+ formulas from the *Startup Valuation* textbook — Python library, MCP server, and AI-agent skills.
+> Open-source (MIT) Python library and MCP server implementing 80+ formulas from the Startup Valuation textbook by Simon Mak (Valuation in Practice Series, Ascent Partners). 14 read-only, deterministic MCP tools cover pre-revenue methods (Scorecard, Berkus, Risk-Factor Summation, VC Method), probability and expected value, DCF and terminal value, CAPM/WACC, Black-Scholes and binomial options, comparables, SaaS, marketplace, fintech, biotech rNPV, hardware, international adjustments, stakeholder equity, SAFE conversion and token valuation.
 
-Live site: https://startup-valuation.simonmak.com
-Remote MCP: https://startup-valuation.simonmak.com/api
-Package: https://pypi.org/project/startup-valuation/
-MCP Registry: io.github.simonmak-ascent/startup-valuation
-Repository: https://github.com/simonmak-ascent/startup-valuation
+## Connect
 
-## Author
-Simon Mak — https://simonmak.com
+- Hosted MCP endpoint (Streamable HTTP, no API key): https://startup-valuation.simonmak.com/api
+- Local stdio server: `uvx --from startup-valuation startup-valuation-mcp` or `pip install 'startup-valuation[mcp]' && startup-valuation-mcp`
+- Official MCP Registry name: `io.github.simonmak-ascent/startup-valuation`
+- Glama listing: https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation
+- Context7 library ID: `/simonmak-ascent/startup-valuation`
+
+## MCP tools
+
+All tools are pure arithmetic (no I/O), read-only and idempotent; a `method` parameter selects the formula inside each tool and results are rounded to 2 decimals.
+
+- `valuation_core`: Scorecard, Berkus, Risk-Factor Summation, VC Method, terminal value, triangulated valuation
+- `valuation_probability`: discrete and continuous expected value, joint probability, probability-weighted value, VC portfolio return, Poisson events
+- `valuation_time_value`: PV, NPV, annuity PV, DCF with Gordon terminal value, compound growth
+- `valuation_capm`: CAPM, startup-adjusted CAPM, portfolio beta, WACC
+- `valuation_advanced`: Black-Scholes, binomial-tree options, named scenario analysis
+- `valuation_comparables`: P/E, P/S, EV/EBITDA, EV/Revenue, regression-adjusted multiples
+- `valuation_saas`, `valuation_marketplace`, `valuation_fintech`, `valuation_biotech`, `valuation_hardware`: sector-specific metrics and models
+- `valuation_international`: purchasing-power parity, country risk premium, international CAPM
+- `valuation_stakeholder`: dilution, OPM common stock, PWERM, liquidation value, M&A synergy, employee options, vesting
+- `valuation_emerging`: SAFE conversion, token valuation (equation of exchange, NVT), ESG adjustments, Metcalfe network value, data-moat value
+
+## Docs
+
+- [Website](https://startup-valuation.simonmak.com/): calculators, AI advisor and benchmarks
+- [Documentation](https://simonmak-ascent.github.io/startup-valuation/): library reference and chapter guides
+- [MCP server guide](https://simonmak-ascent.github.io/startup-valuation/mcp-server/): client configuration
+- [Agent skills](https://startup-valuation.simonmak.com/skills): AI-agent skill packs
+- [Source code](https://github.com/simonmak-ascent/startup-valuation)
+- [PyPI package](https://pypi.org/project/startup-valuation/)
