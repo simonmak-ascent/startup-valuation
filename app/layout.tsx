@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { SessionProvider } from "@/components/SessionProvider";
 import { CookieConsent } from "@/components/CookieConsent";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -73,9 +74,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
-        <nav className="bg-white border-b border-border">
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var t=localStorage.getItem('theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}",
+          }}
+        />
+        <nav className="bg-card border-b border-border">
           <div className="max-w-[1100px] mx-auto px-5 py-3 flex items-center gap-5 text-sm overflow-x-auto">
             <a href="/" className="font-semibold text-text hover:no-underline whitespace-nowrap">
               Startup Valuation
@@ -101,6 +108,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <a href="/why-open-source" className="text-muted hover:text-brand whitespace-nowrap">
               Why Open Source
             </a>
+            <ThemeToggle />
           </div>
         </nav>
         <SessionProvider>{children}</SessionProvider>
