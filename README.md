@@ -7,6 +7,8 @@
 [![CI](https://github.com/simonmak-ascent/startup-valuation/actions/workflows/ci.yml/badge.svg)](https://github.com/simonmak-ascent/startup-valuation/actions/workflows/ci.yml)
 [![PyPI](https://img.shields.io/pypi/v/startup-valuation.svg)](https://pypi.org/project/startup-valuation/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![MCP Registry](https://img.shields.io/badge/MCP%20Registry-io.github.simonmak--ascent%2Fstartup--valuation-4CAF50)](https://registry.modelcontextprotocol.io/v0/servers?search=io.github.simonmak-ascent/startup-valuation)
+[![Glama](https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation/badges/score.svg)](https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Coverage](https://img.shields.io/badge/coverage-88%25-brightgreen)](https://github.com/simonmak-ascent/startup-valuation/actions/workflows/ci.yml)
 [![Docs](https://img.shields.io/badge/docs-GitHub_Pages-blue)](https://simonmak-ascent.github.io/startup-valuation/)
