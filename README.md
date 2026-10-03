@@ -5,16 +5,15 @@
 > **A comprehensive startup valuation library** implementing 80+ formulas from the *Startup Valuation* textbook — Python library, MCP server, and AI-agent skills.
 
 [![CI](https://github.com/simonmak-ascent/startup-valuation/actions/workflows/ci.yml/badge.svg)](https://github.com/simonmak-ascent/startup-valuation/actions/workflows/ci.yml)
-[![PyPI](https://img.shields.io/pypi/v/startup-valuation.svg)](https://pypi.org/project/startup-valuation/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-io.github.simonmak--ascent%2Fstartup--valuation-4CAF50)](https://registry.modelcontextprotocol.io/v0/servers?search=io.github.simonmak-ascent/startup-valuation)
 [![Glama](https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation/badges/score.svg)](https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation)
+[![MCP tools](https://img.shields.io/badge/MCP-14%20tools-4CAF50)](https://startup-valuation.simonmak.com/api)
+[![PyPI](https://img.shields.io/pypi/v/startup-valuation.svg)](https://pypi.org/project/startup-valuation/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Coverage](https://img.shields.io/badge/coverage-88%25-brightgreen)](https://github.com/simonmak-ascent/startup-valuation/actions/workflows/ci.yml)
 [![Docs](https://img.shields.io/badge/docs-GitHub_Pages-blue)](https://simonmak-ascent.github.io/startup-valuation/)
-[![MCP tools](https://img.shields.io/badge/MCP-14%20tools-4CAF50)](https://startup-valuation.simonmak.com/api)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/simonmak-ascent/startup-valuation/badge)](https://scorecard.dev/viewer/?uri=github.com/simonmak-ascent/startup-valuation)
-[![Glama MCP](https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation/badges/score.svg)](https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Overview
 
