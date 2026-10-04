@@ -167,6 +167,28 @@ Copy the `skills/` directory to your agent's skills folder:
 | **Stakeholders**  | Dilution, OPM, PWERM, liquidation, synergies       | 13      |
 | **Emerging**      | SAFE, MV=PQ, ESG, Metcalfe's, data moat            | 14      |
 
+### The valuation ladder
+
+```mermaid
+flowchart LR
+    IDEA["Idea / pre-revenue"] --> SC["Scorecard · Berkus · Risk Factor"]
+    SC --> VC["VC Method · OPM · PWERM"]
+    VC --> ADV["Black-Scholes · Binomial · Monte Carlo · Scenario"]
+    ADV --> COMP["Comparables: P/E · P/S · EV/EBITDA"]
+    COMP --> IND["Industry: SaaS · Biotech · Fintech · Marketplace · Hardware"]
+    IND --> R["ValuationResult (value · assumptions · sensitivity)"]
+```
+
+### Distribution
+
+```mermaid
+flowchart LR
+    PKG["startup-valuation<br/>14 modules · 80+ functions"] --> L["pip install startup-valuation"]
+    PKG --> MP["pip install startup-valuation[mcp]<br/>→ 14-tool MCP server"]
+    MP --> T1["stdio (local)"]
+    MP --> T2["hosted Streamable HTTP"]
+```
+
 ## Why This Library?
 
 - **Auditable** — Every function returns `ValuationResult` with value, method, inputs, assumptions, and sensitivity analysis
