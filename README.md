@@ -53,7 +53,10 @@ pip install startup-valuation[mcp]     # + MCP server
 pip install startup-valuation[dev]     # + pytest, ruff, mypy
 ```
 
-## Quick Start
+## Quick Start (≤ 5 minutes)
+
+**Fastest path:** one line — `pip install "startup-valuation[mcp]"` — then call any `*_valuation`
+tool (Scorecard, VC method, Black-Scholes, scenario analysis).
 
 ### Python Library
 
