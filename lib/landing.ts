@@ -51,8 +51,8 @@ export interface LandingCopy {
 
 export const LANDING_COPY: Record<Locale, LandingCopy> = {
   en: {
-    type: "MCP server",
-    name: "Startup Valuation MCP",
+    type: "MCP server + REST API",
+    name: "Startup Valuation",
     value: "Value pre-revenue and fast-growing startups with scorecard, VC and options methods.",
     thesis: "For a company with no revenue yet, the number is a forecast. We make the forecast explicit — and method-backed.",
     stats: [
@@ -92,8 +92,8 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     langLabel: "Language",
   },
   zh: {
-    type: "MCP 服务器",
-    name: "Startup Valuation MCP",
+    type: "MCP 服务器 + REST API",
+    name: "Startup Valuation",
     value: "以记分卡、风险投资及期权方法评估前期及高速增长的初创企业。",
     thesis: "对尚无收入的公司，这个数字是一个预测。我们让预测显性化，并有方法可依。",
     stats: [
@@ -133,8 +133,8 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     langLabel: "语言",
   },
   hk: {
-    type: "MCP 伺服器",
-    name: "Startup Valuation MCP",
+    type: "MCP 伺服器 + REST API",
+    name: "Startup Valuation",
     value: "以記分卡、風險投資及期權方法評估前期及高速增長的初創企業。",
     thesis: "對尚無收入的公司，這個數字是一個預測。我們讓預測顯性化，並有方法可依。",
     stats: [
