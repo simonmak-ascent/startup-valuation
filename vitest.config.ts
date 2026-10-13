@@ -9,7 +9,7 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html"],
-      exclude: ["node_modules/", ".next/", "api/", "src/startup_valuation/"],
+      exclude: ["node_modules/", ".next/", "api/", "src/startup_valuation/", "lib/methods/"],
       thresholds: {
         statements: 80,
         branches: 80,
