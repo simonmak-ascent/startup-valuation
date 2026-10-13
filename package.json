@@ -24,7 +24,7 @@
     "@sentry/nextjs": "^9.0.0",
     "@vercel/analytics": "^1.5.0",
     "bcryptjs": "^2.4.3",
-    "katex": "^0.16.0",
+    "katex": "^0.18.2",
     "next": "^15.0.0",
     "next-auth": "5.0.0-beta.32",
     "pdf-lib": "^1.17.1",
