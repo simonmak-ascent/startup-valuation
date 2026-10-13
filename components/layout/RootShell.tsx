@@ -29,7 +29,15 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image", title: "Startup Valuation Engine", description: "80+ valuation formulas. Scientific rigor. Open source." },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-video-preview": -1, "max-image-preview": "large", "max-snippet": -1 } },
-  alternates: { canonical: "https://startup-valuation.simonmak.com" },
+  alternates: {
+    canonical: "https://startup-valuation.simonmak.com",
+    languages: {
+      "en-GB": "https://startup-valuation.simonmak.com",
+      "zh-Hans": "https://startup-valuation.simonmak.com/zh",
+      "zh-Hant-HK": "https://startup-valuation.simonmak.com/hk",
+      "x-default": "https://startup-valuation.simonmak.com",
+    },
+  },
 };
 
 // Blocking theme init — dark default, persisted choice (APG parity, no FOUC).
