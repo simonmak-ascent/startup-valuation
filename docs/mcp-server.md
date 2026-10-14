@@ -71,7 +71,7 @@ stdio command above.
 
 ## MCP Registry
 
-Published as `io.github.simonmak-ascent/startup-valuation` (manifest:
+Published as `com.ascent-partners/startup-valuation` (manifest:
 `server.json`), listed on [Glama](https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation)
 and the [Official MCP Registry](https://registry.modelcontextprotocol.io).
 

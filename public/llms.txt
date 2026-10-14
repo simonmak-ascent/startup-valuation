@@ -6,7 +6,7 @@
 
 - Hosted MCP endpoint (Streamable HTTP, no API key): https://startup-valuation.ascent-partners.com/api
 - Local stdio server: `uvx --from startup-valuation startup-valuation-mcp` or `pip install 'startup-valuation[mcp]' && startup-valuation-mcp`
-- Official MCP Registry name: `io.github.simonmak-ascent/startup-valuation`
+- Official MCP Registry name: `com.ascent-partners/startup-valuation`
 - Glama listing: https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation
 - Context7 library ID: `/simonmak-ascent/startup-valuation`
 

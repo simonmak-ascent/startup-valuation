@@ -1,11 +1,11 @@
 # Startup Valuation Engine
 
-<!-- mcp-name: io.github.simonmak-ascent/startup-valuation -->
+<!-- mcp-name: com.ascent-partners/startup-valuation -->
 
 > **A comprehensive startup valuation library** implementing 80+ formulas from the *Startup Valuation* textbook — Python library, MCP server, and AI-agent skills.
 
 [![CI](https://github.com/simonmak-ascent/startup-valuation/actions/workflows/ci.yml/badge.svg)](https://github.com/simonmak-ascent/startup-valuation/actions/workflows/ci.yml)
-[![MCP Registry](https://img.shields.io/badge/MCP%20Registry-io.github.simonmak--ascent%2Fstartup--valuation-4CAF50)](https://registry.modelcontextprotocol.io/v0/servers?search=io.github.simonmak-ascent/startup-valuation)
+[![MCP Registry](https://img.shields.io/badge/MCP%20Registry-com.ascent-partners%2Fstartup-valuation-4CAF50)](https://registry.modelcontextprotocol.io/v0/servers?search=com.ascent-partners/startup-valuation)
 [![Glama](https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation/badges/score.svg)](https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation)
 [![MCP tools](https://img.shields.io/badge/MCP-14%20tools-4CAF50)](https://startup-valuation.ascent-partners.com/api)
 [![PyPI](https://img.shields.io/pypi/v/startup-valuation.svg)](https://pypi.org/project/startup-valuation/)
@@ -131,7 +131,7 @@ https://startup-valuation.ascent-partners.com/api
 **Claude Desktop / Cursor** — add the HTTP URL `https://startup-valuation.ascent-partners.com/api`
 as an MCP server, or run the stdio entrypoint above.
 
-**MCP Registry** — published as `io.github.simonmak-ascent/startup-valuation`
+**MCP Registry** — published as `com.ascent-partners/startup-valuation`
 (manifest: [`server.json`](server.json)) and listed on
 [Glama](https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation) and the
 [Official MCP Registry](https://registry.modelcontextprotocol.io). The

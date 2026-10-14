@@ -21,7 +21,7 @@ export function hrefFor(locale: Locale, path: string): string {
 }
 
 const ENDPOINT = "https://startup-valuation.ascent-partners.com/api";
-const REGISTRY = "io.github.simonmak-ascent/startup-valuation";
+const REGISTRY = "com.ascent-partners/startup-valuation";
 
 export interface LandingCopy {
   type: string;
