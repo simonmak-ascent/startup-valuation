@@ -91,7 +91,7 @@ target-version = "py310"
 line-length = 120
 # Generated stdio server: emit from src/startup_valuation/mcp/tool_surface.py via
 # scripts/generate_mcp.py. Excluded from lint/format so codegen stays byte-stable.
-extend-exclude = ["src/startup_valuation/mcp/server.py"]
+extend-exclude = ["src/startup_valuation/mcp/server.py", ".deploy"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
