@@ -12,6 +12,7 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    environment: mcp-registry-publish
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -24,7 +25,7 @@ jobs:
         run: mcp-publisher validate
 
       - name: Authenticate with the MCP Registry (GitHub OIDC)
-        run: mcp-publisher login github-oidc
+        run: mcp-publisher login dns --domain ascent-partners.com --private-key ${{ secrets.MCP_PRIVATE_KEY }}
 
       - name: Publish to the MCP Registry
         run: mcp-publisher publish
