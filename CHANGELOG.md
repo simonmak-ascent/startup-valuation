@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.3] - 2026-10-14
+
+### Changed
+
+- Hosted MCP endpoint and canonical URLs moved to `https://startup-valuation.ascent-partners.com` (migrated off Vercel to ecs-01).
+
 ## [2.1.0] - 2026-10-01
 
 ### Added
