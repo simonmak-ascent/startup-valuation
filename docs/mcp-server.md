@@ -28,7 +28,7 @@ The server reads JSON-RPC from stdin and writes responses to stdout.
 No install or API key required:
 
 ```
-https://startup-valuation.simonmak.com/api
+https://startup-valuation.ascent-partners.com/api
 ```
 
 ## Connecting
@@ -57,7 +57,7 @@ Add to `opencode.json`:
   "mcp": {
     "startup-valuation": {
       "type": "remote",
-      "url": "https://startup-valuation.simonmak.com/api",
+      "url": "https://startup-valuation.ascent-partners.com/api",
       "timeout": 60000
     }
   }
@@ -66,7 +66,7 @@ Add to `opencode.json`:
 
 ### Cursor
 
-Add the MCP server URL `https://startup-valuation.simonmak.com/api`, or the
+Add the MCP server URL `https://startup-valuation.ascent-partners.com/api`, or the
 stdio command above.
 
 ## MCP Registry

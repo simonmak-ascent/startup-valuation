@@ -8,7 +8,7 @@
     "url": "https://github.com/simonmak-ascent/startup-valuation",
     "source": "github"
   },
-  "websiteUrl": "https://startup-valuation.simonmak.com",
+  "websiteUrl": "https://startup-valuation.ascent-partners.com",
   "packages": [
     {
       "registryType": "pypi",
@@ -36,7 +36,7 @@
   "remotes": [
     {
       "type": "streamable-http",
-      "url": "https://startup-valuation.simonmak.com/api"
+      "url": "https://startup-valuation.ascent-partners.com/api"
     }
   ],
   "icons": [

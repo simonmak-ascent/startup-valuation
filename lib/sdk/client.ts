@@ -23,7 +23,7 @@ export class StartupValuationClient {
   private apiKey?: string;
 
   constructor(options: SdkOptions = {}) {
-    this.baseUrl = options.baseUrl ?? "https://startup-valuation.simonmak.com";
+    this.baseUrl = options.baseUrl ?? "https://startup-valuation.ascent-partners.com";
     this.apiKey = options.apiKey;
   }
 

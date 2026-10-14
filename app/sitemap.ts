@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getAllMethods } from "@/lib/methods";
 
-const BASE_URL = "https://startup-valuation.simonmak.com";
+const BASE_URL = "https://startup-valuation.ascent-partners.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const methodPages: MetadataRoute.Sitemap = getAllMethods().map((m) => ({

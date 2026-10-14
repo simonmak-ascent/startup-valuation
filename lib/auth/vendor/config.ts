@@ -10,7 +10,7 @@ export interface CreateAuthConfigOptions {
   signInPage?: string;
   /**
    * Cookie domain for cross-site sessions within one parent domain.
-   * e.g. ".simonmak.com" so startup-valuation.simonmak.com and
+   * e.g. ".simonmak.com" so startup-valuation.ascent-partners.com and
    * simonmak.com share a session. Omit for a single site / custom domains.
    */
   cookieDomain?: string;

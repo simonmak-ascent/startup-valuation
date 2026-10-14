@@ -94,7 +94,7 @@ async function buildReportPdf(run: {
   }
   line(" ");
   line("All formulas are open source (MIT) and traceable to the Startup Valuation", 9);
-  line("textbook (Mak, 2025). Verify at startup-valuation.simonmak.com.", 9);
+  line("textbook (Mak, 2025). Verify at startup-valuation.ascent-partners.com.", 9);
 
   return pdf.save();
 }

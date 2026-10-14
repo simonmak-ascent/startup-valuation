@@ -4,7 +4,7 @@
 
 ## Connect
 
-- Hosted MCP endpoint (Streamable HTTP, no API key): https://startup-valuation.simonmak.com/api
+- Hosted MCP endpoint (Streamable HTTP, no API key): https://startup-valuation.ascent-partners.com/api
 - Local stdio server: `uvx --from startup-valuation startup-valuation-mcp` or `pip install 'startup-valuation[mcp]' && startup-valuation-mcp`
 - Official MCP Registry name: `io.github.simonmak-ascent/startup-valuation`
 - Glama listing: https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation
@@ -27,9 +27,9 @@ All tools are pure arithmetic (no I/O), read-only and idempotent; a `method` par
 
 ## Docs
 
-- [Website](https://startup-valuation.simonmak.com/): calculators, AI advisor and benchmarks
+- [Website](https://startup-valuation.ascent-partners.com/): calculators, AI advisor and benchmarks
 - [Documentation](https://simonmak-ascent.github.io/startup-valuation/): library reference and chapter guides
 - [MCP server guide](https://simonmak-ascent.github.io/startup-valuation/mcp-server/): client configuration
-- [Agent skills](https://startup-valuation.simonmak.com/skills): AI-agent skill packs
+- [Agent skills](https://startup-valuation.ascent-partners.com/skills): AI-agent skill packs
 - [Source code](https://github.com/simonmak-ascent/startup-valuation)
 - [PyPI package](https://pypi.org/project/startup-valuation/)

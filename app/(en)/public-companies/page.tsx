@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Searchable database of public company valuations and financial metrics, aggregated from recognized sources with full provenance.",
   alternates: {
-    canonical: "https://startup-valuation.simonmak.com/public-companies",
+    canonical: "https://startup-valuation.ascent-partners.com/public-companies",
   },
 };
 

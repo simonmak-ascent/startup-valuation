@@ -13,7 +13,7 @@ export const LEGAL_DOCS: LegalDoc[] = [
     sections: [
       {
         heading: "1. Acceptance of Terms",
-        body: 'By accessing startup-valuation.simonmak.com (the "Service"), you agree to these Terms of Service. If you do not agree, do not use the Service.',
+        body: 'By accessing startup-valuation.ascent-partners.com (the "Service"), you agree to these Terms of Service. If you do not agree, do not use the Service.',
       },
       {
         heading: "2. The Service",

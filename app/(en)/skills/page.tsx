@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Reusable AI-agent skills for startup valuation — core, advanced, industry, foundations, stakeholder, and emerging methods.",
   alternates: {
-    canonical: "https://startup-valuation.simonmak.com/skills",
+    canonical: "https://startup-valuation.ascent-partners.com/skills",
   },
 };
 
@@ -54,7 +54,7 @@ const skills = [
 ];
 
 const copyPrompt = (slug: string) =>
-  `Use the ${slug} skill from https://startup-valuation.simonmak.com/skills for ${slug.replace(
+  `Use the ${slug} skill from https://startup-valuation.ascent-partners.com/skills for ${slug.replace(
     "valuation-",
     "",
   )} valuation workflows.`;

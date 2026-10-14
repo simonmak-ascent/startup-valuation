@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description:
     "Every formula is open source and auditable. No black boxes, no proprietary math, no paywall. Compare us against Equidam, Carta, and PitchBook.",
   alternates: {
-    canonical: "https://startup-valuation.simonmak.com/why-open-source",
+    canonical: "https://startup-valuation.ascent-partners.com/why-open-source",
   },
 };
 

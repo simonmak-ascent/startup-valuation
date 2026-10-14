@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Industry valuation medians and percentiles, computed from provenance-tracked public data.",
   alternates: {
-    canonical: "https://startup-valuation.simonmak.com/benchmarks",
+    canonical: "https://startup-valuation.ascent-partners.com/benchmarks",
   },
 };
 

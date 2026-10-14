@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Interactive playground for the Startup Valuation API. Test 27+ valuation methods with live inputs and JSON responses.",
   alternates: {
-    canonical: "https://startup-valuation.simonmak.com/api/playground",
+    canonical: "https://startup-valuation.ascent-partners.com/api/playground",
   },
 };
 

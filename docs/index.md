@@ -78,7 +78,7 @@ startup-valuation-mcp          # stdio server; or: uvx --from startup-valuation 
 ```
 
 Connect with any MCP-compatible AI agent. All 14 valuation tools are available.
-The hosted Streamable HTTP endpoint needs no install: `https://startup-valuation.simonmak.com/api`.
+The hosted Streamable HTTP endpoint needs no install: `https://startup-valuation.ascent-partners.com/api`.
 
 ## AI-Agent Skills
 

@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: MethodPageProps): Promise<Met
     openGraph: {
       title: `${method.name} — Startup Valuation Calculator`,
       description: method.description,
-      url: `https://startup-valuation.simonmak.com/methods/${slug}`,
+      url: `https://startup-valuation.ascent-partners.com/methods/${slug}`,
       type: "website",
     },
     twitter: {
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: MethodPageProps): Promise<Met
       description: method.description,
     },
     alternates: {
-      canonical: `https://startup-valuation.simonmak.com/methods/${slug}`,
+      canonical: `https://startup-valuation.ascent-partners.com/methods/${slug}`,
     },
   };
 }

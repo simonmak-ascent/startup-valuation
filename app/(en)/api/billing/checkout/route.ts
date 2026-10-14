@@ -50,8 +50,8 @@ export async function POST(request: Request) {
     const checkout = await stripe.checkout.sessions.create({
       mode: "subscription",
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL ?? "https://startup-valuation.simonmak.com"}/dashboard?checkout=success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL ?? "https://startup-valuation.simonmak.com"}/?checkout=cancelled`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL ?? "https://startup-valuation.ascent-partners.com"}/dashboard?checkout=success`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL ?? "https://startup-valuation.ascent-partners.com"}/?checkout=cancelled`,
       metadata: { user_id: session.user.id, tier },
     });
 

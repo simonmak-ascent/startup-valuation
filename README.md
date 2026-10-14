@@ -7,7 +7,7 @@
 [![CI](https://github.com/simonmak-ascent/startup-valuation/actions/workflows/ci.yml/badge.svg)](https://github.com/simonmak-ascent/startup-valuation/actions/workflows/ci.yml)
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-io.github.simonmak--ascent%2Fstartup--valuation-4CAF50)](https://registry.modelcontextprotocol.io/v0/servers?search=io.github.simonmak-ascent/startup-valuation)
 [![Glama](https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation/badges/score.svg)](https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation)
-[![MCP tools](https://img.shields.io/badge/MCP-14%20tools-4CAF50)](https://startup-valuation.simonmak.com/api)
+[![MCP tools](https://img.shields.io/badge/MCP-14%20tools-4CAF50)](https://startup-valuation.ascent-partners.com/api)
 [![PyPI](https://img.shields.io/pypi/v/startup-valuation.svg)](https://pypi.org/project/startup-valuation/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Coverage](https://img.shields.io/badge/coverage-88%25-brightgreen)](https://github.com/simonmak-ascent/startup-valuation/actions/workflows/ci.yml)
@@ -115,7 +115,7 @@ can see every method's required parameters before calling a tool.
 **Hosted (Streamable HTTP)** — no install, no API key:
 
 ```
-https://startup-valuation.simonmak.com/api
+https://startup-valuation.ascent-partners.com/api
 ```
 
 **OpenCode** — add to `opencode.json`:
@@ -123,12 +123,12 @@ https://startup-valuation.simonmak.com/api
 ```json
 "startup-valuation": {
   "type": "remote",
-  "url": "https://startup-valuation.simonmak.com/api",
+  "url": "https://startup-valuation.ascent-partners.com/api",
   "timeout": 60000
 }
 ```
 
-**Claude Desktop / Cursor** — add the HTTP URL `https://startup-valuation.simonmak.com/api`
+**Claude Desktop / Cursor** — add the HTTP URL `https://startup-valuation.ascent-partners.com/api`
 as an MCP server, or run the stdio entrypoint above.
 
 **MCP Registry** — published as `io.github.simonmak-ascent/startup-valuation`

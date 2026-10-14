@@ -1,6 +1,6 @@
 import type { MethodConfig } from "@/lib/valuation/types";
 
-const BASE_URL = "https://startup-valuation.simonmak.com";
+const BASE_URL = "https://startup-valuation.ascent-partners.com";
 
 /**
  * Build a JSON-LD `HowTo` structured-data object for a valuation calculator.

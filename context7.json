@@ -8,7 +8,7 @@
   ],
   "rules": [
     "Install with `pip install 'startup-valuation[mcp]'`; run the stdio server with `startup-valuation-mcp` or `uvx --from startup-valuation startup-valuation-mcp`.",
-    "The hosted Streamable HTTP endpoint is https://startup-valuation.simonmak.com/api and needs no API key.",
+    "The hosted Streamable HTTP endpoint is https://startup-valuation.ascent-partners.com/api and needs no API key.",
     "All 14 MCP tools (`valuation_*`) are pure arithmetic: read-only, idempotent, no I/O; results are rounded to 2 decimal places.",
     "Each tool is a dispatcher: pass a `method` plus that method's parameters; unknown methods or missing required parameters return an error.",
     "Use `valuation_core` for pre-revenue methods (Scorecard, Berkus, Risk-Factor Summation, VC Method), `valuation_probability` for expected-value lists, and `valuation_advanced` for options and scenarios."

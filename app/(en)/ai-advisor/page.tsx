@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Ask the AI valuation advisor which method applies to your startup. Recommendations cite textbook chapters and are verifiable in the open-source calculators.",
   alternates: {
-    canonical: "https://startup-valuation.simonmak.com/ai-advisor",
+    canonical: "https://startup-valuation.ascent-partners.com/ai-advisor",
   },
 };
 

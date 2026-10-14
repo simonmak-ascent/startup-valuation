@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: "Support — Startup Valuation Engine",
   description: "Get help with the Startup Valuation Engine.",
   alternates: {
-    canonical: "https://startup-valuation.simonmak.com/support",
+    canonical: "https://startup-valuation.ascent-partners.com/support",
   },
 };
 
