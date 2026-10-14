@@ -1,25 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   reactStrictMode: true,
-
-  // The Python MCP endpoint lives at /api/index.py. The catch-all must be a
-  // `fallback` rewrite, not `afterFiles`: afterFiles runs before *dynamic*
-  // routes, so it would shadow app/api/auth/[...nextauth] (Auth.js) and any
-  // other dynamic /api route with a 404. fallback only applies when no
-  // filesystem route (static or dynamic) matches.
-  async rewrites() {
-    return {
-      beforeFiles: [],
-      afterFiles: [],
-      fallback: [
-        {
-          source: "/api/:path*",
-          destination: "/api/index.py",
-        },
-      ],
-    };
-  },
 
   async headers() {
     return [
