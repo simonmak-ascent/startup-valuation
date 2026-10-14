@@ -81,7 +81,7 @@ cmd_deploy() { # <slot>
 
 cmd_switch() { # <slot>  (prod)
   write_app_vhost "$PROD_FRAG" "$1" next
-  if py_has && [ -n "$(py_slot_port "$1" 2>/dev/null || true)" ]; then systemctl restart "${APP}-mcp@$1"; fi
+  if py_has && [ -n "$(py_slot_port "$1" 2>/dev/null || true)" ]; then py_restart_slot "$1"; fi
   caddy_reload
   printf '%s\n' "$1" > "$ACTIVE_FILE"
   log "prod -> $1 (next :$(slot_port "$1")${py_has:+ py :$(py_slot_port "$1" 2>/dev/null || echo -)})"
