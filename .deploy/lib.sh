@@ -98,12 +98,19 @@ py_build() { # create/refresh the venv + install deps and the package
   if [ -n "$req" ] && [ -f "$REPO_DIR/$req" ]; then
     uv pip install --python "$venv/bin/python" -r "$REPO_DIR/$req" >/dev/null
   fi
+  local req pkg; req="$(mf python.requirements 2>/dev/null || true)"
+  if [ -n "$req" ] && [ -f "$REPO_DIR/$req" ]; then
+    uv pip install --python "$venv/bin/python" -r "$REPO_DIR/$req" >/dev/null
+  fi
   pkg="$(mf python.package 2>/dev/null || echo .)"
   uv pip install --python "$venv/bin/python" "$REPO_DIR/$pkg" >/dev/null
-  case "$(mf python.cmd)" in
+  case "$(mf python.cmd 2>/dev/null || echo '')" in
     *gunicorn*) uv pip install --python "$venv/bin/python" gunicorn >/dev/null ;;
     *uvicorn*)  uv pip install --python "$venv/bin/python" uvicorn >/dev/null ;;
   esac
+  if py_is_multi && mf python.endpoints 2>/dev/null | grep -q uvicorn; then
+    uv pip install --python "$venv/bin/python" uvicorn >/dev/null
+  fi
 }
 
 # ── python endpoints: one service per endpoint (ports = slot base + index) ────
@@ -200,11 +207,17 @@ PY
 #                      docs.dir (default "site")
 docs_build() {
   local b; b="$(mf docs.build 2>/dev/null || echo 'mkdocs build --strict')"
+  local vpy; vpy="$(py_venv)/bin/python"
   if command -v mkdocs >/dev/null 2>&1; then
     ( cd "$REPO_DIR" && eval "$b" )
+  elif [ -x "$vpy" ]; then
+    # The app venv already has the package installed; mkdocstrings must be able
+    # to import it, so add the docs toolchain there and run from the venv.
+    uv pip install --python "$vpy" mkdocs-material 'mkdocstrings[python]' \
+        pymdown-extensions mkdocs >/dev/null 2>&1 || true
+    ( cd "$REPO_DIR" && PATH="$(py_venv)/bin:$PATH" eval "$b" )
   else
-    # no system mkdocs on the runner: run the repo's docs build under uvx, which
-    # puts mkdocs (material theme + pymdown + mkdocstrings) on PATH for the command.
+    # no system mkdocs and no app venv: run under uvx (material + pymdown + mkdocstrings).
     ( cd "$REPO_DIR" && uvx --from mkdocs-material --with 'mkdocstrings[python]' \
         --with pymdown-extensions --with mkdocs bash -lc "$b" )
   fi
