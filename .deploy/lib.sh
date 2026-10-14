@@ -182,6 +182,15 @@ py_deploy() { # <slot>
   done < <(py_endpoints)
 }
 
+py_restart_slot() { # <slot> — restart every python endpoint unit for a slot
+  local name idx cmd svc
+  while IFS=$'\t' read -r name idx cmd; do
+    [ -z "$name" ] && continue
+    svc="$(py_unitname "$name")"; svc="${svc%@.service}@$1"
+    systemctl restart "$svc" 2>/dev/null || true
+  done < <(py_endpoints)
+}
+
 py_caddy_handles() { # <slot>  — emit a handle per python route (longest path first)
   local base; base="$(py_slot_port "$1" 2>/dev/null || py_slot_port blue)"
   if py_is_multi; then
