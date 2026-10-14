@@ -126,7 +126,7 @@ for i,e in enumerate(json.loads(sys.argv[1])):
         cmd=f"uvicorn {app} --host 127.0.0.1 --port {{port}}"
     else:
         extra=f" --health {e['health']}" if e.get("health") else ""
-        cmd=f"python {la}launch.py --app {app}{extra} --port {{port}}"
+        cmd=f"python {la}.py --app {app}{extra} --port {{port}}"
     print(f"{e['name']}\t{i}\t{cmd}")
 PY
   else
