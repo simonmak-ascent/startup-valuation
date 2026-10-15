@@ -6,7 +6,7 @@
 
 [![CI](https://github.com/simonmak-ascent/startup-valuation/actions/workflows/ci.yml/badge.svg)](https://github.com/simonmak-ascent/startup-valuation/actions/workflows/ci.yml)
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-com.ascent-partners%2Fstartup-valuation-4CAF50)](https://registry.modelcontextprotocol.io/v0/servers?search=com.ascent-partners/startup-valuation)
-[![Glama](https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation/badges/score.svg)](https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation)
+[![Glama](https://glama.ai/mcp/connectors/com.ascent-partners/startup-valuation/badges/score.svg)](https://glama.ai/mcp/connectors/com.ascent-partners/startup-valuation)
 [![MCP tools](https://img.shields.io/badge/MCP-14%20tools-4CAF50)](https://startup-valuation.ascent-partners.com/api)
 [![PyPI](https://img.shields.io/pypi/v/startup-valuation.svg)](https://pypi.org/project/startup-valuation/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
@@ -133,7 +133,7 @@ as an MCP server, or run the stdio entrypoint above.
 
 **MCP Registry** — published as `com.ascent-partners/startup-valuation`
 (manifest: [`server.json`](server.json)) and listed on
-[Glama](https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation) and the
+[Glama](https://glama.ai/mcp/connectors/com.ascent-partners/startup-valuation) and the
 [Official MCP Registry](https://registry.modelcontextprotocol.io). The
 [`glama.json`](glama.json) file holds the Glama maintainer entry.
 
