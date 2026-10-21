@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.4] - 2026-10-21
+
+### Changed
+
+- Bump the package version to match the root `pyproject.toml` (2.1.4) and clear the CI version-drift gate.
+
 ## [2.1.3] - 2026-10-14
 
 ### Changed

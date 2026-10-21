@@ -39,7 +39,7 @@ def _package_version() -> str:
 
         return version("startup-valuation")
     except PackageNotFoundError:  # running from a source checkout without install
-        return "2.1.3"
+        return "2.1.4"
 
 
 SERVER_VERSION = _package_version()
