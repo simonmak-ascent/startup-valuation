@@ -216,6 +216,8 @@ ruff check .
 mypy src/startup_valuation --ignore-missing-imports
 ```
 
+> **Note:** CI and deployment run through the APG workbench pipeline.
+
 ## Documentation
 
 - **API Reference:** [GitHub Pages](https://simonmak-ascent.github.io/startup-valuation/)
