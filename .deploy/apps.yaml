@@ -92,6 +92,7 @@ apps:
     node: ecs-01
     nodes: [ecs-01, ecs-02, ecs-03]
     kind: next-website
+    geo_mode: trusted_proxies
     domain: startup-valuation.ascent-partners.com
     geo: true
     slots: { blue: 3110, green: 3111, preview: 3112 }
