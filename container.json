@@ -1,0 +1,67 @@
+{
+  "containers": [
+    {
+      "name": "startup-valuation",
+      "repo": "simonmak-ascent/startup-valuation",
+      "image": "ghcr.io/simonmak-ascent/startup-valuation-web:20261027T020834",
+      "port": 3110,
+      "hosts": ["startup-valuation.ascent-partners.com"],
+      "health": {
+        "path": "/",
+        "host": "startup-valuation.ascent-partners.com"
+      },
+      "run": {
+        "user": "1001:1001",
+        "network": "bridge",
+        "bind": "0.0.0.0",
+        "entrypoint": "exec"
+      },
+      "dataClass": "RDS",
+      "wave": 1,
+      "owner": "simonmak-ascent",
+      "notes": "Next.js release copied from the node's active slot, run as node server.js with uid 1001. NextAuth needs AUTH_SECRET fleet-wide; it stays in /etc/startup-valuation/<slot>.env and is not baked into the image."
+    },
+    {
+      "name": "startup-valuation-api",
+      "repo": "simonmak-ascent/startup-valuation",
+      "image": "ghcr.io/simonmak-ascent/startup-valuation-py:20261027T020834",
+      "port": 8021,
+      "hosts": ["startup-valuation.ascent-partners.com"],
+      "health": {
+        "proto": "tcp",
+        "path": "/"
+      },
+      "run": {
+        "user": "1001:1001",
+        "network": "bridge",
+        "bind": "0.0.0.0",
+        "entrypoint": "exec"
+      },
+      "dataClass": "RDS",
+      "wave": 1,
+      "owner": "simonmak-ascent",
+      "notes": "pylaunch serving api.index:handler on 8021 with --host 0.0.0.0 (it defaults to loopback). The image recreates /usr/bin/python3.12 for the copied venv's console scripts."
+    },
+    {
+      "name": "startup-valuation-calculate",
+      "repo": "simonmak-ascent/startup-valuation",
+      "image": "ghcr.io/simonmak-ascent/startup-valuation-py:20261027T020834",
+      "port": 8020,
+      "hosts": ["startup-valuation.ascent-partners.com"],
+      "health": {
+        "proto": "tcp",
+        "path": "/"
+      },
+      "run": {
+        "user": "1001:1001",
+        "network": "bridge",
+        "bind": "0.0.0.0",
+        "entrypoint": "exec"
+      },
+      "dataClass": "RDS",
+      "wave": 1,
+      "owner": "simonmak-ascent",
+      "notes": "Same image as the API, different entrypoint (api.calculate:handler) on 8020, declared at priority 23 for /api/calculate."
+    }
+  ]
+}
