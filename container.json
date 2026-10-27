@@ -26,7 +26,7 @@
     {
       "name": "startup-valuation-api",
       "repo": "simonmak-ascent/startup-valuation",
-      "image": "ghcr.io/simonmak-ascent/startup-valuation-py:20261027T020834",
+      "image": "ghcr.io/simonmak-ascent/startup-valuation@sha256:362d06fd9e6d6c2cca2147adcc3f6fbb90b93af3ce911f5480f1355a92f253e4",
       "port": 8021,
       "hosts": [
         "startup-valuation.ascent-partners.com"
@@ -49,7 +49,7 @@
     {
       "name": "startup-valuation-calculate",
       "repo": "simonmak-ascent/startup-valuation",
-      "image": "ghcr.io/simonmak-ascent/startup-valuation-py:20261027T020834",
+      "image": "ghcr.io/simonmak-ascent/startup-valuation@sha256:362d06fd9e6d6c2cca2147adcc3f6fbb90b93af3ce911f5480f1355a92f253e4",
       "port": 8020,
       "hosts": [
         "startup-valuation.ascent-partners.com"
