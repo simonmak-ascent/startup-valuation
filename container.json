@@ -3,9 +3,11 @@
     {
       "name": "startup-valuation",
       "repo": "simonmak-ascent/startup-valuation",
-      "image": "ghcr.io/simonmak-ascent/startup-valuation-web:20261027T020834",
+      "image": "ghcr.io/simonmak-ascent/startup-valuation@sha256:1a2d08c94170f8b91751729bf3ed7938ef64e3315a1600600f5b5ed52941016b",
       "port": 3110,
-      "hosts": ["startup-valuation.ascent-partners.com"],
+      "hosts": [
+        "startup-valuation.ascent-partners.com"
+      ],
       "health": {
         "path": "/",
         "host": "startup-valuation.ascent-partners.com"
@@ -26,7 +28,9 @@
       "repo": "simonmak-ascent/startup-valuation",
       "image": "ghcr.io/simonmak-ascent/startup-valuation-py:20261027T020834",
       "port": 8021,
-      "hosts": ["startup-valuation.ascent-partners.com"],
+      "hosts": [
+        "startup-valuation.ascent-partners.com"
+      ],
       "health": {
         "proto": "tcp",
         "path": "/"
@@ -47,7 +51,9 @@
       "repo": "simonmak-ascent/startup-valuation",
       "image": "ghcr.io/simonmak-ascent/startup-valuation-py:20261027T020834",
       "port": 8020,
-      "hosts": ["startup-valuation.ascent-partners.com"],
+      "hosts": [
+        "startup-valuation.ascent-partners.com"
+      ],
       "health": {
         "proto": "tcp",
         "path": "/"
