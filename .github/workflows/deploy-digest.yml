@@ -7,7 +7,8 @@ name: deploy-digest
 # GITHUB_TOKEN, on a runner that lives on the node itself. The running container
 # is only replaced after the new image is on disk.
 #
-#   gh workflow run deploy-digest.yml -f container=sv-web -f digest=sha256:… -f runner=apg-ecs-01
+#   gh workflow run deploy-digest.yml -f container=startup-valuation \
+#     -f docker_name=sv-web -f digest=sha256:… -f runner=apg-ecs-01
 #
 # Port, uid and health path come from container.json, so the declaration stays
 # the single source of truth.
@@ -17,6 +18,10 @@ on:
     inputs:
       container:
         description: "Container name from container.json"
+        required: true
+        type: string
+      docker_name:
+        description: "Name of the container on the node, e.g. sv-web"
         required: true
         type: string
       digest:
@@ -74,7 +79,7 @@ jobs:
 
       - name: Replace the container
         env:
-          NAME: ${{ inputs.container }}
+          NAME: ${{ inputs.docker_name }}
           DIGEST: ${{ inputs.digest }}
           PORT: ${{ steps.spec.outputs.port }}
           ENVFILE: ${{ steps.spec.outputs.envfile }}
@@ -94,7 +99,7 @@ jobs:
           PORT: ${{ steps.spec.outputs.port }}
           PATH_: ${{ steps.spec.outputs.health_path }}
           HOST_: ${{ steps.spec.outputs.health_host }}
-          NAME: ${{ inputs.container }}
+          NAME: ${{ inputs.docker_name }}
         run: |
           set -eu
           for i in 1 2 3 4 5; do

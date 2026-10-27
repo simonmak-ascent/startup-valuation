@@ -3,7 +3,7 @@
     {
       "name": "startup-valuation",
       "repo": "simonmak-ascent/startup-valuation",
-      "image": "ghcr.io/simonmak-ascent/startup-valuation@sha256:1a2d08c94170f8b91751729bf3ed7938ef64e3315a1600600f5b5ed52941016b",
+      "image": "ghcr.io/simonmak-ascent/startup-valuation@sha256:2f13e111cb3750817ef55e1890206ddc99693c64bb76f080d37d56724dfe74f6",
       "port": 3110,
       "hosts": [
         "startup-valuation.ascent-partners.com"
@@ -21,7 +21,7 @@
       "dataClass": "RDS",
       "wave": 1,
       "owner": "simonmak-ascent",
-      "notes": "Next.js release copied from the node's active slot, run as node server.js with uid 1001. NextAuth needs AUTH_SECRET fleet-wide; it stays in /etc/startup-valuation/<slot>.env and is not baked into the image."
+      "notes": "Next.js release copied from the node's active slot, run as node server.js with uid 1001. NextAuth needs AUTH_SECRET fleet-wide; it stays in /etc/startup-valuation/<slot>.env and is not baked into the image. Lean rebuild 2026-10-27: one COPY --chown layer and no .next/cache, 569 MB -> 404 MB. Rolled out by digest through deploy-digest.yml."
     },
     {
       "name": "startup-valuation-api",
