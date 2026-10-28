@@ -45,7 +45,7 @@ jobs:
       - self-hosted
       - ${{ inputs.runner }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.1
 
       - name: Read the container declaration
         id: spec
