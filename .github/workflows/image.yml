@@ -1,16 +1,23 @@
 name: image
 
-# Build and publish the web application image on an application node.
+# Build and publish the web application image.
 #
-# The build runs inside the Dockerfile's `node:22-slim` stage (corepack + pnpm), so it does
-# not depend on the host's node/pnpm at all — only on docker, which the `deploy` user on the
-# application nodes has. It never runs on apg-ci-04: that is the control node and has no
-# docker socket by design, which is what broke the first attempt at this workflow.
+# READ THIS BEFORE DISPATCHING — it cannot succeed today.
 #
-#   gh workflow run image.yml -f runner=apg-ecs-01                # build from Dockerfile.web
-#   gh workflow run image.yml -f runner=apg-ecs-01 -f image=name:stamp   # push an existing local image
+# Building needs a runner with **Docker socket access**. The only runner registered for this
+# repository is `ecs-04-intangible-valuation` on the **control node**, and that node has no
+# Docker socket by design (apg-infra: the control plane runs no applications, and its runner
+# user is not in the `docker` group). The application nodes' `deploy` user *is* in `docker`,
+# but no runner is registered there for this repository — so `runs-on: apg-ecs-01` queues
+# forever, which is exactly what happened on 2026-10-29.
 #
-# The job prints the digest; pin it in `container.json` and run the digest deploy.
+# So the job checks for Docker first and fails with an explicit message rather than hanging.
+# The image is currently built **by hand on an application node** from `Dockerfile.web`:
+#
+#   docker build -f Dockerfile.web -t startup-valuation:$(date -u +%Y%m%dT%H%M%S) .
+#
+# and published by whatever runner can reach the socket. Registering a runner on
+# apg-ecs-01/02/03 for this repository would make this workflow work unchanged.
 
 on:
   workflow_dispatch:
@@ -19,12 +26,6 @@ on:
         description: "Optional local image tag to push instead of building (name:stamp)"
         required: false
         type: string
-      runner:
-        description: "Runner label on the node that will build or hold the image"
-        required: true
-        type: choice
-        options: [apg-ecs-01, apg-ecs-02, apg-ecs-03]
-        default: apg-ecs-01
 
 permissions:
   contents: read
@@ -35,10 +36,16 @@ env:
 
 jobs:
   image:
-    runs-on:
-      - self-hosted
-      - ${{ inputs.runner }}
+    runs-on: [self-hosted, apg-ci-04]
     steps:
+      - name: Check the runner can reach Docker
+        run: |
+          if ! docker version --format '{{.Server.Version}}' >/dev/null 2>&1; then
+            echo "::error::this runner has no Docker socket. Image builds need a runner on an application node (apg-ecs-01/02/03), where the deploy user is in the docker group. See this workflow's header."
+            exit 1
+          fi
+          echo "docker $(docker version --format '{{.Server.Version}}')"
+
       - uses: actions/checkout@v7
         if: inputs.image == ''
 
@@ -58,8 +65,7 @@ jobs:
             dst="$repo:${src#*:}"
             docker tag "$src" "$dst"
           else
-            stamp="$(date -u +%Y%m%dT%H%M%S)"
-            dst="$repo:$stamp"
+            dst="$repo:$(date -u +%Y%m%dT%H%M%S)"
             docker build -f Dockerfile.web -t "$dst" \
               --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}" \
               --label "org.opencontainers.image.revision=${{ github.sha }}" .
