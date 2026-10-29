@@ -2,22 +2,12 @@ name: image
 
 # Build and publish the web application image.
 #
-# READ THIS BEFORE DISPATCHING — it cannot succeed today.
+# Building needs a runner with **Docker socket access**. It runs on `apg-ecs-01` — a runner on
+# workforce-01 whose user is in the `docker` group. It must NOT run on the `apg-ci-04` control-node
+# runner, which has no docker socket by design (apg-infra OI-60): that failure mode was a 27-second
+# socket error, and before the runner existed it was a nine-minute silent queue.
 #
-# Building needs a runner with **Docker socket access**. The only runner registered for this
-# repository is `ecs-04-intangible-valuation` on the **control node**, and that node has no
-# Docker socket by design (apg-infra: the control plane runs no applications, and its runner
-# user is not in the `docker` group). The application nodes' `deploy` user *is* in `docker`,
-# but no runner is registered there for this repository — so `runs-on: apg-ecs-01` queues
-# forever, which is exactly what happened on 2026-10-29.
-#
-# So the job checks for Docker first and fails with an explicit message rather than hanging.
-# The image is currently built **by hand on an application node** from `Dockerfile.web`:
-#
-#   docker build -f Dockerfile.web -t startup-valuation:$(date -u +%Y%m%dT%H%M%S) .
-#
-# and published by whatever runner can reach the socket. Registering a runner on
-# apg-ecs-01/02/03 for this repository would make this workflow work unchanged.
+# The first step checks for Docker so a misrouted job fails with a message instead of hanging.
 
 on:
   workflow_dispatch:
@@ -36,7 +26,7 @@ env:
 
 jobs:
   image:
-    runs-on: [self-hosted, apg-ci-04]
+    runs-on: [self-hosted, apg-ecs-01]
     steps:
       - name: Check the runner can reach Docker
         run: |
