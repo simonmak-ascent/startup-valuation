@@ -1,0 +1,73 @@
+name: image
+
+# Publish a node-built image to GHCR.
+#
+# The image is built on the node — where the release artefacts already are — and this
+# job only pushes it, from a runner on that node, with the job's own short-lived
+# GITHUB_TOKEN. No registry credential is stored on a host.
+#
+# This repository had no image workflow and no Dockerfile for the site, so the
+# container running on :3121 could not be rebuilt from anything here (OI-40).
+# Build with Dockerfile.web:
+#
+#   docker build -f Dockerfile.web -t startup-valuation:$(date -u +%Y%m%dT%H%M%S) .
+#   gh workflow run image.yml -f image=startup-valuation:20261029T133000 -f runner=apg-ecs-01
+#
+# The job prints the digest; pin it in `container.json` and run the digest deploy.
+
+on:
+  workflow_dispatch:
+    inputs:
+      image:
+        description: "Local image tag, e.g. startup-valuation:20261029T133000"
+        required: true
+        type: string
+      runner:
+        description: "Runner label on the node that holds the image"
+        required: true
+        type: choice
+        options: [apg-ecs-01, apg-ecs-02, apg-ecs-03]
+        default: apg-ecs-01
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  push:
+    runs-on:
+      - self-hosted
+      - ${{ inputs.runner }}
+    steps:
+      - name: Log in to GHCR
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" \
+            | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Push and record the digest
+        id: push
+        run: |
+          set -eu
+          src="${{ inputs.image }}"
+          case "$src" in *:*) ;; *) echo "image must be name:stamp (got $src)" >&2; exit 1 ;; esac
+          dst="ghcr.io/${{ github.repository }}:${src#*:}"
+          docker tag "$src" "$dst"
+          docker push "$dst"
+          digest="$(docker inspect --format '{{index .RepoDigests 0}}' "$dst")"
+          echo "$digest"
+          {
+            echo "### published"
+            echo ""
+            echo '```'
+            echo "$digest"
+            echo '```'
+            echo ""
+            echo "Pin it in \`container.json\` as \`image: $digest\`."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Log out
+        if: always()
+        run: docker logout ghcr.io || true
