@@ -1,17 +1,14 @@
 name: image
 
-# Publish a node-built image to GHCR.
+# Build and publish the web application image on an application node.
 #
-# The image is built on the node — where the release artefacts already are — and this
-# job only pushes it, from a runner on that node, with the job's own short-lived
-# GITHUB_TOKEN. No registry credential is stored on a host.
+# The build runs inside the Dockerfile's `node:22-slim` stage (corepack + pnpm), so it does
+# not depend on the host's node/pnpm at all — only on docker, which the `deploy` user on the
+# application nodes has. It never runs on apg-ci-04: that is the control node and has no
+# docker socket by design, which is what broke the first attempt at this workflow.
 #
-# This repository had no image workflow and no Dockerfile for the site, so the
-# container running on :3121 could not be rebuilt from anything here (OI-40).
-# Build with Dockerfile.web:
-#
-#   docker build -f Dockerfile.web -t startup-valuation:$(date -u +%Y%m%dT%H%M%S) .
-#   gh workflow run image.yml -f image=startup-valuation:20261029T133000 -f runner=apg-ecs-01
+#   gh workflow run image.yml -f runner=apg-ecs-01                # build from Dockerfile.web
+#   gh workflow run image.yml -f runner=apg-ecs-01 -f image=name:stamp   # push an existing local image
 #
 # The job prints the digest; pin it in `container.json` and run the digest deploy.
 
@@ -19,11 +16,11 @@ on:
   workflow_dispatch:
     inputs:
       image:
-        description: "Local image tag, e.g. startup-valuation:20261029T133000"
-        required: true
+        description: "Optional local image tag to push instead of building (name:stamp)"
+        required: false
         type: string
       runner:
-        description: "Runner label on the node that holds the image"
+        description: "Runner label on the node that will build or hold the image"
         required: true
         type: choice
         options: [apg-ecs-01, apg-ecs-02, apg-ecs-03]
@@ -37,27 +34,39 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  push:
+  image:
     runs-on:
       - self-hosted
       - ${{ inputs.runner }}
     steps:
+      - uses: actions/checkout@v7
+        if: inputs.image == ''
+
       - name: Log in to GHCR
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" \
             | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
-      - name: Push and record the digest
-        id: push
+      - name: Build and push
+        id: build
         run: |
           set -eu
-          src="${{ inputs.image }}"
-          case "$src" in *:*) ;; *) echo "image must be name:stamp (got $src)" >&2; exit 1 ;; esac
-          dst="ghcr.io/${{ github.repository }}:${src#*:}"
-          docker tag "$src" "$dst"
+          repo="ghcr.io/${{ github.repository }}"
+          if [ -n "${{ inputs.image }}" ]; then
+            src="${{ inputs.image }}"
+            case "$src" in *:*) ;; *) echo "image must be name:stamp (got $src)" >&2; exit 1 ;; esac
+            dst="$repo:${src#*:}"
+            docker tag "$src" "$dst"
+          else
+            stamp="$(date -u +%Y%m%dT%H%M%S)"
+            dst="$repo:$stamp"
+            docker build -f Dockerfile.web -t "$dst" \
+              --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}" \
+              --label "org.opencontainers.image.revision=${{ github.sha }}" .
+          fi
           docker push "$dst"
           digest="$(docker inspect --format '{{index .RepoDigests 0}}' "$dst")"
-          echo "$digest"
+          echo "digest=$digest" >> "$GITHUB_OUTPUT"
           {
             echo "### published"
             echo ""
