@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "default_branch": "main",
+  "merge": "pr-required",
+  "verify": [
+    "pnpm test",
+    "pnpm build"
+  ],
+  "deploy": {
+    "kind": "workflow",
+    "workflow": "publish.yml"
+  },
+  "e2e": [
+    {
+      "probe": "https://startup-valuation.ascent-partners.com/",
+      "expect": 200
+    }
+  ]
+}
