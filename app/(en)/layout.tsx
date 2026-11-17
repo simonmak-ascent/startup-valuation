@@ -1,4 +1,4 @@
-export { metadata } from "@/components/layout/RootShell";
+export { metadata as metadata } from "@/components/layout/RootShell";
 import { RootShell } from "@/components/layout/RootShell";
 
 export default function EnLayout({ children }: { children: React.ReactNode }) {

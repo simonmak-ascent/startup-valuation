@@ -163,6 +163,8 @@ def net_revenue_retention(
     Notes:
         $$NRR = \\frac{\\text{Ending Revenue} + \\text{Expansion Revenue}}{\\text{Starting Revenue}}$$
 
+        ``ending_revenue`` is the retained base cohort revenue *excluding* expansion, so
+        expansion is added once here and is not double counted.
         NRR > 100% means existing customers grow net revenue.
         Best-in-class SaaS: NRR > 120%.
 
@@ -181,11 +183,15 @@ def net_revenue_retention(
             {
                 "label": "Net Revenue Retention",
                 "value": nrr,
-                "formula": r"NRR = (start + expansion - contraction - churn) \div start",
+                "formula": r"NRR = (ending + expansion) \div start",
             },
         ],
         method="Net Revenue Retention",
-        inputs={"starting_revenue": starting_revenue, "ending_revenue": ending_revenue},
+        inputs={
+            "starting_revenue": starting_revenue,
+            "ending_revenue": ending_revenue,
+            "expansion_revenue": expansion_revenue,
+        },
         assumptions=["Cohort is consistent over the period"],
         chapter="11",
         formula_number="11.3",

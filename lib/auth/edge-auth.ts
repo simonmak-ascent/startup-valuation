@@ -13,6 +13,8 @@ import NextAuth from "next-auth";
 export const { auth: edgeAuth } = NextAuth({
   providers: [],
   secret: process.env.AUTH_SECRET,
+  // Behind the estate ALB; see the note in lib/auth/vendor/config.ts.
+  trustHost: true,
   session: { strategy: "jwt" },
   pages: { signIn: "/sign-in" },
   callbacks: {

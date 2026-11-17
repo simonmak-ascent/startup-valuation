@@ -198,3 +198,72 @@ def test_stdio_surface_parity_with_spec():
         schema = tool.parameters  # JSON Schema produced by FastMCP
         spec_props = set(spec["inputSchema"]["properties"])
         assert set(schema["properties"]) == spec_props, name
+
+
+def test_every_method_argument_is_in_target_signature():
+    """Every advertised argument name must exist on the function the method calls.
+
+    A method whose ``args``/``opt`` keys do not match the target's signature raises
+    TypeError on the first call — which is how `expected_value_continuous` shipped
+    binding `lower`/`upper` to a function taking `a`/`b`.
+    """
+    import inspect
+
+    failures = []
+    for tool in ts.TOOLS:
+        for method in tool.get("methods") or []:
+            if not method.get("module"):
+                continue  # compound/aggregate entries are not dispatched directly
+            fn, _injected = ts._resolve(method["module"], method["function"])
+            parameters = set(inspect.signature(fn).parameters)
+            for mapping in ("args", "opt"):
+                for fn_param in method.get(mapping) or {}:
+                    if fn_param not in parameters:
+                        failures.append(
+                            f"{tool['name']}.{method['key']}: '{fn_param}' is not a parameter of "
+                            f"{method['module']}.{method['function']}({', '.join(sorted(parameters))})"
+                        )
+    assert not failures, "\n".join(failures)
+
+
+@pytest.mark.parametrize(
+    ("tool_name", "arguments"),
+    [
+        ("valuation_probability", {"method": "expected_value_continuous", "lower": -1.0, "upper": 1.0}),
+        (
+            "valuation_stakeholder",
+            {
+                "method": "pwerm",
+                "pwerm_scenarios": [
+                    {"probability": 0.20, "common_value": 92_000_000},
+                    {"probability": 0.50, "common_value": 55_000_000},
+                    {"probability": 0.20, "common_value": 4_000_000},
+                    {"probability": 0.10, "common_value": 0},
+                ],
+            },
+        ),
+        (
+            "valuation_stakeholder",
+            {
+                "method": "employee_option",
+                "employee_option_scenarios": [
+                    {"probability": 0.20, "fmv": 10.0, "strike": 1.0, "shares": 50_000},
+                    {"probability": 0.50, "fmv": 5.0, "strike": 1.0, "shares": 50_000},
+                    {"probability": 0.30, "fmv": 1.0, "strike": 1.0, "shares": 50_000},
+                ],
+            },
+        ),
+        (
+            "valuation_biotech",
+            {
+                "method": "pipeline",
+                "drugs": [{"peak_sales": 2_000_000_000, "multiple": 5, "p_success": 0.60, "years_to_peak": 2}],
+                "discount_rate": 0.12,
+            },
+        ),
+    ],
+)
+def test_methods_advertised_but_unreachable_now_dispatch(tool_name, arguments):
+    """Regression: these four methods could not execute through the tool surface."""
+    result = ts.call_tool(tool_name, arguments)
+    assert isinstance(result["value"], (int, float))

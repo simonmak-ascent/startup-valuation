@@ -101,3 +101,17 @@ export async function getBenchmarks(version: string, industry?: string): Promise
   );
   return rows;
 }
+
+/**
+ * The version string of the most recent benchmark run.
+ *
+ * `etl/compute-benchmarks.ts` writes an ISO date as the version, never the literal
+ * "latest", so callers must look the newest one up rather than assume a name.
+ */
+export async function getLatestBenchmarkVersion(): Promise<string | null> {
+  const db = await getDb();
+  const [rows] = await db.query<[{ version: string }[]]>(
+    `SELECT version FROM ${TABLES.BENCHMARK} ORDER BY version DESC LIMIT 1`,
+  );
+  return rows[0]?.version ?? null;
+}

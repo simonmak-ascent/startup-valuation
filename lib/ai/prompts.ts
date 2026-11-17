@@ -1,6 +1,4 @@
-import { getAllMethods } from "@/lib/methods";
-
-const LIBRARY_VERSION = "1.0.2";
+import { LIBRARY_VERSION, getAllMethods } from "@/lib/methods";
 
 /**
  * System prompt for the DeepSeek valuation advisor. Injects the full method

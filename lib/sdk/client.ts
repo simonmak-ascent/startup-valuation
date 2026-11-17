@@ -5,7 +5,7 @@ export interface ValuationResult {
   chapter: string;
   steps: { label: string; value: number; formula: string }[];
   inputs: Record<string, unknown>;
-  assumptions: Record<string, unknown>;
+  assumptions: unknown[];
   library_version: string;
   timestamp: string;
   git_commit: string;
@@ -49,13 +49,11 @@ export class StartupValuationClient {
     return this.request<ValuationResult>("/api/calculate", { method, params });
   }
 
-  /** Health check + tool inventory. */
+  /** Health check; the endpoint answers 503 when the database is unreachable. */
   async health(): Promise<{
     status: string;
     version: string;
-    tools: number;
-    pure_python_tools: number;
-    full_library_tools: number;
+    db_status: string;
   }> {
     const res = await fetch(`${this.baseUrl}/api/health`);
     return (await res.json()) as Awaited<ReturnType<StartupValuationClient["health"]>>;

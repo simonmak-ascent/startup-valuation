@@ -6,15 +6,29 @@ Response: CalculatorResponse with value, steps, formula reference, audit meta.
 """
 
 import json as _json
+import logging as _logging
+import math as _math
 import os as _os
 import sys as _sys
 import time as _time
 
 _sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
 
+_LOGGER = _logging.getLogger("startup_valuation.api.calculate")
+
+import startup_valuation as _startup_valuation  # noqa: E402
 from startup_valuation import capm, comparables, core, marketplace, probability, saas, stakeholders, tv  # noqa: E402
 
-LIBRARY_VERSION = "1.0.2"
+# Single source of truth for the version this build reports: the package's own
+# __version__, which the release lockstep keeps in step with pyproject.toml.
+LIBRARY_VERSION = _startup_valuation.__version__
+
+# Paths this deployment declares for the Python side of the API. The ALB maps them
+# to the MCP (8021) and calculate (8020) containers. Until that mapping is corrected
+# in apg-infra, each handler answers these paths and 404s every other one, so the
+# Next.js routes under app/(en)/api/ are not shadowed by a 200 from here.
+_OWNED_PATHS = frozenset({"/api", "/api/", "/api/calculate", "/api/health"})
+
 _AVAILABLE_METHODS: list[str] = []
 
 # In-memory sliding-window rate limiter (per warm Vercel instance).
@@ -125,6 +139,25 @@ def _error(status, code, message, extra=None):
     return status, {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}, _json.dumps(body).encode()
 
 
+def _non_finite_key(value: object, prefix: str = "") -> str | None:
+    """Path to the first non-finite number in a payload, or None when all are finite."""
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, float):
+        return prefix if not _math.isfinite(value) else None
+    if isinstance(value, dict):
+        for key, item in value.items():
+            found = _non_finite_key(item, f"{prefix}.{key}" if prefix else str(key))
+            if found:
+                return found
+    elif isinstance(value, (list, tuple)):
+        for index, item in enumerate(value):
+            found = _non_finite_key(item, f"{prefix}[{index}]")
+            if found:
+                return found
+    return None
+
+
 def calculate(method_name, params):
     if method_name not in _NAMED_TOOLS:
         return _error(400, "UNKNOWN_METHOD", f"Unknown method: {method_name}", {"available": _AVAILABLE_METHODS})
@@ -137,37 +170,57 @@ def calculate(method_name, params):
             400, "VALIDATION_ERROR", "Missing required parameters", {"missing": missing, "required": param_names}
         )
 
+    bad_input = _non_finite_key(params)
+    if bad_input:
+        return _error(400, "NON_FINITE_INPUT", f"Input '{bad_input}' must be a finite number")
+
     try:
         kwargs = {p: params[p] for p in param_names}
         result = func(**kwargs)
-    except Exception as e:
-        return _error(500, "COMPUTATION_ERROR", str(e))
+    except (TypeError, ValueError) as exc:
+        return _error(400, "VALIDATION_ERROR", str(exc))
+    except Exception:
+        _LOGGER.exception("calculation failed: %s", method_name)
+        return _error(500, "COMPUTATION_ERROR", "The calculation failed")
 
-    unwrapped = _unwrap(result)
-    unwrapped["library_version"] = LIBRARY_VERSION
-    unwrapped["timestamp"] = _time.strftime("%Y-%m-%dT%H:%M:%SZ", _time.gmtime())
-    unwrapped["git_commit"] = _os.environ.get("VERCEL_GIT_COMMIT_SHA", "")
-    unwrapped["audit_status"] = "skipped"
+    try:
+        unwrapped = _unwrap(result)
+        unwrapped["library_version"] = LIBRARY_VERSION
+        unwrapped["timestamp"] = _time.strftime("%Y-%m-%dT%H:%M:%SZ", _time.gmtime())
+        unwrapped["git_commit"] = _os.environ.get("VERCEL_GIT_COMMIT_SHA", "")
+        unwrapped["audit_status"] = "skipped"
+
+        bad_output = _non_finite_key(unwrapped)
+        if bad_output:
+            return _error(422, "NON_FINITE_RESULT", f"Result '{bad_output}' is not a finite number")
+
+        payload = _json.dumps(unwrapped, allow_nan=False).encode()
+    except Exception:
+        _LOGGER.exception("result could not be serialised: %s", method_name)
+        return _error(500, "COMPUTATION_ERROR", "The result could not be serialised")
 
     return (
         200,
         {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
-        _json.dumps(unwrapped).encode(),
+        payload,
     )
 
 
-def handle_request(http_method, _path, body_raw):
+def handle_request(http_method, path, body_raw):
+    if path and path.split("?", 1)[0] not in _OWNED_PATHS:
+        return 404, {"Content-Type": "application/json"}, b'{"error":"NOT_FOUND"}'
+
     if http_method == "OPTIONS":
         return (
             200,
             {
                 "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                "Access-Control-Allow-Methods": "GET, HEAD, POST, OPTIONS",
                 "Access-Control-Allow-Headers": "Content-Type",
             },
             b"{}",
         )
-    if http_method == "GET":
+    if http_method in ("GET", "HEAD"):
         return (
             200,
             {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
@@ -183,9 +236,17 @@ def handle_request(http_method, _path, body_raw):
     if http_method != "POST":
         return 405, {"Content-Type": "application/json"}, b"{}"
 
-    body = _json.loads(body_raw) if body_raw else {}
+    try:
+        body = _json.loads(body_raw) if body_raw else {}
+    except _json.JSONDecodeError:
+        return _error(400, "PARSE_ERROR", "Request body is not valid JSON")
+    if not isinstance(body, dict):
+        return _error(400, "VALIDATION_ERROR", "Request body must be a JSON object")
+
     method = body.get("method", "")
-    params = body.get("params", {})
+    params = body.get("params") or {}
+    if not isinstance(params, dict):
+        return _error(400, "VALIDATION_ERROR", "params must be a JSON object")
 
     if _rate_limited("calculate"):
         return _error(429, "RATE_LIMITED", "Too many requests. Please try again later.")
@@ -200,28 +261,25 @@ from http.server import BaseHTTPRequestHandler  # noqa: E402
 
 
 class handler(BaseHTTPRequestHandler):  # noqa: N801
-    def do_GET(self):
-        code, headers, body = handle_request("GET", self.path, None)
+    def _respond(self, code, headers, body):
         self.send_response(code)
         for k, v in headers.items():
             self.send_header(k, v)
+        self.send_header("Content-Length", str(len(body)))
         self.end_headers()
-        self.wfile.write(body)
+        if self.command != "HEAD":
+            self.wfile.write(body)
 
-    def do_POST(self):
+    def do_GET(self):  # noqa: N802
+        self._respond(*handle_request("GET", self.path, None))
+
+    def do_HEAD(self):  # noqa: N802
+        self._respond(*handle_request("HEAD", self.path, None))
+
+    def do_POST(self):  # noqa: N802
         length = int(self.headers.get("Content-Length", 0))
         body_raw = self.rfile.read(length).decode() if length else "{}"
-        code, headers, body = handle_request("POST", self.path, body_raw)
-        self.send_response(code)
-        for k, v in headers.items():
-            self.send_header(k, v)
-        self.end_headers()
-        self.wfile.write(body)
+        self._respond(*handle_request("POST", self.path, body_raw))
 
-    def do_OPTIONS(self):
-        code, headers, body = handle_request("OPTIONS", self.path, None)
-        self.send_response(code)
-        for k, v in headers.items():
-            self.send_header(k, v)
-        self.end_headers()
-        self.wfile.write(body)
+    def do_OPTIONS(self):  # noqa: N802
+        self._respond(*handle_request("OPTIONS", self.path, None))

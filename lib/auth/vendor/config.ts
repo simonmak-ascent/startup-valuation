@@ -83,6 +83,9 @@ export function createAuthConfig(
   return {
     adapter: SurrealDBAdapter(),
     providers,
+    // The site runs in a container behind the estate ALB, which forwards the public
+    // host. Without this Auth.js raises UntrustedHost on every auth request.
+    trustHost: true,
     session: { strategy: "jwt" },
     pages: options.signInPage ? { signIn: options.signInPage } : undefined,
     secret: options.secret ?? process.env.AUTH_SECRET,

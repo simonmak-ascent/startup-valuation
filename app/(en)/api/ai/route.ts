@@ -1,9 +1,19 @@
 import { NextResponse } from "next/server";
 import { analyzeValuationOrchestrated } from "@/lib/ai/orchestrator";
+import { clientKey, rateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
+  const ip = clientKey(request);
+  const rl = rateLimit(`ai:${ip}`, 10, 60_000);
+  if (!rl.success) {
+    return NextResponse.json(
+      { error: "RATE_LIMITED", message: "Too many requests. Please try again later." },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter ?? 60) } },
+    );
+  }
+
   let query: string;
   try {
     const body = (await request.json()) as { query?: string };

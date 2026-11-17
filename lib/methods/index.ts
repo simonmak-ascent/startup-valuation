@@ -45,3 +45,7 @@ export function getAllMethods(): MethodConfig[] {
 export function getMethodBySlug(slug: string): MethodConfig | undefined {
   return methodConfigs.find((m) => m.slug === slug);
 }
+
+// Single source of truth for the library version on the web surface; emitted from
+// src/startup_valuation/__init__.py, which the release lockstep owns.
+export const LIBRARY_VERSION = "2.1.4";

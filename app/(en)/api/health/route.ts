@@ -1,15 +1,19 @@
 import { NextResponse } from "next/server";
 import { healthCheck } from "@/lib/db/client";
+import pkg from "../../../../package.json";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   const db = await healthCheck();
+  const connected = db.status === "connected";
 
-  return NextResponse.json({
-    status: db.status === "connected" ? "ok" : "degraded",
-    version: "1.0.2",
-    tools: 46,
-    db_status: db.status,
-  });
+  return NextResponse.json(
+    {
+      status: connected ? "ok" : "degraded",
+      version: pkg.version,
+      db_status: db.status,
+    },
+    { status: connected ? 200 : 503 },
+  );
 }

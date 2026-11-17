@@ -195,7 +195,7 @@ def valuation_comparables(
     tags={'saas', 'arr', 'ltv', 'cac', 'retention'},
 )
 def valuation_saas(
-    method: Annotated[Literal['ltv', 'cac', 'mrr', 'arr', 'nrr', 'magic_number', 'rule_of_40', 'cac_payback', 'revenue_multiple'], Field(description='Formula to apply. Options: ltv = LTV = ARPU × gross margin / churn.; cac = CAC = S&M expense / new customers.; mrr = MRR = ARR / 12 (reverse of ARR).; arr = ARR = Σ monthly subscriptions × 12.; nrr = NRR = (start + expansion) / start, net of churn.; magic_number = Magic Number = net new ARR / prior-quarter S&M.; rule_of_40 = Score = growth rate + profit margin.; cac_payback = Months to recover CAC from gross profit.; revenue_multiple = Valuation = ARR × multiple.')],
+    method: Annotated[Literal['ltv', 'cac', 'mrr', 'arr', 'nrr', 'magic_number', 'rule_of_40', 'cac_payback', 'revenue_multiple'], Field(description='Formula to apply. Options: ltv = LTV = ARPU × gross margin / churn.; cac = CAC = S&M expense / new customers.; mrr = MRR = ARR / 12 (reverse of ARR).; arr = ARR = Σ monthly subscriptions × 12.; nrr = NRR = (ending + expansion) / start; ending excludes expansion.; magic_number = Magic Number = net new ARR / prior-quarter S&M.; rule_of_40 = Score = growth rate + profit margin.; cac_payback = Months to recover CAC from gross profit.; revenue_multiple = Valuation = ARR × multiple.')],
     arpu: Annotated[Optional[float], Field(description='Average revenue per user per month, currency units.')] = None,
     gross_margin: Annotated[Optional[float], Field(description='Gross margin as a decimal (0.80 = 80%).')] = None,
     churn_rate: Annotated[Optional[float], Field(description='Periodic churn rate as a decimal (0.02 = 2% per month).')] = None,
@@ -287,7 +287,7 @@ def valuation_biotech(
     compliance: Annotated[Optional[float], Field(description='Compliance / adherence rate as a decimal.')] = None,
     probabilities: Annotated[Optional[list[float]], Field(description='Probability of each outcome or stage, each in [0,1]; the list must sum to 1 where it is exhaustive.')] = None,
     terminal_value: Annotated[Optional[float], Field(description='Expected exit / terminal value, currency units.')] = None,
-    drugs: Annotated[Optional[list[dict[str, Any]]], Field(description='Pipeline drugs: {name, peak_sales, probability, years_to_market, multiple(optional)}.')] = None,
+    drugs: Annotated[Optional[list[dict[str, Any]]], Field(description='Pipeline drugs: {peak_sales, multiple, p_success (0-1), years_to_peak}. All four keys are required per drug.')] = None,
     discount_rate: Annotated[Optional[float], Field(description='Discount rate as a decimal (0.12 = 12%).')] = None,
 ) -> dict[str, Any]:
     """Risk-adjusted biotech valuation: peak sales, decision-tree expected value, and full pipeline rNPV across drugs."""
@@ -358,7 +358,7 @@ def valuation_stakeholder(
     liquidation_pref: Annotated[Optional[float], Field(description='Liquidation preference amount, currency units.')] = None,
     time_to_exit: Annotated[Optional[float], Field(description='Expected time to exit / liquidity in years.')] = None,
     volatility: Annotated[Optional[float], Field(description='Annualised volatility σ as a decimal (0.80 = 80%).')] = None,
-    scenarios: Annotated[Optional[list[dict[str, Any]]], Field(description='Scenario objects: {name: str, probability: 0-1, value: currency}; probabilities should sum to 1.')] = None,
+    pwerm_scenarios: Annotated[Optional[list[dict[str, Any]]], Field(description='Exit scenarios: {probability: 0-1, common_value: currency} per scenario; probabilities should sum to 1. common_value is the common stock value in that exit.')] = None,
     assets: Annotated[Optional[dict[str, Any]], Field(description='Map of asset name to book value, e.g. {"cash": 500000}.')] = None,
     recovery_rates: Annotated[Optional[dict[str, Any]], Field(description='Map of asset name to recovery rate in [0,1], matching assets.')] = None,
     revenue_synergies: Annotated[Optional[float], Field(description='Revenue synergy value, currency units.')] = None,
@@ -370,6 +370,7 @@ def valuation_stakeholder(
     strike_price: Annotated[Optional[float], Field(description='Option strike price, currency units.')] = None,
     fair_market_value: Annotated[Optional[float], Field(description='Current fair market value per share, currency units.')] = None,
     shares: Annotated[Optional[int], Field(description='Number of option shares.')] = None,
+    employee_option_scenarios: Annotated[Optional[list[dict[str, Any]]], Field(description='Option scenarios: {probability: 0-1, fmv: currency, strike: currency, shares: int} per scenario; probabilities should sum to 1.')] = None,
     total_value: Annotated[Optional[float], Field(description='Total grant value, currency units.')] = None,
     vested_fraction: Annotated[Optional[float], Field(description='Fraction vested in [0,1].')] = None,
     annual_vest_rate: Annotated[Optional[float], Field(description='Annual vesting rate as a decimal.')] = None,
@@ -385,7 +386,7 @@ def valuation_stakeholder(
     real_estate: Annotated[Optional[float], Field(description='Real estate, currency units.')] = None,
 ) -> dict[str, Any]:
     """Allocate value across stakeholders and equity classes: single-round dilution, OPM common stock, PWERM, liquidation value, M&A synergy, employee-option values, vesting adjustment, cash-vs-equity break-even, and asset-based loan capacity."""
-    return call_tool('valuation_stakeholder', {'method': method, 'ownership_before': ownership_before, 'investment': investment, 'post_money': post_money, 'enterprise_value': enterprise_value, 'liquidation_pref': liquidation_pref, 'time_to_exit': time_to_exit, 'volatility': volatility, 'scenarios': scenarios, 'assets': assets, 'recovery_rates': recovery_rates, 'revenue_synergies': revenue_synergies, 'cost_synergies': cost_synergies, 'prob_revenue': prob_revenue, 'prob_cost': prob_cost, 'discount_rate': discount_rate, 'years': years, 'strike_price': strike_price, 'fair_market_value': fair_market_value, 'shares': shares, 'total_value': total_value, 'vested_fraction': vested_fraction, 'annual_vest_rate': annual_vest_rate, 'retention_prob': retention_prob, 'years_remaining': years_remaining, 'salary_reduction': salary_reduction, 'equity_value': equity_value, 'tax_rate': tax_rate, 'cash': cash, 'accounts_receivable': accounts_receivable, 'inventory': inventory, 'equipment': equipment, 'real_estate': real_estate})
+    return call_tool('valuation_stakeholder', {'method': method, 'ownership_before': ownership_before, 'investment': investment, 'post_money': post_money, 'enterprise_value': enterprise_value, 'liquidation_pref': liquidation_pref, 'time_to_exit': time_to_exit, 'volatility': volatility, 'pwerm_scenarios': pwerm_scenarios, 'assets': assets, 'recovery_rates': recovery_rates, 'revenue_synergies': revenue_synergies, 'cost_synergies': cost_synergies, 'prob_revenue': prob_revenue, 'prob_cost': prob_cost, 'discount_rate': discount_rate, 'years': years, 'strike_price': strike_price, 'fair_market_value': fair_market_value, 'shares': shares, 'employee_option_scenarios': employee_option_scenarios, 'total_value': total_value, 'vested_fraction': vested_fraction, 'annual_vest_rate': annual_vest_rate, 'retention_prob': retention_prob, 'years_remaining': years_remaining, 'salary_reduction': salary_reduction, 'equity_value': equity_value, 'tax_rate': tax_rate, 'cash': cash, 'accounts_receivable': accounts_receivable, 'inventory': inventory, 'equipment': equipment, 'real_estate': real_estate})
 
 
 @mcp.tool(

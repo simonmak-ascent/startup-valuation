@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { getMethodBySlug } from "@/lib/methods";
+import type { ValuationResult } from "@/lib/sdk/client";
 import { CalculatorForm } from "./CalculatorForm";
 import { ResultPanel } from "./ResultPanel";
 import { StepsPanel } from "./StepsPanel";
@@ -16,17 +17,7 @@ interface CalculatorPageProps {
 export function CalculatorPage({ slug }: CalculatorPageProps) {
   // Parent server component guarantees the slug resolves (notFound() otherwise).
   const config = getMethodBySlug(slug)!;
-  const [result, setResult] = useState<{
-    value: number;
-    steps: { label: string; value: number; formula: string }[];
-    formulaNumber: string;
-    chapter: string;
-    libraryVersion: string;
-    timestamp: string;
-    gitCommit: string;
-    auditId?: string;
-    auditStatus: string;
-  } | null>(null);
+  const [result, setResult] = useState<ValuationResult | null>(null);
   const [currentValues, setCurrentValues] = useState<Record<string, number> | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -159,8 +150,8 @@ export function CalculatorPage({ slug }: CalculatorPageProps) {
               <ResultPanel
                 value={result.value}
                 method={config.name}
-                formulaNumber={result.formulaNumber}
-                auditStatus={result.auditStatus}
+                formulaNumber={result.formula_number}
+                auditStatus={result.audit_status}
               />
               <StepsPanel steps={result.steps} />
             </div>
@@ -183,9 +174,9 @@ export function CalculatorPage({ slug }: CalculatorPageProps) {
           <SourcesSection
             chapter={config.textbookChapter}
             formulaNumber={config.formulaNumber}
-            libraryVersion={result.libraryVersion}
+            libraryVersion={result.library_version}
             timestamp={result.timestamp}
-            gitCommit={result.gitCommit}
+            gitCommit={result.git_commit}
           />
         </div>
       )}

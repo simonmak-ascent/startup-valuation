@@ -13,6 +13,7 @@ annotations). Model Context Protocol (MCP) JSON-RPC 2.0 over POST:
 """
 
 import json as _json
+import logging as _logging
 import os as _os
 import sys as _sys
 
@@ -21,6 +22,8 @@ _ROOT = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
 # whether or not the package is pip-installed in the function environment).
 _sys.path.insert(0, _os.path.join(_ROOT, "src"))
 _sys.path.insert(0, _ROOT)
+
+_LOGGER = _logging.getLogger("startup_valuation.api.mcp")
 
 from startup_valuation.mcp import agent_guides  # noqa: E402
 from startup_valuation.mcp.tool_surface import (  # noqa: E402
@@ -33,16 +36,23 @@ from startup_valuation.mcp.tool_surface import (  # noqa: E402
 
 PROTOCOL_VERSION = "2025-06-18"
 
+# Paths this deployment declares for the Python side of the API; see api/calculate.py.
+_OWNED_PATHS = frozenset({"/api", "/api/", "/api/calculate", "/api/health"})
+
 _CORS = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, HEAD, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Accept, MCP-Protocol-Version",
 }
 
 
 def _ok(payload: dict) -> tuple:
-    return 200, _CORS, _json.dumps(payload).encode()
+    try:
+        body = _json.dumps(payload, allow_nan=False)
+    except ValueError:
+        return _rpc_error(payload.get("id"), -32603, "Result is not a finite number")
+    return 200, _CORS, body.encode()
 
 
 def _rpc_result(req_id, result) -> tuple:
@@ -53,8 +63,11 @@ def _rpc_error(req_id, code: int, message: str) -> tuple:
     return _ok({"jsonrpc": "2.0", "id": req_id, "error": {"code": code, "message": message}})
 
 
-def handle_request(http_method: str, _path: str, body_raw: str | None) -> tuple:
-    if http_method == "GET":
+def handle_request(http_method: str, path: str, body_raw: str | None) -> tuple:
+    if path and path.split("?", 1)[0] not in _OWNED_PATHS:
+        return 404, {"Content-Type": "application/json"}, b'{"error":"NOT_FOUND"}'
+
+    if http_method in ("GET", "HEAD"):
         return _ok(
             {
                 "status": "ok",
@@ -114,11 +127,16 @@ def handle_request(http_method: str, _path: str, body_raw: str | None) -> tuple:
             result = call_tool(name, arguments)
         except ValueError as exc:
             return _rpc_error(req_id, -32602, str(exc))
-        except Exception as exc:  # noqa: BLE001 — surface any computation error to the client
-            return _rpc_error(req_id, -32603, str(exc))
+        except Exception:  # noqa: BLE001 — surface a generic error, log the detail
+            _LOGGER.exception("tool call failed: %s", name)
+            return _rpc_error(req_id, -32603, "The tool call failed")
+        try:
+            text = _json.dumps(result, allow_nan=False)
+        except ValueError:
+            return _rpc_error(req_id, -32603, "Tool result is not a finite number")
         return _rpc_result(
             req_id,
-            {"content": [{"type": "text", "text": _json.dumps(result)}], "structuredContent": result},
+            {"content": [{"type": "text", "text": text}], "structuredContent": result},
         )
 
     if req_method == "prompts/list":
@@ -152,10 +170,14 @@ class handler(BaseHTTPRequestHandler):  # noqa: N801
             self.send_header(key, value)
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
-        self.wfile.write(body)
+        if self.command != "HEAD":
+            self.wfile.write(body)
 
     def do_GET(self):  # noqa: N802
         self._respond(*handle_request("GET", self.path, None))
+
+    def do_HEAD(self):  # noqa: N802
+        self._respond(*handle_request("HEAD", self.path, None))
 
     def do_POST(self):  # noqa: N802
         length = int(self.headers.get("Content-Length", 0))
