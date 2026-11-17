@@ -32,8 +32,9 @@
         "startup-valuation.ascent-partners.com"
       ],
       "health": {
-        "proto": "tcp",
-        "path": "/"
+        "proto": "http",
+        "path": "/api/health",
+        "host": "startup-valuation.ascent-partners.com"
       },
       "run": {
         "user": "1001:1001",
@@ -55,8 +56,9 @@
         "startup-valuation.ascent-partners.com"
       ],
       "health": {
-        "proto": "tcp",
-        "path": "/"
+        "proto": "http",
+        "path": "/api/health",
+        "host": "startup-valuation.ascent-partners.com"
       },
       "run": {
         "user": "1001:1001",

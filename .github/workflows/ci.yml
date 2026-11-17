@@ -68,6 +68,13 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - uses: pnpm/action-setup@v6
+        with:
+          # The runner shares one ~/setup-pnpm between repositories, so a pnpm left there
+          # by another repo breaks the next one: this job failed at install on main while
+          # the same commit passed on its pull request, with a v11 store under a v10 shim
+          # (apg-infra OI-34). Pin the version and keep the store off the shared path.
+          version: 10.30.3
+          dest: ${{ runner.temp }}
 
       - uses: actions/setup-node@v7
         with:
