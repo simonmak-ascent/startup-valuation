@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { createAuditLog } from "@/lib/db/repositories/audit";
 import { AuditRequestSchema } from "@/lib/db/validation";
-import { rateLimit } from "@/lib/rate-limit";
+import { clientKey, rateLimit } from "@/lib/rate-limit";
 import { auth } from "@/lib/auth/config";
 
 export async function POST(request: Request) {
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const ip = clientKey(request);
   const rl = rateLimit(`audit:${ip}`, 60, 60_000);
   if (!rl.success) {
     return NextResponse.json(
@@ -63,10 +63,8 @@ export async function POST(request: Request) {
       audit_id: audit.id,
       audit_status: "logged",
     });
-  } catch (error) {
-    return NextResponse.json({
-      audit_status: "failed",
-      reason: error instanceof Error ? error.message : "Database unavailable",
-    });
+  } catch {
+    // A failure to persist is a server fault, not a successful audit with a note attached.
+    return NextResponse.json({ audit_status: "failed", error: "DB_UNAVAILABLE" }, { status: 503 });
   }
 }

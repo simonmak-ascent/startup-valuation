@@ -207,7 +207,7 @@ export const CalculatorResponseSchema = z.object({
   chapter: z.string(),
   steps: z.array(StepSchema),
   inputs: z.record(z.unknown()),
-  assumptions: z.record(z.unknown()),
+  assumptions: z.array(z.unknown()),
   library_version: z.string(),
   timestamp: z.string(),
   git_commit: z.string(),

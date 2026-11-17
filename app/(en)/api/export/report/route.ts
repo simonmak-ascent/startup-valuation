@@ -3,7 +3,7 @@ import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { auth } from "@/lib/auth/config";
 import { getAuditLogForRun } from "@/lib/db/repositories/audit";
 import { getSubscriptionForUser } from "@/lib/db/repositories/billing";
-import { rateLimit } from "@/lib/rate-limit";
+import { clientKey, rateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -100,7 +100,7 @@ async function buildReportPdf(run: {
 }
 
 export async function GET(request: Request) {
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const ip = clientKey(request);
   const rl = rateLimit(`export:${ip}`, 30, 60_000);
   if (!rl.success) {
     return NextResponse.json(
@@ -133,7 +133,7 @@ export async function GET(request: Request) {
 
   let run;
   try {
-    run = await getAuditLogForRun(runId);
+    run = await getAuditLogForRun(runId, session.user.id);
   } catch {
     return NextResponse.json({ error: "DB_UNAVAILABLE" }, { status: 503 });
   }

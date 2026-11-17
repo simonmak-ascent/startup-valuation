@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
-import { getBenchmarks, getIndustries } from "@/lib/db/repositories/public-data";
+import {
+  getBenchmarks,
+  getIndustries,
+  getLatestBenchmarkVersion,
+} from "@/lib/db/repositories/public-data";
 import { formatCurrency } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -13,13 +17,12 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-const LATEST_VERSION = "latest";
-
 export default async function BenchmarksPage() {
   let benchmarks: Awaited<ReturnType<typeof getBenchmarks>> = [];
   let industries: Awaited<ReturnType<typeof getIndustries>> = [];
   try {
-    benchmarks = await getBenchmarks(LATEST_VERSION);
+    const version = await getLatestBenchmarkVersion();
+    benchmarks = version ? await getBenchmarks(version) : [];
     industries = await getIndustries();
   } catch {
     // DB unavailable — empty state below.

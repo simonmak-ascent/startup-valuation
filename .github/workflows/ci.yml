@@ -9,6 +9,13 @@ on:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
+# The self-hosted runner set is shared and small; a superseded run that keeps going
+# competes for it with the run that replaced it, which is how the `web` job came to
+# fail at `pnpm install` on main while the same commit passed on its pull request.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -67,7 +74,7 @@ jobs:
           node-version: "22"
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Type check (tsc)
         run: pnpm check

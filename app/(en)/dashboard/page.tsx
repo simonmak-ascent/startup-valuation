@@ -67,7 +67,7 @@ export default async function DashboardPage() {
                 </div>
               </div>
               <Link
-                href={`/api/export/report?run_id=${encodeURIComponent(run.id)}`}
+                href={`/api/export/report?run_id=${encodeURIComponent(run.valuation_run)}`}
                 className="btn-brand"
               >
                 Export report

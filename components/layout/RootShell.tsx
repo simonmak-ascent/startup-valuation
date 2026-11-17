@@ -10,7 +10,7 @@ const openSans = Open_Sans({ subsets: ["latin"], variable: "--font-open-sans", d
 const titillium = Titillium_Web({ subsets: ["latin"], weight: ["400", "600", "700"], variable: "--font-titillium", display: "swap" });
 const raleway = Raleway({ subsets: ["latin"], variable: "--font-raleway", display: "swap" });
 
-export const metadata: Metadata = {
+export const BASE_METADATA: Metadata = {
   title: { default: "Startup Valuation Engine — The Global Authority for Startup Valuation", template: "%s — Startup Valuation Engine" },
   description:
     "The most comprehensive, scientifically rigorous, and transparent startup valuation resource available. 14 valuation methods, 80+ formulas, full mathematical derivations, auditable audit trail. Open source.",
@@ -39,6 +39,34 @@ export const metadata: Metadata = {
     },
   },
 };
+
+const SITE_URL = "https://startup-valuation.ascent-partners.com";
+
+/**
+ * Metadata for one locale.
+ *
+ * The three layouts used to re-export one shared object, so /zh and /hk each declared the
+ * English root as their canonical — which de-indexes them. Every locale advertises the same
+ * hreflang set, but a canonical that names itself.
+ */
+function metadataFor(path: "" | "/zh" | "/hk"): Metadata {
+  return {
+    ...BASE_METADATA,
+    alternates: {
+      canonical: `${SITE_URL}${path}`,
+      languages: {
+        "en-GB": SITE_URL,
+        "zh-Hans": `${SITE_URL}/zh`,
+        "zh-Hant-HK": `${SITE_URL}/hk`,
+        "x-default": SITE_URL,
+      },
+    },
+  };
+}
+
+export const metadata = metadataFor("");
+export const zhMetadata = metadataFor("/zh");
+export const hkMetadata = metadataFor("/hk");
 
 // Blocking theme init — dark default, persisted choice (APG parity, no FOUC).
 const THEME_INIT =

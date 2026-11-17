@@ -241,7 +241,7 @@ export interface CalculatorResponse {
   chapter: string;
   steps: Step[];
   inputs: Record<string, unknown>;
-  assumptions: Record<string, string>;
+  assumptions: string[];
   library_version: string;
   timestamp: string;
   git_commit: string;

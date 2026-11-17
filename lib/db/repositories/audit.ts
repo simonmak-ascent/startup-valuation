@@ -1,6 +1,21 @@
 import { getDb } from "../client";
 import { TABLES, type AuditLog, type Step } from "../schema";
 
+/**
+ * The bare key of a SurrealDB record id, whatever shape it arrives in.
+ *
+ * `db.query` hands record-id fields back as `RecordId` instances, whose `toString()` is
+ * `table:⟨key⟩` (the SDK quotes any key with a hyphen, e.g. a UUID). A caller may also pass
+ * the raw key or the unquoted `table:key` form, so all three normalise to the same key —
+ * `type::record()` must then rebuild exactly what the write path stored.
+ */
+export function recordKey(value: string): string {
+  return value
+    .replace(/^[A-Za-z_][A-Za-z0-9_]*:/, "")
+    .replace(/^⟨/, "")
+    .replace(/⟩$/, "");
+}
+
 export async function createAuditLog(
   valuationRunId: string,
   userId: string | undefined,
@@ -16,10 +31,7 @@ export async function createAuditLog(
 ): Promise<AuditLog> {
   const db = await getDb();
 
-  // Extract the raw UUID (valuation_run:<uuid> → <uuid>).
-  const vrId = valuationRunId.startsWith("valuation_run:")
-    ? valuationRunId.slice("valuation_run:".length)
-    : valuationRunId;
+  const vrId = recordKey(valuationRunId);
 
   const clauses = [
     "valuation_run = type::record('valuation_run', $vr_id)",
@@ -46,7 +58,7 @@ export async function createAuditLog(
 
   if (userId) {
     clauses.push("user = type::record('user', $user_id)");
-    bindings.user_id = userId.startsWith("user:") ? userId.slice(5) : userId;
+    bindings.user_id = recordKey(userId);
   }
   if (gitCommit) {
     clauses.push("git_commit = $git_commit");
@@ -68,18 +80,22 @@ export async function createAuditLog(
   return created as unknown as AuditLog;
 }
 
-export async function getAuditLogForRun(valuationRunId: string): Promise<AuditLog | null> {
+export async function getAuditLogForRun(valuationRunId: string, userId: string): Promise<AuditLog | null> {
   const db = await getDb();
+  // `valuation_run` is a record id, not a string; SurrealDB 2.x does not coerce the two,
+  // so the id has to be cast the same way createAuditLog writes it.
   const [result] = await db.query<[AuditLog[]]>(
-    `SELECT * FROM ${TABLES.AUDIT_LOG} WHERE valuation_run = $valuationRunId`,
-    { valuationRunId },
+    `SELECT * FROM ${TABLES.AUDIT_LOG}
+     WHERE valuation_run = type::record('valuation_run', $vr_id)
+       AND user = type::record('user', $user_id)`,
+    { vr_id: recordKey(valuationRunId), user_id: recordKey(userId) },
   );
   return result[0] ?? null;
 }
 
 export async function getAuditLogsForUser(userId: string, limit = 50): Promise<AuditLog[]> {
   const db = await getDb();
-  const rawId = userId.startsWith("user:") ? userId.slice(5) : userId;
+  const rawId = recordKey(userId);
   const [result] = await db.query<[AuditLog[]]>(
     `SELECT * FROM ${TABLES.AUDIT_LOG} WHERE user = type::record('user', $userId) ORDER BY created_at DESC LIMIT $limit`,
     { userId: rawId, limit },

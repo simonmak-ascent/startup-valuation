@@ -13,6 +13,11 @@ export async function generateStaticParams() {
   return getAllMethods().map((m) => ({ slug: m.slug }));
 }
 
+// The assumptions panel is read from SurrealDB. A static page would freeze whatever the
+// database held at build time (and silently render nothing if the build-time read failed),
+// so revalidate instead of freezing.
+export const revalidate = 3600;
+
 export async function generateMetadata({ params }: MethodPageProps): Promise<Metadata> {
   const { slug } = await params;
   const method = getMethodBySlug(slug);

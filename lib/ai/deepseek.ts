@@ -25,6 +25,7 @@ export async function chatCompletion(
       temperature: 0.1,
       stream: false,
     }),
+    signal: AbortSignal.timeout(30_000),
   });
 
   if (!res.ok) {

@@ -1,6 +1,9 @@
 import { getDb } from "../client";
 import { TABLES, type PaymentEvent, type Subscription } from "../schema";
 
+/** Stripe subscription ids are `sub_` + alphanumerics; used as a SurrealDB record id. */
+const STRIPE_SUBSCRIPTION_ID = /^sub_[A-Za-z0-9]+$/;
+
 /** Check if a Stripe event has already been processed (idempotency). */
 export async function hasProcessedEvent(stripeEventId: string): Promise<boolean> {
   const db = await getDb();
@@ -38,25 +41,45 @@ export async function upsertSubscription(data: {
   tier: string;
   status: string;
 }): Promise<Subscription> {
+  if (!STRIPE_SUBSCRIPTION_ID.test(data.stripeSubscriptionId)) {
+    throw new Error(`Unexpected Stripe subscription id: ${data.stripeSubscriptionId}`);
+  }
+
   const db = await getDb();
-  const [rows] = await db.query<[Subscription[]]>(
-    `UPSERT ${TABLES.SUBSCRIPTION} SET
-      user_id = $user_id,
+  const fields = `user_id = $user_id,
       stripe_subscription_id = $stripe_subscription_id,
       stripe_customer_id = $stripe_customer_id,
       tier = $tier,
       status = $status,
-      updated_at = time::now()
-    RETURN AFTER`,
-    {
-      user_id: data.userId,
-      stripe_subscription_id: data.stripeSubscriptionId,
-      stripe_customer_id: data.stripeCustomerId,
-      tier: data.tier,
-      status: data.status,
-    },
+      updated_at = time::now()`;
+  const bindings = {
+    user_id: data.userId,
+    stripe_subscription_id: data.stripeSubscriptionId,
+    stripe_customer_id: data.stripeCustomerId,
+    tier: data.tier,
+    status: data.status,
+  };
+
+  // An UPSERT with neither a record id nor a WHERE clause is an INSERT in SurrealDB,
+  // so the previous form appended a row for every webhook event and then tripped the
+  // unique index on stripe_subscription_id. Update the existing row when there is one.
+  const [updated] = await db.query<[Subscription[]]>(
+    `UPDATE ${TABLES.SUBSCRIPTION} SET ${fields}
+     WHERE stripe_subscription_id = $stripe_subscription_id RETURN AFTER`,
+    bindings,
   );
-  return rows[0]!;
+  const existing = updated[0];
+  if (existing) {
+    return existing;
+  }
+
+  // Create it under a deterministic id derived from the Stripe id, so a retried
+  // delivery updates that record instead of inserting a second row.
+  const [created] = await db.query<[Subscription[]]>(
+    `CREATE ${TABLES.SUBSCRIPTION}:${data.stripeSubscriptionId} SET ${fields} RETURN AFTER`,
+    bindings,
+  );
+  return created[0]!;
 }
 
 export async function getSubscriptionForUser(userId: string): Promise<Subscription | null> {

@@ -143,8 +143,8 @@ PARAMS: dict[str, dict[str, Any]] = {
     "beta": {"type": "number", "description": "Systematic risk beta (market = 1.0)."},
     "market_return": {"type": "number", "description": "Expected market return as a decimal (e.g. 0.10 for 10%)."},
     "market_risk_premium": {"type": "number", "description": "Market risk premium as a decimal (e.g. 0.06)."},
-    "size_premium": {"type": "number", "description": "Small-cap / size premium as a decimal.", "default": 0.0},
-    "liquidity_premium": {"type": "number", "description": "Illiquidity premium as a decimal.", "default": 0.0},
+    "size_premium": {"type": "number", "description": "Small-cap / size premium as a decimal.", "default": 0.05},
+    "liquidity_premium": {"type": "number", "description": "Illiquidity premium as a decimal.", "default": 0.03},
     # core
     "average_valuation": {
         "type": "number",
@@ -203,6 +203,16 @@ PARAMS: dict[str, dict[str, Any]] = {
     "scenarios": {
         "type": "array:object",
         "description": "Scenario objects: {name: str, probability: 0-1, value: currency}; probabilities should sum to 1.",
+    },
+    "pwerm_scenarios": {
+        "type": "array:object",
+        "description": "Exit scenarios: {probability: 0-1, common_value: currency} per scenario; "
+        "probabilities should sum to 1. common_value is the common stock value in that exit.",
+    },
+    "employee_option_scenarios": {
+        "type": "array:object",
+        "description": "Option scenarios: {probability: 0-1, fmv: currency, strike: currency, shares: int} "
+        "per scenario; probabilities should sum to 1.",
     },
     # comparables
     "market_cap": {"type": "number", "description": "Market capitalisation, currency units."},
@@ -282,7 +292,8 @@ PARAMS: dict[str, dict[str, Any]] = {
     "compliance": {"type": "number", "description": "Compliance / adherence rate as a decimal.", "default": 1.0},
     "drugs": {
         "type": "array:object",
-        "description": "Pipeline drugs: {name, peak_sales, probability, years_to_market, multiple(optional)}.",
+        "description": "Pipeline drugs: {peak_sales, multiple, p_success (0-1), years_to_peak}. "
+        "All four keys are required per drug.",
     },
     # hardware
     "market_size": {"type": "number", "description": "Total addressable market, currency units."},
@@ -456,7 +467,7 @@ TOOLS: list[dict[str, Any]] = [
                 "summary": "E[X] = ∫ x·f(x) dx over [lower, upper] on the standard normal.",
                 "module": "probability",
                 "function": "expected_value_continuous_std_normal",
-                "args": {"lower": "lower", "upper": "upper"},
+                "args": {"a": "lower", "b": "upper"},
             },
         ],
     },
@@ -859,7 +870,7 @@ TOOLS: list[dict[str, Any]] = [
             {
                 "key": "nrr",
                 "label": "Net revenue retention",
-                "summary": "NRR = (start + expansion) / start, net of churn.",
+                "summary": "NRR = (ending + expansion) / start; ending excludes expansion.",
                 "module": "saas",
                 "function": "net_revenue_retention",
                 "args": {"starting_revenue": "starting_revenue", "ending_revenue": "ending_revenue"},
@@ -1195,8 +1206,7 @@ TOOLS: list[dict[str, Any]] = [
                 "summary": "Probability-weighted expected return method across exit scenarios.",
                 "module": "stakeholders",
                 "function": "pwerm",
-                "args": {"scenarios": "scenarios"},
-                "adapter": "scenarios",
+                "args": {"scenarios": "pwerm_scenarios"},
             },
             {
                 "key": "liquidation",
@@ -1234,8 +1244,7 @@ TOOLS: list[dict[str, Any]] = [
                 "summary": "Probability-weighted employee option value across scenarios.",
                 "module": "stakeholders",
                 "function": "probability_weighted_employee_value",
-                "args": {"scenarios": "scenarios"},
-                "adapter": "scenarios",
+                "args": {"scenarios": "employee_option_scenarios"},
             },
             {
                 "key": "vesting_adjusted",

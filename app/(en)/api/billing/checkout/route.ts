@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth/config";
 import { getStripe, getPriceIdForTier } from "@/lib/billing/stripe";
-import { rateLimit } from "@/lib/rate-limit";
+import { clientKey, rateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
 const VALID_TIERS = ["pro", "enterprise"];
 
 export async function POST(request: Request) {
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const ip = clientKey(request);
   const rl = rateLimit(`checkout:${ip}`, 10, 60_000);
   if (!rl.success) {
     return NextResponse.json(

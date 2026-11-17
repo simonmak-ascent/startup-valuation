@@ -7,12 +7,14 @@ Also validates that no schema field name is a SurrealDB reserved word.
 
 import json
 import os
+import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from method_registry.registry import METHODS, RESERVED_WORDS  # noqa: E402
 
-TS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "lib", "methods")
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TS_DIR = os.path.join(_ROOT, "lib", "methods")
 
 
 def check_reserved_words(methods):
@@ -26,6 +28,16 @@ def check_reserved_words(methods):
 
 def _quote(s):
     return json.dumps(s, ensure_ascii=False)
+
+
+def _library_version():
+    """The library version, read from the file the release lockstep owns."""
+    init = os.path.join(_ROOT, "src", "startup_valuation", "__init__.py")
+    with open(init) as f:
+        match = re.search(r'^__version__ = "([^"]+)"', f.read(), re.M)
+    if not match:
+        raise ValueError("__version__ not found in src/startup_valuation/__init__.py")
+    return match.group(1)
 
 
 def _emit_input(i):
@@ -144,6 +156,10 @@ def generate():
     index_lines.append("export function getMethodBySlug(slug: string): MethodConfig | undefined {")
     index_lines.append("  return methodConfigs.find((m) => m.slug === slug);")
     index_lines.append("}")
+    index_lines.append("")
+    index_lines.append("// Single source of truth for the library version on the web surface; emitted from")
+    index_lines.append("// src/startup_valuation/__init__.py, which the release lockstep owns.")
+    index_lines.append(f"export const LIBRARY_VERSION = {_quote(_library_version())};")
     with open(os.path.join(TS_DIR, "index.ts"), "w") as f:
         f.write("\n".join(index_lines) + "\n")
 
