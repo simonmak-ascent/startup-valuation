@@ -69,12 +69,13 @@ jobs:
 
       - uses: pnpm/action-setup@v6
         with:
-          # The runner shares one ~/setup-pnpm between repositories, so a pnpm left there
-          # by another repo breaks the next one: this job failed at install on main while
-          # the same commit passed on its pull request, with a v11 store under a v10 shim
-          # (apg-infra OI-34). Pin the version and keep the store off the shared path.
+          # Pin the version: the runner shares one ~/setup-pnpm between repositories, so a
+          # pnpm left there by another repo can shadow this one (apg-infra OI-34).
+          # Do NOT set `dest` here: `dest: ${{ runner.temp }}` points at the runner's temp
+          # root and the action then fails with "Missing file at path:
+          # …/_temp/_runner_file_commands/add_path_…". Measured on PR #74. The shared-store
+          # hazard is instead contained by --frozen-lockfile and the concurrency group.
           version: 10.30.3
-          dest: ${{ runner.temp }}
 
       - uses: actions/setup-node@v7
         with:
