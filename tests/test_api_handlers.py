@@ -31,10 +31,32 @@ def test_mcp_404s_paths_it_does_not_own():
     assert code == 404
 
 
-@pytest.mark.parametrize("path", ["/api", "/api/", "/api/calculate", "/api/health"])
-def test_declared_paths_are_served(path):
+def test_mcp_404s_the_old_api_prefix():
+    # /api/* belongs to the Next.js app; the MCP endpoint moved to /mcp so the two stop
+    # competing for one prefix.
+    assert mcp.handle_request("POST", "/api", "{}")[0] == 404
+
+
+@pytest.mark.parametrize("path", ["/mcp", "/mcp/"])
+def test_the_mcp_endpoint_rejects_get(path):
+    # The transport spec has the server answer 405 to GET on the endpoint; a 200 here is
+    # what makes a client read the endpoint as a REST API and give up.
+    code, headers, body = mcp.handle_request("GET", path, None)
+    assert code == 405
+    assert headers.get("Allow") == "POST, OPTIONS"
+    assert b"METHOD_NOT_ALLOWED" in body
+
+
+@pytest.mark.parametrize("path", ["/api/calculate", "/api/health"])
+def test_calculate_serves_its_declared_paths(path):
     assert calculate.handle_request("GET", path, None)[0] == 200
-    assert mcp.handle_request("GET", path, None)[0] == 200
+
+
+@pytest.mark.parametrize("path", ["/mcp", "/mcp/", "/api/health"])
+def test_mcp_serves_its_declared_paths(path):
+    # /api/health is the balancer's probe path (apg-infra alb-health.py), POST /mcp is MCP.
+    code = mcp.handle_request("POST" if path.startswith("/mcp") else "GET", path, "{}")[0]
+    assert code == 200
 
 
 def test_head_is_supported():
@@ -108,6 +130,6 @@ def test_calculate_computes():
 
 
 def test_mcp_initialize_answers():
-    code, _, body = mcp.handle_request("POST", "/api", json.dumps({"jsonrpc": "2.0", "id": 1, "method": "initialize"}))
+    code, _, body = mcp.handle_request("POST", "/mcp", json.dumps({"jsonrpc": "2.0", "id": 1, "method": "initialize"}))
     assert code == 200
     assert json.loads(body)["result"]["serverInfo"]["name"]

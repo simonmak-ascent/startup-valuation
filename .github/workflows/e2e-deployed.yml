@@ -1,0 +1,74 @@
+name: e2e-deployed
+
+# End-to-end verification of the DEPLOYED product.
+#
+# This is a gate, not a smoke probe. It runs the same suite in two places:
+#
+#   * after every rollout, because a rollout reporting success is not the site working
+#     (deploy-digest.yml calls this workflow through `uses:`);
+#   * on a schedule, because the live host can drift without anyone merging anything —
+#     a certificate, a routing rule, an expiring credential.
+#
+# A red run means the product on the internet does not serve the contract this repository
+# declares. compliance.json records the same contract in machine-readable form.
+#
+# Run it by hand against any deployment:
+#   gh workflow run e2e-deployed.yml -f base_url=https://startup-valuation.ascent-partners.com
+
+on:
+  workflow_call:
+    inputs:
+      base_url:
+        description: "Origin to verify"
+        required: false
+        type: string
+        default: https://startup-valuation.ascent-partners.com
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Origin to verify"
+        required: false
+        type: string
+        default: https://startup-valuation.ascent-partners.com
+  schedule:
+    # Twice a day is enough to catch drift; the post-deploy run covers change.
+    - cron: "0 1,13 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: e2e-deployed-${{ inputs.base_url || 'scheduled' }}
+  cancel-in-progress: false
+
+jobs:
+  deployed:
+    runs-on:
+      - self-hosted
+      - apg-ci-04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+
+      # No install step: the suite is node:test + fetch, so there is nothing to resolve and
+      # no browser binary to fetch over the NAT.
+      - name: Verify the deployed product
+        env:
+          DEPLOYED_BASE_URL: ${{ inputs.base_url || 'https://startup-valuation.ascent-partners.com' }}
+        run: node --test tests-deployed/*.test.mjs
+
+      - name: Summarise the failure
+        if: failure()
+        run: |
+          {
+            echo "### the deployed product failed its contract"
+            echo ""
+            echo "Origin: \`${DEPLOYED_BASE_URL}\`"
+            echo ""
+            echo "A red run here means the host is not serving what this repository declares —"
+            echo "not that a unit test is wrong. Check the routing rules and the running digest"
+            echo "before re-running."
+          } >> "$GITHUB_STEP_SUMMARY"

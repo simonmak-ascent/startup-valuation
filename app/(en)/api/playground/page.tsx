@@ -35,9 +35,9 @@ console.log(r.value); // 1800000`}</pre>
           <div className="mb-2">
             <span className="text-green-400"># MCP JSON-RPC (AI agents)</span>
           </div>
-          <pre className="whitespace-pre-wrap">{`POST /api
+          <pre className="whitespace-pre-wrap">{`POST /mcp
 { "jsonrpc": "2.0", "method": "tools/call",
-  "params": { "name": "valuation_scorecard", "arguments": {...} }, "id": 1 }`}</pre>
+  "params": { "name": "valuation_core", "arguments": { "method": "scorecard", ... } }, "id": 1 }`}</pre>
         </div>
       </div>
     </div>

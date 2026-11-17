@@ -27,7 +27,7 @@ LIBRARY_VERSION = _startup_valuation.__version__
 # to the MCP (8021) and calculate (8020) containers. Until that mapping is corrected
 # in apg-infra, each handler answers these paths and 404s every other one, so the
 # Next.js routes under app/(en)/api/ are not shadowed by a 200 from here.
-_OWNED_PATHS = frozenset({"/api", "/api/", "/api/calculate", "/api/health"})
+_OWNED_PATHS = frozenset({"/api/calculate", "/api/health"})
 
 _AVAILABLE_METHODS: list[str] = []
 

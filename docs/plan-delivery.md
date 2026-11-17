@@ -118,18 +118,86 @@ reviews the pin.
 `GITHUB_REF == refs/heads/main`, so a branch dispatch cannot reach the deploy job from here.
 That closes the bypass for this repo without editing apg-infra; U1 remains open upstream.
 
-**Deliberately not "fixed":** the security review suggested dropping `packages: write` from the
-caller's workflow-level `permissions`. That would break deploys — a reusable workflow's permissions
-can only be *downgraded* by its caller, so removing the grant would strip the `:desired` tag push
-`container-cd.yml` performs. The least-privilege fix applied instead is `permissions: {}` on the
-`verify` job, which genuinely needs no token.
+**Permissions, corrected by review.** The security review suggested dropping `packages: write`
+entirely; that would break the `:desired` tag push, so it stays. It is now granted **at job level**
+(`deploy.permissions`), because a called reusable workflow does not inherit the caller's
+*workflow-level* permissions — without it the called workflow falls back to the repository default
+and the tag push 403s under a read-only default. `guard` and `verify` carry `permissions: {}` /
+`contents: read` respectively, neither needing a write scope.
 
-### Known limitation of the post-deploy probe
+### The post-deploy gate: end-to-end against the deployed product
 
-`probe_url` defaults to the web apex, and the `verify` job polls it whatever was deployed. For the
-web container that is the right check. Once the Python containers are deployable (OI-40), a
-dispatch of `startup-valuation-api` or `-calculate` must pass
-`-f probe_url=https://startup-valuation.ascent-partners.com/api/health`, or the job will confirm the
-site is up without exercising the container that changed. The per-container gate is still real:
-`rollout.sh` probes each container on its declared `health.path` before the swap, so a broken
-container cannot replace a working one.
+A rollout reporting success is not the product working, so `deploy-digest.yml` does not call a
+liveness probe — it calls **`e2e-deployed.yml`**, a reusable workflow that runs `tests-deployed/`
+against the live origin. The same workflow runs on a schedule (`0 1,13 * * *`), because the host can
+drift without anyone merging: a routing rule, a certificate, an expiring credential.
+
+That is the check `compliance.json` has always declared in its `e2e` block and which, until now,
+nothing executed. The block lists the status-code subset of the suite's assertions — six URL probes — because the
+rest (an `initialize` POST body, a negative shape check) cannot be expressed as `{probe, expect}`.
+The suite is the contract; the block is the part of it a probe list can carry.
+
+The suite is `node:test` + `fetch` — no browser binary to download over the NAT, no dependency to
+resolve — and asserts the contract rather than a 200:
+
+| assertion | why it is the gate |
+|---|---|
+| `/`, `/zh`, `/hk` → 200 | the three locales serve |
+| `/api/health` → 200, `status: ok`, semver `version` | the public health path, whatever container now answers it, and it must be able to fail |
+| `/.well-known/mcp.json` → 200 and names `/mcp` | clients discover the endpoint instead of guessing |
+| `POST /mcp` `initialize` → 200 with `serverInfo` | the MCP endpoint is reachable *and* functional |
+| `GET /mcp` → 405 | a 200 there is what makes a client read a REST API and give up |
+| `POST /api/calculate` → `value: 10` | the calculator is routed, not just alive |
+| `/api/auth/session` is not the calculator blob | the regression that shadowed eight Next routes |
+
+Measured against the deployed product on 2026-11-17, before this change ships: **3 pass, 5 fail** —
+every failure is either the un-deployed code or the un-applied ALB split. That is the gate doing its
+job: red means the internet does not serve the declared contract.
+
+**Why it is not a required check on pull requests.** A pull request cannot change what is deployed,
+so a red e2e on a PR says nothing about that PR and would block the change that fixes production.
+It gates the **rollout** (the deploy run fails) and runs on a schedule for drift. Once the contract
+is green in production, promoting `e2e-deployed` to a required check is a one-line repository
+setting and the natural end state.
+
+**Residual limitation.** The suite verifies the origin as a whole, so a dispatch of
+`startup-valuation-api` alone is verified through the same public surface rather than against that
+container specifically. The per-container gate is still real: `rollout.sh` probes each container on
+its declared `health.path` before the swap, so a broken container cannot replace a working one.
+
+## The MCP endpoint moves from `/api` to `/mcp`
+
+`/api` had two owners: the MCP server and the eight Next.js routes under `app/(en)/api/`
+(auth, billing, webhooks, ai, audit, export, health, playground). No ALB declaration can
+satisfy both, and the shadowing that produced was this audit's first critical finding.
+
+The transport spec mandates no path — *"the choice of endpoint path is at the server author's
+discretion. Common conventions include `/mcp` and `/api/mcp`"*. `/mcp` is the SDK default and
+leaves `/api/*` to the application, so the split needs no precedence reasoning between a rule
+and its own sub-path.
+
+| condition | target | note |
+|---|---|---|
+| `/api/calculate` | 8020 (`sv-calc`) | unchanged |
+| `/api/*` | 3110 (`sv-web`) | **changed** — was a Python container |
+| `/mcp*` | 8021 (`sv-api`) | **new** |
+| host | 3110 (`sv-web`) | unchanged |
+
+Behaviour of the endpoint: `POST /mcp` is JSON-RPC; `GET /mcp` answers **405** with `Allow: POST,
+OPTIONS`, which is what the transport spec asks of a POST-only endpoint and what stops a client
+reading a 200 as a REST API. Liveness stays at `/api/health`, where `apg-infra/scripts/alb-health.py`
+already probes this host, and that path still returns 200 only when a real computation succeeds.
+
+Discovery is published at `/.well-known/mcp.json` (verified served by the standalone build:
+`200 application/json`), so a client no longer has to guess the path — the exact failure mode this
+audit started from.
+
+**Consequences to decide at release time.**
+- `server.json` `remotes[0].url` now points at `/mcp`; the MCP registry republishes it through
+  `mcp-registry.yml`. Whether that needs a version bump is a release decision, not a code one —
+  the lockstep set (`pyproject.toml`, `__init__.py`, `server.json` ×2, `_package_version()`) was
+  deliberately left at 2.1.4.
+- Any client configured against the old `/api` URL now reaches the web app and gets HTML. That is
+  the documented break, and it is why the registry URL and the server card moved in the same change.
+- Until the operator applies the split, `/mcp` resolves to the web container and 404s; the code is
+  correct but unreachable, exactly as `/api/*` was before.

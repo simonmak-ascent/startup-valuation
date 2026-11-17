@@ -71,7 +71,7 @@ app; the handler binds that slot to the IP. `ecs.g7.xlarge` supports 4 ENIs ×
 |---|---|---|
 | `apg-website` | next-website | Next.js site (+ geo locale redirect) |
 | `fair-value` | next-website | Next standalone + `uvicorn mcp_server.asgi:app` (`/mcp`, `/v1/*`) |
-| `startup-valuation` | next-website | Next standalone + 2 python endpoints (`/api` MCP, `/api/calculate`) |
+| `startup-valuation` | next-website | Next standalone + 2 python endpoints (`/mcp` MCP, `/api/calculate`) |
 | `intangible-valuation` | next-website | Next standalone + `/api/*` python (MCP at `/api/mcp`) |
 | `hkex-listco-updates` | static | MkDocs at `/docs` + WSGI MCP (`/api/*`) |
 | `apg-infra` | terraform | infra plan/apply |
