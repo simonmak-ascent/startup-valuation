@@ -3,12 +3,14 @@
   "default_branch": "main",
   "merge": "pr-required",
   "verify": [
-    "pnpm test",
-    "pnpm build"
+    "pytest",
+    "ruff check .",
+    "pnpm check",
+    "pnpm test"
   ],
   "deploy": {
     "kind": "workflow",
-    "workflow": "publish.yml"
+    "workflow": "deploy-digest.yml"
   },
   "e2e": [
     {

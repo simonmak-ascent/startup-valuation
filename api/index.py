@@ -63,21 +63,37 @@ def _rpc_error(req_id, code: int, message: str) -> tuple:
     return _ok({"jsonrpc": "2.0", "id": req_id, "error": {"code": code, "message": message}})
 
 
+# A real computation through the same dispatch path a client uses. The balancer probes this
+# path expecting 2xx (apg-infra alb-health.py), and the container contract says health.path
+# must return 200 only when the service can serve — a static "ok" cannot fail, which is
+# exactly what apg-infra OI-58 records about this target.
+_HEALTH_CALL = ("valuation_time_value", {"method": "present_value", "future_value": 100.0, "rate": 0.1, "periods": 1})
+
+
+def _health() -> tuple:
+    try:
+        call_tool(*_HEALTH_CALL)
+    except Exception:  # noqa: BLE001 — any failure means this instance cannot serve
+        _LOGGER.exception("health probe failed")
+        return 503, _CORS, b'{"status":"failing"}'
+    return _ok(
+        {
+            "status": "ok",
+            "server": SERVER_NAME,
+            "version": SERVER_VERSION,
+            "protocolVersion": PROTOCOL_VERSION,
+            "transport": "streamable-http",
+            "tools": tool_count(),
+        }
+    )
+
+
 def handle_request(http_method: str, path: str, body_raw: str | None) -> tuple:
     if path and path.split("?", 1)[0] not in _OWNED_PATHS:
         return 404, {"Content-Type": "application/json"}, b'{"error":"NOT_FOUND"}'
 
     if http_method in ("GET", "HEAD"):
-        return _ok(
-            {
-                "status": "ok",
-                "server": SERVER_NAME,
-                "version": SERVER_VERSION,
-                "protocolVersion": PROTOCOL_VERSION,
-                "transport": "streamable-http",
-                "tools": tool_count(),
-            }
-        )
+        return _health()
     if http_method == "OPTIONS":
         return 200, _CORS, b"{}"
     if http_method != "POST":

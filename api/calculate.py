@@ -206,6 +206,27 @@ def calculate(method_name, params):
     )
 
 
+def _health() -> tuple:
+    """200 only when the library can actually compute; see api/index.py `_health`."""
+    try:
+        tv.present_value(100.0, 0.1, 1)
+    except Exception:  # noqa: BLE001 — any failure means this instance cannot serve
+        _LOGGER.exception("health probe failed")
+        return 503, {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}, b'{"status":"failing"}'
+    return (
+        200,
+        {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
+        _json.dumps(
+            {
+                "status": "ok",
+                "version": LIBRARY_VERSION,
+                "methods": len(_AVAILABLE_METHODS),
+                "available": _AVAILABLE_METHODS,
+            }
+        ).encode(),
+    )
+
+
 def handle_request(http_method, path, body_raw):
     if path and path.split("?", 1)[0] not in _OWNED_PATHS:
         return 404, {"Content-Type": "application/json"}, b'{"error":"NOT_FOUND"}'
@@ -221,18 +242,7 @@ def handle_request(http_method, path, body_raw):
             b"{}",
         )
     if http_method in ("GET", "HEAD"):
-        return (
-            200,
-            {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"},
-            _json.dumps(
-                {
-                    "status": "ok",
-                    "version": LIBRARY_VERSION,
-                    "methods": len(_AVAILABLE_METHODS),
-                    "available": _AVAILABLE_METHODS,
-                }
-            ).encode(),
-        )
+        return _health()
     if http_method != "POST":
         return 405, {"Content-Type": "application/json"}, b"{}"
 

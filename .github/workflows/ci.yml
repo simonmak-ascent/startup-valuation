@@ -68,6 +68,14 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - uses: pnpm/action-setup@v6
+        with:
+          # Pin the version: the runner shares one ~/setup-pnpm between repositories, so a
+          # pnpm left there by another repo can shadow this one (apg-infra OI-34).
+          # Do NOT set `dest` here: `dest: ${{ runner.temp }}` points at the runner's temp
+          # root and the action then fails with "Missing file at path:
+          # …/_temp/_runner_file_commands/add_path_…". Measured on PR #74. The shared-store
+          # hazard is instead contained by --frozen-lockfile and the concurrency group.
+          version: 10.30.3
 
       - uses: actions/setup-node@v7
         with:

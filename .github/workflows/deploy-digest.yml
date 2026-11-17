@@ -1,0 +1,128 @@
+name: deploy-digest
+
+# Deploy one or more of this repository's containers, by digest, on one node.
+#
+# The deploy logic is not here. It lives once, in apg-infra:
+#   https://github.com/simonmak-ascent/apg-infra/.github/workflows/container-cd.yml
+# That reusable workflow enforces the rules that make a rollout safe — the digest must be
+# the one container.json pins (so you cannot deploy an undeclared image), the image is
+# pulled once and copied to peers over the VPC, each node probes on PORT+10000, swaps,
+# health-checks the declared path and restores what it replaced if that fails.
+#
+#   gh workflow run deploy-digest.yml \
+#     -f containers=startup-valuation -f digest=sha256:… -f runner=apg-ecs-01
+#
+# Read the digest from the `image` workflow's step summary, then open a pull request that
+# pins it in container.json. That order matters: the gate in container-cd.yml compares the
+# digest you dispatch against the manifest, so the pin is reviewed before anything moves.
+#
+# Pinned to a full commit SHA, not a tag: this workflow runs with a token that can replace
+# containers on production nodes, and a tag can be moved under you.
+#
+# Not yet deployable end to end: the api and calculate containers are Python images that
+# nothing in either repository can rebuild (apg-infra OI-40), so only the web container has
+# a published digest. See docs/plan-delivery.md.
+
+on:
+  workflow_dispatch:
+    inputs:
+      containers:
+        description: "Container names from container.json, comma separated"
+        required: true
+        type: string
+      digest:
+        description: "Image digest, e.g. sha256:… — must be the one container.json pins"
+        required: true
+        type: string
+      docker_names:
+        description: "Names on the node, comma separated in the same order (default: manifest names)"
+        required: false
+        type: string
+        default: ""
+      runner:
+        description: "Runner label of the node that pulls and then propagates"
+        required: false
+        type: string
+        default: apg-ecs-01
+      publish_pointer:
+        description: "Move the :desired tag so every node's reconciler converges onto this digest"
+        required: false
+        type: boolean
+        default: true
+      dry_run:
+        description: "Resolve and print the run command without changing anything"
+        required: false
+        type: boolean
+        default: false
+      probe_url:
+        description: "URL the post-deploy check must see answer 200"
+        required: false
+        type: string
+        default: https://startup-valuation.ascent-partners.com/
+
+permissions:
+  contents: read
+  packages: write
+
+# The same containers on the same node are never deployed twice at once.
+concurrency:
+  group: deploy-digest-${{ inputs.runner }}-${{ inputs.containers }}
+  cancel-in-progress: false
+
+jobs:
+  # container-cd.yml checks out this repository at the *dispatched* ref and validates the
+  # digest against that checkout's container.json. Dispatching from a branch would therefore
+  # let a branch pin its own digest and skip the pull request that reviews the pin, which is
+  # the whole control. Deploys come from main, or they do not run.
+  guard:
+    runs-on:
+      - self-hosted
+      - apg-ci-04
+    permissions: {}   # echoes and exits; needs no token
+    steps:
+      - name: Deploys run from main only
+        run: |
+          if [ "${GITHUB_REF}" != "refs/heads/main" ]; then
+            echo "::error::dispatch this from main (refs/heads/main), not ${GITHUB_REF}: the digest gate reads container.json from the dispatched ref, so a branch could deploy a digest no pull request reviewed"
+            exit 1
+          fi
+          echo "dispatching from ${GITHUB_REF}"
+
+  deploy:
+    needs: guard
+    uses: simonmak-ascent/apg-infra/.github/workflows/container-cd.yml@55b77e2bf35396e9d668d8e300057856929cd6aa
+    with:
+      containers: ${{ inputs.containers }}
+      digest: ${{ inputs.digest }}
+      docker_names: ${{ inputs.docker_names }}
+      runner: ${{ inputs.runner }}
+      publish_pointer: ${{ inputs.publish_pointer }}
+      dry_run: ${{ inputs.dry_run }}
+
+  # The rollout reporting success is not the same as the site working. compliance.json
+  # declares an end-to-end probe and, until now, nothing ran it: a deploy could go green
+  # while the host served errors. This is that probe.
+  verify:
+    needs: deploy
+    if: ${{ !inputs.dry_run }}
+    runs-on:
+      - self-hosted
+      - ${{ inputs.runner }}
+    permissions: {}   # this job runs one curl and needs no token at all
+    steps:
+      - name: The host answers 200 after the rollout
+        env:
+          PROBE_URL: ${{ inputs.probe_url }}
+        run: |
+          set -eu
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            code=$(curl -sS -m 5 --max-redirs 0 --noproxy '*' -o /dev/null -w '%{http_code}' "$PROBE_URL" || echo 000)
+            if [ "$code" = "200" ]; then
+              echo "$PROBE_URL answered 200 on attempt $attempt"
+              exit 0
+            fi
+            echo "attempt $attempt: $PROBE_URL answered $code; retrying in 3s" >&2
+            sleep 3
+          done
+          echo "::error::$PROBE_URL did not answer 200 after the rollout — the deploy is not live"
+          exit 1
