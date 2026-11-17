@@ -104,9 +104,10 @@ caller correctly pinning the *workflow file* to a full SHA. Pinning the reusable
 resolving its payload from a moving branch does not pin the thing that runs.
 Suggested fix (apg-infra): `ref:` the same full SHA on that checkout, and pin `actions/checkout` too.
 
-**U2 · the digest gate reads the dispatched ref's manifest.** `container-cd.yml:67-68` checks out
-`github.ref`, so a branch that pins its own digest passes the gate that exists to prevent exactly
-that — bypassing the pull request that reviews the pin.
+**U2 · the digest gate reads the dispatched ref's manifest.** `container-cd.yml:67-68` runs
+`actions/checkout@v7` with no `ref:`, which defaults to the triggering ref, so a branch that pins its
+own digest passes the gate that exists to prevent exactly that — bypassing the pull request that
+reviews the pin.
 
 **Mitigated from this repository:** the caller now has a `guard` job that fails unless
 `GITHUB_REF == refs/heads/main`, so a branch dispatch cannot reach the deploy job from here.

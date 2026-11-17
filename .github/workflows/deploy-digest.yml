@@ -78,6 +78,7 @@ jobs:
     runs-on:
       - self-hosted
       - apg-ci-04
+    permissions: {}   # echoes and exits; needs no token
     steps:
       - name: Deploys run from main only
         run: |
