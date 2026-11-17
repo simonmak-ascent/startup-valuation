@@ -2,7 +2,7 @@
   "name": "startup-valuation-platform",
   "version": "1.0.0",
   "private": true,
-  "description": "The most authoritative source for Startup Valuation — WebApp platform with 14 interactive calculators, MCP server, SurrealDB audit trail, and DeepSeek AI advisor.",
+  "description": "The most authoritative source for Startup Valuation \u2014 WebApp platform with 14 interactive calculators, MCP server, SurrealDB audit trail, and DeepSeek AI advisor.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -17,7 +17,8 @@
     "test:coverage": "vitest run --coverage",
     "db:migrate": "tsx lib/db/migrate.ts",
     "etl:import": "tsx etl/import-all.ts",
-    "etl:compute-benchmarks": "tsx etl/compute-benchmarks.ts"
+    "etl:compute-benchmarks": "tsx etl/compute-benchmarks.ts",
+    "test:e2e:deployed": "node --test tests-deployed/*.test.mjs"
   },
   "dependencies": {
     "@auth/core": "^0.41.0",

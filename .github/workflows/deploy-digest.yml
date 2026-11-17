@@ -55,10 +55,10 @@ on:
         type: boolean
         default: false
       probe_url:
-        description: "URL the post-deploy check must see answer 200"
+        description: "Origin the post-deploy end-to-end run verifies"
         required: false
         type: string
-        default: https://startup-valuation.ascent-partners.com/
+        default: https://startup-valuation.ascent-partners.com
 
 permissions:
   contents: read
@@ -90,6 +90,12 @@ jobs:
 
   deploy:
     needs: guard
+    # Job-level, not workflow-level: a called reusable workflow does not inherit the caller's
+    # workflow-level permissions — without this it falls back to the repository default, and
+    # the :desired tag push container-cd.yml performs needs packages: write.
+    permissions:
+      contents: read
+      packages: write
     uses: simonmak-ascent/apg-infra/.github/workflows/container-cd.yml@55b77e2bf35396e9d668d8e300057856929cd6aa
     with:
       containers: ${{ inputs.containers }}
@@ -99,30 +105,14 @@ jobs:
       publish_pointer: ${{ inputs.publish_pointer }}
       dry_run: ${{ inputs.dry_run }}
 
-  # The rollout reporting success is not the same as the site working. compliance.json
-  # declares an end-to-end probe and, until now, nothing ran it: a deploy could go green
-  # while the host served errors. This is that probe.
+  # A rollout reporting success is not the product working. This calls the same end-to-end
+  # suite that runs on a schedule, so there is one definition of "the deployed product
+  # serves the contract" — the check compliance.json declares and, until now, nothing ran.
   verify:
     needs: deploy
     if: ${{ !inputs.dry_run }}
-    runs-on:
-      - self-hosted
-      - ${{ inputs.runner }}
-    permissions: {}   # this job runs one curl and needs no token at all
-    steps:
-      - name: The host answers 200 after the rollout
-        env:
-          PROBE_URL: ${{ inputs.probe_url }}
-        run: |
-          set -eu
-          for attempt in 1 2 3 4 5 6 7 8 9 10; do
-            code=$(curl -sS -m 5 --max-redirs 0 --noproxy '*' -o /dev/null -w '%{http_code}' "$PROBE_URL" || echo 000)
-            if [ "$code" = "200" ]; then
-              echo "$PROBE_URL answered 200 on attempt $attempt"
-              exit 0
-            fi
-            echo "attempt $attempt: $PROBE_URL answered $code; retrying in 3s" >&2
-            sleep 3
-          done
-          echo "::error::$PROBE_URL did not answer 200 after the rollout — the deploy is not live"
-          exit 1
+    permissions:
+      contents: read   # the suite only reads this repository and fetches a public URL
+    uses: ./.github/workflows/e2e-deployed.yml
+    with:
+      base_url: ${{ inputs.probe_url }}

@@ -4,7 +4,8 @@
 
 ## Connect
 
-- Hosted MCP endpoint (Streamable HTTP, no API key): https://startup-valuation.ascent-partners.com/api
+- Hosted MCP endpoint (Streamable HTTP, no API key): https://startup-valuation.ascent-partners.com/mcp
+- Discover the endpoint: https://startup-valuation.ascent-partners.com/.well-known/mcp.json
 - Local stdio server: `uvx --from startup-valuation startup-valuation-mcp` or `pip install 'startup-valuation[mcp]' && startup-valuation-mcp`
 - Official MCP Registry name: `com.ascent-partners/startup-valuation`
 - Glama listing: https://glama.ai/mcp/servers/simonmak-ascent/startup-valuation

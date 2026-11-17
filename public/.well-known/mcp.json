@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.ascent-partners/startup-valuation",
+  "title": "Startup Valuation MCP Server",
+  "description": "Startup valuation for AI agents: 14 tools, 80+ pre-revenue formulas.",
+  "version": "2.1.4",
+  "repository": {
+    "url": "https://github.com/simonmak-ascent/startup-valuation",
+    "source": "github"
+  },
+  "websiteUrl": "https://startup-valuation.ascent-partners.com",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://startup-valuation.ascent-partners.com/mcp"
+    }
+  ]
+}

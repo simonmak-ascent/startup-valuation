@@ -78,7 +78,7 @@ def test_hosted_endpoint_serves_prompts_and_resources() -> None:
 
     def rpc(method: str, params: dict | None = None) -> dict:
         _, _, body = handle_request(
-            "POST", "/api", json.dumps({"jsonrpc": "2.0", "id": 1, "method": method, "params": params or {}})
+            "POST", "/mcp", json.dumps({"jsonrpc": "2.0", "id": 1, "method": method, "params": params or {}})
         )
         return json.loads(body)
 

@@ -20,7 +20,7 @@ export function hrefFor(locale: Locale, path: string): string {
   return `${LOCALE_META[locale].prefix}${clean}` || "/";
 }
 
-const ENDPOINT = "https://startup-valuation.ascent-partners.com/api";
+const ENDPOINT = "https://startup-valuation.ascent-partners.com/mcp";
 const REGISTRY = "com.ascent-partners/startup-valuation";
 
 export interface LandingCopy {

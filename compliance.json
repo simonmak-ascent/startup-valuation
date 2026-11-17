@@ -16,6 +16,26 @@
     {
       "probe": "https://startup-valuation.ascent-partners.com/",
       "expect": 200
+    },
+    {
+      "probe": "https://startup-valuation.ascent-partners.com/zh",
+      "expect": 200
+    },
+    {
+      "probe": "https://startup-valuation.ascent-partners.com/hk",
+      "expect": 200
+    },
+    {
+      "probe": "https://startup-valuation.ascent-partners.com/api/health",
+      "expect": 200
+    },
+    {
+      "probe": "https://startup-valuation.ascent-partners.com/.well-known/mcp.json",
+      "expect": 200
+    },
+    {
+      "probe": "https://startup-valuation.ascent-partners.com/mcp",
+      "expect": 405
     }
   ]
 }

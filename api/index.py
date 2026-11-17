@@ -37,7 +37,7 @@ from startup_valuation.mcp.tool_surface import (  # noqa: E402
 PROTOCOL_VERSION = "2025-06-18"
 
 # Paths this deployment declares for the Python side of the API; see api/calculate.py.
-_OWNED_PATHS = frozenset({"/api", "/api/", "/api/calculate", "/api/health"})
+_OWNED_PATHS = frozenset({"/mcp", "/mcp/", "/api/health"})
 
 _CORS = {
     "Content-Type": "application/json",
@@ -93,9 +93,27 @@ def handle_request(http_method: str, path: str, body_raw: str | None) -> tuple:
         return 404, {"Content-Type": "application/json"}, b'{"error":"NOT_FOUND"}'
 
     if http_method in ("GET", "HEAD"):
-        return _health()
+        if path.split("?", 1)[0] == "/api/health":
+            return _health()
+        # The MCP endpoint is POST-only. The transport spec has a server answer GET on the
+        # endpoint with 405; a 200 there is what makes a client read the endpoint as a REST
+        # API and give up, so this is a deliberate 405 rather than a status body.
+        # The 405 must not also advertise GET/HEAD through CORS: `Allow` is the
+        # authoritative list, and a stale Allow-Methods here contradicts it.
+        return (
+            405,
+            {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "POST, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type, Accept, MCP-Protocol-Version",
+                "Allow": "POST, OPTIONS",
+            },
+            b'{"error":"METHOD_NOT_ALLOWED","detail":"POST JSON-RPC to /mcp; liveness is at /api/health"}',
+        )
     if http_method == "OPTIONS":
-        return 200, _CORS, b"{}"
+        # Preflight advertises only what this endpoint serves; GET and HEAD answer 405.
+        return 200, {**_CORS, "Access-Control-Allow-Methods": "POST, OPTIONS"}, b"{}"
     if http_method != "POST":
         return 405, {"Content-Type": "application/json"}, b"{}"
 
