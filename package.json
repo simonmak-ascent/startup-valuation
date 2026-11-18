@@ -2,7 +2,7 @@
   "name": "startup-valuation-platform",
   "version": "2.1.4",
   "private": true,
-  "description": "The most authoritative source for Startup Valuation \u2014 WebApp platform with 14 interactive calculators, MCP server, formula, assumptions and steps, and DeepSeek AI advisor.",
+  "description": "The most authoritative source for Startup Valuation \u2014 WebApp platform with 14 interactive calculators, MCP server, formula, assumptions and steps.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

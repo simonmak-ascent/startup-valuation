@@ -141,8 +141,10 @@ test.describe("market data", () => {
 });
 
 test.describe("removed surfaces", () => {
-  test("sign-in and the dashboard are gone, not redirected to a broken page", async ({ page }) => {
-    for (const path of ["/sign-in", "/dashboard"]) {
+  test("sign-in, the dashboard and the advisor are gone, not redirected to a broken page", async ({ page }) => {
+    // The advisor was a form over an unavailable dependency; removing it is the fix, so its absence
+    // is asserted like the other two rather than left to a nav diff.
+    for (const path of ["/sign-in", "/dashboard", "/ai-advisor"]) {
       const res = await page.goto(path);
       expect(res?.status(), `${path} status`).toBe(404);
     }
@@ -156,6 +158,6 @@ test.describe("legal", () => {
     const body = await page.locator("body").innerText();
     // The corrected claims: no accounts, no Stripe, no audit log, no session cookie.
     expect(body).toMatch(/no accounts|There are no accounts/i);
-    expect(body).not.toMatch(/processed by Stripe|authjs\.session-token|SurrealDB/);
+    expect(body).not.toMatch(/processed by Stripe|authjs\.session-token|SurrealDB|DeepSeek/);
   });
 });

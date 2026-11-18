@@ -64,7 +64,7 @@ export const LEGAL_DOCS: LegalDoc[] = [
       },
       {
         heading: "2. How We Use Data",
-        body: "There are no accounts and no saved workspaces. Calculator inputs are sent to the calculation service to produce a result and are not stored. A question you submit to the AI advisor is sent to DeepSeek to be answered. Error telemetry helps us improve reliability.",
+        body: "There are no accounts and no saved workspaces. Calculator inputs are sent to the calculation service to produce a result and are not stored. Error telemetry helps us improve reliability.",
       },
       {
         heading: "3. Storage",
@@ -84,7 +84,7 @@ export const LEGAL_DOCS: LegalDoc[] = [
       },
       {
         heading: "7. Third-Party Processors",
-        body: "We use Yahoo Finance (market data), DeepSeek (the AI advisor: the question you type is sent to their API to be answered), GitHub (the open-source badge: your browser asks their API for the repository's star count) and Sentry (error monitoring). Each processes data only as necessary to provide the Service.",
+        body: "We use Yahoo Finance (market data), GitHub (the open-source badge: your browser asks their API for the repository's star count) and Sentry (error monitoring). Each processes data only as necessary to provide the Service.",
       },
       {
         heading: "8. Changes to This Policy",

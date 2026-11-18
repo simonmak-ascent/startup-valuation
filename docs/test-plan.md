@@ -14,9 +14,9 @@ covered.
 
 | axis | the claim being tested | count |
 |---|---|---|
-| **routes** | every page the navigation and metadata advertise | 17 pages + 3 legal |
+| **routes** | every page component the navigation and metadata advertise | 11 `page.tsx`: 9 fixed routes, 27 method pages, 3 legal documents |
 | **states** | each route's reachable states — anonymous, source-up, source-down, invalid input | ≥3 per data-bearing page |
-| **journeys** | each multi-step workflow the copy still describes (calculate, MCP, playground, advisor) | 4 live + 2 recorded as removed |
+| **journeys** | each multi-step workflow the copy still describes (calculate, MCP, playground) | 3 live + 3 recorded as removed |
 | **claims** | each sentence in the advertising that promises behaviour | 13 (§5 matrix) |
 
 **Rule:** a claim with no assertion is a gap, and a gap is listed in §6 rather than left implicit.
@@ -64,7 +64,6 @@ it is asserted as `count == 27` and the discrepancy is recorded here.
 | `/hk` | Traditional Chinese (HK) landing | 200; `lang="zh-Hant-HK"` | anonymous |
 | `/methods/[slug]` | one page per method, formula + inputs | 200 for **every** slug in `METHODS`; H1 = method name; the formula block renders (KaTeX) | all 27 slugs; one unknown slug → 404 |
 | `/api/playground` | "test 27+ methods with live inputs" | 200; the method selector offers exactly **27** options (F2: the copy says 27+); submitting returns JSON in-page | valid input; invalid input shows an error, not a blank |
-| `/ai-advisor` | AI advisor UI | 200; the form renders; submit disabled without input | no key configured → visible error, not a hang |
 | `/benchmarks` | industry medians | 200; medians of P/E, P/S, EV/EBITDA per vertical, each with its sample size; empty state only when Yahoo fails | live data; source down |
 | `/public-companies` | comparables | 200; live multiples per vertical, `—` for a metric the vendor omits | live data; a symbol that does not resolve |
 | `/skills` | agent skill catalogue | 200; each skill entry has a name and a callable example | anonymous |
@@ -80,7 +79,6 @@ it is asserted as `count == 27` and the discrepancy is recorded here.
 | `/api/calculate` | POST | 200 `{"value": <finite>, "method", "inputs", "assumptions", "chapter", "formula_number", "steps"}` | one request per method key; unknown method → 4xx with a message, never 200 with an error body (the `$NaN` bug) |
 | `/api/calculate` | GET | 405 or 404, never a 200 status blob | method check |
 | `/api/health` | GET | 200 `{"status":"ok","dependency":{"name":"finance.yahoo.com"}}` when Yahoo answers; 503 `degraded` when it does not | both states asserted |
-| `/api/ai` | POST | **400** `{"error":"Query is required"}` for an empty query; `GET` answers 405 with no body — this is the route that proves `/api/*` reaches the web app | empty query |
 | `/.well-known/mcp.json` | GET | 200 JSON; `url` ends `/mcp`; `transport` is streamable-http | shape + value |
 
 ### 3.3 MCP endpoint
@@ -121,9 +119,9 @@ calculation for the same inputs. This is the one assertion that ties the two sur
 `/api/playground` → choose a method → submit → assert the rendered JSON has the same shape as
 `/api/calculate`; then submit an invalid input and assert an inline error.
 
-**J4 — AI advisor**
-`/ai-advisor` → type a question → submit → either an answer grounded in a method, or an explicit
-"not configured" message. No spinner forever, no empty message bubble.
+**J4 — removed 2026-11-18.** The advisor was a form over one unavailable dependency (`/api/ai`
+answered 502 for every query because no key was configured). It is deleted — page, route, nav item
+and the DeepSeek disclosure — rather than left as a link that cannot work.
 
 **J5 — removed 2026-11-18.** Sign-in and the dashboard were deleted with the database dependency;
 the assertion that used to guard `/dashboard` → 307 `/sign-in` now asserts a 404 on both paths, so a
@@ -159,12 +157,12 @@ dependency is gone; the cookie policy's "no session cookie" line is the only cla
 | G2 | ~~`/benchmarks`, `/public-companies` populated~~ | **closed 2026-11-18** — both read live Yahoo Finance data |
 | G3 | ~~`/dashboard` signed-in~~ | **removed** with sign-in on 2026-11-18 |
 | G4 | ~~`/api/export/report`~~ | **removed** with the database on 2026-11-18 |
-| G5 | `/api/ai` 200 path | needs `DEEPSEEK_API_KEY` wired into the web container |
+| G5 | ~~`/api/ai` 200 path~~ | **removed 2026-11-18** with the advisor: the route answered 502 for every query because no key was ever configured |
 | G6 | ~~billing end-to-end~~ | **removed** with sign-in on 2026-11-18 |
 | G7 | `POST /mcp` per-tool semantics | one call per tool exists; the *valuation* assertions for all 14 are partly blocked on tools that read data |
 
 Each remaining gap is a task in `docs/plan.md`. A gap is not a hidden failure: the surface is
-asserted for its *current* honest state — `/docs` 404, `/api/ai` 502 without a key — so a change in
+asserted for its *current* honest state — `/docs` 404 today — so a change in
 behaviour is caught even before the dependency lands.
 
 ## 7 · Levels, commands, cadence
@@ -178,8 +176,10 @@ behaviour is caught even before the dependency lands.
 
 **Gate wiring.** L1 runs inside `deploy-digest.yml`'s `verify` job and its failure stops the chain
 (no new pins while production is red). L3/L4 are `ci.yml`'s required checks. L2 is deliberately not
-a merge gate — a browser suite on a shared runner is flaky — but a red L2 on the deployed origin is
-recorded as an issue by `e2e-deployed.yml`'s diagnosis step.
+a merge gate — a browser suite on a shared runner is flaky — and it is **not run by any workflow
+today**: `e2e-deployed.yml` runs only `node --test tests-deployed/*.test.mjs`. A red GUI run is a
+human observation, which is why every absence assertion that matters (the removed surfaces) also
+lives in the HTTP suite.
 
 ## 8 · How this plan fails honestly
 

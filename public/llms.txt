@@ -28,7 +28,7 @@ All tools are pure arithmetic (no I/O), read-only and idempotent; a `method` par
 
 ## Docs
 
-- [Website](https://startup-valuation.ascent-partners.com/): calculators, AI advisor and benchmarks
+- [Website](https://startup-valuation.ascent-partners.com/): calculators, benchmarks and live comparables
 - [Documentation](https://simonmak-ascent.github.io/startup-valuation/): library reference and chapter guides
 - [MCP server guide](https://simonmak-ascent.github.io/startup-valuation/mcp-server/): client configuration
 - [Agent skills](https://startup-valuation.ascent-partners.com/skills): AI-agent skill packs
