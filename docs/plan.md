@@ -205,7 +205,7 @@ transport claim in `api/index.py` (`P14`; only meaningful once `/api` routes to 
 | **No working deploy path** | operator | `deploy-digest.yml` exists (absent; `apg-infra`'s `container-cd.yml` is `workflow_call`-only) and `image.yml` builds (last dispatch failed at *Build and push*) |
 | **api/calculate images** | operator | a Dockerfile that builds `pylaunch` + the venv; `Dockerfile.web` is Node-only, yet `container.json` pins the *same digest* for both Python containers |
 | **`/docs` hosting** | operator | `GET /docs` → 200; `docs.yml` builds `site/` and publishes it nowhere |
-| **Live verification of T1.7/T1.16** | operator | webhook write and sign-in proven against real SurrealDB/Stripe |
+| ~~Live verification of T1.7/T1.16~~ | **withdrawn 2026-11-18** — the Stripe webhook and sign-in were deleted with the account model (Part 5); there is nothing left to verify | — |
 
 ## Ordering as landed
 
@@ -249,7 +249,7 @@ first and nothing else is claimed as deliverable behind them.
 | `/mcp` (POST) | **live** | `initialize` 200; `tools/list` → **14 tools** |
 | `/api/calculate` | **live** | `{"value": 10.0, "method": "P/E Ratio", …}`, 6/6 through the ALB on 3 nodes |
 | calculator UI | **fixed this session** | `Result — Scorecard Method (3.1)`, `$1,800,000`; the `$NaN` was `/api/calculate` landing on the MCP handler |
-| deployed e2e | **6 of 8 pass** | remaining: health path, `GET /mcp` |
+| deployed e2e | **6 of 9 pass** | remaining: health body (needs the web image), `GET /mcp` (needs the Python image), and the removed-surface 404s |
 | `/api/health` | **503** | `{"status":"degraded","db_status":"disconnected"}` — no `SURREALDB_*` anywhere |
 | `/docs` | **404** | mkdocs `site/` is not in the web image |
 | MCP registry | **advertises a dead URL** | registry says `…/api`; repo `server.json` correctly says `…/mcp` |
@@ -261,7 +261,7 @@ first and nothing else is claimed as deliverable behind them.
 | # | item | unblocks | verify |
 |---|---|---|---|
 | O1 | `rm ~/.local/share/opencode/review-gate/ses_e17d4a7e7ffesJM94SEnIaWGIV.json` | every `git commit`/`push`/deploy — record has `snapshot: {}`, so no verdict can bind (7 `ship` verdicts already lost to it) | `git commit` succeeds |
-| O2 | App database identity + credential handoff (`python3 /tmp/opencode/operator-wire-db.py`) | `/api/health`, benchmarks, valuation runs, ETL | `/api/health` → 200 |
+| O2 | ~~App database identity + credential handoff~~ | **withdrawn 2026-11-18** — the database was removed from the runtime on operator instruction; `/api/health` reads Yahoo, the comparables pages read Yahoo, and there is no store to credential | — |
 | O3 | `DEPLOY_TOKEN` (Contents write, PR write, **Actions read**) | unattended build → pin → deploy | a push to `main` deploys without a human |
 
 ## Bug fixes
@@ -271,14 +271,14 @@ Each carries the command that proves it. Ordered so each makes the next one veri
 | # | bug | fix | verify |
 |---|---|---|---|
 | B1 | `GET /mcp` answers 200 instead of 405 | ship `sv-py:src-ee0ff7b` (built from the public repo, both roles probed) | e2e: "GET on the MCP endpoint is refused" passes |
-| B2 | `/api/health` 503 | wire `SURREALDB_*` (O2), apply `lib/db/migrate.ts` — 17 tables, **none** exist in `valuation/main` | `/api/health` 200; e2e assertion passes → 8/8 |
+| B2 | `/api/health` 503 | **superseded — see Part 4/5.** The runtime has no database; health reports the market-data dependency | `/api/health` 200 with `dependency.name`; e2e green |
 | B3 | `/docs` 404 | build `site/` into `Dockerfile.web` and serve it | `/docs` 200 and a nav page 200 |
 | B4 | retired `@vercel/analytics` fires 404s on every page load | remove the dependency and its mount | browser network: no third-party 404 |
 | B5 | MCP registry points at `/api` | republish `server.json` (already correct) via `mcp-registry.yml` | registry `remotes[0].url` ends `/mcp` |
 | B6 | Python image exists only on ecs-01 behind a moved tag (`sv-py:lean-v2` had three IDs) | commit the clean-room `Dockerfile.svc` + a build input on `image.yml` to apg-infra `estate/startup-valuation/` | rebuilt twice → same digest |
 | B7 | `container.json` pins `362d06fd…` for both Python containers; unverifiable anonymously | resolve with an authenticated `docker manifest inspect` on a node; repin to a digest that exists | rollout pulls the pinned digest, not a local image |
 | B8 | ALB target groups have **no health check** (`path=None`, `enabled=None` on all six groups) | declare per-group probes in the publish declaration and re-apply | `publish.py plan` shows no `UPDATE probe` drift |
-| B9 | calculator reports the library version from `api/calculate.py`'s stale constant | derive from `startup_valuation.__version__` (already fixed in the built image) | UI stamp reads 2.1.4, not 1.0.2 |
+| B9 | calculator reports the library version from `api/calculate.py`'s stale constant | derive from `startup_valuation.__version__` (fixed in the built image `sv-py:src-ee0ff7b`) | UI stamp reads 2.1.4, not 1.0.2 |
 
 ## Features
 
@@ -295,9 +295,223 @@ Each carries the command that proves it. Ordered so each makes the next one veri
 - **The gate is the product here.** Two defects this session were found only by executing shell
   (`tests-ci/health_gate_sim.py`): a pin guard that rejected every legitimate pin, and a health
   search that hid a failure behind a page of skipped runs. Static checks passed both.
-- **No health claim without a database.** `/api/health` stays 503 until O2 lands. Making it say `ok`
-  without one would make the deployed suite certify nothing, and the estate has been burned by
-  exactly that (`AGENTS.md` §13.5).
+- **No health claim without a dependency.** `/api/health` now reports the market-data source it
+  actually probes; it returns 200 when Yahoo answers and 503 when it does not, and the deployed suite
+  asserts both states. It reads no database, so no credential can change its answer.
 - **`GET /mcp` 200 is not cosmetic**: a client that gets 200 on GET treats the endpoint as REST and
   never sends `initialize`.
 
+---
+
+# Part 3 — the data layer, replanned on measurement
+
+Replan of B2 after discovery, superseding "wire `SURREALDB_*`". The SurrealDB route is closed:
+the managed instance answers `/health` 200 but rejects the only credential the environment holds
+(401), `SURREALDB_*` — the keys `lib/db/client.ts` reads — exist nowhere, and a self-hosted instance
+contradicts `apg-infra/docs/standards.md:323` (**"Every application database lives here; no node runs
+a database of its own"**). The instance I started was removed.
+
+## What the measurement says the port costs
+
+| dimension | measured |
+|---|---|
+| call sites | **49** `getDb().query(...)` across 12 modules |
+| verbs | SELECT 27, CREATE 18, DELETE 15, RETURN 14, UPDATE 9, UPSERT 6, INSERT 1, DEFINE 194 (schema only) |
+| graph features | **none** — no `RELATE`, no edge tables, no transactions. Recordsets only |
+| schema | 17 tables + indexes, `lib/db/migrate.ts`; `SCHEMALESS` by default |
+| client | no `pg`/`drizzle`/`prisma`/`kysely` in `package.json` |
+| network | RDS `10.20.12.80:5432` **open** from ecs-01/02/03 (`psql` 18 present); workstation cannot reach it |
+| credentials | none for this app; `sv-api.env` has only auth keys. Other apps hold their own DSNs, not ours |
+| roles | application roles are `rolcreatedb=f` (`standards.md:1113`) — an app cannot create its own database |
+
+No graph features is the load-bearing fact: every verb maps 1:1 to SQL, and 194 of the 303 verb
+occurrences are schema definitions that translate once.
+
+## P0 — the one prerequisite (operator)
+
+A **role** and a **database-or-schema** for this app on `pgm-3nsg37yxwbwd74jf`. Not inferable and
+not creatable from anything held here: app roles cannot create databases, and `apg-ops` is denied
+the RDS control plane. Following the estate's existing precedent for a shared database
+(`ndc_report` owns `ndc_`-prefixed tables in `esg_hub/main`), either shape works:
+
+- a database `startup_valuation` with a role of the same name, **or**
+- a Postgres schema `startup_valuation` inside an existing database, with the role set as its owner.
+
+**verify:** `psql "$DSN" -c 'select current_database(), current_user'` returns the pair, and the role
+owns what it creates.
+
+## Tasks, each with the command that proves it
+
+| # | task | verify |
+|---|---|---|
+| **T1** | add `pg` and a pool; rewrite `lib/db/client.ts` behind its existing surface (`getDb().query`) so the 49 call sites do not change shape | `pnpm check` passes; a unit test drives `healthCheck()` against a stub pool for both states |
+| **T2** | translate `lib/db/migrate.ts` (17 tables, indexes) into `db/migrations/*.sql`, applied by a runner in one transaction | applied to a scratch database inside a **rolled-back** transaction (`standards.md:1278` precedent); `\d` output diffed against the table list in `migrate.ts` |
+| **T3** | port the 49 sites by verb: `RETURN` → `SELECT`, `UPSERT` → `INSERT … ON CONFLICT`, `CREATE … CONTENT` → `INSERT … RETURNING` | each module's existing tests pass; a golden test asserts the generated SQL for the three non-trivial shapes |
+| **T4** | wire `DATABASE_URL` into `/etc/startup-valuation/sv-web.env` from RDS, never from a file I read | `/api/health` → 200 `{"status":"ok"}`, and 503 with a *timeout* when the pool is broken — both asserted |
+| **T5** | ETL sources (`fred`, `eodhd`, `damodaran`, `crunchbase`, `sec-edgar`) write through the new client | row counts per source after a run, and provenance columns non-null on a sample of 3 rows |
+| **T6** | deployed e2e | 8/8, including the health assertion |
+
+## Why not the alternatives
+
+| option | rejected because |
+|---|---|
+| keep the managed SurrealDB | its credential is dead (401) and it is outside estate control; `SURREALDB_*` exists nowhere |
+| self-host SurrealDB on a node | `standards.md:323` forbids a node running its own database; the user also forbade a new database |
+| point `/api/health` at RDS without porting | the check would report "connected" while every data page still speaks SurrealQL — a checker that cannot fail |
+| borrow another app's DSN | not ours; `hkex-tracker` and `ascent-linkage` credentials are their own identities |
+
+## Sequence
+
+`P0` → T1 → T2 → T3 (per module, each merged on its own) → T4 → T5 → T6. T4 is deliberately after
+T3: switching the health check before the call sites means the suite goes green while the product
+does not work.
+
+---
+
+# Part 4 — do we even need the database? (measured 2026-11-18)
+
+Part 3 assumed the data layer must move to RDS wholesale. That assumption was too broad. Split by
+*who writes the data*, because the two halves have different answers.
+
+## Reference data — no database at all
+
+The two pages that render empty states need data that is published publicly and moves slowly.
+
+| page | table it reads | public source | measured today |
+|---|---|---|---|
+| `/benchmarks` | `benchmark` (industry betas, multiples, risk premia) | Damodaran Online | `betas.xls` **200, 82 KB**; `vebitda.xls` **200, 59 KB** — no key |
+| `/public-companies` | `public_company`, `financial_metric` | SEC EDGAR | `company_tickers.json` **200, 796 KB**; `companyfacts` **200** — no key, User-Agent only |
+
+**And the importers fetch nothing.** `etl/sources/damodaran.ts` and `sec-edgar.ts` read
+`etl/data/damodaran.csv` / `sec-edgar.csv`; `etl/data/` contains only a README. The acquisition half
+of the pipeline was never written — only `eodhd.ts` calls an API, and it needs a paid key.
+
+So the smallest honest path for these two pages is **build-time acquisition into versioned JSON**,
+carrying the provenance the repo already enforces (`source_url`, `source_name`,
+`source_retrieved_at`, `source_version` in `validateProvenance`). No runtime database, no empty
+state, no invented rows.
+
+## User-generated data — needs a store
+
+`valuation_run`, `audit_log`, `/dashboard`, `/api/export/report` are per-user records. Nothing
+public replaces them. They are also entirely behind sign-in, which does not work today (the auth
+config pulls a SurrealDB adapter, and sessions are JWT only for the edge runtime).
+
+## What this changes about the port
+
+Part 3's T3 (port 49 call sites) shrinks: **`lib/benchmarks/compute.ts` and the two reference
+importers leave the list**, because they stop reading a database. What remains is user-record
+persistence, which can wait until there is a user who can sign in.
+
+It also corrects a claim in Part 3: the model is **not** graph-free. `lib/db/migrate.ts` defines six
+`TYPE record<…>` links (`method`, `audit_log.valuation_run`, `industry`, `company` ×2,
+`benchmark.industry`) and `compute.ts` traverses one (`source.reputation`). Those become JOINs, not a
+blocker — but the earlier "none" was wrong.
+
+## Revised tasks
+
+| # | task | verify |
+|---|---|---|
+| **D1** | `scripts/fetch-reference.ts`: pull Damodaran `.xls` + SEC `companyfacts` for a declared ticker set; write `data/reference/*.json` with provenance columns | file exists, row count > 0, and every row has non-null `source_url`/`retrieved_at`; a validator that fails on a row with an empty field |
+| **D2** | `lib/benchmarks/*` and the two pages read that JSON instead of `getDb()` | `/benchmarks` and `/public-companies` render rows from the artefact; with the file removed they render the empty state, and that state is distinguishable in a test |
+| **D3** | `/api/health` reports the artefact's freshness and a real computation, not a DB socket | 200 with `reference_age_hours` and a computed value; 503 when the artefact is missing or stale |
+| **D4** | user records (runs, audit, dashboard, export) stay gated on a store | deferred: nothing behind sign-in works today, so nothing regresses |
+
+`D3` is the one that makes the deployed suite honest: health would then assert something the product
+actually depends on, instead of a database it never had.
+
+---
+
+# Part 5 — the database is gone (2026-11-18)
+
+Operator instruction: remove the database dependency, take finance data from Yahoo, and remove
+sign-in and dashboard. Done, and the result is smaller than the port in Part 3.
+
+## What was removed
+
+| removed | why |
+|---|---|
+| `app/(en)/sign-in`, `app/(en)/dashboard` | not reachable from the site's own navigation; they gated a page nobody could open |
+| `app/(en)/api/auth/[...nextauth]`, `api/billing/checkout`, `api/webhooks/stripe`, `api/audit`, `api/export/report` | every one of them existed to read or write user records; with no store they were dead routes |
+| `lib/auth/**` (640 lines of vendored Auth.js), `lib/billing/stripe.ts`, `lib/db/repositories/**`, `lib/benchmarks/compute.ts`, `components/SessionProvider.tsx`, `middleware.ts` | the code behind those routes |
+| dependencies `next-auth`, `@auth/core`, `bcryptjs`, `stripe` | nothing imports them |
+| `etl/compute-benchmarks.ts` and its script | it computed benchmarks from the database that is now unused |
+
+`lib/db/client.ts`, `lib/db/schema.ts` and `lib/db/migrate.ts` remain for the **offline** ETL only;
+nothing in `app/` or `components/` imports them, which `tsc --noEmit` verifies.
+
+## What replaced it
+
+`yahoo-finance2` (v4.0.6) performs the crumb/cookie handshake that Yahoo's `v7/quote` and
+`v10/quoteSummary` endpoints require — the ones that answer **401** to a plain fetch. Measured against
+`AAPL`: marketCap 5.11e12, trailingPE 39.19, priceToSales 10.68, enterpriseToEbitda 30.04,
+enterpriseToRevenue 10.76, currentPrice 351.91.
+
+- `/public-companies` — live multiples per vertical, with the vendor's own values and `—` where it
+  returns nothing. No cached table, no invented cell.
+- `/benchmarks` — medians of P/E, P/S and EV/EBITDA per vertical **with the sample size stated**; a
+  metric a company does not report is excluded rather than counted as zero.
+- `/api/health` — probes the market-data dependency and returns 200/503 with the reason and latency.
+  It no longer reports a database this application never had.
+
+## What this costs, stated
+
+Every page that shows market data now depends on Yahoo answering. The pages say so, with the
+retrieval time and any unresolved symbols; when the source is down they show nothing rather than a
+stale figure. A user-record feature — saved runs, exports, an account — is no longer possible, because
+it needs the store that was removed. That is the trade the instruction makes.
+
+## Sequencing, measured 2026-11-18
+
+The ALB split **is applied** (verified against the live origin, not the 2026-11-17 notes):
+
+```
+GET  /api/health        503 {"status":"degraded","version":"1.0.0","db_status":…}  ← the pre-change
+                              Next route (bad by design); the pin replaces it with the dependency probe
+GET  /api/auth/session  200                                                        ← the app, not Python
+POST /mcp               200 initialize
+POST /api/calculate     200
+GET  /mcp               200   ← the OLD Python image answers GET with 200 instead of 405
+```
+
+So a web-only pin would deploy correctly and then fail `verify` on the `GET /mcp` assertion, for a
+reason no change in this repository can fix.
+
+**And the chain cannot bootstrap itself.** `pin-digest` refuses to pin while the newest completed
+scheduled `e2e-deployed` run on `main` is a failure, and both are: runs `44212898428` (2026-11-18) and
+`44089080711` (2026-11-17), red because `/api/health` answers 503 and `GET /mcp` answers 200 on the
+deployed build — the pre-existing defects this change removes. That is the gate working, and it means
+the **first** pin is a human `workflow_dispatch` of `deploy-digest.yml` carrying both digests, not an
+auto-merge. That dispatch must also be opened by `simonmak-ascent`: the same commit carries the
+`container.json` corrections, which makes it a manifest change rather than a digest-only pin, so
+`guard` falls through to the human allowlist and a bot-authored commit is refused. (Two distinct new
+digests *are* accepted by `check_manifest_pin.py`; this commit changes `notes` and `dataClass` too,
+which is why it does not take that path. Merging the human PR is an equivalent route to dispatching,
+since the merge is itself a push touching `container.json`.)
+
+**And the chain does not resume until O3 lands.** Without `DEPLOY_TOKEN`, `pin-digest` cannot open or
+merge the pin PR, and a `GITHUB_TOKEN` merge would not fire the `push` that deploys. The manual
+dispatch above is the delivery; unattended delivery begins when the token is provisioned. **The first pin must move both images**: the web image
+from the automatic build and `sv-py:src-ee0ff7b` for `startup-valuation-api` and
+`-calculate`. Two distinct new digests in one commit is the case `check_manifest_pin.py` accepts.
+That single commit also carries the `container.json` corrections — the stale `AUTH_SECRET` note and
+`dataClass: "RDS"`, which is no longer true of any container here.
+
+Also deferred, and recorded here because a deferral that lives only in a summary is lost at the next
+build: `api/calculate.py` still emits `audit_status: "skipped"` and the SDK still declares
+`audit_id?`/`audit_status`. The field is truthful (the badge says "No audit trail") but it should be
+removed end-to-end when the Python image is next built, since its only possible value is the absence
+of the feature.
+
+## The health path is now the Python containers' liveness — a decision, not an accident
+
+`container.json:36,60` declare `/api/health` as the probe for `startup-valuation-api` (8021, `/mcp`)
+and `-calculate` (8020), and that path is served by the **web** container. Since this change it
+reports the market-data dependency, so a Yahoo outage now marks both Python containers unhealthy and
+fails a web-only rollout's `verify`.
+
+Under the previous database probe those containers were permanently 503, so this is an improvement —
+but the coupling is now load-bearing where it previously could not be trusted, and it is recorded
+here as a decision rather than left to emerge. If the coupling is unwanted, the fix is a `/api/live`
+that reports only process liveness, with `/api/health` staying truthful about the dependency; that is
+a separate change with its own review, not a patch to this one.

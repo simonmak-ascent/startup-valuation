@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { APIPlayground } from "@/components/APIPlayground";
 
 export const metadata: Metadata = {
-  title: "API Playground — Startup Valuation Engine",
+  title: "API Playground",
   description:
     "Interactive playground for the Startup Valuation API. Test 27+ valuation methods with live inputs and JSON responses.",
   alternates: {

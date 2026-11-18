@@ -9,6 +9,7 @@ export interface ValuationResult {
   library_version: string;
   timestamp: string;
   git_commit: string;
+  /** Always absent: the audit log was removed with the database on 2026-11-18. */
   audit_id?: string;
   audit_status: "logged" | "failed" | "skipped";
 }
@@ -49,11 +50,14 @@ export class StartupValuationClient {
     return this.request<ValuationResult>("/api/calculate", { method, params });
   }
 
-  /** Health check; the endpoint answers 503 when the database is unreachable. */
+  /**
+   * Health check. The endpoint answers 200 when the market-data source is reachable and 503 when it
+   * is not; it no longer reports a database, because the service has none.
+   */
   async health(): Promise<{
-    status: string;
+    status: "ok" | "degraded";
     version: string;
-    db_status: string;
+    dependency: { name: string; status: "reachable" | "unreachable"; detail: string; latency_ms: number };
   }> {
     const res = await fetch(`${this.baseUrl}/api/health`);
     return (await res.json()) as Awaited<ReturnType<StartupValuationClient["health"]>>;

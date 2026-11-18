@@ -24,9 +24,7 @@ theme:
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
-  font:
-    text: Open Sans
-    code: Roboto Mono
+  font: false
   features:
     - navigation.instant
     - navigation.tracking
@@ -43,9 +41,8 @@ extra_css:
   - assets/stylesheets/extra.css
 
 extra:
-  analytics:
-    provider: google
-    property: !ENV GOOGLE_ANALYTICS_KEY
+  # No analytics provider: the site sets no cookies and runs no third-party script, and the privacy
+  # page says so. `theme.font: false` above keeps Material from loading Google Fonts.
   social:
     - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/company/ascent-partners-group-

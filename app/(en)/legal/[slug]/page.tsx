@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: LegalPageProps): Promise<Meta
   const { slug } = await params;
   const doc = getLegalDoc(slug);
   if (!doc) return {};
-  return { title: `${doc.title} — Startup Valuation Engine` };
+  return { title: doc.title };
 }
 
 export default async function LegalPage({ params }: LegalPageProps) {

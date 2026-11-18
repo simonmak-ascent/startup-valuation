@@ -45,7 +45,7 @@ print(f"Option value: ${result.value:,.0f}")  # $15,240,000
 
 ## Features
 
-- **80+ valuation formulas** across 14 modules covering every method in the textbook
+- **80+ valuation formulas** across 15 modules covering every method in the textbook
 - **Typed Python API** with structured `ValuationResult` returns (value + assumptions + sensitivity)
 - **MCP Server** exposing all calculations as tools for AI agents (Claude, OpenCode, etc.)
 - **AI-Agent Skills** with workflow guidance for 5 valuation domains
@@ -69,6 +69,7 @@ print(f"Option value: ${result.value:,.0f}")  # $15,240,000
 | `international` | PPP, CRP, currency-adjusted DCF                | 12      |
 | `stakeholders`  | Dilution, OPM, PWERM, liquidation              | 13      |
 | `emerging`      | SAFE, MV=PQ, ESG, Metcalfe's Law               | 14      |
+| `growth`        | Compound growth, compound annual growth rate   | 2       |
 
 ## MCP Server
 

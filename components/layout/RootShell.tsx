@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
 import { Open_Sans, Titillium_Web, Raleway } from "next/font/google";
-import { Analytics } from "@vercel/analytics/react";
-import { SessionProvider } from "@/components/SessionProvider";
-import { CookieConsent } from "@/components/CookieConsent";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import "@/app/globals.css";
 
@@ -13,7 +10,7 @@ const raleway = Raleway({ subsets: ["latin"], variable: "--font-raleway", displa
 export const BASE_METADATA: Metadata = {
   title: { default: "Startup Valuation Engine — The Global Authority for Startup Valuation", template: "%s — Startup Valuation Engine" },
   description:
-    "The most comprehensive, scientifically rigorous, and transparent startup valuation resource available. 14 valuation methods, 80+ formulas, full mathematical derivations, auditable audit trail. Open source.",
+    "The most comprehensive, scientifically rigorous, and transparent startup valuation resource available. 14 valuation methods, 80+ formulas, full mathematical derivations, and the formula, assumptions and steps behind every result. Open source.",
   keywords: ["startup valuation", "how to value a startup", "valuation calculator", "DCF", "Black-Scholes", "scorecard method", "venture capital", "MCP server", "Python library", "open source", "SaaS valuation", "biotech rNPV"],
   authors: [{ name: "Simon Mak", url: "https://www.simonmak.com" }],
   creator: "Simon Mak — Ascent Partners",
@@ -22,7 +19,7 @@ export const BASE_METADATA: Metadata = {
   openGraph: {
     type: "website",
     title: "Startup Valuation Engine — 80+ Formulas, Open Source",
-    description: "The most credible, detailed, and traceable startup valuation resource available. Every formula with step-by-step derivation. 14 methods. Audit trail. Open source.",
+    description: "The most credible, detailed, and traceable startup valuation resource available. Every formula with step-by-step derivation. 14 methods. Formula, assumptions and steps in every result. Open source.",
     url: "https://startup-valuation.ascent-partners.com",
     siteName: "Startup Valuation Engine",
     images: [{ url: "/social-preview.png", width: 1280, height: 640, alt: "Startup Valuation Engine" }],
@@ -96,8 +93,7 @@ export function RootShell({ lang, children }: { lang: string; children: React.Re
             <ThemeToggle />
           </div>
         </nav>
-        <SessionProvider>{children}</SessionProvider>
-        <CookieConsent />
+        {children}
         <footer className="border-t border-border px-5 py-6 text-center text-xs text-muted">
           <div className="mb-2 flex flex-wrap justify-center gap-4">
             <a href="/legal/terms" className="hover:text-brand">Terms of Service</a>
@@ -106,7 +102,6 @@ export function RootShell({ lang, children }: { lang: string; children: React.Re
           </div>
           <p>© {new Date().getFullYear()} Ascent Partners · Startup Valuation Engine · MIT License</p>
         </footer>
-        <Analytics />
       </body>
     </html>
   );

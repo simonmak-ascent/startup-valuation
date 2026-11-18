@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { CopyPromptButton } from "@/components/CopyPromptButton";
 
 export const metadata: Metadata = {
-  title: "AI-Agent Skills — Startup Valuation Engine",
+  title: "AI-Agent Skills",
   description:
     "Reusable AI-agent skills for startup valuation — core, advanced, industry, foundations, stakeholder, and emerging methods.",
   alternates: {

@@ -11,9 +11,9 @@ const competitors: Competitor[] = [
   {
     name: "Startup Valuation Engine (us)",
     price: "Free",
-    methods: "27 interactive + 60+ MCP tools",
+    methods: "27 interactive + 14 MCP tools",
     openSource: "✅ MIT — every formula auditable",
-    auditTrail: "✅ SurrealDB immutable audit log",
+    auditTrail: "✅ formula, assumptions and steps in every result",
     api: "✅ MCP + REST, no key required",
   },
   {

@@ -49,15 +49,55 @@ test("both translated locales answer 200", async (t) => {
   }
 });
 
-test("the public health path reports a serving instance", async () => {
-  // The public /api/health, not the container-level probe: after the split this is the web
-  // app's route, before it the Python status body. Either way it must answer 200 with a
-  // release version — a health path that cannot fail is the defect this replaced.
+test("the public health path reports the dependency the product actually has", async () => {
+  // Health used to check a database this application never had, so it answered 503 from the first
+  // deployment and could not distinguish a broken app from a missing dependency. It now probes the
+  // market-data source: 200 when Yahoo answers, 503 when it does not, with the latency and the
+  // reason in the body. Both states are honest; only 200 is healthy.
   const res = await get("/api/health");
-  assert.equal(res.status, 200, `/api/health returned ${res.status}`);
   const body = await res.json();
-  assert.equal(body.status, "ok");
+  // 200, not "200 or 503": a probe that is permanently degraded passes the tolerant form while the
+  // comparables pages are dead, which is the defect this change-set exists to remove. A sustained
+  // 503 is a real outage — the product has no data to show — and the scheduled run should say so.
+  assert.equal(res.status, 200, `/api/health returned ${res.status} (${JSON.stringify(body)})`);
   assert.match(String(body.version), /^\d+\.\d+\.\d+$/, `version '${body.version}' is not a release`);
+  assert.equal(body.dependency?.name, "finance.yahoo.com", "health does not name the dependency it probes");
+  assert.ok(
+    body.dependency?.status === "reachable" || body.dependency?.status === "unreachable",
+    `dependency status '${body.dependency?.status}' is not one of the two states`,
+  );
+  assert.equal(body.status, "ok", "a 200 health body must say ok");
+});
+
+test("the comparables pages serve live market data, not an empty shell", async () => {
+  // Neither page had an assertion anywhere, so a page rendering its empty state while /api/health
+  // stayed green was invisible — the exact defect this change-set removes. Both pages name the
+  // vendor they read; the retired builds had no such attribution and showed an empty table.
+  //
+  // The disjunction alone cannot tell a vendor outage from a page whose own fetch path is broken:
+  // both render the same honest-failure copy. The probe uses its own client and its own symbol, so
+  // when it reports the vendor reachable the page must have priced something.
+  const health = await get("/api/health");
+  const vendorUp = (await health.json())?.dependency?.status === "reachable";
+  for (const path of ["/benchmarks", "/public-companies"]) {
+    const res = await get(path);
+    assert.equal(res.status, 200, `${path} returned ${res.status}`);
+    // Both pages are ISR (`revalidate = 300`), but the App Router does not emit `x-nextjs-cache`:
+    // in Next 15 only the Pages Router sets it, so a cached body cannot be told from a fresh one
+    // and a branch keyed on that header would be dead code with a false rationale attached. The
+    // assertion is unconditional instead, and the distinction comes from the body: a stale-but-good
+    // page still carries a price and passes, while the source-down copy beside a reachable-source
+    // health probe means this page's own fetch path is broken.
+    const html = await res.text();
+    assert.ok(/Yahoo Finance/i.test(html), `${path} does not name the market-data source`);
+    const priced = /\d+\.\d{2}\s*(USD|\u00d7)/.test(html);
+    const honestFailure = /did not answer|No price resolved/i.test(html);
+    assert.ok(priced || honestFailure, `${path} shows neither a price nor an honest failure state`);
+    assert.ok(
+      !vendorUp || priced,
+      `${path} rendered the source-down state while /api/health reports the source reachable`,
+    );
+  }
 });
 
 test("the MCP discovery card names the endpoint", async () => {
@@ -99,25 +139,41 @@ test("the calculator computes through the deployed routing", async () => {
   assert.equal(body.value, 10, `expected 10, got ${JSON.stringify(body).slice(0, 120)}`);
 });
 
+test("the removed surfaces stay removed", async () => {
+  // Sign-in, the dashboard and billing were deleted with the database dependency on 2026-11-18.
+  // A reintroduction without a session store would go green on every other assertion here, so the
+  // absence is asserted explicitly: these paths must 404, not redirect to a page that cannot work.
+  // Every surface docs/plan.md removed, not a sample: /api/audit was an unauthenticated write
+  // endpoint, and a reintroduced checkout or Stripe webhook would otherwise go unnoticed.
+  const removed = [
+    "/sign-in",
+    "/dashboard",
+    "/api/auth/session",
+    "/api/audit",
+    "/api/billing/checkout",
+    "/api/export/report",
+    "/api/webhooks/stripe",
+  ];
+  for (const path of removed) {
+    const res = await get(path);
+    assert.equal(res.status, 404, `${path} returned ${res.status} — the surface was removed`);
+  }
+});
+
 test("/api/* reaches the web application, not a Python status blob", async () => {
-  // The regression this catches: both Python handlers used to answer every /api/* path,
-  // so Auth.js, billing and the Stripe webhook were shadowed by a 200 that looked fine.
-  // The status assertion matters as much as the shape one: once the handlers 404 unowned
-  // paths, a 404 is JSON with no `available`/`methods` and would otherwise pass the leak
-  // check while the route was still dead. Auth.js answers this endpoint with 200.
-  const res = await get("/api/auth/session");
+  // The regression this catches: both Python handlers used to answer every /api/* path, so the
+  // web app's own routes were shadowed by a 200 that looked fine. Sign-in, billing and the Stripe
+  // webhook have since been removed with the database dependency, so this asserts against a route
+  // that must keep existing: POST /api/ai with an empty query answers 400 {"error":"Query is
+  // required"}, which a Python handler never produced. A GET answers 405 with no body at all, so it
+  // cannot be asserted for content-type — measured live before writing this.
+  const res = await postJSON("/api/ai", { query: "" });
   const raw = await res.text();
-  assert.equal(res.status, 200, `/api/auth/session returned ${res.status} — expected the web app, not a Python handler`);
+  assert.equal(res.status, 400, `/api/ai returned ${res.status} for an empty query`);
   assert.match(String(res.headers.get("content-type")), /application\/json/);
   const body = JSON.parse(raw);
-  // Auth.js answers `null` when unauthenticated; the calculator blob and its 404 are objects.
-  assert.ok(
-    body === null || (typeof body === "object" && !Array.isArray(body)),
-    `unexpected /api/auth/session body: ${raw.slice(0, 80)}`,
-  );
-  if (body && typeof body === "object") {
-    for (const leak of ["available", "methods", "error"]) {
-      assert.ok(!(leak in body), `/api/auth/session is answered by a Python handler (saw '${leak}')`);
-    }
+  assert.equal(body?.error, "Query is required", `unexpected /api/ai body: ${raw.slice(0, 80)}`);
+  for (const leak of ["available", "methods"]) {
+    assert.ok(!(leak in body), `/api/ai is answered by a Python status blob (saw '${leak}')`);
   }
 });

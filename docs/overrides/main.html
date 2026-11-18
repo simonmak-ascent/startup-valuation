@@ -11,13 +11,8 @@
   <meta name="twitter:title" content="Startup Valuation — 80+ Formulas, MCP Server, AI-Agent Skills">
   <meta name="twitter:description" content="Comprehensive startup valuation library implementing 80+ formulas from the Startup Valuation textbook">
   <meta name="twitter:image" content="{{ config.site_url }}assets/images/book-cover.jpg">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://simonmak-ascent.github.io; connect-src 'self' https://www.google-analytics.com https://vitals.vercel-insights.com">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://simonmak-ascent.github.io; connect-src 'self'">
   
-  <!-- Vercel Web Analytics -->
-  <script>
-    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-  </script>
-  <script defer src="https://va.vercel-scripts.com/v1/script.js"></script>
 {% endblock %}
 
 {% block site_nav %}
@@ -63,15 +58,15 @@
         <p class="stat-label">Valuation Formulas</p>
       </div>
       <div class="stat-item">
-        <p class="stat-number">14</p>
-        <p class="stat-label">Python Modules</p>
+        <p class="stat-number">15</p>
+        <p class="stat-label">Method Modules</p>
       </div>
       <div class="stat-item">
-        <p class="stat-number">101</p>
+        <p class="stat-number">204</p>
         <p class="stat-label">Unit Tests</p>
       </div>
       <div class="stat-item">
-        <p class="stat-number">60+</p>
+        <p class="stat-number">14</p>
         <p class="stat-label">MCP Tools</p>
       </div>
     </div>
@@ -96,13 +91,13 @@ print(f"Scorecard: ${result.value:,.0f}")  # $1,800,000</code></pre>
       <a href="api/core/" class="arch-card">
         <div class="arch-card-icon">&#128218;</div>
         <h3>Python Library</h3>
-        <p>14 modules, 80+ typed functions, all returning ValuationResult with value, assumptions, and sensitivity analysis.</p>
+        <p>15 method modules, 103 public functions, all returning ValuationResult with value, assumptions, and sensitivity analysis.</p>
         <span class="arch-card-link">Explore API Reference &rarr;</span>
       </a>
       <a href="https://github.com/simonmak-ascent/startup-valuation/tree/main/src/startup_valuation/mcp" class="arch-card" target="_blank" rel="noopener noreferrer">
         <div class="arch-card-icon">&#129302;</div>
         <h3>MCP Server</h3>
-        <p>60+ tools for AI agents (Claude, OpenCode, etc.) via stdio/SSE. Connect any MCP-compatible agent.</p>
+        <p>14 tools for AI agents (Claude, OpenCode, etc.) via stdio/SSE. Connect any MCP-compatible agent.</p>
         <span class="arch-card-link">View on GitHub &rarr;</span>
       </a>
       <a href="https://github.com/simonmak-ascent/startup-valuation/tree/main/skills" class="arch-card" target="_blank" rel="noopener noreferrer">

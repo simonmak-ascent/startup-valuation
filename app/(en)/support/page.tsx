@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Support — Startup Valuation Engine",
+  title: "Support",
   description: "Get help with the Startup Valuation Engine.",
   alternates: {
     canonical: "https://startup-valuation.ascent-partners.com/support",
@@ -72,7 +72,7 @@ export default function SupportPage() {
         <div className="card">
           <h2 className="text-lg font-semibold text-text mb-2">Billing</h2>
           <p className="text-muted text-sm">
-            Payments are processed by Stripe. For billing issues, contact{" "}
+            There is no billing: the service is free and has no accounts. For anything else, contact{" "}
             <a href="mailto:support@ascent-partners.com" className="text-brand hover:underline">
               support@ascent-partners.com
             </a>

@@ -4,7 +4,7 @@ import { CompetitorComparison } from "@/components/CompetitorComparison";
 import { OpenSourceBadge } from "@/components/OpenSourceBadge";
 
 export const metadata: Metadata = {
-  title: "Why Open Source — Startup Valuation Engine",
+  title: "Why Open Source",
   description:
     "Every formula is open source and auditable. No black boxes, no proprietary math, no paywall. Compare us against Equidam, Carta, and PitchBook.",
   alternates: {
@@ -19,7 +19,7 @@ const pillars = [
   },
   {
     title: "Every number is traceable",
-    body: "Each calculation traces to a textbook chapter, formula number, library version, and source commit. An immutable SurrealDB audit log records every run.",
+    body: "Each calculation traces to a textbook chapter, formula number, library version, and source commit. Every result carries its formula, assumptions and steps in the response.",
   },
   {
     title: "No paywall, no proprietary math",

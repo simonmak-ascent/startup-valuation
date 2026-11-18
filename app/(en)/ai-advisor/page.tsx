@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { AIChat } from "@/components/AIChat";
 
 export const metadata: Metadata = {
-  title: "AI Valuation Advisor — Startup Valuation Engine",
+  title: "AI Valuation Advisor",
   description:
     "Ask the AI valuation advisor which method applies to your startup. Recommendations cite textbook chapters and are verifiable in the open-source calculators.",
   alternates: {
