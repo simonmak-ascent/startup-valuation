@@ -124,13 +124,25 @@ jobs:
           event = os.environ["EVENT"]
           runner = os.environ.get("IN_RUNNER") or "apg-ecs-01"
           docker_names = os.environ.get("IN_DOCKER_NAMES") or ""
+          manifest = json.load(open("container.json"))["containers"]
+          # The runtime name, declared by the manifest. container-cd's `${DOCKER_NAMES:-$CONTAINERS}`
+          # fallback hands rollout.sh the manifest *container* name otherwise, and rollout.sh prefers
+          # --docker-name over SPEC_DOCKER_NAME — so a declared `docker_name` would never be read and
+          # the rollout would create a new container beside the live one and fail to bind its port.
+          declared = {c["name"]: c.get("docker_name") or "" for c in manifest}
 
           if event == "workflow_dispatch":
               names = [n.strip() for n in (os.environ.get("IN_CONTAINERS") or "").split(",") if n.strip()]
               digest = os.environ.get("IN_DIGEST") or ""
-              items = [{"container": n, "digest": digest} for n in names]
+              given = [n.strip() for n in docker_names.split(",") if n.strip()]
+              # An explicit name still wins; otherwise the manifest declares it.
+              items = [
+                  {"container": n, "digest": digest,
+                   "docker_name": given[i] if i < len(given) else declared.get(n, "")}
+                  for i, n in enumerate(names)
+              ]
           else:
-              current = json.load(open("container.json"))["containers"]
+              current = manifest
               before_sha = os.environ.get("BEFORE") or ""
               try:
                   prev = json.loads(subprocess.check_output(
@@ -142,7 +154,8 @@ jobs:
                                    "what changed; dispatch deploy-digest.yml explicitly") from exc
               before = {c["name"]: c.get("image") for c in prev["containers"]}
               items = [
-                  {"container": c["name"], "digest": c["image"].split("@")[1]}
+                  {"container": c["name"], "digest": c["image"].split("@")[1],
+                   "docker_name": declared.get(c["name"], "")}
                   for c in current
                   if before.get(c["name"]) != c.get("image")
               ]
@@ -338,7 +351,9 @@ jobs:
     with:
       containers: ${{ matrix.container }}
       digest: ${{ matrix.digest }}
-      docker_names: ${{ needs.prepare.outputs.docker_names }}
+      # Per matrix entry, from the manifest's `docker_name`. An empty value still falls back to
+      # $CONTAINERS inside container-cd, so callers that declare nothing are unaffected.
+      docker_names: ${{ matrix.docker_name }}
       runner: ${{ needs.prepare.outputs.runner }}
       # Only when every matrix entry shares one digest. Per-container state still lands on the
       # runner node either way; what is withheld is a fleet-wide pointer that would be wrong for

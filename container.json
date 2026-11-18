@@ -3,7 +3,7 @@
     {
       "name": "startup-valuation",
       "repo": "simonmak-ascent/startup-valuation",
-      "image": "ghcr.io/simonmak-ascent/startup-valuation@sha256:1a789decf7320c6145888029ad91f2110487c016fea798d9f0534114a4c0930c",
+      "image": "ghcr.io/simonmak-ascent/startup-valuation@sha256:d2080115b906942bd314cf8e13a0cbca88ba46c696e82afa446cce28da69a228",
       "port": 3110,
       "hosts": [
         "startup-valuation.ascent-partners.com"
@@ -18,15 +18,16 @@
         "bind": "0.0.0.0",
         "entrypoint": "exec"
       },
-      "dataClass": "RDS",
+      "dataClass": "none (live market data from Yahoo, no store)",
       "wave": 1,
       "owner": "simonmak-ascent",
-      "notes": "Next.js release copied from the node's active slot, run as node server.js with uid 1001. NextAuth needs AUTH_SECRET fleet-wide; it stays in /etc/startup-valuation/<slot>.env and is not baked into the image. Lean rebuild 2026-10-27: one COPY --chown layer and no .next/cache, 569 MB -> 404 MB. Rolled out by digest through deploy-digest.yml."
+      "notes": "Next.js release copied from the node's active slot, run as node server.js with uid 1001. The app has no database and no accounts: /benchmarks and /public-companies read live Yahoo Finance data (revalidated every 5 min) and /api/health probes that dependency. Auth was removed on 2026-11-18, so AUTH_SECRET is not read and need not exist in the slot env. Lean rebuild 2026-10-27: one COPY --chown layer and no .next/cache, 569 MB -> 404 MB. Rolled out by digest through deploy-digest.yml.",
+      "docker_name": "sv-web"
     },
     {
       "name": "startup-valuation-api",
       "repo": "simonmak-ascent/startup-valuation",
-      "image": "ghcr.io/simonmak-ascent/startup-valuation@sha256:362d06fd9e6d6c2cca2147adcc3f6fbb90b93af3ce911f5480f1355a92f253e4",
+      "image": "ghcr.io/simonmak-ascent/startup-valuation@sha256:8916827b9d870bd01c7c0d651aa4c9814ae0dac798f37e07aca39723d03cd121",
       "port": 8021,
       "hosts": [
         "startup-valuation.ascent-partners.com"
@@ -42,15 +43,21 @@
         "bind": "0.0.0.0",
         "entrypoint": "exec"
       },
-      "dataClass": "RDS",
+      "dataClass": "none (stateless MCP + calculator)",
       "wave": 1,
       "owner": "simonmak-ascent",
-      "notes": "pylaunch serving api.index:handler on 8021 with --host 0.0.0.0 (it defaults to loopback). The image recreates /usr/bin/python3.12 for the copied venv's console scripts."
+      "notes": "pylaunch serving api.index:handler on 8021 with --host 0.0.0.0 (it defaults to loopback). The image recreates /usr/bin/python3.12 for the copied venv's console scripts.",
+      "docker_name": "sv-api",
+      "cmd": [
+        "sh",
+        "-c",
+        "exec python pylaunch.py --app api.index:handler --host 0.0.0.0 --port 8021"
+      ]
     },
     {
       "name": "startup-valuation-calculate",
       "repo": "simonmak-ascent/startup-valuation",
-      "image": "ghcr.io/simonmak-ascent/startup-valuation@sha256:362d06fd9e6d6c2cca2147adcc3f6fbb90b93af3ce911f5480f1355a92f253e4",
+      "image": "ghcr.io/simonmak-ascent/startup-valuation@sha256:8916827b9d870bd01c7c0d651aa4c9814ae0dac798f37e07aca39723d03cd121",
       "port": 8020,
       "hosts": [
         "startup-valuation.ascent-partners.com"
@@ -66,10 +73,16 @@
         "bind": "0.0.0.0",
         "entrypoint": "exec"
       },
-      "dataClass": "RDS",
+      "dataClass": "none (stateless MCP + calculator)",
       "wave": 1,
       "owner": "simonmak-ascent",
-      "notes": "Same image as the API, different entrypoint (api.calculate:handler) on 8020, declared at priority 23 for /api/calculate."
+      "notes": "Same image as the API, different entrypoint (api.calculate:handler) on 8020, declared at priority 23 for /api/calculate.",
+      "docker_name": "sv-calc",
+      "cmd": [
+        "sh",
+        "-c",
+        "exec python pylaunch.py --app api.calculate:handler --host 0.0.0.0 --port 8020"
+      ]
     }
   ]
 }
