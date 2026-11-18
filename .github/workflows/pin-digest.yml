@@ -1,0 +1,289 @@
+name: pin-digest
+
+# Auto-deploy, stage 2 of 3: pin the image that was just built.
+#
+# `image.yml` builds and publishes on every push to main. This runs when that build succeeds,
+# writes the new digest into `container.json`, and lets the pin PR merge itself — auto-merge with
+# no required human approval, so the only thing standing in front of a rollout is the check suite.
+#
+# Why a PR at all, when Vercel just deploys: `container-cd.yml` refuses any digest that is not the
+# one `container.json` pins. That gate is what stops an unapproved image reaching production, so it
+# stays; the pin is the approved artefact. Automating the pin is how an automated rollout keeps it.
+#
+# The loop is closed by paths-ignore in image.yml: a pin commit changes only container.json, so it
+# does not trigger another build. A push touching container.json is what triggers deploy-digest.
+
+on:
+  workflow_run:
+    workflows: ["image"]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+
+concurrency:
+  group: pin-digest
+  cancel-in-progress: false
+
+jobs:
+  pin:
+    # Only a push-triggered build produces the digest artefact; a manual `image:` re-tag does not.
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push'
+    runs-on:
+      - self-hosted
+      - apg-ci-04
+    steps:
+      # Three GitHub behaviours make the repository's own GITHUB_TOKEN unusable here, and each
+      # fails quietly or confusingly if the job simply tries:
+      #   1. this repository has can_approve_pull_request_reviews=false, so `gh pr create` under
+      #      GITHUB_TOKEN is refused outright;
+      #   2. a pull request opened by GITHUB_TOKEN has its check runs held for approval;
+      #   3. a merge performed with GITHUB_TOKEN does NOT trigger `push` workflows — so
+      #      deploy-digest.yml and release-gate.yml would never run, and the chain would build,
+      #      pin, merge and then do nothing at all.
+      # A bot credential (fine-grained PAT, contents:write + pull-requests:write, stored as
+      # DEPLOY_TOKEN) makes the merge attributable to a user, which restores the push event.
+      - name: A bot credential is required for the unattended chain
+        env:
+          BOT_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          if [ -z "$BOT_TOKEN" ]; then
+            echo "::error::AUTO-DEPLOY IS NOT PROVISIONED — DEPLOY_TOKEN is unset."
+            echo "::error::Without it this job cannot open or merge the pin PR, and a GITHUB_TOKEN"
+            echo "::error::merge would not trigger the deploy workflow. See docs/delivery-gates.md."
+            echo "::error::The build and the image are fine: deploy the digest by hand, or add the token."
+            exit 1
+          fi
+          # Test the scope the next step actually uses. `gh run download` needs **Actions: read** on
+          # the fine-grained PAT; a token provisioned to the documentation ("contents:write +
+          # pull-requests:write") passes the check above and then fails here with an
+          # actions-shaped error. Ask for the thing that will be asked for.
+          if ! GH_TOKEN="$BOT_TOKEN" gh run view "$RUN_ID" --json status >/dev/null 2>&1; then
+            echo "::error::DEPLOY_TOKEN cannot read this workflow run — it needs Actions: read."
+            echo "::error::Fine-grained PAT scopes required: Contents write, Pull requests write, Actions read."
+            exit 1
+          fi
+          echo "bot credential present, with actions:read"
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          token: ${{ secrets.DEPLOY_TOKEN }}
+          # A persistent self-hosted runner keeps this workspace between jobs. Persisting a
+          # contents:write + pull-requests:write credential into .git/config leaves it readable by
+          # whatever runs here next; the push step supplies it per-command instead.
+          persist-credentials: false
+
+      - name: Read the digest that was just published
+        env:
+          GH_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          SOURCE_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -eu
+          gh run download "$RUN_ID" -n digest -D .
+          raw="$(cat digest.txt)"
+          # docker inspect prints ghcr.io/owner/repo@sha256:…
+          digest="${raw##*@}"
+          # The artefact is a boundary only if its content is validated. Anything that is not a
+          # bare sha256 must stop here rather than reach container.json and the deploy gate.
+          case "$digest" in
+            sha256:*) ;;
+            *) echo "::error::digest.txt does not contain a digest: ${raw:0:80}"; exit 1 ;;
+          esac
+          if ! printf '%s' "${digest#sha256:}" | grep -Eq '^[0-9a-f]{64}$'; then
+            echo "::error::malformed digest: ${digest:0:80}"
+            exit 1
+          fi
+          echo "DIGEST=$digest" >> "$GITHUB_ENV"
+          echo "published: $raw"
+
+      # Two builds of main can finish out of order, and the pin is what deploys — so a late-
+      # finishing older build would roll production backwards. Compare **run ids**, not source
+      # SHAs: two runs of the same commit are legitimately different builds, and the older one must
+      # not pin its older digest. And an e2e failure on the deployed product stops the chain.
+      - name: Only the newest build may pin, and only while production is green
+        id: newest
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          THIS_RUN: ${{ github.event.workflow_run.id }}
+        run: |
+          set -eu
+          newest="$(gh run list --workflow=image --event=push --branch=main --limit 1 \
+                     --json databaseId --jq '.[0].databaseId')"
+          if [ -n "$newest" ] && [ "$newest" != "$THIS_RUN" ]; then
+            echo "::notice::a newer image build exists for main (run $newest); run $THIS_RUN is superseded"
+            echo "superseded=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # The post-deploy suite is a *job* inside deploy-digest, not a run of its own, so
+          # `deploy-digest` is the workflow that records whether a rollout's verification passed.
+          # A completed run is *not* evidence of that: a dry-run dispatch and a push whose digest
+          # did not change both skip `verify` yet conclude success. So take the newest completed run
+          # whose `verify` job actually ran — and walk the whole history, because a fixed window of
+          # ten newer skipped runs pushed a real failure out of view and the pin proceeded.
+          last=""
+          page=1
+          while :; do
+            # The path segment is the workflow's FILE NAME, not its display name: the extension-less
+            # form 404s, and the error path would then refuse every pin. Verified against the live
+            # API — /actions/workflows/deploy-digest/runs → 404, /…/deploy-digest.yml/runs → 200.
+            if ! ids="$(gh api "repos/$REPO/actions/workflows/deploy-digest.yml/runs?branch=main&status=completed&per_page=100&page=$page" --jq '.workflow_runs[].id' 2>/dev/null)"; then
+              echo "::error::cannot enumerate deploy-digest runs — refusing to pin blind on production health."
+              exit 1
+            fi
+            if [ -z "$ids" ]; then
+              break
+            fi
+            found=0
+            for id in $ids; do
+              if ! verdict="$(gh run view "$id" --json jobs \
+                    --jq '[.jobs[] | select(.name == "verify" and .conclusion != "skipped")][0].conclusion // "none"' 2>/dev/null)"; then
+                echo "::error::cannot read the jobs of run $id — refusing to pin blind."
+                exit 1
+              fi
+              case "$verdict" in
+                success|failure|timed_out|cancelled) last="$verdict"; found=1; break ;;
+              esac
+            done
+            if [ "$found" = "1" ]; then
+              break
+            fi
+            count="$(printf '%s\n' "$ids" | grep -c . || true)"
+            if [ "$count" -lt 100 ]; then
+              break
+            fi
+            page=$((page + 1))
+            if [ "$page" -gt 20 ]; then
+              echo "::error::2000 completed runs and no verify outcome — refusing rather than assuming health."
+              exit 1
+            fi
+          done
+
+          if [ -z "$last" ]; then
+            # Not a truncated search: the whole history was walked and no run has ever completed a
+            # verification. That is the chain bootstrapping, and it is announced rather than
+            # silently treated as green.
+            echo "::notice::no deploy-digest run has a completed verify job yet; production health is unestablished"
+          else
+            case "$last" in
+              failure|timed_out|cancelled)
+                echo "::error::the newest rollout whose post-deploy verification ran concluded '$last'."
+                echo "::error::Refusing to pin another digest onto a host that failed its contract."
+                exit 1 ;;
+            esac
+            echo "newest verified rollout: $last"
+          fi
+
+          # Drift between rollouts: the scheduled run against the same host.
+          drift="$(gh run list --workflow=e2e-deployed --branch=main --limit 10 --json conclusion \
+                     --jq '[.[] | select(.conclusion != null)][0].conclusion // "none"')"
+          case "$drift" in
+            failure|timed_out|cancelled)
+              echo "::error::the last completed scheduled e2e on main concluded '$drift'."
+              exit 1 ;;
+          esac
+          echo "newest build; last rollout: $last; last scheduled e2e: $drift"
+
+      - name: Is it already pinned?
+        if: steps.newest.outputs.superseded != 'true'
+        id: current
+        run: |
+          set -eu
+          pinned="$(python3 -c "import json;d=json.load(open('container.json'));print([c for c in d['containers'] if c['name']=='startup-valuation'][0]['image'].split('@')[1])")"
+          echo "pinned=$pinned"
+          if [ "$pinned" = "$DIGEST" ]; then
+            echo "unchanged=true" >> "$GITHUB_OUTPUT"
+            echo "already pinned — nothing to do"
+          else
+            echo "unchanged=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Pin it
+        if: steps.newest.outputs.superseded != 'true' && steps.current.outputs.unchanged != 'true'
+        env:
+          REPO: ${{ github.repository }}
+        run: |
+          set -eu
+          python3 - "$DIGEST" "$REPO" <<'PY'
+          import json, sys, pathlib
+          digest, repo = sys.argv[1], sys.argv[2]
+          p = pathlib.Path("container.json")
+          d = json.loads(p.read_text())
+          for c in d["containers"]:
+              if c["name"] == "startup-valuation":
+                  c["image"] = f"ghcr.io/{repo}@{digest}"
+          p.write_text(json.dumps(d, indent=2) + "\n")
+          PY
+          git diff --stat
+
+      - name: Open or update the pin pull request
+        if: steps.newest.outputs.superseded != 'true' && steps.current.outputs.unchanged != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+          BOT_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+          DIGEST: ${{ env.DIGEST }}
+          SOURCE_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -eu
+          # A unique branch per source commit. `gh pr list --head <name>` matches on branch name
+          # only — not on the head repository — so a stable name lets anyone who can open a PR
+          # register `attacker:chore/pin-web-digest -> main` and have this job arm auto-merge on
+          # *their* pull request, which could pin an older, vulnerable digest.
+          branch="chore/pin-web-digest-${SOURCE_SHA:0:12}"
+          short="${SOURCE_SHA:0:7}"
+          # Commit as the token's own user, not as the bot noreply. `guard-tamper` refuses gate-file
+          # changes from automated authors, and container.json is a gate file: committing as
+          # github-actions[bot] would make this PR block itself.
+          login="$(gh api user -q .login)"
+          uid="$(gh api user -q .id)"
+          git config user.name "$login"
+          git config user.email "${uid}+${login}@users.noreply.github.com"
+          git checkout -B "$branch"
+          git add container.json
+          git commit -m "chore(deploy): pin the web image built from $short"
+          # The checkout persisted no credentials (persist-credentials: false), so the token is
+          # supplied to this one command through a helper and never lands in .git/config on a
+          # runner whose workspace survives the job.
+          git -c credential.helper='!f() { echo username=x-access-token; echo "password=${BOT_TOKEN}"; }; f' \
+            push --force origin "$branch"
+
+          existing="$(gh pr list --head "$branch" --state open --json number -q '.[0].number // empty')"
+          if [ -z "$existing" ]; then
+            gh pr create --base main --head "$branch" \
+              --title "chore(deploy): pin the web image built from $short" \
+              --body "Automated by \`pin-digest.yml\` after \`image.yml\` published \`$DIGEST\` from \`$short\`.
+
+          Merging this is the approval step for the rollout: \`container-cd.yml\` will only deploy a digest that \`container.json\` pins, so the pin is what makes the built image deployable. Auto-merge is enabled, so the check suite is the only gate."
+            existing="$(gh pr list --head "$branch" --state open --json number -q '.[0].number')"
+          fi
+
+          # Never merge a pull request this job did not create. Same-repository head only, owned by
+          # this repository, on the branch we just pushed — otherwise a fork PR with a colliding
+          # branch name would be the thing that gets auto-merged.
+          info="$(gh pr view "$existing" --json isCrossRepository,headRefName,headRepositoryOwner,baseRefName)"
+          echo "$info"
+          # gh's --jq has no --arg, and an external `jq` is not guaranteed on this node (the rest of
+          # the pipeline uses gh's built-in filter). python3 is already a dependency here.
+          if ! printf '%s' "$info" | BRANCH="$branch" OWNER="${GITHUB_REPOSITORY%%/*}" python3 -c '
+          import json, os, sys
+          d = json.load(sys.stdin)
+          ok = (d.get("isCrossRepository") is False
+                and d.get("headRefName") == os.environ["BRANCH"]
+                and d.get("baseRefName") == "main"
+                and ((d.get("headRepositoryOwner") or {}).get("login") == os.environ["OWNER"]))
+          sys.exit(0 if ok else 1)'; then
+            echo "::error::PR #$existing is not the pin PR this job created (fork, branch or owner mismatch) — refusing to merge"
+            exit 1
+          fi
+
+          gh pr merge "$existing" --auto --squash
+          echo "auto-merge armed on PR #$existing"

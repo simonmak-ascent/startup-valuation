@@ -216,3 +216,88 @@ transport claim in `api/index.py` (`P14`; only meaningful once `/api` routes to 
 audit, auth, calculator UI, locales, benchmarks, methods) → 6. CI determinism.
 
 Each was verified as it landed; the full gate run is at the end of the branch.
+
+## Delivery status
+
+Per `docs/delivery-gates.md`, every task above carries the five stages. As of 2026-11-17:
+
+| stage | state |
+|---|---|
+| commit | ✅ 21 tasks in `3962902` |
+| push | ✅ |
+| merge | ✅ `b32d136` |
+| deploy | ⛔ **every task that touches `api/*.py` is undeployable** — OI-40, no reproducible Python image |
+| e2e | ⛔ 5 of 8 assertions fail against the live origin |
+
+So the correct reading of this plan is **merged, not delivered**. The tasks that live in the web
+container (health route, sitemap, robots, canonical) become deliverable with the `image.yml` build
+pinned in `container.json`; the rest do not.
+
+---
+
+# Part 2 — bug fixes and feature enhancement (2026-11-18)
+
+Everything below is measured on this date, against the live origin and the estate, not inferred.
+Ordering is by what unblocks the most: the three operator items gate every delivery, so they come
+first and nothing else is claimed as deliverable behind them.
+
+## Delivery state, measured
+
+| item | state | evidence |
+|---|---|---|
+| website `/`, `/zh`, `/hk` | **live** | `200`; browser render verified |
+| `/mcp` (POST) | **live** | `initialize` 200; `tools/list` → **14 tools** |
+| `/api/calculate` | **live** | `{"value": 10.0, "method": "P/E Ratio", …}`, 6/6 through the ALB on 3 nodes |
+| calculator UI | **fixed this session** | `Result — Scorecard Method (3.1)`, `$1,800,000`; the `$NaN` was `/api/calculate` landing on the MCP handler |
+| deployed e2e | **6 of 8 pass** | remaining: health path, `GET /mcp` |
+| `/api/health` | **503** | `{"status":"degraded","db_status":"disconnected"}` — no `SURREALDB_*` anywhere |
+| `/docs` | **404** | mkdocs `site/` is not in the web image |
+| MCP registry | **advertises a dead URL** | registry says `…/api`; repo `server.json` correctly says `…/mcp` |
+| Python service image | **built and probed, unshipped** | `sv-py:src-ee0ff7b` on ecs-01, 469 MB; `GET /mcp` → 405 with `Allow: POST, OPTIONS` |
+| delivery chain | **built, reviewed 7×, unshipped** | 13 invariants + 13 fixtures + 1 behavioural simulator, all green |
+
+## Operator items (blocking; agent cannot proceed)
+
+| # | item | unblocks | verify |
+|---|---|---|---|
+| O1 | `rm ~/.local/share/opencode/review-gate/ses_e17d4a7e7ffesJM94SEnIaWGIV.json` | every `git commit`/`push`/deploy — record has `snapshot: {}`, so no verdict can bind (7 `ship` verdicts already lost to it) | `git commit` succeeds |
+| O2 | App database identity + credential handoff (`python3 /tmp/opencode/operator-wire-db.py`) | `/api/health`, benchmarks, valuation runs, ETL | `/api/health` → 200 |
+| O3 | `DEPLOY_TOKEN` (Contents write, PR write, **Actions read**) | unattended build → pin → deploy | a push to `main` deploys without a human |
+
+## Bug fixes
+
+Each carries the command that proves it. Ordered so each makes the next one verifiable.
+
+| # | bug | fix | verify |
+|---|---|---|---|
+| B1 | `GET /mcp` answers 200 instead of 405 | ship `sv-py:src-ee0ff7b` (built from the public repo, both roles probed) | e2e: "GET on the MCP endpoint is refused" passes |
+| B2 | `/api/health` 503 | wire `SURREALDB_*` (O2), apply `lib/db/migrate.ts` — 17 tables, **none** exist in `valuation/main` | `/api/health` 200; e2e assertion passes → 8/8 |
+| B3 | `/docs` 404 | build `site/` into `Dockerfile.web` and serve it | `/docs` 200 and a nav page 200 |
+| B4 | retired `@vercel/analytics` fires 404s on every page load | remove the dependency and its mount | browser network: no third-party 404 |
+| B5 | MCP registry points at `/api` | republish `server.json` (already correct) via `mcp-registry.yml` | registry `remotes[0].url` ends `/mcp` |
+| B6 | Python image exists only on ecs-01 behind a moved tag (`sv-py:lean-v2` had three IDs) | commit the clean-room `Dockerfile.svc` + a build input on `image.yml` to apg-infra `estate/startup-valuation/` | rebuilt twice → same digest |
+| B7 | `container.json` pins `362d06fd…` for both Python containers; unverifiable anonymously | resolve with an authenticated `docker manifest inspect` on a node; repin to a digest that exists | rollout pulls the pinned digest, not a local image |
+| B8 | ALB target groups have **no health check** (`path=None`, `enabled=None` on all six groups) | declare per-group probes in the publish declaration and re-apply | `publish.py plan` shows no `UPDATE probe` drift |
+| B9 | calculator reports the library version from `api/calculate.py`'s stale constant | derive from `startup_valuation.__version__` (already fixed in the built image) | UI stamp reads 2.1.4, not 1.0.2 |
+
+## Features
+
+| # | feature | why | verify |
+|---|---|---|---|
+| F1 | deployed e2e covers a `tools/call` round trip, not just `tools/list` | listing 14 tools proves the surface, not that a method computes | a tool returns a `ValuationResult` with inputs and assumptions |
+| F2 | populate `benchmark` / `public_company` from the repo's own ETL | both pages render empty states today | page shows rows sourced from `pnpm etl:import` |
+| F3 | `/api/health` reports digest, version and DB latency | the current probe cannot distinguish "serving" from "serving nothing" (OI-58) | probe body contains the running digest |
+| F4 | `deepseek-vision` MCP tool wired into the `vision` role | it works from the orchestrator today (`VISION-PROBE-4729`, `alpha 3.0 / beta 7.0 / gamma 5.0`); subagents have no MCP namespace yet | the `vision` agent returns the tool's text, not its own |
+| F5 | one plan-visible dashboard of the chain's last 10 runs | the pin gate now depends on run history; reading it by hand is how a fail-open hid for two rounds | a URL or command that shows pin/deploy/verify per commit |
+
+## Notes that keep the plan honest
+
+- **The gate is the product here.** Two defects this session were found only by executing shell
+  (`tests-ci/health_gate_sim.py`): a pin guard that rejected every legitimate pin, and a health
+  search that hid a failure behind a page of skipped runs. Static checks passed both.
+- **No health claim without a database.** `/api/health` stays 503 until O2 lands. Making it say `ok`
+  without one would make the deployed suite certify nothing, and the estate has been burned by
+  exactly that (`AGENTS.md` §13.5).
+- **`GET /mcp` 200 is not cosmetic**: a client that gets 200 on GET treats the endpoint as REST and
+  never sends `initialize`.
+

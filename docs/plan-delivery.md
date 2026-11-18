@@ -74,13 +74,13 @@ not answer 200 — the `e2e` probe `compliance.json` declares and nothing execut
 |---|---|---|
 | **D3 — Python images** | operator, on a node | `estate/<app>/Dockerfile` + `build.sh` + a real env file generated from `docker inspect`; then `image.yml` can publish a digest for api/calculate and T2 can ship |
 | **Ingress** | apg-infra `publish.py` window | `/api` → MCP, `/api/calculate` → calculator, other `/api/*` → web |
-| **A real rollout** | operator | dispatch `deploy-digest.yml` with a digest that `container.json` pins; dry-run proves the wiring first |
+| **A real rollout** | **automatic** for the web container once `image.yml` builds and the pin PR merges; still an operator dispatch for `sv-api`/`sv-calc` until OI-40 | a push to `main` produces a rollout and an e2e run with nobody pressing anything |
 
 ## Status after implementation
 
 | task | outcome |
 |---|---|
-| **T1** caller | **done** — `.github/workflows/deploy-digest.yml`, job-level `uses` pinned to apg-infra `55b77e2`, inputs mirroring `container-cd.yml`, plus `probe_url`. YAML parses; appears as `jobs: [deploy, verify]`. |
+| **T1** caller | **done** — `.github/workflows/deploy-digest.yml`, job-level `uses` pinned to apg-infra `2156de2`, inputs mirroring `container-cd.yml`, plus `probe_url`. YAML parses; the job graph is now `[prepare, guard, deploy, verify]` — `prepare` derives which containers changed, and `deploy` fans out over them. |
 | **T2** health proves it can serve | **done** — both handlers run a real computation: the MCP handler through `call_tool` (the same dispatch a client uses), the calculator by calling `tv.present_value` directly so the probe does not consume its rate-limit budget. 200 on success, 503 on failure; `tests/test_api_handlers.py` covers both branches. |
 | **T3** rollout gate | **done** — api and calculate now declare `proto: http`, `path: /api/health`, the production `Host`. Verified by running `apg-infra/deploy/container/container-spec.py`: `PROTO=http HEALTH_PATH=/api/health HEALTH_HOST=startup-valuation.ascent-partners.com` for both. |
 | **T4** pnpm flake | **partly done, and the first attempt was wrong** — `version: 10.30.3` is pinned, but `dest: ${{ runner.temp }}` (which the OI-34 note suggests) **breaks the job**: the action points at the runner's temp root and fails with `Missing file at path: …/_temp/_runner_file_commands/add_path_…` (measured on PR #74, `web` red in 13 s). `dest` is now removed and the measurement recorded in `ci.yml` so nobody re-adds it. Nothing in the estate uses `dest`; every repo pins `version` only. What actually keeps this job green is `--frozen-lockfile` plus the concurrency group, which is what PR #73 ran. |
@@ -102,12 +102,15 @@ Both are in `apg-infra/.github/workflows/container-cd.yml` at the pinned SHA. Th
 here because this repository is where they will bite, and because the first real rollout should
 not happen until they are decided.
 
-**U1 · the deploy implementation is fetched unpinned.** `container-cd.yml:71-74` checks out
-`simonmak-ascent/apg-infra` with **no `ref`**, so the `deploy/container/rollout.sh` that pulls,
-swaps and health-checks production containers is whatever `main` is at dispatch time — despite the
-caller correctly pinning the *workflow file* to a full SHA. Pinning the reusable workflow while
-resolving its payload from a moving branch does not pin the thing that runs.
-Suggested fix (apg-infra): `ref:` the same full SHA on that checkout, and pin `actions/checkout` too.
+**U1 · the deploy implementation is fetched unpinned — FIXED 2026-11-17.** `container-cd.yml` checked
+out `simonmak-ascent/apg-infra` with **no `ref`**, so `deploy/container/rollout.sh` — the script that
+pulls, swaps and health-checks production containers — was whatever `main` held at dispatch time.
+Pinning the reusable workflow pinned the instructions and left the code free to move.
+
+Fixed in apg-infra `2156de2`: the checkout is pinned to `6157e6b`, the last commit that changed
+`deploy/container/`. Deliberately *not* to the workflow's own commit (a file cannot name its own
+SHA) and not to `main`. The invariant is recorded beside it: when the deploy payload changes, bump
+that SHA **and** re-pin every caller — `deploy-digest.yml` now pins `container-cd.yml@2156de20183b…`.
 
 **U2 · the digest gate reads the dispatched ref's manifest.** `container-cd.yml:67-68` runs
 `actions/checkout@v7` with no `ref:`, which defaults to the triggering ref, so a branch that pins its
@@ -201,3 +204,18 @@ audit started from.
   the documented break, and it is why the registry URL and the server card moved in the same change.
 - Until the operator applies the split, `/mcp` resolves to the web container and 404s; the code is
   correct but unreachable, exactly as `/api/*` was before.
+
+## Delivery status
+
+Per `docs/delivery-gates.md`:
+
+| task | commit | push | merge | deploy | e2e |
+|---|---|---|---|---|---|
+| T1 caller, T2 health, T3 manifest, T6 probe | ✅ | ✅ | ✅ `6fbaf27` | ⛔ api/calc image (OI-40) | ⛔ |
+| T4 pnpm fix, T5 compliance, T7 AGENTS | ✅ | ✅ | ✅ `6fbaf27` / `33f16cd` | n/a (CI config) | ✅ gates run in CI |
+| endpoint move to `/mcp` | ✅ | ✅ | ✅ `33f16cd` | ⛔ ALB split + Python image | ⛔ |
+| web image pinned `1a789dec…` | this PR | — | — | — | — |
+
+`deploy-digest.yml` exists now, so stage 4 is a dispatch rather than a missing file — but it can
+only move the **web** container. The Python containers remain blocked at stage 4 by OI-40, and
+`/mcp` remains blocked at stage 5 by the ALB split.

@@ -60,6 +60,15 @@ jobs:
       - name: Run tests
         run: pytest --cov=startup_valuation --cov-report=term-missing --cov-fail-under=85 -v
 
+      # The delivery-contract checks live here, not in `web`: this job installs pytest, and it runs
+      # on the 3.10–3.12 matrix, so a script written for one interpreter is caught by the others. A
+      # gate that fails for an environmental reason is the gate somebody deletes.
+      - name: Delivery contract (pin checker, 16 cases)
+        run: python3 -m pytest tests-ci/test_manifest_pin.py -q
+
+      - name: Delivery contract (health gate behaviour)
+        run: python3 tests-ci/health_gate_sim.py
+
   web:
     permissions:
       contents: read
@@ -67,7 +76,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: pnpm/action-setup@v6
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6
         with:
           # Pin the version: the runner shares one ~/setup-pnpm between repositories, so a
           # pnpm left there by another repo can shadow this one (apg-infra OI-34).
@@ -77,7 +86,7 @@ jobs:
           # hazard is instead contained by --frozen-lockfile and the concurrency group.
           version: 10.30.3
 
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: "22"
 
@@ -89,6 +98,17 @@ jobs:
 
       - name: Unit tests (vitest)
         run: pnpm test
+
+      # The delivery chain's invariants live across seven workflow files, by hand. actionlint checks
+      # syntax and action names; it cannot know that a job needs a scope or that two files must
+      # agree. Four of these checks correspond to defects that were already shipped once: a
+      # zero-scope token, a paths filter that made a required check impossible, a reporter the
+      # diagnosis step could not parse, and an expression interpolated into shell on the runner
+      # that holds the Docker socket. No install: the test uses node: built-ins only.
+      - name: Delivery contract (workflow invariants)
+        run: node --test --test-reporter=spec tests-ci/workflows.test.mjs
+
+
 
   build:
     permissions:

@@ -6,7 +6,10 @@
     "pytest",
     "ruff check .",
     "pnpm check",
-    "pnpm test"
+    "pnpm test",
+    "python3 -m pytest tests-ci/",
+    "node --test tests-ci/workflows.test.mjs",
+    "python3 tests-ci/health_gate_sim.py"
   ],
   "deploy": {
     "kind": "workflow",
