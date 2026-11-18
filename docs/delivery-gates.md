@@ -12,7 +12,7 @@ a build from 2026-10-29.
 | 1 | **commit** | `review-gate` plugin | a `reviewer` returned `REVIEW-VERDICT: ship` over the bytes being committed |
 | 2 | **push** | same gate binds the verdict to the pushed bytes | the branch is on the remote |
 | 3 | **merge to main** | branch protection: `pr-required` + required checks `test (3.10/3.11/3.12)`, `web`, `docs`; `release-gate` requires the commit to *be* the merge commit of a merged PR | the PR shows `MERGED`, and the push-to-main run is green |
-| 4 | **deploy** | **automatic**: a push to `main` touching `container.json` runs `deploy-digest.yml` → `apg-infra/container-cd.yml`: main-only `guard`, digest must equal the pin | the rollout job succeeded and the container reports the pinned digest |
+| 4 | **deploy** | **automatic**: a push to `main` touching `container.json` runs `deploy-digest.yml` inline against `deploy/container/` (a pinned copy of apg-infra's payload): main-only `guard`, digest must equal the pin | the rollout job succeeded and the container reports the pinned digest |
 | 5 | **e2e** | **automatic**: `e2e-deployed.yml`, called by the deploy workflow's `verify` job | **`tests-deployed/` passed against the live origin** |
 
 ## How it runs without being asked
@@ -75,7 +75,7 @@ form; the session todo list uses it too.
   produces the artefact everything else trusts, holding `packages: write` on a Docker-socket node —
   ran `actions/checkout@v7` and `actions/upload-artifact@v4` as movable tags, which is the opposite
   of this document's own rule. `publish.yml` still uses tags; it is the release path, not this chain.
-- **The deploy proves the digest, not the tag.** `container-cd.yml` refuses a digest that is not the
+- **The deploy proves the digest, not the tag.** `deploy-digest.yml` refuses a digest that is not the
   one `container.json` pins, so the pin is the reviewed artefact and a rollout cannot ship something
   nobody approved.
 - **e2e after the rollout, against the origin.** A rollout reporting success is not the product

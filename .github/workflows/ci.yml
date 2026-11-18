@@ -104,7 +104,11 @@ jobs:
       # agree. Four of these checks correspond to defects that were already shipped once: a
       # zero-scope token, a paths filter that made a required check impossible, a reporter the
       # diagnosis step could not parse, and an expression interpolated into shell on the runner
-      # that holds the Docker socket. No install: the test uses node: built-ins only.
+      # that holds the Docker socket.
+      #
+      # No npm install is needed — the test uses node: built-ins only — but it does shell out to
+      # `python3` to exercise the pin checker, so the runner image must carry an interpreter. The
+      # `test` job installs one through setup-python; this job relies on the system python3.
       - name: Delivery contract (workflow invariants)
         run: node --test --test-reporter=spec tests-ci/workflows.test.mjs
 

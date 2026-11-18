@@ -7,15 +7,17 @@ name: deploy-digest
 # own. `workflow_dispatch` remains for two things only: a deliberate re-roll of an existing pin, and
 # a dry run.
 #
-# The deploy logic is not here. It lives once, in apg-infra:
-#   https://github.com/simonmak-ascent/apg-infra/.github/workflows/container-cd.yml
-# That reusable workflow enforces the rules that make a rollout safe — the digest must be the one
-# container.json pins, so an unapproved image cannot reach production; the image is pulled once and
-# copied to peers over the VPC; each node probes on PORT+10000, swaps, health-checks the declared
-# path and restores what it replaced if that fails.
+# The rollout is inline, not a call to apg-infra's reusable workflow. This repository is public and
+# apg-infra is private, and GitHub refuses a reusable-workflow call across that boundary at run
+# creation — a run with zero jobs and this file's path as its name. `deploy/container/` is a pinned
+# copy of that payload (see its VENDORED.md); the rules a rollout must satisfy are unchanged: the
+# digest must be the one container.json pins, so an unapproved image cannot reach production, and
+# rollout.sh probes on PORT+10000, swaps, health-checks the declared path and restores what it
+# replaced if that fails.
 #
-# Pinned to a full commit SHA: this runs with a token that can replace production containers, and a
-# tag can be moved under you.
+# The vendored payload is pinned in `deploy/container/VERSION`, and `deploy/` is a gate file in both
+# guards: the code that replaces production containers must not change in a commit the deploy guard
+# does not judge.
 
 on:
   push:
@@ -246,7 +248,7 @@ jobs:
           HUMANS: simonmak-ascent
         run: |
           set -eu
-          GATE_RE='^((tests-deployed/)|(tests-ci/)|(scripts/)|(compliance\.json)|(docs/delivery-gates\.md)|(\.github/workflows/)|(container\.json))'
+          GATE_RE='^((tests-deployed/)|(tests-ci/)|(scripts/)|(deploy/)|(compliance\.json)|(docs/delivery-gates\.md)|(\.github/workflows/)|(container\.json))'
 
           # `git diff` over the push range, not `gh api .../commits/$SHA`: the API caps its file
           # list at 300 and paginates past that, so a commit touching a regenerated tree could
@@ -338,37 +340,99 @@ jobs:
           fi
           echo "human-authored gate-file change; allowed"
 
+  # The rollout is inline, not a call to apg-infra's reusable workflow. A public repository may not
+  # call a reusable workflow in a private one: GitHub refuses at run creation and the run appears with
+  # zero jobs and this file's path as its name. `deploy/container/` is a pinned copy of that payload
+  # (see its VENDORED.md); the estate's "deploy logic lives once" rule assumed every caller could
+  # reach it, and this repository cannot.
   deploy:
     needs: [prepare, guard]
     if: needs.prepare.outputs.count != '0'
+    runs-on:
+      - self-hosted
+      - ${{ needs.prepare.outputs.runner }}
     permissions:
       contents: read
       packages: write
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
-    uses: simonmak-ascent/apg-infra/.github/workflows/container-cd.yml@2156de20183b22a5ad8247b4e613137e021b513e
-    with:
-      containers: ${{ matrix.container }}
-      digest: ${{ matrix.digest }}
-      # Per matrix entry, from the manifest's `docker_name`. An empty value still falls back to
-      # $CONTAINERS inside container-cd, so callers that declare nothing are unaffected.
-      docker_names: ${{ matrix.docker_name }}
-      runner: ${{ needs.prepare.outputs.runner }}
-      # Only when every matrix entry shares one digest. Per-container state still lands on the
-      # runner node either way; what is withheld is a fleet-wide pointer that would be wrong for
-      # half the fleet. With the pointer withheld, peers keep their existing state until an
-      # operator reconciles — worse for a multi-digest move than a correct pointer, better than a
-      # pointer that silently swaps two roles.
-      #
-      # Scope, precisely: the :desired tag is per *repository* (rollout.sh), and container.json
-      # declares three containers on one repository at two digests — so this predicate covers the
-      # entries in *this run*, not the whole manifest. A single-container move still publishes a
-      # tag naming one role's image. That is safe only because converge.sh prefers the node's own
-      # <container>.desired record and converge-all.sh visits only containers that have one; the
-      # durable fix is a per-container pointer tag in apg-infra.
-      publish_pointer: ${{ (github.event_name == 'push' || inputs.publish_pointer) && needs.prepare.outputs.pointer == 'true' }}
-      dry_run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
+    # The callee's own group, restored. The workflow-level group differs between a push ('auto') and
+    # a dispatch (the runner label), so without this a manual re-roll can race an automatic push into
+    # `docker rm` on the same node — interleaved, the second removes the container the first is
+    # health-checking, and the rollback restores the wrong image.
+    concurrency:
+      group: deploy-container-${{ needs.prepare.outputs.runner }}-${{ matrix.container }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # No step below runs an authenticated git command, and this job holds `packages: write` on a
+          # runner whose workspace survives the job — the rule pin-digest.yml applies, and the same
+          # reason the `Log out` step below exists for Docker.
+          persist-credentials: false
+
+      - name: The digest must be the one this repository declares
+        env:
+          DIGEST: ${{ matrix.digest }}
+          CONTAINERS: ${{ matrix.container }}
+        run: |
+          set -eu
+          python3 - "$DIGEST" "$CONTAINERS" <<'PY'
+          import json, sys
+          digest, names = sys.argv[1].removeprefix("sha256:"), [n.strip() for n in sys.argv[2].split(",") if n.strip()]
+          manifest = json.load(open("container.json"))
+          items = {c["name"]: c for c in (manifest.get("containers") or [manifest])}
+          bad = 0
+          for name in names:
+              spec = items.get(name)
+              if spec is None:
+                  print(f"::error::'{name}' is not in container.json (have: {', '.join(items)})")
+                  bad += 1
+                  continue
+              pinned = (spec.get("image") or "").split("@")[-1].removeprefix("sha256:")
+              if pinned != digest:
+                  print(f"::error::{name} pins {pinned[:19] or '(nothing)'} but you asked for {digest[:19]} — open a pull request that pins it, so the gate runs first")
+                  bad += 1
+          raise SystemExit(1 if bad else 0)
+          PY
+
+      - name: Log in to GHCR
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Pull once, then roll out
+        env:
+          CONTAINER: ${{ matrix.container }}
+          DOCKER_NAME: ${{ matrix.docker_name }}
+          DIGEST: ${{ matrix.digest }}
+          # Gated on the same predicate as before: one `:desired` tag serves the whole repository,
+          # so it may only move when every entry in this run shares a digest (prepare computes it).
+          PUBLISH_POINTER: ${{ (github.event_name == 'push' || inputs.publish_pointer) && needs.prepare.outputs.pointer == 'true' }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -eu
+          ref="ghcr.io/$REPO@${DIGEST}"
+          attempt=1
+          while ! docker pull "$ref"; do
+            echo "pull attempt $attempt failed; retrying in 10s" >&2
+            attempt=$((attempt + 1))
+            [ "$attempt" -gt 3 ] && exit 1
+            sleep 10
+          done
+          chmod +x deploy/container/rollout.sh
+          args=(--container "$CONTAINER" --digest "$DIGEST")
+          [ -n "${DOCKER_NAME:-}" ] && args+=(--docker-name "$DOCKER_NAME")
+          [ "$PUBLISH_POINTER" = "true" ] && args+=(--publish-pointer)
+          [ "$DRY_RUN" = "true" ] && args+=(--dry-run)
+          deploy/container/rollout.sh "${args[@]}"
+
+      # Without this the job's packages:write token stays in ~/.docker/config.json on a persistent
+      # shared node, including on the failure path — which is why the callee used `if: always()`.
+      - name: Log out
+        if: always()
+        run: docker logout ghcr.io || true
 
   # A rollout reporting success is not the product working. This calls the same end-to-end suite
   # that runs on a schedule, so there is one definition of "the deployed product serves the
