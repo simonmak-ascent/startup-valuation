@@ -1,0 +1,48 @@
+name: release-gate
+
+# Enforces stage 3 of docs/delivery-gates.md: every commit on main arrived through a merged
+# pull request.
+#
+# Branch protection already refuses an unreviewed PR, but it can be bypassed by an admin or a
+# token with the right scope, and a direct push leaves nothing to review. This check fails the
+# run when the pushed commit has no merged PR behind it, so "it is on main" and "somebody
+# approved it" stay the same statement.
+#
+# It deliberately does not try to force a deploy — a rollout is an operator decision with a
+# window. What it does enforce is that the thing being deployed was reviewed.
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  came-through-a-pull-request:
+    runs-on:
+      - self-hosted
+      - apg-ci-04
+    steps:
+      - name: The commit has a merged pull request behind it
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+        run: |
+          set -eu
+          # Precisely: this commit must be the merge commit of a merged pull request. Filtering
+          # on `merged_at` alone also matches a PR's branch head, which is not on main.
+          # `gh api --jq` takes one jq expression and has no `--arg` flag — passing one fails with
+          # "accepts 1 arg(s), received 4". The SHA is interpolated instead; it comes from
+          # github.sha, a full hex string with no jq metacharacters.
+          merged=$(gh api "repos/$REPO/commits/$SHA/pulls" \
+                     --jq "[.[] | select(.merge_commit_sha == \"$SHA\")] | length")
+          if [ "$merged" = "0" ]; then
+            echo "::error::$SHA reached main without a merged pull request."
+            echo "Stage 3 of docs/delivery-gates.md: commit -> push -> pull request -> merge."
+            echo "Revert it and go through review; a direct push carries no review verdict."
+            exit 1
+          fi
+          echo "$SHA arrived through $merged merged pull request(s)"

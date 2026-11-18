@@ -1,0 +1,118 @@
+name: guard-tamper
+
+# The one control a self-healing loop cannot do without.
+#
+# An automated fix is only useful if it fixes the product. The failure mode of every
+# self-healing system is the fix that makes the test pass: delete the assertion, relax the
+# expectation, "correct" the contract until it matches the broken host. That looks like a green
+# pipeline and is worse than a red one, because nobody looks again.
+#
+# So: an automated author may not touch the things that define "correct". A human may — changing
+# the contract is legitimate — but it then comes with a name on the pull request.
+#
+#   gate files: tests-deployed/**, tests-ci/**, scripts/**, compliance.json,
+#               docs/delivery-gates.md, .github/workflows/** (every workflow), container.json
+#
+# tests-ci/ is listed because it holds the invariants that protect this pipeline; ci.yml merely
+# invokes them, so leaving the tests ungated would let an automated author empty them in one pull
+# request and weaken a guard in the next, each passing on its own.
+#
+# This workflow runs on every pull request and reports. It is *not* the enforcement: a report can
+# be bypassed by pushing after it ran, and auto-merge waits only on required checks. The same rule
+# is therefore enforced in `deploy-digest.yml`'s `guard` job, against the merge commit that is
+# about to reach production — that is the only place where being wrong has a consequence.
+#
+# The `paths:` filter was removed deliberately. A path-filtered workflow never reports on a PR that
+# touches no gate file, so requiring it would leave every ordinary PR stuck on "Expected — Waiting
+# for status to be reported". An always-running job can be a required check; the early exit below
+# is what makes it cheap for PRs that change nothing it cares about.
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  automated-authors-cannot-weaken-the-gate:
+    runs-on:
+      - self-hosted
+      - apg-ci-04
+    steps:
+      # The digest check needs `scripts/check_manifest_pin.py`. The checkout is the pull request's
+      # merge ref, so the script is the head's version — and `scripts/` is itself a gate file, so a
+      # pull request that edits it never reaches the exemption below. The checker that decides the
+      # exemption is therefore byte-identical to the base whenever the exemption can be taken.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Judge the author
+        env:
+          ACTOR: ${{ github.event.pull_request.user.login }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          set -eu
+          # An allowlist, not a deny-pattern. The previous test asked whether the login ended in
+          # `[bot]`, which misses exactly the case this workflow exists for: a machine account
+          # authenticating with a PAT under a human-looking login. Deny by default; name the humans.
+          HUMANS="simonmak-ascent"
+          GATE_RE='^((tests-deployed/)|(tests-ci/)|(scripts/)|(compliance\.json)|(docs/delivery-gates\.md)|(\.github/workflows/)|(container\.json))'
+
+          # `gh pr view --json files` is a single GraphQL page (`files(first: 100)`), so a PR
+          # touching a gate file beyond the first hundred paths would read as "no gate file" and
+          # pass. The REST endpoint pages, and --paginate follows it.
+          changed="$(gh api --paginate "repos/$REPO/pulls/$PR/files" --jq '.[].filename')"
+          hits="$(printf '%s\n' "$changed" | grep -E "$GATE_RE" || true)"
+          if [ -z "$hits" ]; then
+            echo "PR #$PR changes no gate file; nothing to judge"
+            exit 0
+          fi
+          echo "gate files in PR #$PR:"; printf '%s\n' "$hits"
+
+          # Mirror deploy-digest's pin exemption. A pull request whose only gate file is
+          # container.json, and whose change is digest-only, is the pin — the approval the rollout
+          # deploys, not a weakening of the gate. Without this mirror, marking this workflow as a
+          # required check would block every automatic pin whose token belongs to a machine account.
+          if [ "$hits" = "container.json" ]; then
+            gh api "repos/$REPO/contents/container.json?ref=$BASE_SHA" --jq .content | base64 -d > "${RUNNER_TEMP}/gt-old.json"
+            gh api "repos/$REPO/contents/container.json?ref=$HEAD_SHA" --jq .content | base64 -d > "${RUNNER_TEMP}/gt-new.json"
+            if python3 scripts/check_manifest_pin.py "${RUNNER_TEMP}/gt-old.json" "${RUNNER_TEMP}/gt-new.json"; then
+              echo "digest-only pin; allowed"
+              exit 0
+            fi
+            echo "container.json is not a digest-only pin; the human check applies"
+          fi
+
+          # The digital signature of the sign-off — named humans — with one exact exemption.
+          case " $HUMANS " in
+            *" ${ACTOR} "*) human=1 ;;
+            *) human=0 ;;
+          esac
+          # Fail closed: an API error used to yield an empty list, which contains no `[bot]` and
+          # therefore *passed*. `--paginate` because the endpoint returns 30 commits per page.
+          if ! authors="$(gh api --paginate "repos/$REPO/pulls/$PR/commits" --jq '.[].author.login' 2>/dev/null)"; then
+            echo "::error::cannot enumerate the commits of PR #$PR — refusing to allow a gate-file change blind."
+            exit 1
+          fi
+          if [ -z "$authors" ]; then
+            echo "::error::PR #$PR returned no commit authors — unverifiable, refusing."
+            exit 1
+          fi
+          echo "opener=${ACTOR} commit-authors=$(printf '%s' "$authors" | tr '\n' ' ')"
+
+          if [ "$human" != "1" ] || printf '%s\n' "$authors" | grep -qE '(\[bot\]$|^null$)'; then
+            echo "::error::${ACTOR} (commits: $(printf '%s' "$authors" | tr '\n' ' ')) changed a gate file."
+            echo "::error::The contract, the compliance declaration and the pipeline are what define"
+            echo "::error::'correct'. An automated fix may change the product, never the definition of"
+            echo "::error::done or the machinery that enforces it. A named human must author this PR."
+            exit 1
+          fi
+          echo "${ACTOR} is on the human allowlist; gate-file changes are allowed and reviewable"
+

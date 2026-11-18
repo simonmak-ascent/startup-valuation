@@ -16,6 +16,15 @@ on:
         description: "Optional local image tag to push instead of building (name:stamp)"
         required: false
         type: string
+  # Auto-deploy, stage 1: every push to main builds. A pin commit is not a source change and
+  # docs cannot alter the image, so neither should trigger a rebuild.
+  push:
+    branches: [main]
+    paths-ignore:
+      - container.json
+      - 'docs/**'
+      - '**.md'
+      - '.github/workflows/**'   # a pipeline change cannot alter the image it builds
 
 permissions:
   contents: read
@@ -36,7 +45,7 @@ jobs:
           fi
           echo "docker $(docker version --format '{{.Server.Version}}')"
 
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         if: inputs.image == ''
 
       - name: Log in to GHCR
@@ -46,19 +55,26 @@ jobs:
 
       - name: Build and push
         id: build
+        # `inputs.image` is interpolated into `env`, never into the `run:` body. A `${{ }}`
+        # expression in shell source is substituted before the shell parses it, so a dispatch input
+        # becomes command execution on the node that holds the Docker socket.
+        env:
+          IN_IMAGE: ${{ inputs.image }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
         run: |
           set -eu
-          repo="ghcr.io/${{ github.repository }}"
-          if [ -n "${{ inputs.image }}" ]; then
-            src="${{ inputs.image }}"
+          repo="ghcr.io/$REPO"
+          if [ -n "$IN_IMAGE" ]; then
+            src="$IN_IMAGE"
             case "$src" in *:*) ;; *) echo "image must be name:stamp (got $src)" >&2; exit 1 ;; esac
             dst="$repo:${src#*:}"
             docker tag "$src" "$dst"
           else
             dst="$repo:$(date -u +%Y%m%dT%H%M%S)"
             docker build -f Dockerfile.web -t "$dst" \
-              --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}" \
-              --label "org.opencontainers.image.revision=${{ github.sha }}" .
+              --label "org.opencontainers.image.source=https://github.com/$REPO" \
+              --label "org.opencontainers.image.revision=$SHA" .
           fi
           docker push "$dst"
           digest="$(docker inspect --format '{{index .RepoDigests 0}}' "$dst")"
@@ -72,6 +88,20 @@ jobs:
             echo ""
             echo "Pin it in \`container.json\` as \`image: $digest\`."
           } >> "$GITHUB_STEP_SUMMARY"
+
+      # The digest is the artefact pin-digest.yml needs; the job summary is for humans.
+      - name: Publish the digest for the pin step
+        if: inputs.image == ''
+        env:
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: printf '%s\n' "$DIGEST" > digest.txt
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: inputs.image == ''
+        with:
+          name: digest
+          path: digest.txt
+          retention-days: 1
 
       - name: Log out
         if: always()

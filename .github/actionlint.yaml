@@ -1,0 +1,11 @@
+# actionlint configuration — the estate's self-hosted runner labels.
+#
+# Without this, every workflow fails the label check with a 1 KB hint listing GitHub's hosted
+# images, which buries the findings that matter. These are the only two labels the workflows use
+# (measured: `grep -hoE 'apg-(ci|ecs)-[0-9]+' .github/workflows/*.yml | sort -u`).
+#
+# Run: actionlint .github/workflows/*.yml
+self-hosted-runner:
+  labels:
+    - apg-ci-04
+    - apg-ecs-01

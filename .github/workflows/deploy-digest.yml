@@ -1,29 +1,26 @@
 name: deploy-digest
 
-# Deploy one or more of this repository's containers, by digest, on one node.
+# Auto-deploy, stage 3 of 3: roll out what the pin declares.
+#
+# A push to main that changes `container.json` deploys the containers whose digest changed. That is
+# the automatic path — merge to main, image builds, the pin PR merges itself, and this runs on its
+# own. `workflow_dispatch` remains for two things only: a deliberate re-roll of an existing pin, and
+# a dry run.
 #
 # The deploy logic is not here. It lives once, in apg-infra:
 #   https://github.com/simonmak-ascent/apg-infra/.github/workflows/container-cd.yml
-# That reusable workflow enforces the rules that make a rollout safe — the digest must be
-# the one container.json pins (so you cannot deploy an undeclared image), the image is
-# pulled once and copied to peers over the VPC, each node probes on PORT+10000, swaps,
-# health-checks the declared path and restores what it replaced if that fails.
+# That reusable workflow enforces the rules that make a rollout safe — the digest must be the one
+# container.json pins, so an unapproved image cannot reach production; the image is pulled once and
+# copied to peers over the VPC; each node probes on PORT+10000, swaps, health-checks the declared
+# path and restores what it replaced if that fails.
 #
-#   gh workflow run deploy-digest.yml \
-#     -f containers=startup-valuation -f digest=sha256:… -f runner=apg-ecs-01
-#
-# Read the digest from the `image` workflow's step summary, then open a pull request that
-# pins it in container.json. That order matters: the gate in container-cd.yml compares the
-# digest you dispatch against the manifest, so the pin is reviewed before anything moves.
-#
-# Pinned to a full commit SHA, not a tag: this workflow runs with a token that can replace
-# containers on production nodes, and a tag can be moved under you.
-#
-# Not yet deployable end to end: the api and calculate containers are Python images that
-# nothing in either repository can rebuild (apg-infra OI-40), so only the web container has
-# a published digest. See docs/plan-delivery.md.
+# Pinned to a full commit SHA: this runs with a token that can replace production containers, and a
+# tag can be moved under you.
 
 on:
+  push:
+    branches: [main]
+    paths: [container.json]      # a pin commit — image.yml ignores this path, so the loop closes
   workflow_dispatch:
     inputs:
       containers:
@@ -64,55 +61,310 @@ permissions:
   contents: read
   packages: write
 
-# The same containers on the same node are never deployed twice at once.
 concurrency:
-  group: deploy-digest-${{ inputs.runner }}-${{ inputs.containers }}
+  group: deploy-digest-${{ github.event_name == 'push' && 'auto' || inputs.runner }}
   cancel-in-progress: false
 
 jobs:
-  # container-cd.yml checks out this repository at the *dispatched* ref and validates the
-  # digest against that checkout's container.json. Dispatching from a branch would therefore
-  # let a branch pin its own digest and skip the pull request that reviews the pin, which is
-  # the whole control. Deploys come from main, or they do not run.
+  # What changed in this push, and to which digest. One matrix entry per container, because two
+  # containers can legitimately move to different digests in one push (the web image and, later,
+  # the Python image), and container-cd takes one digest per call.
+  prepare:
+    runs-on:
+      - self-hosted
+      - apg-ci-04
+    # `permissions: {}` here would ask for zero scopes, and checkout needs `contents: read` to
+    # clone. It happens to work today only because the repository is public; on a private repo
+    # this job dies with "Resource not accessible by integration" before the matrix exists.
+    permissions:
+      contents: read
+    outputs:
+      matrix: ${{ steps.derive.outputs.matrix }}
+      count: ${{ steps.derive.outputs.count }}
+      pointer: ${{ steps.derive.outputs.pointer }}
+      runner: ${{ steps.derive.outputs.runner }}
+      docker_names: ${{ steps.derive.outputs.docker_names }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2
+
+      # The change-set is "what this push changed", and a push may carry several commits. `HEAD~1`
+      # answers "what the last commit changed", so a push of N commits in which the pin landed in
+      # an earlier one yields an empty matrix — count=0, deploy and verify skipped, run green.
+      # `event.before` is the commit the push started from, which is the question being asked.
+      - name: Fetch the commit this push started from
+        if: github.event_name == 'push'
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          set -eu
+          case "$BEFORE" in
+            *[!0]*) ;;
+            *) echo "::error::event.before is the null SHA (a new branch) — cannot tell what changed;"
+               echo "::error::dispatch deploy-digest.yml with an explicit digest instead."
+               exit 1 ;;
+          esac
+          # A shallow fetch of the exact commit; --depth=1 is enough to read its container.json.
+          git fetch --quiet --depth=1 origin "$BEFORE"
+
+      - id: derive
+        env:
+          EVENT: ${{ github.event_name }}
+          BEFORE: ${{ github.event.before }}
+          IN_CONTAINERS: ${{ inputs.containers }}
+          IN_DIGEST: ${{ inputs.digest }}
+          IN_RUNNER: ${{ inputs.runner }}
+          IN_DOCKER_NAMES: ${{ inputs.docker_names }}
+        run: |
+          set -eu
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os, subprocess
+
+          event = os.environ["EVENT"]
+          runner = os.environ.get("IN_RUNNER") or "apg-ecs-01"
+          docker_names = os.environ.get("IN_DOCKER_NAMES") or ""
+
+          if event == "workflow_dispatch":
+              names = [n.strip() for n in (os.environ.get("IN_CONTAINERS") or "").split(",") if n.strip()]
+              digest = os.environ.get("IN_DIGEST") or ""
+              items = [{"container": n, "digest": digest} for n in names]
+          else:
+              current = json.load(open("container.json"))["containers"]
+              before_sha = os.environ.get("BEFORE") or ""
+              try:
+                  prev = json.loads(subprocess.check_output(
+                      ["git", "show", f"{before_sha}:container.json"], stderr=subprocess.PIPE))
+              except subprocess.CalledProcessError as exc:
+                  # Refuse to guess. Treating "unknown" as "everything changed" would roll out
+                  # containers this push never touched. A human dispatches, or re-pushes.
+                  raise SystemExit("cannot read container.json at event.before — refusing to decide "
+                                   "what changed; dispatch deploy-digest.yml explicitly") from exc
+              before = {c["name"]: c.get("image") for c in prev["containers"]}
+              items = [
+                  {"container": c["name"], "digest": c["image"].split("@")[1]}
+                  for c in current
+                  if before.get(c["name"]) != c.get("image")
+              ]
+
+          print("matrix=" + json.dumps({"include": items}))
+          print(f"count={len(items)}")
+          # One `:desired` tag serves the whole repository (rollout.sh publishes
+          # ghcr.io/<repo>:desired; converge.sh falls back to it on every peer). Two containers on
+          # two digests in one push would race that tag, and every peer would then converge the
+          # losing container onto the winner's image — a green run and a wrong fleet.
+          print("pointer=" + ("true" if len({i["digest"] for i in items}) <= 1 else "false"))
+          print(f"runner={runner}")
+          print(f"docker_names={docker_names}")
+          PY
+
+      - name: What this run will do
+        # The matrix is built from container names in container.json. Interpolated into the shell
+        # source it would be substituted before bash parses the line, so a quote in a manifest is
+        # an injection sink. `env:` is the boundary.
+        env:
+          COUNT: ${{ steps.derive.outputs.count }}
+          MATRIX: ${{ steps.derive.outputs.matrix }}
+        run: |
+          echo "containers to roll out: $COUNT"
+          printf '%s\n' "$MATRIX"
+
+  # The digest gate in container-cd.yml compares the requested digest with container.json, so a
+  # dispatch from a branch could pin its own digest and skip the pull request that reviews it.
+  # Rollouts come from main, or they do not run.
+  #
+  # This job is also where the tamper rule is *enforced*, not merely reported: `guard-tamper.yml`
+  # runs on the pull request and reports, but a report is not a gate — an automated author can push
+  # to a PR after that run, and auto-merge waits only on required checks. Production is the thing
+  # that matters, so the same rule is asserted here against the merge commit that is about to
+  # deploy. Two scopes are needed: `pull-requests: read` for commits/{sha}/pulls (the same call
+  # release-gate.yml makes) and `contents: read` for the file list.
   guard:
     runs-on:
       - self-hosted
       - apg-ci-04
-    permissions: {}   # echoes and exits; needs no token
+    permissions:
+      contents: read
+      pull-requests: read
     steps:
-      - name: Deploys run from main only
+      # The change-set is computed with `git diff` over the push range: the API's file list is
+      # capped at 300 entries, and a truncated list reads as "no gate file touched".
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Rollouts run from main only
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
         run: |
+          set -eu
           if [ "${GITHUB_REF}" != "refs/heads/main" ]; then
-            echo "::error::dispatch this from main (refs/heads/main), not ${GITHUB_REF}: the digest gate reads container.json from the dispatched ref, so a branch could deploy a digest no pull request reviewed"
+            echo "::error::dispatch this from main (refs/heads/main), not ${GITHUB_REF}"
             exit 1
           fi
-          echo "dispatching from ${GITHUB_REF}"
+
+          # `release-gate.yml` reports a direct push, but reporting is not enforcement: it runs in
+          # parallel with this workflow and nothing waited for it. So the rollout checks provenance
+          # itself. A direct push that changed container.json would otherwise deploy unattended.
+          # `gh api --jq` has no `--arg` flag; interpolate the full SHA from github.sha instead.
+          merged=$(gh api "repos/$REPO/commits/$SHA/pulls" \
+                     --jq "[.[] | select(.merge_commit_sha == \"$SHA\")] | length")
+          if [ "$merged" = "0" ]; then
+            echo "::error::$SHA is not the merge commit of a merged pull request — refusing to deploy."
+            echo "::error::Stage 3 of docs/delivery-gates.md: source reaches main through review."
+            exit 1
+          fi
+          echo "deploying $SHA, arrived through $merged merged pull request(s)"
+
+      - name: Gate files reach production through a human, or as a digest-only pin
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+          # The commit this push started from. `deploy` derives its matrix from it for the same
+          # reason: a push may carry several commits, so `github.sha` alone is the tip, and a tip
+          # that only pins a digest would hide an earlier commit's change to a gate file.
+          BEFORE: ${{ github.event.before }}
+          # Deny by default. The same allowlist guard-tamper.yml applies at PR time, applied here
+          # to the commit that is actually about to replace production containers.
+          HUMANS: simonmak-ascent
+        run: |
+          set -eu
+          GATE_RE='^((tests-deployed/)|(tests-ci/)|(scripts/)|(compliance\.json)|(docs/delivery-gates\.md)|(\.github/workflows/)|(container\.json))'
+
+          # `git diff` over the push range, not `gh api .../commits/$SHA`: the API caps its file
+          # list at 300 and paginates past that, so a commit touching a regenerated tree could
+          # report "no gate file" while touching `.github/workflows/`. A failed fetch or diff fails
+          # the step rather than yielding a partial answer.
+          if [ -n "${BEFORE:-}" ] && [ "$BEFORE" != "0000000000000000000000000000000000000000" ]; then
+            git fetch --quiet --depth=1 origin "$BEFORE"
+            changed="$(git diff --name-only "$BEFORE" "$SHA")"
+          else
+            # A dispatch has no push range. Judge it by the merged pull request it came from.
+            number="$(gh api "repos/$REPO/commits/$SHA/pulls" --jq "[.[] | select(.merge_commit_sha == \"$SHA\")][0].number")"
+            if [ -z "$number" ] || [ "$number" = "null" ]; then
+              echo "::error::cannot identify the pull request behind $SHA — refusing to deploy blind."
+              exit 1
+            fi
+            changed="$(gh api --paginate "repos/$REPO/pulls/$number/files" --jq '.[].filename')"
+          fi
+          if [ -z "$changed" ]; then
+            echo "::error::cannot determine the files changed by $SHA — refusing to deploy blind."
+            exit 1
+          fi
+          hits="$(printf '%s\n' "$changed" | grep -E "$GATE_RE" || true)"
+          if [ -z "$hits" ]; then
+            echo "no gate file in this change-set"
+            exit 0
+          fi
+          echo "gate files in this change-set:"; printf '%s\n' "$hits"
+
+          # A pin is not "any change to container.json": ports, health probes, run settings and an
+          # arbitrary image all live in that file. Two changes exist there and only the first is
+          # exempt from the human check below — a digest-only pin, which pin-digest.yml produces,
+          # and a manifest change (port, probe, run setting), which AGENTS.md requires when a port
+          # moves and which a human authors. Refusing the second here left it with no deploy path
+          # at all, because a workflow_dispatch runs this same guard.
+          #
+          # The decision is `scripts/check_manifest_pin.py`, not a line match. A line match proved
+          # the file consisted of image lines, not that a *container* kept its own image: swapping
+          # two containers' digests passed it, and production would run the calculate image in the
+          # web container. The checker enforces per-container attribution, one new digest for the
+          # pin, and no repository move; tests-ci/test_manifest_pin.py proves each refusal.
+          if [ "$hits" = "container.json" ]; then
+            # The same range the change-set above used. A rebase-merge pushes several commits and
+            # github.sha is the tip, so diffing the tip against its parent would hide a manifest
+            # change made earlier in the same push — the exemption would cover a change it never
+            # looked at. BEFORE is empty on a dispatch, which the fallback handles.
+            base="${BEFORE}"
+            case "$base" in
+              ""|0000000000000000000000000000000000000000) base="$(gh api "repos/$REPO/commits/$SHA" --jq '.parents[0].sha')" ;;
+            esac
+            gh api "repos/$REPO/contents/container.json?ref=$SHA"  --jq .content | base64 -d > "${RUNNER_TEMP}/sv-new.json"
+            gh api "repos/$REPO/contents/container.json?ref=$base" --jq .content | base64 -d > "${RUNNER_TEMP}/sv-old.json"
+            if python3 scripts/check_manifest_pin.py "${RUNNER_TEMP}/sv-old.json" "${RUNNER_TEMP}/sv-new.json"; then
+              echo "digest-only pin — deploying without a human check"
+              exit 0
+            fi
+            echo "container.json moves a port, probe or run setting — a manifest change; human check follows"
+          fi
+
+          # Anything else is a change to the contract or the pipeline. That is legitimate — for a
+          # human. The opener must be on the allowlist and no commit may be bot-authored, which is
+          # the check guard-tamper.yml makes at PR time.
+          info="$(gh api "repos/$REPO/commits/$SHA/pulls" --jq "[.[] | select(.merge_commit_sha == \"$SHA\")][0] | {number, login: .user.login}")"
+          login="$(printf '%s' "$info" | sed -nE 's/.*"login":"([^"]+)".*/\1/p')"
+          number="$(printf '%s' "$info" | sed -nE 's/.*"number":([0-9]+).*/\1/p')"
+          case " $HUMANS " in
+            *" ${login} "*) human=1 ;;
+            *) human=0 ;;
+          esac
+          # Fail closed: an API error here used to yield an empty list, which contains no `[bot]`
+          # and therefore *passed*. `--paginate` is required because the endpoint returns 30 per
+          # page and `gh api` asks for one page unless told otherwise — a bot commit on page two
+          # would otherwise be invisible.
+          if ! authors="$(gh api --paginate "repos/$REPO/pulls/$number/commits" --jq '.[].author.login' 2>/dev/null)"; then
+            echo "::error::cannot enumerate the commits of PR #$number — refusing to allow a gate-file change blind."
+            exit 1
+          fi
+          if [ -z "$authors" ]; then
+            echo "::error::PR #$number returned no commit authors — unverifiable, refusing."
+            exit 1
+          fi
+          echo "gate-file change: PR #$number opened by ${login:-<none>}; commits: $(printf '%s' "$authors" | tr '\n' ' ')"
+          if [ "$human" != "1" ]; then
+            echo "::error::${login:-<unknown author>} changed a gate file and is not on the human allowlist."
+            exit 1
+          fi
+          if printf '%s\n' "$authors" | grep -qE '(\[bot\]$|^null$)'; then
+            echo "::error::an automated or unverifiable commit author changed a gate file."
+            exit 1
+          fi
+          echo "human-authored gate-file change; allowed"
 
   deploy:
-    needs: guard
-    # Job-level, not workflow-level: a called reusable workflow does not inherit the caller's
-    # workflow-level permissions — without this it falls back to the repository default, and
-    # the :desired tag push container-cd.yml performs needs packages: write.
+    needs: [prepare, guard]
+    if: needs.prepare.outputs.count != '0'
     permissions:
       contents: read
       packages: write
-    uses: simonmak-ascent/apg-infra/.github/workflows/container-cd.yml@55b77e2bf35396e9d668d8e300057856929cd6aa
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    uses: simonmak-ascent/apg-infra/.github/workflows/container-cd.yml@2156de20183b22a5ad8247b4e613137e021b513e
     with:
-      containers: ${{ inputs.containers }}
-      digest: ${{ inputs.digest }}
-      docker_names: ${{ inputs.docker_names }}
-      runner: ${{ inputs.runner }}
-      publish_pointer: ${{ inputs.publish_pointer }}
-      dry_run: ${{ inputs.dry_run }}
+      containers: ${{ matrix.container }}
+      digest: ${{ matrix.digest }}
+      docker_names: ${{ needs.prepare.outputs.docker_names }}
+      runner: ${{ needs.prepare.outputs.runner }}
+      # Only when every matrix entry shares one digest. Per-container state still lands on the
+      # runner node either way; what is withheld is a fleet-wide pointer that would be wrong for
+      # half the fleet. With the pointer withheld, peers keep their existing state until an
+      # operator reconciles — worse for a multi-digest move than a correct pointer, better than a
+      # pointer that silently swaps two roles.
+      #
+      # Scope, precisely: the :desired tag is per *repository* (rollout.sh), and container.json
+      # declares three containers on one repository at two digests — so this predicate covers the
+      # entries in *this run*, not the whole manifest. A single-container move still publishes a
+      # tag naming one role's image. That is safe only because converge.sh prefers the node's own
+      # <container>.desired record and converge-all.sh visits only containers that have one; the
+      # durable fix is a per-container pointer tag in apg-infra.
+      publish_pointer: ${{ (github.event_name == 'push' || inputs.publish_pointer) && needs.prepare.outputs.pointer == 'true' }}
+      dry_run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
 
-  # A rollout reporting success is not the product working. This calls the same end-to-end
-  # suite that runs on a schedule, so there is one definition of "the deployed product
-  # serves the contract" — the check compliance.json declares and, until now, nothing ran.
+  # A rollout reporting success is not the product working. This calls the same end-to-end suite
+  # that runs on a schedule, so there is one definition of "the deployed product serves the
+  # contract" — the check compliance.json declares.
   verify:
-    needs: deploy
-    if: ${{ !inputs.dry_run }}
+    needs: [prepare, deploy]
+    if: needs.prepare.outputs.count != '0' && !(github.event_name == 'workflow_dispatch' && inputs.dry_run)
     permissions:
-      contents: read   # the suite only reads this repository and fetches a public URL
+      contents: read
+      issues: write   # the suite files its diagnosis through a reusable workflow, which cannot
+                      # elevate permissions on its own — the grant has to come from here
     uses: ./.github/workflows/e2e-deployed.yml
     with:
-      base_url: ${{ inputs.probe_url }}
+      base_url: ${{ inputs.probe_url || 'https://startup-valuation.ascent-partners.com' }}

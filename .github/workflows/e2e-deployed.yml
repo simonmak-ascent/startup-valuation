@@ -36,9 +36,13 @@ on:
 
 permissions:
   contents: read
+  issues: write        # the failure path files the diagnosis for the fix stage
 
 concurrency:
-  group: e2e-deployed-${{ inputs.base_url || 'scheduled' }}
+  # One group for every mode. The schedule resolves base_url to empty and the post-deploy call
+  # always passes one, so the two used to sit in different groups and could run at once on the
+  # same runner — where they read and overwrite each other's log file.
+  group: e2e-deployed
   cancel-in-progress: false
 
 jobs:
@@ -49,26 +53,104 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
           node-version: "22"
 
       # No install step: the suite is node:test + fetch, so there is nothing to resolve and
       # no browser binary to fetch over the NAT.
       - name: Verify the deployed product
+        id: suite
         env:
           DEPLOYED_BASE_URL: ${{ inputs.base_url || 'https://startup-valuation.ascent-partners.com' }}
-        run: node --test tests-deployed/*.test.mjs
+          # A fixed /tmp path is shared state on a persistent runner; two runs (or a leftover from
+          # a previous one) would read each other's log. RUNNER_TEMP is per-job.
+          E2E_LOG: ${{ runner.temp }}/e2e.log
+        run: |
+          set -o pipefail
+          # stdout is a pipe here, and Node picks the `tap` reporter whenever stdout is not a TTY —
+          # TAP failures are `not ok N - name`, never `✖ name`. The diagnosis step parses `✖`, so
+          # the reporter is pinned rather than left to the terminal.
+          node --test --test-reporter=spec tests-deployed/*.test.mjs 2>&1 | tee "$E2E_LOG"
 
       - name: Summarise the failure
         if: failure()
+        env:
+          DEPLOYED_BASE_URL: ${{ inputs.base_url || 'https://startup-valuation.ascent-partners.com' }}
         run: |
           {
             echo "### the deployed product failed its contract"
             echo ""
-            echo "Origin: \`${DEPLOYED_BASE_URL}\`"
+            echo "Origin: `${DEPLOYED_BASE_URL}`"
             echo ""
             echo "A red run here means the host is not serving what this repository declares —"
             echo "not that a unit test is wrong. Check the routing rules and the running digest"
             echo "before re-running."
           } >> "$GITHUB_STEP_SUMMARY"
+
+      # Stage A of the self-healing loop (docs/delivery-gates.md): a red run produces a
+      # diagnosis, not just a notification. One open issue per failing set, updated in place,
+      # so a recurring breakage does not spawn a ticket every six hours.
+      - name: File or update the failure diagnosis
+        if: failure()
+        env:
+          DEPLOYED_BASE_URL: ${{ inputs.base_url || 'https://startup-valuation.ascent-partners.com' }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ORIGIN: ${{ inputs.base_url || 'https://startup-valuation.ascent-partners.com' }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          E2E_LOG: ${{ runner.temp }}/e2e.log
+        run: |
+          set -eu
+          failing="$(grep -E '^✖ ' "$E2E_LOG" | sed 's/ ([0-9.]*ms)//' | sort -u | head -12 || true)"
+          [ -n "$failing" ] || failing="(no individual test names parsed — see the run log)"
+          fingerprint="$(printf '%s' "$failing" | sha256sum | cut -c1-12)"
+          title="e2e failure (${fingerprint}): the deployed product does not serve the contract"
+
+          {
+            echo 'The deployed origin failed the end-to-end contract.'
+            echo
+            echo "- origin: \`${ORIGIN}\`"
+            echo "- run: ${RUN_URL}"
+            echo "- failing set fingerprint: \`${fingerprint}\` (one issue per distinct set)"
+            echo
+            echo '## Failing assertions'
+            echo
+            echo '```'
+            echo "$failing"
+            echo '```'
+            echo
+            echo '## What this does and does not mean'
+            echo
+            echo 'A red run means the host is not serving what this repository declares — not that a'
+            echo 'unit test is wrong. The usual causes, in order: the ALB routing does not match'
+            echo 'docs/plan-delivery.md, the running digest is not the pinned one, or the fix is'
+            echo 'merged but not deployed.'
+            echo
+            echo '## Fix loop'
+            echo
+            echo 'Stage B of docs/delivery-gates.md fixes this automatically **when** a runner has a'
+            echo 'model credential and an agent auth store readable by the runner user. Until then this'
+            echo 'issue is the handoff: the diagnosis is here and the change still goes through'
+            echo 'review -> PR -> checks -> merge -> deploy -> e2e like every other.'
+            echo
+            echo 'Do **not** make this pass by changing tests-deployed/ or compliance.json —'
+            echo 'guard-tamper blocks that for automated authors.'
+          } > "$RUNNER_TEMP/issue.md"
+
+          # No external `jq`: every other workflow in this repository uses gh's built-in --jq, and
+          # gh's --jq has no --arg, so a title with a quote in it breaks the program. python3 is
+          # already a dependency of this job's siblings; use it to match on the title exactly.
+          export TITLE="$title"
+          # One line on purpose: a multi-line single-quoted argument would have to carry the block's
+          # indentation into the Python source, which YAML then reads as a dedent. python3 replaces
+          # the external jq this step used to need — gh's own --jq has no --arg, so a title with a
+          # quote in it broke the program.
+          existing="$(gh issue list --state open --limit 200 --json number,title \
+            | TITLE="$title" python3 -c 'import json,os,sys; w=os.environ["TITLE"]; print(next((i["number"] for i in json.load(sys.stdin) if i.get("title")==w), ""))')"
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body-file "$RUNNER_TEMP/issue.md"
+            echo "updated issue #$existing"
+          else
+            gh issue create --title "$title" --body-file "$RUNNER_TEMP/issue.md" --label e2e-failure \
+              || gh issue create --title "$title" --body-file "$RUNNER_TEMP/issue.md"
+          fi
