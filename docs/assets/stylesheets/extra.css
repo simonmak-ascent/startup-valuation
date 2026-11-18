@@ -1,7 +1,6 @@
 /* Ascent Partners Brand Overrides for MkDocs Material */
 
 /* ── Google Fonts ─────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Titillium+Web:wght@400;600;700&display=swap');
 
 /* ── Color Variables ──────────────────────────────────────────────── */
 :root {
@@ -17,7 +16,7 @@
 
 /* ── Typography ───────────────────────────────────────────────────── */
 .md-typeset {
-  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
   color: #2D2D2D;
 }
 
@@ -27,7 +26,7 @@
 .md-typeset h4,
 .md-typeset h5,
 .md-typeset h6 {
-  font-family: 'Titillium Web', 'Open Sans', sans-serif;
+  font-family: sans-serif;
   color: #373737;
   font-weight: 600;
 }
@@ -47,7 +46,7 @@
   text-align: center;
   padding: 0.4rem 1rem;
   font-size: 0.85rem;
-  font-family: 'Open Sans', sans-serif;
+  font-family: sans-serif;
 }
 
 .top-bar-inner a {
@@ -78,7 +77,7 @@
 }
 
 .md-header__topic {
-  font-family: 'Titillium Web', sans-serif;
+  font-family: sans-serif;
   font-weight: 600;
 }
 
@@ -364,7 +363,7 @@
 }
 
 .hero-content h1 {
-  font-family: 'Titillium Web', sans-serif;
+  font-family: sans-serif;
   font-size: 2.5rem;
   font-weight: 700;
   color: #0083AB;
@@ -464,7 +463,7 @@
 }
 
 .stat-number {
-  font-family: 'Titillium Web', sans-serif;
+  font-family: sans-serif;
   font-size: 2.5rem;
   font-weight: 700;
   color: #0083AB;
@@ -509,7 +508,7 @@
 }
 
 .arch-card h3 {
-  font-family: 'Titillium Web', sans-serif;
+  font-family: sans-serif;
   font-size: 1.25rem;
   font-weight: 600;
   color: #0083AB;
@@ -540,7 +539,7 @@
 }
 
 .testimonials h2 {
-  font-family: 'Titillium Web', sans-serif;
+  font-family: sans-serif;
   font-size: 1.75rem;
   font-weight: 600;
   color: #373737;
@@ -614,7 +613,7 @@
 }
 
 .quick-start-section h2 {
-  font-family: 'Titillium Web', sans-serif;
+  font-family: sans-serif;
   font-size: 1.5rem;
   font-weight: 600;
   color: #0083AB;

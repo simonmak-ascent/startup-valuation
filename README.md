@@ -41,7 +41,7 @@ graph TB
     style Skills fill:#9C27B0,color:#fff
 ```
 
-1. **Python Library** — 14 modules, 80+ typed functions, all returning `ValuationResult` (value + assumptions + sensitivity)
+1. **Python Library** — 15 modules, 80+ typed functions, all returning `ValuationResult` (value + assumptions + sensitivity)
 2. **MCP Server** — 14 folded tools (80+ formulas) for AI agents via stdio and hosted Streamable HTTP
 3. **AI-agent skills** — 6 skill definitions with workflow guidance for valuation domains
 
@@ -183,7 +183,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    PKG["startup-valuation<br/>14 modules · 80+ functions"] --> L["pip install startup-valuation"]
+    PKG["startup-valuation<br/>15 modules · 80+ functions"] --> L["pip install startup-valuation"]
     PKG --> MP["pip install startup-valuation[mcp]<br/>→ 14-tool MCP server"]
     MP --> T1["stdio (local)"]
     MP --> T2["hosted Streamable HTTP"]

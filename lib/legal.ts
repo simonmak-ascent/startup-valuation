@@ -9,7 +9,7 @@ export const LEGAL_DOCS: LegalDoc[] = [
   {
     slug: "terms",
     title: "Terms of Service",
-    version: "2026-08-13",
+    version: "2026-11-18",
     sections: [
       {
         heading: "1. Acceptance of Terms",
@@ -29,11 +29,11 @@ export const LEGAL_DOCS: LegalDoc[] = [
       },
       {
         heading: "5. User Accounts",
-        body: "Creating an account is optional. You are responsible for maintaining the confidentiality of your credentials and for all activity under your account.",
+        body: "There are no accounts. The site has no sign-in, and nothing you enter is associated with an identity.",
       },
       {
         heading: "6. Paid Subscriptions",
-        body: "Paid tiers (Pro, Enterprise) provide additional features such as audit-report export. Payments are processed by Stripe. Subscription terms, including cancellation, are described at checkout.",
+        body: "The service is free and has no paid tiers, no checkout and no payment processing.",
       },
       {
         heading: "7. Intellectual Property",
@@ -56,19 +56,19 @@ export const LEGAL_DOCS: LegalDoc[] = [
   {
     slug: "privacy",
     title: "Privacy Policy",
-    version: "2026-08-13",
+    version: "2026-11-18",
     sections: [
       {
         heading: "1. Data We Collect",
-        body: "We collect: (a) account information (email, name) if you create an account; (b) valuation inputs you submit to the calculators, stored in an audit log for traceability; (c) usage analytics (page views, calculator usage) via Vercel Analytics; and (d) error telemetry via Sentry.",
+        body: "We collect: (a) valuation inputs you submit to the calculators, sent to the calculation service to produce a result and not stored by it; and (b) error telemetry via Sentry. There are no accounts and no analytics tied to an identity.",
       },
       {
         heading: "2. How We Use Data",
-        body: "Account data enables saved workspaces and audit-report export. Calculator inputs are stored to provide an auditable trace of every valuation. Analytics and telemetry help us improve reliability.",
+        body: "There are no accounts and no saved workspaces. Calculator inputs are sent to the calculation service to produce a result and are not stored. A question you submit to the AI advisor is sent to DeepSeek to be answered. Error telemetry helps us improve reliability.",
       },
       {
         heading: "3. Storage",
-        body: "Data is stored in SurrealDB (3.x), hosted on Surreal Cloud. Valuation runs are stored in an immutable audit log.",
+        body: "There is no database. Calculations are computed per request and are not retained; the public comparables pages read live market data from Yahoo Finance.",
       },
       {
         heading: "4. Data Minimization",
@@ -76,7 +76,7 @@ export const LEGAL_DOCS: LegalDoc[] = [
       },
       {
         heading: "5. Analytics and Cookies",
-        body: "We use Vercel Analytics (aggregate, privacy-respecting) and set a session cookie for authentication. See our Cookie Policy for details.",
+        body: "We run no analytics and set no cookies. See our Cookie Policy for details.",
       },
       {
         heading: "6. Your Rights",
@@ -84,7 +84,7 @@ export const LEGAL_DOCS: LegalDoc[] = [
       },
       {
         heading: "7. Third-Party Processors",
-        body: "We use Stripe (payments), Vercel (hosting/analytics), Sentry (error monitoring), and Surreal Cloud (database). Each processes data only as necessary to provide the Service.",
+        body: "We use Yahoo Finance (market data), DeepSeek (the AI advisor: the question you type is sent to their API to be answered), GitHub (the open-source badge: your browser asks their API for the repository's star count) and Sentry (error monitoring). Each processes data only as necessary to provide the Service.",
       },
       {
         heading: "8. Changes to This Policy",
@@ -95,23 +95,23 @@ export const LEGAL_DOCS: LegalDoc[] = [
   {
     slug: "cookies",
     title: "Cookie Policy",
-    version: "2026-08-13",
+    version: "2026-11-18",
     sections: [
       {
         heading: "1. Cookies We Use",
-        body: 'We use a session cookie ("authjs.session-token") to keep you signed in across pages. This is an essential cookie required for authentication.',
+        body: "We set no session cookie. There is no sign-in, so there is nothing to keep you signed in to.",
       },
       {
         heading: "2. Analytics",
-        body: "Vercel Analytics may set a cookie to distinguish unique visitors. It is aggregate and does not track you across unrelated websites.",
+        body: "No analytics cookie is set, because no analytics script runs. ",
       },
       {
         heading: "3. Payment",
-        body: "Stripe sets cookies during the checkout flow to process payments securely.",
+        body: "No third party sets a cookie during a checkout, because there is no checkout.",
       },
       {
         heading: "4. Managing Cookies",
-        body: "You can block or delete cookies in your browser settings. Blocking the session cookie will prevent sign-in but will not affect the free calculators.",
+        body: "You can block or delete cookies in your browser settings. There is no session cookie to block, and nothing here affects the free calculators.",
       },
       {
         heading: "5. Changes",

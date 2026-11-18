@@ -23,7 +23,7 @@ export function CalculatorPage({ slug }: CalculatorPageProps) {
   const [error, setError] = useState<string | null>(null);
 
   const runCalculation = useCallback(
-    async (values: Record<string, number>, logAudit: boolean) => {
+    async (values: Record<string, number>) => {
       setLoading(true);
       setError(null);
 
@@ -44,23 +44,6 @@ export function CalculatorPage({ slug }: CalculatorPageProps) {
         const data = await response.json();
         setResult(data);
 
-        if (logAudit) {
-          // Fire-and-forget audit log to SurrealDB (final, user-submitted runs only)
-          fetch("/api/audit", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              method: config.methodName,
-              inputs: params,
-              result: data.value,
-              steps: data.steps,
-              formula_number: data.formula_number,
-              chapter: data.chapter,
-              library_version: data.library_version,
-              git_commit: data.git_commit,
-            }),
-          }).catch(() => {});
-        }
       } catch (e) {
         setError(e instanceof Error ? e.message : "An unexpected error occurred");
       } finally {
@@ -73,14 +56,14 @@ export function CalculatorPage({ slug }: CalculatorPageProps) {
   const handleSubmit = useCallback(
     (values: Record<string, number>) => {
       setCurrentValues(values);
-      runCalculation(values, true);
+      runCalculation(values);
     },
     [runCalculation],
   );
 
   const handleSensitivityChange = useCallback(
     (values: Record<string, number>) => {
-      runCalculation(values, false);
+      runCalculation(values);
     },
     [runCalculation],
   );

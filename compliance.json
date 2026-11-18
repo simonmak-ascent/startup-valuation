@@ -30,6 +30,7 @@
     },
     {
       "probe": "https://startup-valuation.ascent-partners.com/api/health",
+      "note": "200 when the market-data source answers; a sustained 503 is a real product outage (the comparables have nothing to show), so this probe treats it as a failure. The 503 branch is asserted in tests-webapp/health-route.test.ts, not against the origin",
       "expect": 200
     },
     {
@@ -38,7 +39,8 @@
     },
     {
       "probe": "https://startup-valuation.ascent-partners.com/mcp",
-      "expect": 405
+      "expect": 405,
+      "note": "405 with Allow: POST, OPTIONS once the Python service image carries the method guard; the deployed image answers 200 until that pin lands"
     }
   ]
 }

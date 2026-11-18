@@ -87,6 +87,10 @@ apps:
       cmd: "uvicorn mcp_server.asgi:app --host 127.0.0.1 --port {port}"
     docs: { build: "mkdocs build --strict", dir: site }
 
+  # STALE since 2026-11-18 (the ALB split is the live routing: container.json + deploy/container/):
+  # `/api/*` now belongs to the web app and `/mcp` is served by api.index on 8021, but the endpoints
+  # below still claim /api/health and /api/index.py for Python and do not mention /mcp at all. Read
+  # this as history; the slot path it configures cannot run (Caddy was purged, apg-infra OI-38).
   - name: startup-valuation
     repo: simonmak-ascent/startup-valuation
     node: ecs-01

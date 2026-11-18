@@ -15,8 +15,8 @@ covered.
 | axis | the claim being tested | count |
 |---|---|---|
 | **routes** | every page the navigation and metadata advertise | 17 pages + 3 legal |
-| **states** | each route's reachable states — anonymous, signed-in, degraded, invalid input | ≥3 per data-bearing page |
-| **journeys** | each multi-step workflow the copy describes (calculate, MCP, playground, advisor, billing) | 6 |
+| **states** | each route's reachable states — anonymous, source-up, source-down, invalid input | ≥3 per data-bearing page |
+| **journeys** | each multi-step workflow the copy still describes (calculate, MCP, playground, advisor) | 4 live + 2 recorded as removed |
 | **claims** | each sentence in the advertising that promises behaviour | 13 (§5 matrix) |
 
 **Rule:** a claim with no assertion is a gap, and a gap is listed in §6 rather than left implicit.
@@ -37,7 +37,7 @@ Coverage is reported as `claims asserted / claims advertised`, never as a percen
 | C9 | `lib/landing.ts:61` | *5 method families* | Core 5, Industry 7, Foundation 9, Stakeholder 4, Emerging 2 = **5** |
 | C10 | `app/(en)/api/playground/page.tsx:7` | *Test 27+ valuation methods* | registry has **27**, not 27+ — see F2 |
 | C11 | `server.json` | MCP package `startup-valuation` 2.1.4, remote `…/mcp`, streamable-http | registry entry still advertises `…/api` — see B5 |
-| C12 | `compliance.json` | PR-required merge; verify = pytest + ruff + tsc + vitest; probes | four probes, all `200` once the DB lands |
+| C12 | `compliance.json` | PR-required merge; verify = pytest + ruff + tsc + vitest + the three `tests-ci` checks; six probes | five expect `200`, including `/api/health` (a sustained `503` is a product outage); `/mcp` expects `405` |
 | C13 | page metadata (`/methods/[slug]`, legal) | each method page is canonical and indexable | 27 slugs |
 
 **F1 — "80+ formulas" cannot be tested as written.** The registry exposes one `formula_number` per
@@ -65,13 +65,11 @@ it is asserted as `count == 27` and the discrepancy is recorded here.
 | `/methods/[slug]` | one page per method, formula + inputs | 200 for **every** slug in `METHODS`; H1 = method name; the formula block renders (KaTeX) | all 27 slugs; one unknown slug → 404 |
 | `/api/playground` | "test 27+ methods with live inputs" | 200; the method selector offers exactly **27** options (F2: the copy says 27+); submitting returns JSON in-page | valid input; invalid input shows an error, not a blank |
 | `/ai-advisor` | AI advisor UI | 200; the form renders; submit disabled without input | no key configured → visible error, not a hang |
-| `/benchmarks` | industry benchmarks | 200; renders rows **or** an explicit empty state | empty (today) and populated (after ETL) |
-| `/public-companies` | comparables | 200; rows or explicit empty state | empty and populated |
+| `/benchmarks` | industry medians | 200; medians of P/E, P/S, EV/EBITDA per vertical, each with its sample size; empty state only when Yahoo fails | live data; source down |
+| `/public-companies` | comparables | 200; live multiples per vertical, `—` for a metric the vendor omits | live data; a symbol that does not resolve |
 | `/skills` | agent skill catalogue | 200; each skill entry has a name and a callable example | anonymous |
 | `/why-open-source` | positioning page | 200; contains the licence/source link | anonymous |
 | `/support` | contact | 200; contact address present | anonymous |
-| `/sign-in` | authentication entry | 200; provider button present | anonymous |
-| `/dashboard` | private area | **307 → `/sign-in`** when anonymous; 200 when signed in | anonymous (today), signed-in (blocked, §6) |
 | `/legal/privacy`, `/legal/terms`, `/legal/cookies` | legal pages | 200; non-empty body; last-updated date present | all three |
 | `/docs` | documentation site (advertised in AGENTS.md) | **404 today** — gap G1 | — |
 
@@ -81,13 +79,8 @@ it is asserted as `count == 27` and the discrepancy is recorded here.
 |---|---|---|---|
 | `/api/calculate` | POST | 200 `{"value": <finite>, "method", "inputs", "assumptions", "chapter", "formula_number", "steps"}` | one request per method key; unknown method → 4xx with a message, never 200 with an error body (the `$NaN` bug) |
 | `/api/calculate` | GET | 405 or 404, never a 200 status blob | method check |
-| `/api/health` | GET | 200 `{"status":"ok", …}` when the DB is reachable; 503 `{"status":"degraded","db_status":"disconnected"}` when not | **degraded today** — asserts the honest failure |
-| `/api/auth/session` | GET | 200 `null` anonymous; 200 with `user` when signed in | anonymous |
-| `/api/ai` | POST | validation error (`VALIDATION_ERROR`) without `method`; 200 with an answer when configured | invalid input; configured (gated) |
-| `/api/audit` | GET | requires a session; 401/403 anonymous | anonymous |
-| `/api/export/report` | GET | requires `run_id`; 4xx without one | missing param |
-| `/api/billing/checkout` | POST | 401/redirect anonymous | anonymous |
-| `/api/webhooks/stripe` | POST | **rejects an unsigned payload** | no signature → 4xx |
+| `/api/health` | GET | 200 `{"status":"ok","dependency":{"name":"finance.yahoo.com"}}` when Yahoo answers; 503 `degraded` when it does not | both states asserted |
+| `/api/ai` | POST | **400** `{"error":"Query is required"}` for an empty query; `GET` answers 405 with no body — this is the route that proves `/api/*` reaches the web app | empty query |
 | `/.well-known/mcp.json` | GET | 200 JSON; `url` ends `/mcp`; `transport` is streamable-http | shape + value |
 
 ### 3.3 MCP endpoint
@@ -132,12 +125,13 @@ calculation for the same inputs. This is the one assertion that ties the two sur
 `/ai-advisor` → type a question → submit → either an answer grounded in a method, or an explicit
 "not configured" message. No spinner forever, no empty message bubble.
 
-**J5 — auth and gated area**
-`/dashboard` anonymous → 307 `/sign-in` → sign in (blocked, §6) → dashboard renders the user's runs.
-Anonymous half is testable today; the signed-in half is not.
+**J5 — removed 2026-11-18.** Sign-in and the dashboard were deleted with the database dependency;
+the assertion that used to guard `/dashboard` → 307 `/sign-in` now asserts a 404 on both paths, so a
+reintroduction without a session store fails.
 
-**J6 — money**
-`/sign-in` → checkout → Stripe → webhook → subscription visible in dashboard. Blocked (§6).
+**J6 — removed 2026-11-18.** Billing, checkout and the Stripe webhook went with the account model.
+`/legal/terms` and `/legal/privacy` now state there is no checkout, and the client-side `stripe`
+dependency is gone; the cookie policy's "no session cookie" line is the only claim left to assert.
 
 ## 5 · Claim → assertion matrix
 
@@ -162,16 +156,16 @@ Anonymous half is testable today; the signed-in half is not.
 | # | gap | why it cannot be asserted today |
 |---|---|---|
 | G1 | `/docs` | **404** — the mkdocs `site/` is not in the web image (plan B3) |
-| G2 | `/benchmarks`, `/public-companies` populated states | the DB has no tables; both render empty states |
-| G3 | `/dashboard` signed-in | no user can sign in without a DB-backed session store |
-| G4 | `/api/export/report` success | needs a `run_id`, which needs the DB |
+| G2 | ~~`/benchmarks`, `/public-companies` populated~~ | **closed 2026-11-18** — both read live Yahoo Finance data |
+| G3 | ~~`/dashboard` signed-in~~ | **removed** with sign-in on 2026-11-18 |
+| G4 | ~~`/api/export/report`~~ | **removed** with the database on 2026-11-18 |
 | G5 | `/api/ai` 200 path | needs `DEEPSEEK_API_KEY` wired into the web container |
-| G6 | billing end-to-end | needs Stripe test keys and a webhook endpoint |
+| G6 | ~~billing end-to-end~~ | **removed** with sign-in on 2026-11-18 |
 | G7 | `POST /mcp` per-tool semantics | one call per tool exists; the *valuation* assertions for all 14 are partly blocked on tools that read data |
 
-Each gap is already a task in `docs/plan.md` Part 2 (B2, B3, F2). A gap is not a hidden failure: the
-route is asserted for its *current* honest state (503, empty state, 307) so a change in behaviour is
-caught even before the dependency lands.
+Each remaining gap is a task in `docs/plan.md`. A gap is not a hidden failure: the surface is
+asserted for its *current* honest state — `/docs` 404, `/api/ai` 502 without a key — so a change in
+behaviour is caught even before the dependency lands.
 
 ## 7 · Levels, commands, cadence
 
