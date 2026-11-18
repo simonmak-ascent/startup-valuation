@@ -14,7 +14,7 @@ import { test as base, expect, chromium, type Browser } from "@playwright/test";
  */
 const CDP = process.env.PLAYWRIGHT_CDP ?? "http://172.22.0.1:9223";
 
-const test = base.extend<Record<string, never>, { browser: Browser }>({
+const test = base.extend<{}, { browser: Browser }>({
   browser: [
     // eslint-disable-next-line no-empty-pattern
     async ({}, use) => {
