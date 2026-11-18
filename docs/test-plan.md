@@ -172,7 +172,7 @@ behaviour is caught even before the dependency lands.
 | level | what | command | when |
 |---|---|---|---|
 | L1 deployed black box | routes, headers, JSON shapes, MCP protocol | `node --test --test-reporter=spec tests-deployed/*.test.mjs` | every deploy + twice daily (schedule) |
-| L2 journeys | J1–J6 in a real browser | `pnpm test:e2e` (Playwright, `PLAYWRIGHT_BASE_URL` pointed at the deployed origin) | before a release, and on the deployed origin after a routing change |
+| L2 journeys | J1 (value a startup and inspect the maths) plus the landing, locale, comparables, removed-surface and legal surfaces — **not** J2/J3/J4 | `PLAYWRIGHT_BASE_URL=https://startup-valuation.ascent-partners.com pnpm test:e2e:deployed:gui` — `tests-webapp/deployed-gui.spec.ts` against the deployed origin, in the estate's Windows Chrome over CDP (measured 2026-11-18: 8 passed) | after a routing or image change |
 | L3 unit | route handlers, methods registry, pin checker | `pnpm test` + `python3 -m pytest tests-ci/` | every PR |
 | L4 Python library | 103 public functions, `ValuationResult` shape | `pytest --cov-fail-under=85` | every PR |
 
