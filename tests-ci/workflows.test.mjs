@@ -187,9 +187,13 @@ const invariants = [
           bad.push(`${f}: no GATE_RE found`);
           continue;
         }
-        const found = [...m[1].matchAll(/\(([^)]+)\)/g)].map((x) => x[1]).sort();
+        // The literal opens with a capturing group for the whole alternation, so the first match is the
+        // expression itself rather than a class; drop it before comparing.
+        const found = [...m[1].matchAll(/\(([^)]+)\)/g)].map((x) => x[1])
+          .filter((cls) => cls.startsWith("(") === false)
+          .sort();
         classes[f] = found;
-        for (const cls of ["tests-ci/", "scripts/", "container\\.json"]) {
+        for (const cls of ["tests-ci/", "scripts/", "deploy/", "container\\.json"]) {
           if (!found.includes(cls)) bad.push(`${f}: GATE_RE does not cover ${cls}`);
         }
       }
@@ -324,12 +328,56 @@ const invariants = [
         bad.push("the pointer flag does not read the matrix digests, or its comparator is not `<= 1`");
       if (!c.includes('"true" if len({i["digest"] for i in items}) <= 1 else "false"'))
         bad.push("the pointer flag's true/false arms are inverted");
-      if (!c.includes("needs.prepare.outputs.pointer == 'true'")) bad.push("publish_pointer is not gated on that flag");
+      if (!/PUBLISH_POINTER:.*needs\.prepare\.outputs\.pointer == 'true'/.test(c))
+        bad.push("the pointer is not gated on that flag");
       return bad;
     },
     // Invert the comparator rather than removing the gate: a fixture that only removes the line
     // cannot see a wrong predicate, which is how this arm passed a rewritten `>= 1`.
     mutate: (t) => code(t).replace("<= 1 else", ">= 1 else"),
+  },
+  {
+    // The rollout moved from a SHA-pinned private reusable workflow into this repository, so the
+    // safety path is now code the deploying commit can change. This asserts the inline job still
+    // carries it: a digest gate against this repo's manifest, the vendored rollout, and the two
+    // flags that make the name and the fleet pointer correct.
+    name: "deploy-digest.yml keeps the rollout's safety path inline, not behind a uses:",
+    file: "deploy-digest.yml",
+    check: (t) => {
+      const c = code(t);
+      const job = jobBlock(c, "deploy");
+      const bad = [];
+      if (/^\s+uses:/m.test(job)) bad.push("the deploy job calls a reusable workflow instead of running inline");
+      // Presence is not behaviour: `includes("container.json")` stayed green over a gate whose
+      // final line had been rewritten to `raise SystemExit(0)`, and over one whose comparator was
+      // inverted. Assert the comparison and the failure, and the flags in the form they are used.
+      if (!/json\.load\(open\("container\.json"\)\)/.test(job))
+        bad.push("the digest gate no longer reads container.json");
+      if (!/if pinned != digest:/.test(job))
+        bad.push("the digest gate no longer compares the pin with the requested digest");
+      if (!/raise SystemExit\(1 if bad else 0\)/.test(job))
+        bad.push("the digest gate no longer fails the step on a mismatch");
+      // Invoking it, not merely chmod-ing it. Deleting the call leaves `chmod +x …` and the string,
+      // so the job exits 0 with nothing rolled out; the post-deploy e2e then passes because the old
+      // image answers the contract, and the chain pins again on that "health".
+      if (!/deploy\/container\/rollout\.sh "\$\{args\[@\]\}"/.test(job))
+        bad.push("the deploy job does not run the vendored rollout");
+      if (!/args\+=\(--docker-name "\$DOCKER_NAME"\)/.test(job))
+        bad.push("the container name is no longer passed to the rollout");
+      // With its guard, not just the flag: an ungated pointer moves the whole fleet onto whichever
+      // digest finished last.
+      if (!/\[\s*"\$PUBLISH_POINTER"\s*=\s*"true"\s*\]\s*&&\s*args\+=\(--publish-pointer\)/.test(job))
+        bad.push("the fleet pointer is no longer passed to the rollout");
+      if (!/\[\s*"\$DRY_RUN"\s*=\s*"true"\s*\]\s*&&\s*args\+=\(--dry-run\)/.test(job))
+        bad.push("--dry-run is no longer gated, so a dry run would replace production containers");
+      return bad;
+    },
+    // Every occurrence: the path appears in both the `chmod` and the invocation, and replacing one
+    // left the other to satisfy the check.
+    mutate: (t) =>
+      code(t)
+        .replaceAll("deploy/container/rollout.sh", "somewhere/else.sh")
+        .replace("if pinned != digest:", "if pinned == digest:"),
   },
   {
     name: "guard-tamper.yml runs on every PR, so it can be a required check",

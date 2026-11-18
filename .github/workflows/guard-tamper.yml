@@ -63,7 +63,7 @@ jobs:
           # `[bot]`, which misses exactly the case this workflow exists for: a machine account
           # authenticating with a PAT under a human-looking login. Deny by default; name the humans.
           HUMANS="simonmak-ascent"
-          GATE_RE='^((tests-deployed/)|(tests-ci/)|(scripts/)|(compliance\.json)|(docs/delivery-gates\.md)|(\.github/workflows/)|(container\.json))'
+          GATE_RE='^((tests-deployed/)|(tests-ci/)|(scripts/)|(deploy/)|(compliance\.json)|(docs/delivery-gates\.md)|(\.github/workflows/)|(container\.json))'
 
           # `gh pr view --json files` is a single GraphQL page (`files(first: 100)`), so a PR
           # touching a gate file beyond the first hundred paths would read as "no gate file" and

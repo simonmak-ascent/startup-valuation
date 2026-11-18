@@ -6,7 +6,7 @@ name: pin-digest
 # writes the new digest into `container.json`, and lets the pin PR merge itself — auto-merge with
 # no required human approval, so the only thing standing in front of a rollout is the check suite.
 #
-# Why a PR at all, when Vercel just deploys: `container-cd.yml` refuses any digest that is not the
+# Why a PR at all, when Vercel just deploys: `deploy-digest.yml` refuses any digest that is not the
 # one `container.json` pins. That gate is what stops an unapproved image reaching production, so it
 # stays; the pin is the approved artefact. Automating the pin is how an automated rollout keeps it.
 #
@@ -262,7 +262,7 @@ jobs:
               --title "chore(deploy): pin the web image built from $short" \
               --body "Automated by \`pin-digest.yml\` after \`image.yml\` published \`$DIGEST\` from \`$short\`.
 
-          Merging this is the approval step for the rollout: \`container-cd.yml\` will only deploy a digest that \`container.json\` pins, so the pin is what makes the built image deployable. Auto-merge is enabled, so the check suite is the only gate."
+          Merging this is the approval step for the rollout: \`deploy-digest.yml\` will only deploy a digest that \`container.json\` pins, so the pin is what makes the built image deployable. Auto-merge is enabled, so the check suite is the only gate."
             existing="$(gh pr list --head "$branch" --state open --json number -q '.[0].number')"
           fi
 
