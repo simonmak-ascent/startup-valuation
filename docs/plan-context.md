@@ -174,7 +174,7 @@ Severity as reported, then **verified by me** where marked ✓.
 | W2 | high | `app/(en)/api/export/report/route.ts:136` | IDOR: `getAuditLogForRun(runId)` with no user predicate; any Pro user exports any run | ✓ read |
 | W3 | high | `app/(en)/dashboard/page.tsx:70` vs `audit.ts:71`+`migrate.ts:72` | export link passes an `audit_log` id into `WHERE valuation_run = $id` (`record<valuation_run>`) → export always 404 | ✓ read |
 | W4 | high | `components/CalculatorPage.tsx:54,159-190` | reads camelCase (`formulaNumber`, `libraryVersion`) from a snake_case response → audit badge dead, shows `startup-valuation@undefined` | |
-| W5 | high | `app/(en)/api/ai/route.ts:6-23` | most expensive endpoint has no auth and no rate limit; `chatCompletion` has no timeout | |
+| W5 | high | `app/(en)/api/ai/route.ts (deleted 2026-11-18 — this file is a snapshot, see the date above):6-23` | most expensive endpoint has no auth and no rate limit; `chatCompletion` has no timeout | |
 | W6 | high | `app/(en)/api/audit/route.ts:17-18,47-60` | unauthenticated clients can write arbitrary rows into the append-only audit ledger the paid report is built from | |
 | W7 | medium | `audit/route.ts:8`, `checkout/route.ts:11`, `export/report/route.ts:103` | rate limits key on the leftmost `x-forwarded-for` hop, which the client controls | |
 | W8 | medium | `app/(en)/api/health/route.ts:9-14` | returns 200 when the DB is down; hardcodes `version:"1.0.2"`, `tools:46` | ✓ read |

@@ -149,10 +149,14 @@ test("the removed surfaces stay removed", async () => {
     "/sign-in",
     "/dashboard",
     "/api/auth/session",
+    "/api/auth/providers",   // Auth.js served both under the same catch-all route
+    "/api/auth/csrf",
     "/api/audit",
     "/api/billing/checkout",
     "/api/export/report",
     "/api/webhooks/stripe",
+    "/api/ai",          // removed with the advisor on 2026-11-18
+    "/ai-advisor",      // the page: the GUI suite that also checks it is run by no workflow
   ];
   for (const path of removed) {
     const res = await get(path);
@@ -161,19 +165,21 @@ test("the removed surfaces stay removed", async () => {
 });
 
 test("/api/* reaches the web application, not a Python status blob", async () => {
-  // The regression this catches: both Python handlers used to answer every /api/* path, so the
-  // web app's own routes were shadowed by a 200 that looked fine. Sign-in, billing and the Stripe
-  // webhook have since been removed with the database dependency, so this asserts against a route
-  // that must keep existing: POST /api/ai with an empty query answers 400 {"error":"Query is
-  // required"}, which a Python handler never produced. A GET answers 405 with no body at all, so it
-  // cannot be asserted for content-type — measured live before writing this.
-  const res = await postJSON("/api/ai", { query: "" });
+  // The regression this catches: both Python handlers used to answer every /api/* path, so the web
+  // app's own routes were shadowed by a 200 that looked fine. `/api/health` is the surviving web
+  // route, and its body is shaped by Next — a `dependency` object the Python handlers never emit.
+  // The advisor route that used to carry this assertion was removed with the advisor on 2026-11-18.
+  const res = await get("/api/health");
   const raw = await res.text();
-  assert.equal(res.status, 400, `/api/ai returned ${res.status} for an empty query`);
-  assert.match(String(res.headers.get("content-type")), /application\/json/);
   const body = JSON.parse(raw);
-  assert.equal(body?.error, "Query is required", `unexpected /api/ai body: ${raw.slice(0, 80)}`);
+  assert.equal(body.dependency?.name, "finance.yahoo.com", `/api/health is not answered by the web app: ${raw.slice(0, 80)}`);
   for (const leak of ["available", "methods"]) {
-    assert.ok(!(leak in body), `/api/ai is answered by a Python status blob (saw '${leak}')`);
+    assert.ok(!(leak in body), `/api/health is answered by a Python status blob (saw '${leak}')`);
   }
+  // `/api/health` is also the Python containers' probe path, so shape alone is a weaker signal than
+  // the /api/ai route this replaced. `/api/playground` is a Next page and can only be served by the
+  // web app: HTML, not the handler's JSON.
+  const page = await get("/api/playground");
+  assert.equal(page.status, 200, `/api/playground returned ${page.status}`);
+  assert.match(String(page.headers.get("content-type")), /text\/html/, "/api/playground is not served by the web app");
 });

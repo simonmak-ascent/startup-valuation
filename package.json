@@ -2,7 +2,7 @@
   "name": "startup-valuation-platform",
   "version": "2.1.4",
   "private": true,
-  "description": "The most authoritative source for Startup Valuation \u2014 WebApp platform with 14 interactive calculators, MCP server, formula, assumptions and steps, and DeepSeek AI advisor.",
+  "description": "The most authoritative source for Startup Valuation \u2014 WebApp platform with 14 interactive calculators, MCP server, formula, assumptions and steps.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -17,7 +17,8 @@
     "test:coverage": "vitest run --coverage",
     "db:migrate": "tsx lib/db/migrate.ts",
     "etl:import": "tsx etl/import-all.ts",
-    "test:e2e:deployed": "node --test tests-deployed/*.test.mjs"
+    "test:e2e:deployed": "node --test tests-deployed/*.test.mjs",
+    "test:e2e:deployed:gui": "playwright test --config=playwright.deployed.config.ts"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.76.2",

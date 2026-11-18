@@ -71,7 +71,6 @@ const THEME_INIT =
 
 const NAV = [
   { href: "/#methods", label: "Methods" },
-  { href: "/ai-advisor", label: "AI Advisor" },
   { href: "/benchmarks", label: "Benchmarks" },
   { href: "/public-companies", label: "Public Companies" },
   { href: "/api/playground", label: "API Playground" },

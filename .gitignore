@@ -48,3 +48,7 @@ tsconfig.tsbuildinfo
 # SurrealDB CLI history
 history.txt
 .vercel
+
+# Playwright artefacts (reports, traces, last-run state)
+playwright-report/
+test-results/

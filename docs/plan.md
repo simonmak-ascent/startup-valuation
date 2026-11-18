@@ -118,7 +118,7 @@ branch, not intentions.
 - **files:** `lib/rate-limit.ts`, three routes, `app/(en)/api/ai/route.ts`, `lib/ai/deepseek.ts`
 - **change:** new `clientKey()` takes the **rightmost** `X-Forwarded-For` hop (the one the ALB
   appends) in all four routes; the AI advisor gains a 10/min limiter and a 30 s request timeout.
-- **verify:** `tests-webapp/rate-limit.test.ts` — 4 cases incl. a forged leftmost value.
+- **verify:** `tests-webapp/rate-limit.test.ts (deleted 2026-11-18 with the advisor — this row is a snapshot)` — 4 cases incl. a forged leftmost value.
 
 ### T1.15 · Audit route returns 503, not 200, on DB failure — **done**
 - **files:** `app/(en)/api/audit/route.ts`
