@@ -69,6 +69,12 @@ jobs:
       - name: Delivery contract (health gate behaviour)
         run: python3 tests-ci/health_gate_sim.py
 
+      # The report a failed rollout files is the only thing an operator sees, and every marker it can
+      # print has been the wrong one at least once. Behaviour, not text: the loop is extracted from
+      # the workflow and run against stub bodies.
+      - name: Delivery contract (digest sampler markers)
+        run: python3 tests-ci/sampler_sim.py
+
   web:
     permissions:
       contents: read

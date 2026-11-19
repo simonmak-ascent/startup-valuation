@@ -9,7 +9,8 @@
     "pnpm test",
     "python3 -m pytest tests-ci/",
     "node --test tests-ci/workflows.test.mjs",
-    "python3 tests-ci/health_gate_sim.py"
+    "python3 tests-ci/health_gate_sim.py",
+    "python3 tests-ci/sampler_sim.py"
   ],
   "deploy": {
     "kind": "workflow",

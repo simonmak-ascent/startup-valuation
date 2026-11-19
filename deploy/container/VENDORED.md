@@ -4,7 +4,8 @@ These five files are **copies** of `apg-infra/deploy/container/`. `VERSION` name
 `e506e242a6057942070ba747624a0f173886f722` — the commit that last *changed* `deploy/container/`
 (squash-merged as `apg-infra` PR #260), and the same SHA `container-cd.yml` pins as its payload.
 
-Three payload changes this copy carries, all measured on 2026-11-19:
+Three payload changes are in this copy (it is byte-identical to `apg-infra` at the pin above,
+not a patch on it), all measured on 2026-11-19:
 
 - one pointer tag per container (`ghcr.io/<repo>:desired-<container>`), which the reconciler prefers
   over the node's own record — the reason a peer converges on its own timer instead of waiting for a
@@ -65,9 +66,11 @@ prose, and confirm two things, because both have bitten:
    the pull-retry loop in `.github/workflows/deploy-digest.yml` are copies of `container-cd.yml`'s
    `The digest must be the one this repository declares` and its pull loop. A change to that workflow
    upstream is silently missed by a recipe that copies only `deploy/container/`.
-3. **Two of the five files are unchecked and unused.** `converge.sh` and `converge-all.sh` are kept for
-   parity and are not invoked by CI; `check.sh` compares only `rollout.sh` and `container-spec.py`. The
-   two files that never run are the two nothing verifies.
+3. **Three of the five files are unchecked, and three never run here.** `converge.sh`,
+   `converge-all.sh` and `check.sh` are kept for parity and are not invoked by CI — `converge.sh` and
+   `converge-all.sh` by the node's timer, `check.sh` by nobody — and `check.sh`, the only thing that
+   could compare these bytes, is itself one of them and would compare the directory to itself. The
+   files that never run here are the files nothing verifies.
 4. **The pin is only as good as `VERSION`.** Nothing in a public repository can compare these bytes to
    a private checkout, so drift here is detectable only if someone diffs against an apg-infra clone.
    `deploy/` is a gate file in both guards, which makes a change *reviewable* by a human; it does not
