@@ -49,6 +49,21 @@ describe("GET /api/health", () => {
     expect(dependency.cached).toBeUndefined();
   });
 
+  it("reports the digest serving this node, and null when none was injected", async () => {
+    quote.mockResolvedValue({ regularMarketPrice: 350 });
+
+    delete process.env.IMAGE_DIGEST;
+    let GET = await load();
+    expect((await body(await GET())).image).toBeNull();
+
+    // The rollout injects this. Without it the fleet looks homogeneous even when it is not, because
+    // `version` is the package version and does not change per build.
+    process.env.IMAGE_DIGEST = `sha256:${"a".repeat(64)}`;
+    GET = await load();
+    expect((await body(await GET())).image).toBe(`sha256:${"a".repeat(64)}`);
+    delete process.env.IMAGE_DIGEST;
+  });
+
   it("answers from the memo inside the window instead of probing again", async () => {
     quote.mockResolvedValue({ regularMarketPrice: 350 });
     const GET = await load();

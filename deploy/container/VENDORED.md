@@ -1,10 +1,14 @@
 # Vendored deploy payload — why this is a copy, and how to update it
 
 These five files are **copies** of `apg-infra/deploy/container/`. `VERSION` names
-`6157e6bbefb5eccafa411b5b55074140d576bb1f` — the commit that last *changed* `deploy/container/`, and
-the same SHA the estate's own callee pinned as its payload. A later `apg-infra` commit (`48dd8bad…`,
-a docs change) is where the copy was physically taken from; naming it here instead would make drift
-detection a `git log` over the wrong range.
+`4bf69efd051a6aa5d67e633934966b56c0d3f531` — the commit that last *changed* `deploy/container/`
+(squash-merged as `apg-infra` PR #256), and the same SHA `container-cd.yml` pins as its payload.
+
+That change replaced the single repo-wide `:desired` tag with one pointer per container
+(`ghcr.io/<repo>:desired-<container>`) and made the reconciler prefer it over the node's own record,
+which is what lets a peer converge on its own timer instead of waiting for a human to roll it. It
+also started injecting `IMAGE_DIGEST` into the container, which `app/(en)/api/health/route.ts`
+reports as `image` so the fleet's homogeneity is observable from outside.
 
 ## Why a copy exists
 
