@@ -50,7 +50,13 @@ CASES = [
 
 def sampler_script() -> str:
     lines = WF.read_text().splitlines()
-    start = next(i for i, line in enumerate(lines) if "for _ in 1 2 3 4 5 6 7 8 9 10" in line)
+    try:
+        start = next(i for i, line in enumerate(lines) if "for _ in 1 2 3 4 5 6 7 8 9 10" in line)
+    except StopIteration:
+        raise SystemExit(
+            f"sampler_sim: no sampler loop ('for _ in 1 2 3 4 5 6 7 8 9 10') in {WF} — "
+            f"the extraction has nothing to run"
+        )
     indent = len(lines[start]) - len(lines[start].lstrip())
     # Take the whole loop, `for` through `done`: a body without its `for` makes the `continue` in the
     # empty-body branch an error rather than a loop jump, so execution falls through and prints twice.
