@@ -362,6 +362,29 @@ const invariants = [
     mutate: (t) => t.replace(/while read -r id run_conclusion; do/, "for entry in $ids; do"),
   },
   {
+    // A reusable-workflow call is named `<caller job> / <called job>`, so the post-deploy suite
+    // appears as `verify / deployed`. An equality against `verify` matched no job on any run, every
+    // run read as "no verdict", and the chain pinned blind on the bootstrapping branch — the defect
+    // this arm exists for. No other job name in deploy-digest.yml begins with `verify` (prepare,
+    // guard, deploy (…), report), and e2e-deployed.yml declares exactly one job (`deployed`).
+    //
+    // Its own invariant and its own fixture on purpose: bolted onto the pair check above, the only
+    // mutation broke the `while read` line instead, so this arm was never observed failing.
+    name: "pin-digest.yml matches the post-deploy job by its reusable-workflow name",
+    file: "pin-digest.yml",
+    check: (t) => {
+      const c = code(t);
+      // Bound to the jobs selector, not the bare token: a stray `startswith("verify")` elsewhere in
+      // the file would satisfy a substring match while the selector went back to equality.
+      if (!/\.jobs\[\]\s*\|\s*select\(\(\.name \| startswith\("verify"\)\)/.test(c))
+        return [
+          "the verify job is matched by equality, but a reusable-workflow job is named `verify / deployed`",
+        ];
+      return [];
+    },
+    mutate: (t) => t.replace('select((.name | startswith("verify"))', 'select(.name == "verify")'),
+  },
+  {
     // `verify` is skipped when `deploy` fails, so without this job a failed rollout leaves nothing but
     // a red run: no issue, no digest list, no next step. Measured 2026-11-19.
     name: "deploy-digest.yml records a failed rollout (the failure gate itself)",
