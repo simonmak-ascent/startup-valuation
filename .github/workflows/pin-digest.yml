@@ -150,7 +150,7 @@ jobs:
             # stopped the walk before any older run was read.
             while read -r id run_conclusion; do
               if ! verdict="$(gh run view "$id" --json jobs \
-                    --jq '[.jobs[] | select(.name == "verify" and .conclusion != "skipped")][0].conclusion // "none"' 2>/dev/null)"; then
+                    --jq '[.jobs[] | select((.name | startswith("verify")) and .conclusion != "skipped")][0].conclusion // "none"' 2>/dev/null)"; then
                 echo "::error::cannot read the jobs of run $id — refusing to pin blind."
                 exit 1
               fi
