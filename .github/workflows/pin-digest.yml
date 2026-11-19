@@ -168,7 +168,9 @@ jobs:
                 found=1
                 break
               fi
-            done <<< "$ids"
+            done <<EOF
+          $ids
+          EOF
             if [ "$found" = "1" ]; then
               break
             fi

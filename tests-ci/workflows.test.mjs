@@ -351,8 +351,12 @@ const invariants = [
           "the id/conclusion pairs are not read as a pair — an unquoted `for` iterates words, so run_conclusion would hold the run id",
         );
       if (/for\s+\w+\s+in\s+\$ids/.test(c)) bad.push("the run list is still iterated as words");
-      if (!/done <<< "\$ids"/.test(c))
-        bad.push("the loop is fed through a pipeline, so found/last/exit would not survive it");
+      // `tests-ci/health_gate_sim.py` runs the step under `sh`, so a bashism is a syntax error there
+      // and the step dies with exit 2 — which is how `<<<` was caught.
+      if (/<<</.test(c))
+        bad.push("a here-string is a bashism; this step is executed by `sh` in the simulator");
+      if (!/done <<'?EOF'?/.test(c))
+        bad.push("the loop is not fed by a heredoc, so it is either a bashism or a subshell");
       return bad;
     },
     mutate: (t) => t.replace(/while read -r id run_conclusion; do/, "for entry in $ids; do"),
