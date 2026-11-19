@@ -1,14 +1,18 @@
 # Vendored deploy payload — why this is a copy, and how to update it
 
 These five files are **copies** of `apg-infra/deploy/container/`. `VERSION` names
-`4bf69efd051a6aa5d67e633934966b56c0d3f531` — the commit that last *changed* `deploy/container/`
-(squash-merged as `apg-infra` PR #256), and the same SHA `container-cd.yml` pins as its payload.
+`f0c9ff2873e358f9a868cc7865b89f5db0aa999c` — the commit that last *changed* `deploy/container/`
+(squash-merged as `apg-infra` PR #258), and the same SHA `container-cd.yml` pins as its payload.
 
-That change replaced the single repo-wide `:desired` tag with one pointer per container
-(`ghcr.io/<repo>:desired-<container>`) and made the reconciler prefer it over the node's own record,
-which is what lets a peer converge on its own timer instead of waiting for a human to roll it. It
-also started injecting `IMAGE_DIGEST` into the container, which `app/(en)/api/health/route.ts`
-reports as `image` so the fleet's homogeneity is observable from outside.
+Two payload changes this copy carries, both measured on 2026-11-19:
+
+- one pointer tag per container (`ghcr.io/<repo>:desired-<container>`), which the reconciler prefers
+  over the node's own record — the reason a peer converges on its own timer instead of waiting for a
+  human to roll it — and `-e IMAGE_DIGEST=<digest>` injected into every container, which
+  `app/(en)/api/health/route.ts` reports as `image` so the fleet's homogeneity is observable;
+- the pointer push retries three times and prints docker's error on the final attempt. It used to
+  publish once with `>/dev/null 2>&1`: a transient GHCR failure failed the deploy with no cause, and
+  the same job succeeded on a re-run.
 
 ## Why a copy exists
 
