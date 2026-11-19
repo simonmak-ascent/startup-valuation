@@ -99,6 +99,32 @@ function listUnder(text, key) {
   return out;
 }
 
+/**
+ * The report job's load-bearing properties, shared by one fixture per arm.
+ *
+ * One fixture per arm on purpose: a mutant that trips two of three proves only that two exist — the
+ * same argument the GATE_RE fixture makes above. The `failure()` mutation is anchored to the
+ * expression line, because an unanchored one lands on the prose above it (`code()` strips comments
+ * for the check, but `mutate` runs on the raw text) and leaves that arm untested.
+ */
+function reportRecords(text) {
+  const c = code(text);
+  const job = jobBlock(c, "report");
+  const bad = [];
+  if (!/^ {2}report:/m.test(c)) bad.push("no report job — a failed rollout leaves no record");
+  if (!/failure\(\)/.test(job)) bad.push("the report job does not run on failure");
+  // Job-scoped: `verify` also grants issues: write, so a file-wide match proves nothing here.
+  if (!/issues: write/.test(job)) bad.push("the report job cannot file an issue");
+  // A job with no `needs` has no ancestor to fail, so `if: failure()` is never true — the whole fix
+  // silently disabled with every other assertion still green.
+  if (!/needs: \[prepare, guard, deploy, verify\]/.test(job))
+    bad.push("the report job declares no needs, so if: failure() can never be true");
+  if (!/^ {6}- apg-ci-04$/m.test(job))
+    bad.push("the report job is not on the always-on CI node the other reporting jobs use");
+  if (!/api\/health/.test(job)) bad.push("the report does not sample what the fleet is serving");
+  return bad;
+}
+
 const invariants = [
   {
     // The only thing that terminates the chain: Dockerfile.web copies with fresh mtimes, so a
@@ -289,6 +315,67 @@ const invariants = [
       return bad;
     },
     mutate: (t) => t.replace(/page=\$page/g, "x").replace(/actions\/workflows\/deploy-digest\.yml\/runs\?/g, "nothing"),
+  },
+  {
+    // The gate must fail CLOSED. A rollout that dies before the post-deploy suite has no `verify` job
+    // at all, and "no verdict" is not the same as a dry run: measured 2026-11-19, the pointer push
+    // failed, `verify` was skipped, and this loop judged an older green run instead.
+    name: "pin-digest.yml treats a rollout that failed without a verify job as a failure",
+    file: "pin-digest.yml",
+    check: (t) => {
+      const c = code(t);
+      const bad = [];
+      if (!/"\\\(\.id\) \\\(\.conclusion\)"/.test(c))
+        bad.push(
+          "the run list does not carry each run's own conclusion, so a failed run cannot be told from a dry run",
+        );
+      if (!/\$run_conclusion" != "success"/.test(c))
+        bad.push("a run with no verify job is not checked against the run's own conclusion");
+      if (!/run_conclusion" != "success"[\s\S]{0,400}?last="failure"/.test(c))
+        bad.push("a non-success run with no verify job does not set the failed verdict");
+      return bad;
+    },
+    mutate: (t) => t.replace(/\$run_conclusion" != "success"/, '"x" != "success"'),
+  },
+  {
+    // This is the check that would have caught the bug the case above missed: the pairs are text, so a
+    // substring match stayed green while `for entry in $ids` split them into words and put the run id
+    // in `run_conclusion`.
+    name: "pin-digest.yml reads each run's id and conclusion as one pair",
+    file: "pin-digest.yml",
+    check: (t) => {
+      const c = code(t);
+      const bad = [];
+      if (!/while read -r id run_conclusion; do/.test(c))
+        bad.push(
+          "the id/conclusion pairs are not read as a pair — an unquoted `for` iterates words, so run_conclusion would hold the run id",
+        );
+      if (/for\s+\w+\s+in\s+\$ids/.test(c)) bad.push("the run list is still iterated as words");
+      if (!/done <<< "\$ids"/.test(c))
+        bad.push("the loop is fed through a pipeline, so found/last/exit would not survive it");
+      return bad;
+    },
+    mutate: (t) => t.replace(/while read -r id run_conclusion; do/, "for entry in $ids; do"),
+  },
+  {
+    // `verify` is skipped when `deploy` fails, so without this job a failed rollout leaves nothing but
+    // a red run: no issue, no digest list, no next step. Measured 2026-11-19.
+    name: "deploy-digest.yml records a failed rollout (the failure gate itself)",
+    file: "deploy-digest.yml",
+    check: reportRecords,
+    mutate: (t) => t.replace("(failure() || cancelled())", "false"),
+  },
+  {
+    name: "deploy-digest.yml records a failed rollout (its needs list)",
+    file: "deploy-digest.yml",
+    check: reportRecords,
+    mutate: (t) => t.replace(/ {4}needs: \[prepare, guard, deploy, verify\]\n/, ""),
+  },
+  {
+    name: "deploy-digest.yml records a failed rollout (it may file an issue)",
+    file: "deploy-digest.yml",
+    check: reportRecords,
+    mutate: (t) => t.replace(/ {6}issues: write\n/, ""),
   },
   {
     // "container.json changed" is not "a digest changed": ports, probes, run settings and the image

@@ -447,3 +447,98 @@ jobs:
     uses: ./.github/workflows/e2e-deployed.yml
     with:
       base_url: ${{ inputs.probe_url || 'https://startup-valuation.ascent-partners.com' }}
+
+  # A red deploy must produce something a person or an agent can act on. Until this job existed, the
+  # only failure path that filed anything lived inside `verify`, which is *skipped* when `deploy`
+  # fails — so the exact case it was written for filed nothing at all. Measured 2026-11-19: a rollout
+  # died at the pointer push, the run went red, `verify` never ran, and no record was made anywhere.
+  #
+  # Deliberately not on the deploy runner: this job must survive a runner that cannot start the
+  # rollout, so it uses the always-on CI node and does not depend on `prepare`'s outputs.
+  report:
+    needs: [prepare, guard, deploy, verify]
+    # `failure()` also fires when `verify` failed. `e2e-deployed` files that issue from a step inside
+    # the suite's own job — which that job's 25-minute timeout kills, and which never runs if the
+    # called workflow fails before its steps. Excluding that case would leave a red run with no record
+    # at all, which is the shape this job exists for; so it always runs, and comments on the suite's
+    # issue when one exists instead of opening a second ticket.
+    if: >
+      (failure() || cancelled())
+      && !(github.event_name == 'workflow_dispatch' && inputs.dry_run)
+    runs-on:
+      - self-hosted
+      - apg-ci-04
+    # Without a bound this is GitHub's 360-minute default on a queue shared with ci, pin-digest and
+    # guard-tamper — `e2e-deployed` sets one for the same reason.
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+      issues: write
+    steps:
+      - name: Write and file the diagnosis
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_ID: ${{ github.run_id }}
+          ORIGIN: ${{ inputs.probe_url || 'https://startup-valuation.ascent-partners.com' }}
+          VERIFY_RESULT: ${{ needs.verify.result }}
+        run: |
+          set -eu
+          {
+            echo "This run did not reach a green post-deploy gate — do not close this until production"
+            echo "is green. When \`deploy\` fails, \`verify\` is skipped and this is the only record; when"
+            echo "\`verify\` fails, the suite's own issue carries the diagnosis and this adds the fleet."
+            echo
+            echo "Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}"
+            echo
+            echo "| job | conclusion |"
+            echo "|---|---|"
+            gh api --paginate "repos/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}/jobs" \
+              --jq '.jobs[] | "| \(.name) | \(.conclusion // .status) |"' \
+              || echo "| (job list unavailable — see the run URL above) |"
+            echo
+            echo "Digest each node is serving now (10 samples, one connection each):"
+            echo '```'
+            for _ in 1 2 3 4 5 6 7 8 9 10; do
+              # No -f: `/api/health` answers 503 with a degraded body, and that body still carries
+              # `image` — the digest is the very thing this report exists to show. And without
+              # `pipefail`, `… | sed || echo` never fires (sed exits 0 on empty input), so the
+              # marker has to come from the value rather than from a pipeline status.
+              got="$(curl -sS --max-time 10 "${ORIGIN}/api/health" 2>/dev/null \
+                | sed -n 's/.*"image":"\([^"]*\)".*/\1/p' || true)"
+              printf '%s\n' "${got:-(no answer)}"
+            done | sort | uniq -c
+            echo '```'
+            echo
+            echo "A uniform list that is not the pinned digest means the pointer is stale or the"
+            echo "peers have not converged; more than one line means the fleet is split."
+            echo
+            echo "Two ways out, both real:"
+            echo "1. **Fix forward** — a commit that addresses the failure, then the normal pin."
+            echo "2. **Roll back** — re-pin the digest that was serving before this run."
+          } > "$RUNNER_TEMP/report.md"
+
+          title="deploy-failure: ${GITHUB_REPOSITORY} run ${RUN_ID}"
+          # A verify failure already has an issue, filed by the suite itself — comment there rather
+          # than open a second ticket. One issue exists per failing set, so several may be open:
+          # creation order says nothing about which one this run belongs to, but the suite touched
+          # the right one seconds ago. If its filing step never ran (the job was killed by the
+          # timeout, or the called workflow never started), nothing is found and one is created here.
+          existing=""
+          if [ "${VERIFY_RESULT:-}" = "failure" ]; then
+            existing="$(gh issue list --state open --limit 100 --json number,title,updatedAt \
+              --jq '[.[] | select(.title | startswith("e2e failure ("))] | sort_by(.updatedAt) | last | .number // empty' \
+              || true)"
+          fi
+          # Dedupe before creating, or a suite that never files turns each run into its own ticket.
+          if [ -z "${existing:-}" ]; then
+            existing="$(gh issue list --state open --limit 100 --json number,title \
+              --jq '.[] | select(.title | startswith("deploy-failure:")) | .number' | head -1 || true)"
+          fi
+          if [ -n "${existing:-}" ]; then
+            gh issue comment "$existing" --body-file "$RUNNER_TEMP/report.md"
+            echo "commented on #$existing"
+          else
+            gh issue create --title "$title" --body-file "$RUNNER_TEMP/report.md" --label deploy-failure \
+              || gh issue create --title "$title" --body-file "$RUNNER_TEMP/report.md"
+          fi

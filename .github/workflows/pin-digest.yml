@@ -136,7 +136,7 @@ jobs:
             # The path segment is the workflow's FILE NAME, not its display name: the extension-less
             # form 404s, and the error path would then refuse every pin. Verified against the live
             # API — /actions/workflows/deploy-digest/runs → 404, /…/deploy-digest.yml/runs → 200.
-            if ! ids="$(gh api "repos/$REPO/actions/workflows/deploy-digest.yml/runs?branch=main&status=completed&per_page=100&page=$page" --jq '.workflow_runs[].id' 2>/dev/null)"; then
+            if ! ids="$(gh api "repos/$REPO/actions/workflows/deploy-digest.yml/runs?branch=main&status=completed&per_page=100&page=$page" --jq '.workflow_runs[] | "\(.id) \(.conclusion)"' 2>/dev/null)"; then
               echo "::error::cannot enumerate deploy-digest runs — refusing to pin blind on production health."
               exit 1
             fi
@@ -144,7 +144,11 @@ jobs:
               break
             fi
             found=0
-            for id in $ids; do
+            # `$ids` is one "id conclusion" pair per line. Split it with `read`, not an unquoted
+            # `for`: that iterates whitespace-separated words, so the pair came apart and
+            # `run_conclusion` held the run id — which made every verify-less run look failed and
+            # stopped the walk before any older run was read.
+            while read -r id run_conclusion; do
               if ! verdict="$(gh run view "$id" --json jobs \
                     --jq '[.jobs[] | select(.name == "verify" and .conclusion != "skipped")][0].conclusion // "none"' 2>/dev/null)"; then
                 echo "::error::cannot read the jobs of run $id — refusing to pin blind."
@@ -153,7 +157,18 @@ jobs:
               case "$verdict" in
                 success|failure|timed_out|cancelled) last="$verdict"; found=1; break ;;
               esac
-            done
+              # `verify` never ran. That is benign only when the run itself succeeded — a dry-run
+              # dispatch, or a push whose digest did not change. A run that concluded anything else
+              # failed *before* the gate, which is exactly the case this loop used to walk past:
+              # measured 2026-11-19, a rollout died at the pointer push, `verify` was skipped, and the
+              # pin was judged on an older green run.
+              if [ "$run_conclusion" != "success" ]; then
+                echo "::warning::deploy-digest run $id concluded '$run_conclusion' with no verify job — counting it as a failed rollout"
+                last="failure"
+                found=1
+                break
+              fi
+            done <<< "$ids"
             if [ "$found" = "1" ]; then
               break
             fi
@@ -178,6 +193,7 @@ jobs:
               failure|timed_out|cancelled)
                 echo "::error::the newest rollout whose post-deploy verification ran concluded '$last'."
                 echo "::error::Refusing to pin another digest onto a host that failed its contract."
+                echo "::error::If the run was cancelled or failed before 'verify' (see the warning above), re-dispatch deploy-digest to clear it."
                 exit 1 ;;
             esac
             echo "newest verified rollout: $last"
