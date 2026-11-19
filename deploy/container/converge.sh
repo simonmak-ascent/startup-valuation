@@ -8,16 +8,17 @@
 # The desired digest comes from, in order:
 #
 #   1. ghcr.io/<repo>:desired-<container>   the pointer the deploy moves for this container alone
-#   2. ghcr.io/<repo>:desired               the legacy repo-wide pointer, accepted only when it cannot
-#                                           be another role's build (one tag cannot name three
-#                                           different images in one repository)
+#   2. ghcr.io/<repo>:desired               the legacy repo-wide pointer, accepted only when it names
+#                                           this container's own declared digest — never merely because
+#                                           this repository declares one role, which a stale tag also
+#                                           satisfies
 #   3. /var/lib/container-deploy/<container>.desired
 #                                           the node's own record, used when neither pointer
-#                                           resolves — written by a deploy that ran on this node
+#                                           resolves — written by every rollout on this node
 #
 # A per-container pointer is what makes a peer converge on its own: the record at path 3 is written
-# only by a deploy that ran *on this node*, so preferring it — as this script did until 2026-11-19 —
-# meant a node that had ever deployed never moved again.
+# by any rollout here, including one this timer started, so preferring it — as this script did
+# until 2026-11-19 — meant a node that had ever converged never moved again.
 #
 # The pointer is intent, never a runtime identity: it is resolved to a digest, the digest is pulled and
 # recorded, and that digest is what runs. Peers therefore never need the image pushed to them and the
@@ -34,7 +35,7 @@ GHCR_ENV="${GHCR_ENV:-/etc/container-deploy/ghcr.env}"
 while [ $# -gt 0 ]; do
   case "$1" in
     --container) CONTAINER=${2:?}; shift 2 ;;
-    -h|--help) sed -n '2,27p' "${BASH_SOURCE[0]}"; exit 0 ;;
+    -h|--help) sed -n '2,28p' "${BASH_SOURCE[0]}"; exit 0 ;;
     *) echo "converge: unknown argument: $1" >&2; exit 2 ;;
   esac
 done
@@ -99,11 +100,13 @@ fi
 desired="$RESOLVED"
 [ -n "$desired" ] && echo "converge: $CONTAINER intent from ${repo}:desired-${CONTAINER}"
 
-# 2. the legacy repo-wide pointer, accepted when it cannot be another role's build: either the node's
-#    manifest declares a single digest for this repository (nothing to confuse), or the tag names this
-#    container's own declared digest. Ahead of the local record because converge-all discovers
-#    containers FROM *.desired — every node that has deployed has one, so placing the record first
-#    made this branch unreachable and left such a node stuck on the digest it last deployed itself.
+# 2. the legacy repo-wide pointer, accepted ONLY when it names this container's own declared digest —
+#    never merely because "this repository declares one role", which a stale tag also satisfies. The
+#    earlier version of this comment described that second arm; it was removed after it let a timer
+#    move a healthy node onto an older build (see the note at the top of this file).
+#    Ahead of the local record because converge-all discovers containers FROM *.desired — every node
+#    that has deployed has one, so placing the record first made this branch unreachable and left
+#    such a node stuck on the digest it last deployed itself.
 if [ -z "$desired" ]; then
   resolve "ghcr.io/${repo}:desired"
   legacy="$RESOLVED"
