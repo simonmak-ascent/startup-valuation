@@ -245,7 +245,9 @@ test("every node the balancer routes to serves the pinned image, not only the on
   //
   // The limit of the assertion, stated: samples go through the ALB, so a target that is unhealthy
   // and out of rotation is never sampled. This catches a split fleet, not a drained node.
-  const budget = Number(process.env.FLEET_DEADLINE_MS ?? 15 * 60_000);
+  // `||`, not `??`: a non-numeric override yields NaN, and `Date.now() > NaN` is false for ever, so
+  // the exit test below would never fire and the poll would run to the job timeout instead.
+  const budget = Number(process.env.FLEET_DEADLINE_MS) || 15 * 60_000;
   const deadline = Date.now() + budget;
   let seen = {};
   for (;;) {

@@ -24,8 +24,8 @@ Ordered by blast radius, not by effort. Each carries the command that proves it.
 | # | defect | evidence | fix | verify |
 |---|---|---|---|---|
 | **D1** | **CI is red on the branch that landed the GUI suite** | `web` job exit 2: `deployed-gui.spec.ts(17,71): error TS2345` — the worker-fixture generic `base.extend<Record<string, never>, …>` is not assignable | `base.extend<{}, { browser: Browser }>` | `pnpm check` clean, PR checks green |
-| **D2** | **Critical: unauthenticated RCE in Next.js image optimisation with SVG** | Dependabot: `next` critical, vulnerable `<= 15.5.27`, **patched 15.5.28**; installed `15.5.27` | bump `next` to 15.5.28 | `pnpm build` + `pnpm test` + deployed e2e still green; alert closes |
-| **D3** | High: `next` DoS in App Router Server Actions | same alert set, also patched in 15.5.28 | covered by D2 | as D2 |
+| **D2** | **Critical: unauthenticated RCE in Next.js image optimisation with SVG** — **done 2026-11-19** | Dependabot: `next` critical, vulnerable `<= 15.5.27`; installed `15.5.27` (specifier was `^15.0.0`) | bumped to `15.5.29` (15.5.28 was already superseded). The fix is `sharp`, not Next code: the tree resolves `sharp@0.35.5` / `@img/sharp-libvips-*-1.3.4`, the advisory's stated workaround floor | `pnpm build` 39.5 s, `pnpm test` 35 tests, `pnpm check` clean; **open**: the digest rollout, then the deployed suite green and the Dependabot alert closed |
+| **D3** | High: `next` DoS in App Router Server Actions — **done 2026-11-19** | same alert set, patched in 15.5.28 | covered by D2 | as D2 |
 | **D4** | High: `zod` memory exhaustion — **major** bump (4.6.6, installed 3.25.76) | Dependabot, patched `4.6.6` | evaluate first: every schema is a boundary (`lib/db/validation.ts`, `lib/finance/yahoo.ts`); a major with a behavioural change is not a version-bump task | `pnpm test` + `pnpm check` + a parse of a real Yahoo payload; if incompatible, pin and record why |
 | **D5** | **`/docs` 404** — the mkdocs site is built (`site/`, 6.0 MB) but `Dockerfile.web` copies only `public/` | `Dockerfile.web:36`; `ls site/index.html` exists; `/docs` → 404 | build mkdocs in the image and serve it from the app: copy `site/` to `public/docs-static/`, add `rewrites()` for `/docs/:path*` → `/docs-static/:path*` (and `/docs` → the index). `rewrites` is typed in the installed Next (`config-shared.d.ts:811`); there is no `/docs` app route today | `/docs` 200, a nav page 200, and a GUI assertion |
 | **D6** | **`/zh` and `/hk` ship English chrome** — nav, footer and legal titles are hard-coded in `RootShell.tsx`; only `lib/landing.ts` is per-locale | live page under `lang="zh-Hans"` shows *Methods, Benchmarks, Public Companies, API Playground, Skills, Why Open Source, … Terms of Service* — the advisor item went with the advisor on 2026-11-18 | a `lib/chrome.ts` with `Record<Locale, …>` beside the existing landing copy — five strings do not need an i18n framework; pass the locale into `RootShell` | GUI test asserts a translated nav item per locale (today it asserts the body copy and would not catch this) |
@@ -49,7 +49,7 @@ Not bug fixes; each removes a rough edge a user or an operator meets.
 
 ## Sequence
 
-1. **D1** (CI green) → **D2/D3** (one-line bump of `next`) → re-run the deployed suite. That is one
+1. **D1** (CI green) → **D2/D3** (bump `next`, which lifts the `sharp` floor) → re-run the deployed suite. That is one
    PR and it closes the critical.
 2. **D5 + F3** (docs) and **D6 + F4** (chrome) in parallel — both are image changes, so they land
    together and roll out once.
@@ -60,7 +60,7 @@ Not bug fixes; each removes a rough edge a user or an operator meets.
 
 ## What I need from you
 
-- **Approval to bump `next` to 15.5.28** — a patch bump that closes a critical unauthenticated RCE.
+- ~~Approval to bump `next` to 15.5.28~~ — done: 15.5.29 landed in `f9f7bec`; only the digest rollout remains.
 - **A decision on `zod` 4**: take the major under review, or pin and record the advisory as accepted
   risk. I will not take a major silently.
 - ~~The `DEEPSEEK_API_KEY` handoff~~ — withdrawn: the advisor is removed, so nothing reads that key.
