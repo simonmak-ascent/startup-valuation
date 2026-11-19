@@ -276,16 +276,34 @@ deploy_local
 # Peers do not receive the image over SSH: the deploy runner is not root and the peers authorise only
 # root's key. Instead the deploy moves a pointer tag, and each node's reconciler resolves it, pulls the
 # digest it names, and records what it ran. The tag is intent, never a runtime identity — the digest is.
+# Publish a tag, retrying a transient registry failure, and print docker's own error when the last
+# attempt fails. The runner's pull already retries three times for the same reason
+# (.github/workflows/container-cd.yml, the deploy step's `while ! docker pull` loop); the push did
+# not, so a single 5xx from GHCR failed the deploy with "could not publish the desired pointer" and
+# no cause — measured 2026-11-19, where the same job succeeded on a re-run minutes later.
+publish_tag() { # <tag> <what it is, for the message>
+  local tag="$1" what="$2" attempt=1 out
+  while :; do
+    if out="$(docker push "$tag" 2>&1)"; then return 0; fi
+    if [ "$attempt" -ge 3 ]; then
+      printf '%s\n' "$out" | tail -5 >&2
+      log "$what $tag failed after $attempt attempts"
+      return 1
+    fi
+    log "publish $what $tag failed (attempt $attempt); retrying in 10s"
+    attempt=$((attempt + 1))
+    sleep 10
+  done
+}
+
 if [ "$PUBLISH_POINTER" = 1 ]; then
   # One tag per container. A single repo-wide tag cannot name three different digests, and when it
   # named the web image a reconciler reading it for the API role would pull the wrong image — which is
   # why the old design had to prefer each node's local record, and why a peer therefore never moved.
   ptr="ghcr.io/${APP_REPO}:desired-${CONTAINER}"
-  if docker tag "$REF" "$ptr" && docker push -q "$ptr" >/dev/null 2>&1; then
-    log "pointer $ptr -> ${DIGEST:0:19}"
-  else
-    die "could not publish the desired pointer $ptr"
-  fi
+  docker tag "$REF" "$ptr" || die "could not tag $REF as $ptr"
+  publish_tag "$ptr" "the desired pointer" || die "could not publish the desired pointer $ptr"
+  log "pointer $ptr -> ${DIGEST:0:19}"
 
   # The legacy repo-wide tag, kept only while it is unambiguous: every container this manifest
   # declares from the same repository must pin the same digest. A reconciler from before the
@@ -301,10 +319,12 @@ PY
 )"
   if [ "$uniform" = "1" ]; then
     legacy="ghcr.io/${APP_REPO}:desired"
-    if docker tag "$REF" "$legacy" && docker push -q "$legacy" >/dev/null 2>&1; then
-      log "legacy pointer $legacy -> ${DIGEST:0:19}"
-    else
+    if ! docker tag "$REF" "$legacy"; then
+      log "WARNING: could not tag the legacy pointer $legacy (per-container pointer is authoritative)"
+    elif ! publish_tag "$legacy" "the legacy pointer"; then
       log "WARNING: could not publish the legacy pointer $legacy (per-container pointer is authoritative)"
+    else
+      log "legacy pointer $legacy -> ${DIGEST:0:19}"
     fi
   else
     log "not publishing $APP_REPO:desired — the manifest declares more than one digest in that repository"
