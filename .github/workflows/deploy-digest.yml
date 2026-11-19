@@ -39,7 +39,7 @@ on:
         type: string
         default: ""
       runner:
-        description: "Runner label of the node that pulls and then propagates"
+        description: "Runner label of the node that pulls, rolls out, and moves the pointer"
         required: false
         type: string
         default: apg-ecs-01
