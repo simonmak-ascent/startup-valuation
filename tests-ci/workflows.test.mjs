@@ -425,30 +425,66 @@ const invariants = [
     mutate: (t) => t.replace("python3 scripts/check_manifest_pin.py", "true"),
   },
   {
-    // rollout.sh publishes ONE :desired tag per repository and converge.sh falls back to it on
-    // every peer. Two matrix entries on two digests would race that tag, and each peer would then
-    // converge the losing container onto the winner's image — a green run and a swapped fleet.
-    // Checked in the workflows because container.json cannot see downstream convergence.
-    name: "deploy-digest.yml publishes the fleet pointer only when every matrix entry shares a digest",
+    // One pointer tag per container. The uniform-digest gate was correct for the old single
+    // `:desired` tag — two containers on two digests would have raced it — but with
+    // `:desired-<container>` it suppressed the whole publish instead, which on a multi-digest run
+    // suppressed the per-container tags themselves, i.e. the exact case they exist for.
+    //
+    // The legacy repo-wide tag's safety did not move into this workflow: the vendored rollout.sh
+    // publishes it only when the manifest names one digest for that repository, which is a fact
+    // about the manifest and is checked where the manifest is read.
+    name: "deploy-digest.yml publishes the pointer on every rollout, without a uniform-digest gate",
     file: "deploy-digest.yml",
     check: (t) => {
       const c = code(t);
       const bad = [];
-      if (!c.includes('print("pointer="')) bad.push("prepare does not compute a pointer flag");
-      // Presence is not the predicate. `<= 1` rewritten as `>= 1`, or with the true/false arms
-      // swapped, still contains every substring a presence check looks for — and still publishes
-      // the pointer on a multi-digest move, which is the defect this invariant exists for.
-      if (!c.includes('len({i["digest"] for i in items}) <= 1'))
-        bad.push("the pointer flag does not read the matrix digests, or its comparator is not `<= 1`");
-      if (!c.includes('"true" if len({i["digest"] for i in items}) <= 1 else "false"'))
-        bad.push("the pointer flag's true/false arms are inverted");
-      if (!/PUBLISH_POINTER:.*needs\.prepare\.outputs\.pointer == 'true'/.test(c))
-        bad.push("the pointer is not gated on that flag");
+      if (!/PUBLISH_POINTER:.*github\.event_name == 'push' \|\| inputs\.publish_pointer/.test(c))
+        bad.push("the pointer is not published on a push");
+      if (!/\[ "\$PUBLISH_POINTER" = "true" \] && args\+=\(--publish-pointer\)/.test(c))
+        bad.push("the rollout is not told to publish a pointer");
       return bad;
     },
-    // Invert the comparator rather than removing the gate: a fixture that only removes the line
-    // cannot see a wrong predicate, which is how this arm passed a rewritten `>= 1`.
-    mutate: (t) => code(t).replace("<= 1 else", ">= 1 else"),
+    mutate: (t) => t.replace(/PUBLISH_POINTER: \$\{\{[^}]*\}\}/, "PUBLISH_POINTER: false"),
+  },
+  {
+    // The historical defect, with its own fixture: a re-added uniform-digest gate keeps the push
+    // predicate intact, so it passes every arm of the invariant above and is caught only here.
+    name: "deploy-digest.yml does not gate the pointer on the uniform-digest flag",
+    file: "deploy-digest.yml",
+    check: (t) =>
+      /needs\.prepare\.outputs\.pointer/.test(code(t))
+        ? [
+            "the pointer publish is gated on the uniform-digest flag again — with one tag per container that suppresses the multi-digest case the tags exist for",
+          ]
+        : [],
+    mutate: (t) =>
+      t.replace(
+        /PUBLISH_POINTER: \$\{\{ github\.event_name == 'push' \|\| inputs\.publish_pointer \}\}/,
+        "PUBLISH_POINTER: ${{ (github.event_name == 'push' || inputs.publish_pointer) && needs.prepare.outputs.pointer == 'true' }}",
+      ),
+  },
+  {
+    // `pin-digest` takes the FIRST job whose name begins with `verify`, because a reusable-workflow
+    // call appears as `<caller job> / <called job>`. That is unambiguous only while the called
+    // workflow declares one job: a second would make `[0]` whichever the API listed first, and a red
+    // sibling could be masked while the pin proceeded.
+    name: "e2e-deployed.yml declares one job, so the `verify / <job>` match is unambiguous",
+    file: "e2e-deployed.yml",
+    check: (t) => {
+      const lines = code(t).split("\n");
+      const at = lines.findIndex((l) => /^jobs:\s*$/.test(l));
+      const jobs = lines
+        .slice(at + 1)
+        .map((l) => l.match(/^ {2}([A-Za-z0-9_-]+):\s*$/))
+        .filter(Boolean)
+        .map((m) => m[1]);
+      return jobs.length === 1
+        ? []
+        : [
+            `the called workflow declares ${jobs.length} jobs (${jobs.join(", ")}); pin-digest takes [0] of the verify* match and would mask a red sibling`,
+          ];
+    },
+    mutate: (t) => t.replace(/^jobs:\s*$/m, "jobs:\n  second:\n    runs-on: ubuntu-latest"),
   },
   {
     // The rollout moved from a SHA-pinned private reusable workflow into this repository, so the
@@ -478,8 +514,8 @@ const invariants = [
         bad.push("the deploy job does not run the vendored rollout");
       if (!/args\+=\(--docker-name "\$DOCKER_NAME"\)/.test(job))
         bad.push("the container name is no longer passed to the rollout");
-      // With its guard, not just the flag: an ungated pointer moves the whole fleet onto whichever
-      // digest finished last.
+      // With its guard, not just the flag: the flag is the operator's opt-out (`publish_pointer:
+      // false`), and an unconditional `args+=(--publish-pointer)` would ignore it.
       if (!/\[\s*"\$PUBLISH_POINTER"\s*=\s*"true"\s*\]\s*&&\s*args\+=\(--publish-pointer\)/.test(job))
         bad.push("the fleet pointer is no longer passed to the rollout");
       if (!/\[\s*"\$DRY_RUN"\s*=\s*"true"\s*\]\s*&&\s*args\+=\(--dry-run\)/.test(job))

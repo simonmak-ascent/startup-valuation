@@ -1,10 +1,10 @@
 # Vendored deploy payload — why this is a copy, and how to update it
 
 These five files are **copies** of `apg-infra/deploy/container/`. `VERSION` names
-`f0c9ff2873e358f9a868cc7865b89f5db0aa999c` — the commit that last *changed* `deploy/container/`
-(squash-merged as `apg-infra` PR #258), and the same SHA `container-cd.yml` pins as its payload.
+`e506e242a6057942070ba747624a0f173886f722` — the commit that last *changed* `deploy/container/`
+(squash-merged as `apg-infra` PR #260), and the same SHA `container-cd.yml` pins as its payload.
 
-Two payload changes this copy carries, both measured on 2026-11-19:
+Three payload changes this copy carries, all measured on 2026-11-19:
 
 - one pointer tag per container (`ghcr.io/<repo>:desired-<container>`), which the reconciler prefers
   over the node's own record — the reason a peer converges on its own timer instead of waiting for a
@@ -12,7 +12,11 @@ Two payload changes this copy carries, both measured on 2026-11-19:
   `app/(en)/api/health/route.ts` reports as `image` so the fleet's homogeneity is observable;
 - the pointer push retries three times and prints docker's error on the final attempt. It used to
   publish once with `>/dev/null 2>&1`: a transient GHCR failure failed the deploy with no cause, and
-  the same job succeeded on a re-run.
+  the same job succeeded on a re-run;
+- `converge.sh`'s header now says what the reconciler does: the legacy pointer is accepted only when
+  it names this container's declared digest, and the local record is written by **every** rollout on
+  the node — including one the timer starts — so the old record-first order meant a node that had
+  ever converged never moved again, not one that had ever deployed.
 
 ## Why a copy exists
 

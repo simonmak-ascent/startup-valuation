@@ -44,7 +44,7 @@ on:
         type: string
         default: apg-ecs-01
       publish_pointer:
-        description: "Move the :desired tag so every node's reconciler converges onto this digest"
+        description: "Move ghcr.io/<repo>:desired-<container> so every peer converges onto this digest"
         required: false
         type: boolean
         default: true
@@ -164,11 +164,19 @@ jobs:
 
           print("matrix=" + json.dumps({"include": items}))
           print(f"count={len(items)}")
-          # One `:desired` tag serves the whole repository (rollout.sh publishes
-          # ghcr.io/<repo>:desired; converge.sh falls back to it on every peer). Two containers on
-          # two digests in one push would race that tag, and every peer would then converge the
-          # losing container onto the winner's image — a green run and a wrong fleet.
-          print("pointer=" + ("true" if len({i["digest"] for i in items}) <= 1 else "false"))
+          # Informational only, and it answers the question rollout.sh actually asks: the legacy
+          # repo-wide tag is published only when every container this manifest declares from this
+          # repository pins the digest being rolled out. Measuring the matrix instead printed "true"
+          # for a one-container dispatch of a manifest that names two digests — where rollout.sh
+          # refuses in the same run. It gates nothing; the per-container pointers are always published.
+          repo = os.environ.get("GITHUB_REPOSITORY", "")
+          pins = {
+              (c.get("image") or "").split("@")[-1].removeprefix("sha256:")
+              for c in manifest
+              if (c.get("repo") or "").removeprefix("ghcr.io/") == repo
+          }
+          moved = {i["digest"].removeprefix("sha256:") for i in items}
+          print("pointer=" + ("true" if moved and pins == moved else "false"))
           print(f"runner={runner}")
           print(f"docker_names={docker_names}")
           PY
@@ -180,8 +188,11 @@ jobs:
         env:
           COUNT: ${{ steps.derive.outputs.count }}
           MATRIX: ${{ steps.derive.outputs.matrix }}
+          POINTER: ${{ steps.derive.outputs.pointer }}
         run: |
           echo "containers to roll out: $COUNT"
+          # Whether the legacy repo-wide tag will be published (the per-container tags always are).
+          echo "legacy :desired tag will move: $POINTER"
           printf '%s\n' "$MATRIX"
 
   # The digest gate in container-cd.yml compares the requested digest with container.json, so a
@@ -406,9 +417,15 @@ jobs:
           CONTAINER: ${{ matrix.container }}
           DOCKER_NAME: ${{ matrix.docker_name }}
           DIGEST: ${{ matrix.digest }}
-          # Gated on the same predicate as before: one `:desired` tag serves the whole repository,
-          # so it may only move when every entry in this run shares a digest (prepare computes it).
-          PUBLISH_POINTER: ${{ (github.event_name == 'push' || inputs.publish_pointer) && needs.prepare.outputs.pointer == 'true' }}
+          # Only the push/input predicate. The legacy `:desired` tag is still gated on a manifest-wide
+          # uniform digest, but that check lives in rollout.sh where container.json is read — not in
+          # `prepare`, whose flag gated this whole publish and so suppressed the per-container tags
+          # in exactly the multi-digest case they exist for.
+          # One pointer tag per container means publishing is always safe: a multi-digest run moves
+          # ghcr.io/<repo>:desired-<a> and :desired-<b> independently. The uniform-digest flag below
+          # is left out deliberately — it used to suppress the whole publish, which on a multi-digest
+          # run suppressed the per-container tags themselves.
+          PUBLISH_POINTER: ${{ github.event_name == 'push' || inputs.publish_pointer }}
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
           REPO: ${{ github.repository }}
         run: |
@@ -501,12 +518,30 @@ jobs:
             echo '```'
             for _ in 1 2 3 4 5 6 7 8 9 10; do
               # No -f: `/api/health` answers 503 with a degraded body, and that body still carries
-              # `image` — the digest is the very thing this report exists to show. And without
-              # `pipefail`, `… | sed || echo` never fires (sed exits 0 on empty input), so the
-              # marker has to come from the value rather than from a pipeline status.
-              got="$(curl -sS --max-time 10 "${ORIGIN}/api/health" 2>/dev/null \
-                | sed -n 's/.*"image":"\([^"]*\)".*/\1/p' || true)"
-              printf '%s\n' "${got:-(no answer)}"
+              # `image` — the digest is the very thing this report exists to show. The marker has to
+              # separate states that look alike and mean different things: a dead node, a container
+              # the rollout started without IMAGE_DIGEST, a backend that never reports a digest, and
+              # a body that is not JSON at all. Separators are matched with optional whitespace,
+              # because compact JSON is one producer of this body rather than the only one.
+              body="$(curl -sS --max-time 10 "${ORIGIN}/api/health" 2>/dev/null || true)"
+              if [ -z "$body" ]; then
+                printf '%s\n' "(no answer)"
+                continue
+              fi
+              img="$(printf '%s' "$body" | sed -n 's/.*"image"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p')"
+              if [ -n "$img" ] && [ "${img#sha256:}" != "$img" ]; then
+                printf '%s\n' "$img"
+              elif [ -n "$img" ]; then
+                printf '%s\n' "(image set to '$img', which is not a digest)"
+              elif printf '%s' "$body" | grep -qE '"image"[[:space:]]*:[[:space:]]*null'; then
+                printf '%s\n' "(image null: the rollout started this container without IMAGE_DIGEST)"
+              elif printf '%s' "$body" | grep -qE '"image"[[:space:]]*:'; then
+                printf '%s\n' "(image present but not a digest string)"
+              elif printf '%s' "$body" | grep -qE '^[[:space:]]*[{[\[]'; then
+                printf '%s\n' "(no image key: this backend does not report a digest)"
+              else
+                printf '%s\n' "(unparseable body: not JSON)"
+              fi
             done | sort | uniq -c
             echo '```'
             echo
