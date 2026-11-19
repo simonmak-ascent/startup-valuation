@@ -50,6 +50,12 @@ jobs:
     runs-on:
       - self-hosted
       - apg-ci-04
+    # The suite's own worst case is a 15-minute fleet poll plus one final round of 12 sequential
+    # probes. A probe that stalls is bounded now, but the job should not rely on that: without this
+    # the limit is GitHub's 360-minute default, on a shared runner inside `concurrency:
+    # e2e-deployed` with `cancel-in-progress: false` — a hung run blocks the post-deploy gate that
+    # waits on it.
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 

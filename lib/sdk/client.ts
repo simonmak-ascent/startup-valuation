@@ -57,6 +57,8 @@ export class StartupValuationClient {
   async health(): Promise<{
     status: "ok" | "degraded";
     version: string;
+    /** The image digest serving that node, or null when the rollout did not inject one. */
+    image: string | null;
     dependency: { name: string; status: "reachable" | "unreachable"; detail: string; latency_ms: number };
   }> {
     const res = await fetch(`${this.baseUrl}/api/health`);

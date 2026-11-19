@@ -11,6 +11,9 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import http from "node:http";
+import https from "node:https";
 
 const BASE = (
   process.env.DEPLOYED_BASE_URL ?? "https://startup-valuation.ascent-partners.com"
@@ -182,4 +185,91 @@ test("/api/* reaches the web application, not a Python status blob", async () =>
   const page = await get("/api/playground");
   assert.equal(page.status, 200, `/api/playground returned ${page.status}`);
   assert.match(String(page.headers.get("content-type")), /text\/html/, "/api/playground is not served by the web app");
+});
+
+// --- the fleet, not just the node the deploy replaced --------------------------------
+
+function pinnedImage() {
+  const manifest = JSON.parse(readFileSync(new URL("../container.json", import.meta.url), "utf8"));
+  const spec = (manifest.containers ?? []).find((c) => c.name === "startup-valuation");
+  return String(spec?.image ?? "").split("@")[1] ?? "";
+}
+
+// One connection per probe. The ALB balances per connection, so a keep-alive pool would let a single
+// node answer every sample — which is exactly how a fleet split across two digests stays invisible.
+function probeImage() {
+  const url = new URL(`${BASE}/api/health`);
+  const mod = url.protocol === "https:" ? https : http;
+  return new Promise((resolve) => {
+    // `signal` is the hard bound; `req.setTimeout` below is an inactivity timer, so a body that
+    // trickles a byte at a time resets it and the probe would never settle — which on a shared
+    // runner holds the post-deploy gate open.
+    const req = mod.get(
+      url,
+      { agent: false, signal: AbortSignal.timeout(TIMEOUT), headers: { accept: "application/json" } },
+      (res) => {
+        let raw = "";
+        res.setEncoding("utf8");
+        // A response-stream error is emitted on `res`, not `req`; unhandled it takes the whole test
+        // process down with no result at all.
+        res.on("error", () => resolve("(error)"));
+        res.on("data", (chunk) => {
+          raw += chunk;
+        });
+        res.on("end", () => {
+          try {
+            resolve(String(JSON.parse(raw).image ?? "") || "(none)");
+          } catch {
+            resolve("(unparseable)");
+          }
+        });
+      },
+    );
+    req.setTimeout(TIMEOUT, () => {
+      req.destroy();
+      resolve("(timeout)");
+    });
+    req.on("error", () => resolve("(error)"));
+  });
+}
+
+test("every node the balancer routes to serves the pinned image, not only the one the deploy replaced", async () => {
+  const pinned = pinnedImage();
+  assert.match(pinned, /^sha256:[0-9a-f]{64}$/, `container.json does not pin a digest for startup-valuation (${pinned || "none"})`);
+
+  // A rollout replaces one node synchronously and then moves ghcr.io/<repo>:desired-<container>;
+  // every other node converges from that tag on its own five-minute timer, then pulls, probes and
+  // swaps. So the budget is one tick plus a rollout — 15 minutes, not 7, or a correct deploy is
+  // reported as a failure whenever the timer fires late. A converged fleet costs one round (12
+  // requests), so this does not slow the scheduled run.
+  //
+  // The limit of the assertion, stated: samples go through the ALB, so a target that is unhealthy
+  // and out of rotation is never sampled. This catches a split fleet, not a drained node.
+  const budget = Number(process.env.FLEET_DEADLINE_MS ?? 15 * 60_000);
+  const deadline = Date.now() + budget;
+  let seen = {};
+  for (;;) {
+    seen = {};
+    for (let i = 0; i < 12; i += 1) {
+      const image = await probeImage();
+      seen[image] = (seen[image] ?? 0) + 1;
+    }
+    const keys = Object.keys(seen);
+    if (keys.length === 1 && keys[0] === pinned) return; // the whole fleet serves the pin
+    if (Date.now() > deadline) break;
+    await new Promise((resolve) => setTimeout(resolve, 10_000));
+  }
+  const keys = Object.keys(seen);
+  // Two different facts, and only the second is a split. Every node agreeing on a value that is not
+  // the pin means the fleet is uniform but unlabelled: the running image predates the IMAGE_DIGEST
+  // injection. Collapsing the two sends whoever reads the filed issue looking for a diverge that is
+  // not there.
+  const detail =
+    keys.length === 1
+      ? `every sampled node answered '${keys[0]}', so the fleet is uniform but does not name the pinned ` +
+        `image (container.json pins ${pinned}). Not a split: the running build predates the IMAGE_DIGEST ` +
+        `injection, or a peer converged under a payload that did not inject it.`
+      : `the fleet is split: 12 samples, one connection each, returned ${JSON.stringify(seen)}; ` +
+        `container.json pins ${pinned}`;
+  assert.deepEqual(keys.sort(), [pinned], detail);
 });

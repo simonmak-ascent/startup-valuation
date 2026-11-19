@@ -38,6 +38,11 @@ export async function GET() {
       {
         status: memo.reachable ? "ok" : "degraded",
         version: pkg.version,
+        // Which image is serving. The rollout injects IMAGE_DIGEST; without it, every node reports
+        // the same application `version`, so a fleet split across two digests is invisible — which
+        // is exactly the state that made a rollout report success while peers still served the old
+        // build. Null rather than a placeholder when the variable is absent (a local dev server).
+        image: process.env.IMAGE_DIGEST ?? null,
         dependency: {
           name: "finance.yahoo.com",
           status: memo.reachable ? "reachable" : "unreachable",
@@ -95,6 +100,7 @@ export async function GET() {
     {
       status: shared.reachable ? "ok" : "degraded",
       version: pkg.version,
+      image: process.env.IMAGE_DIGEST ?? null,
       dependency: {
         name: "finance.yahoo.com",
         status: shared.reachable ? "reachable" : "unreachable",
