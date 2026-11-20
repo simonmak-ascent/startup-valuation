@@ -29,11 +29,15 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install build
-        run: python -m pip install --upgrade build
+      - name: Install locked build tools
+        run: |
+          # `--target` for the same reason as the other two jobs: this runner's toolcache is shared
+          # with the test matrix, so the build must import from a directory only this job writes.
+          rm -rf "${PWD:?}/.build-libs"
+          python -m pip install --require-hashes --target "$PWD/.build-libs" -r requirements/publish.txt
 
       - name: Build package
-        run: python -m build
+        run: PYTHONPATH="$PWD/.build-libs" python -m build --no-isolation
 
       - name: Upload to release
         if: github.event_name == 'release'
@@ -61,30 +65,28 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install build
-        run: python -m pip install --upgrade build
+      # One install, into the workspace rather than the shared toolcache: `apg-ci-04` runs four
+      # workflow files across seven jobs as the same user, so anything installed globally outlives
+      # this job. No venv — `python3 -m venv` is recorded as unverified on this runner
+      # (`image.yml:60-62`) — and `rm` before installing, because pip's `--upgrade` reconciles only
+      # the packages it knows about and would leave an unknown `sitecustomize.py`, which runs at
+      # interpreter start.
+      #
+      # What this does *not* contain: the interpreter is still the shared toolcache one, so its
+      # `site-packages` stays on `sys.path` behind `PYTHONPATH`. A `sitecustomize.py` planted there
+      # by another job of the same uid would still execute in this one, which holds the PyPI token.
+      # Closing that needs a dedicated runner or a container — a larger change than this.
+      - name: Install locked build and publish tools
+        run: |
+          rm -rf "${PWD:?}/.publish-libs"
+          python -m pip install --require-hashes --target "$PWD/.publish-libs" -r requirements/publish.txt
 
       - name: Build package
-        run: python -m build
+        run: PYTHONPATH="$PWD/.publish-libs" python -m build --no-isolation
 
-      # Twine and its dependencies install into the workspace, not the shared toolcache: `apg-ci-04`
-      # runs four workflow files across seven jobs as the same user, so anything installed globally
-      # outlives this job. No venv: `python3 -m venv` is recorded as unverified on this runner
-      # (`image.yml:60-62`), and the publish path must not be the first thing to depend on it.
       # `twine check` needs no credentials, so it runs here rather than under the token.
       - name: Check metadata
-        run: |
-          # `rm` as well as `--upgrade`: pip reconciles the packages it knows about, but leaves
-          # an unknown file in the target directory — and a `sitecustomize.py` there runs at
-          # interpreter start, before any of twine.
-          rm -rf "${PWD:?}/.publish-libs"
-          # `twine>=7`: hatchling emits `Metadata-Version: 2.5`, which a twine 6.x install rejects
-          # when it resolves `packaging` below 26.0 ("Invalid metadata version"). twine 7.0.0
-          # declares `packaging>=26.1`, and `packaging` 26.0 is where 2.5 is accepted — so this
-          # lower bound selects a reader that can parse what hatchling writes. The upper bound stays
-          # because this step resolves from an index on a shared runner.
-          python -m pip install --target "$PWD/.publish-libs" --upgrade "twine>=7,<8"
-          PYTHONPATH="$PWD/.publish-libs" python -m twine check --strict dist/*
+        run: PYTHONPATH="$PWD/.publish-libs" python -m twine check --strict dist/*
 
       - name: Publish to PyPI
         env:

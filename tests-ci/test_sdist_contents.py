@@ -17,9 +17,11 @@ Four arms, because each one is blind to a different defect:
   actually emits, and the only one that notices a tracked module dropped by an ignore pattern or an
   untracked file added from a dirty working tree.
 
-Isolation stays on in the build: `publish.yml:27` runs a bare `python -m build`, so this test
-resolves the same backend the release does. Making it hermetic would assert on a different hatchling
-version than the one that ships, which is the skew the test exists to catch.
+Isolation stays on in the build because that is what a consumer does: `pip install <sdist>` builds it
+in pip's own isolated environment. The backend version is no longer a variable in either direction —
+`pyproject.toml` declares `requires = ["hatchling==1.33.0"]`, and the release installs that same
+version by hash from `requirements/publish.txt` and builds `--no-isolation`, so this isolated
+resolution and the release's resolve one backend.
 """
 
 from __future__ import annotations
@@ -47,6 +49,18 @@ SHIPPED = {
     "/LICENSE",
     "/CHANGELOG.md",
 }
+
+
+def _locked_versions() -> dict[str, str]:
+    """Name -> version from requirements/publish.txt, parsed rather than substring-matched."""
+    pinned: dict[str, str] = {}
+    for line in (ROOT / "requirements" / "publish.txt").read_text(encoding="utf-8").splitlines():
+        if not line or line.startswith("#") or "--hash=" not in line:
+            continue
+        name, _, version = line.split(" --hash=")[0].strip().partition("==")
+        if version:
+            pinned[name.strip().lower()] = version.strip()
+    return pinned
 
 
 def _sdist() -> dict:
@@ -113,6 +127,22 @@ def test_the_wheel_still_packages_only_the_library() -> None:
     )
 
 
+def test_the_build_backend_pin_matches_the_publish_lock() -> None:
+    # `--no-isolation` builds from the *installed* backend, so `[build-system] requires` does not
+    # govern our own build — but it governs everyone building from the sdist, and the lock governs
+    # ours. Two declarations of one version, so a test holds them together: a backend bump on one
+    # side without the other is how the metadata version changed without a commit last time.
+    requires = CONFIG["build-system"]["requires"]
+    hatchling = [req for req in requires if req.startswith("hatchling")]
+    assert len(hatchling) == 1, f"expected one hatchling requirement, found {requires}"
+    assert "==" in hatchling[0], f"the build backend is not pinned: {hatchling[0]}"
+    pinned = _locked_versions()
+    want = hatchling[0].split("==", 1)[1]
+    assert pinned.get("hatchling") == want, (
+        f"[build-system] pins hatchling=={want}; requirements/publish.txt pins {pinned.get('hatchling')}"
+    )
+
+
 def test_no_stray_file_sits_inside_the_package_directory() -> None:
     # The allowlists above are configuration. A `.env`, a key or a customer fixture committed into
     # the package would ship in the sdist, and every test above would stay green, because they
@@ -126,7 +156,21 @@ def test_no_stray_file_sits_inside_the_package_directory() -> None:
 def test_the_built_sdist_contains_exactly_the_tracked_package(tmp_path: pathlib.Path) -> None:
     # The artefact, not the configuration that produces it: hatchling's defaults decide what a
     # tarball carries, so a change in those defaults is invisible to every assertion above.
-    _run([sys.executable, "-m", "build", "--sdist", "--outdir", str(tmp_path)])
+    # The build jobs install their toolchain into `.build-libs` / `.publish-libs` inside the
+    # checkout, so the tree this is cut from carries directories that must never ship.
+    planted = [ROOT / name / "planted.py" for name in (".build-libs", ".publish-libs")]
+    for path in planted:
+        path.parent.mkdir(exist_ok=True)
+        path.write_text("PLANTED = 1\n", encoding="utf-8")
+    try:
+        _run([sys.executable, "-m", "build", "--sdist", "--outdir", str(tmp_path)])
+    finally:
+        for path in planted:
+            path.unlink(missing_ok=True)
+            try:
+                path.parent.rmdir()
+            except OSError:
+                pass  # a real directory from a local workflow run: leave it alone
     (tarball,) = tmp_path.glob("*.tar.gz")
     with tarfile.open(tarball) as archive:
         members = [name.split("/", 1)[1] for name in archive.getnames() if "/" in name and not name.endswith("/")]
@@ -144,6 +188,8 @@ def test_the_built_sdist_contains_exactly_the_tracked_package(tmp_path: pathlib.
         "hatch_build.py",
         "PKG-INFO",
     }
+    leaked = sorted(m for m in members if ".publish-libs" in m or ".build-libs" in m)
+    assert not leaked, f"a workspace library directory reached the sdist: {leaked[:3]}"
     stray = sorted({m for m in members if not m.startswith(PACKAGE) and m not in always})
     assert not stray, f"the sdist shipped files outside the package: {stray[:5]}"
     required = {"pyproject.toml", "README.md", "LICENSE", "CHANGELOG.md"}

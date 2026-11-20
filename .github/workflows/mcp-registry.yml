@@ -9,23 +9,80 @@ permissions:
   contents: read
   id-token: write
 
+# The version and both hashes move together: `TARBALL_SHA256` is the `digest` GitHub records for the
+# asset, and `BINARY_SHA256` is the extracted binary, so the thing that actually runs is verified
+# immediately before it is handed the signing key.
+env:
+  MCP_PUBLISHER_VERSION: v1.8.10
+  MCP_PUBLISHER_TARBALL_SHA256: 32d287ed6fb7dc04eddd2621097784c06a355b2348b35ccc630a1643aa75ff4a
+  MCP_PUBLISHER_BINARY_SHA256: e49a4f96e0d8e0ac9bf7414b75145bc116ee3e2c2c2c2e6423123fd838a8bb77
+
 jobs:
   publish:
     runs-on: [self-hosted, apg-ci-04]
     environment: mcp-registry-publish
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
-      - name: Install mcp-publisher
+      # Pinned, checksum-verified, and installed without root.
+      #
+      # The old step was `curl .../releases/latest/download/... | tar xz` then `sudo mv` into
+      # /usr/local/bin. The runner's service user is `gha`, which has no sudo rule on this host, so
+      # that could only ever succeed on a registration that happened to run privileged — which is
+      # why the same commit failed and succeeded on different days. The failure was also masking the
+      # worse problem: an unpinned, unverified binary installed as root and then run with the
+      # signing key in scope.
+      #
+      # No `$GITHUB_PATH`: prepending a directory on a shared runner would let any file dropped
+      # there shadow system binaries for the rest of the job. Each step calls the binary by its
+      # absolute path instead.
+      - name: Install mcp-publisher (pinned, verified, no root)
         run: |
-          curl -sL "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz" | tar xz mcp-publisher
-          sudo mv mcp-publisher /usr/local/bin/
+          set -eu
+          dir="$RUNNER_TEMP/mcp-publisher"
+          mkdir -p "$dir"
+          url="https://github.com/modelcontextprotocol/registry/releases/download/${MCP_PUBLISHER_VERSION}/mcp-publisher_linux_amd64.tar.gz"
+          curl -fsSL "$url" -o "$dir/mcp-publisher.tar.gz"
+          echo "${MCP_PUBLISHER_TARBALL_SHA256}  $dir/mcp-publisher.tar.gz" | sha256sum -c -
+          tar xzf "$dir/mcp-publisher.tar.gz" -C "$dir" mcp-publisher
+          chmod +x "$dir/mcp-publisher"
+          echo "${MCP_PUBLISHER_BINARY_SHA256}  $dir/mcp-publisher" | sha256sum -c -
 
       - name: Validate server.json
-        run: mcp-publisher validate
+        run: |
+          set -eu
+          bin="$RUNNER_TEMP/mcp-publisher/mcp-publisher"
+          echo "${MCP_PUBLISHER_BINARY_SHA256}  $bin" | sha256sum -c -
+          "$bin" validate
 
+      # The key reaches the tool through `env:` only — never on the command line, where
+      # `/proc/<pid>/cmdline` is world-readable, and never through a file, where a predictable path
+      # plus `>`'s O_TRUNC lets a same-uid process pre-place a symlink. `mcp-publisher` reads
+      # `MCP_PRIVATE_KEY` natively (`resolvePrivateKey`).
+      #
+      # `HOME` is redirected into `$RUNNER_TEMP` because `login` writes its token to
+      # `$HOME/.config/mcp-publisher/token.json` (0600) and never removes it. On a runner shared as
+      # one uid, that file is a usable registry credential for any later job — including a PR run of
+      # `ci.yml` on this public repository. Pointing `HOME` at the job's temp directory means the
+      # token dies with the job.
       - name: Authenticate with the MCP Registry (GitHub OIDC)
-        run: mcp-publisher login dns --domain ascent-partners.com --private-key ${{ secrets.MCP_PRIVATE_KEY }}
+        env:
+          MCP_PRIVATE_KEY: ${{ secrets.MCP_PRIVATE_KEY }}
+          HOME: ${{ runner.temp }}/home
+        run: |
+          set -eu
+          bin="$RUNNER_TEMP/mcp-publisher/mcp-publisher"
+          echo "${MCP_PUBLISHER_BINARY_SHA256}  $bin" | sha256sum -c -
+          mkdir -p "$HOME"
+          "$bin" login dns --domain ascent-partners.com
 
       - name: Publish to the MCP Registry
-        run: mcp-publisher publish
+        env:
+          HOME: ${{ runner.temp }}/home
+        run: |
+          set -eu
+          bin="$RUNNER_TEMP/mcp-publisher/mcp-publisher"
+          echo "${MCP_PUBLISHER_BINARY_SHA256}  $bin" | sha256sum -c -
+          "$bin" publish

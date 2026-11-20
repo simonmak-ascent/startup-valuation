@@ -135,10 +135,15 @@ jobs:
         with:
           python-version: "3.12"
 
+      # `--target`, not the environment: the `test` job installs `.[dev]` into the same toolcache
+      # interpreter on the same runner, and `dev` carries `build` plus pytest's dependencies. With
+      # `--no-isolation` the backend is imported from wherever it resolves, so this job must import
+      # from a directory only it writes.
       - name: Build package
         run: |
-          python -m pip install --upgrade pip build twine
-          python -m build
+          rm -rf "${PWD:?}/.build-libs"
+          python -m pip install --require-hashes --target "$PWD/.build-libs" -r requirements/publish.txt
+          PYTHONPATH="$PWD/.build-libs" python -m build --no-isolation
 
       - name: Validate metadata
-        run: twine check --strict dist/*
+        run: PYTHONPATH="$PWD/.build-libs" python -m twine check --strict dist/*

@@ -22,7 +22,11 @@ name: deploy-digest
 on:
   push:
     branches: [main]
-    paths: [container.json]      # a pin commit — image.yml ignores this path, so the loop closes
+    # `requirements/**` as well: the lock decides which build backend emits the artefact and
+    # which twine reads it, so a merge that touches only the lock must still be judged by the
+    # deploy-time guard. Such a push derives zero containers (`prepare` says so), so `deploy`
+    # and `verify` skip and the run is green — the guard is the point of the trigger.
+    paths: [container.json, requirements/**]
   workflow_dispatch:
     inputs:
       containers:
@@ -259,7 +263,7 @@ jobs:
           HUMANS: simonmak-ascent
         run: |
           set -eu
-          GATE_RE='^((tests-deployed/)|(tests-ci/)|(scripts/)|(deploy/)|(compliance\.json)|(docs/delivery-gates\.md)|(\.github/workflows/)|(container\.json))'
+          GATE_RE='^((tests-deployed/)|(tests-ci/)|(scripts/)|(deploy/)|(requirements/)|(compliance\.json)|(docs/delivery-gates\.md)|(\.github/workflows/)|(container\.json))'
 
           # `git diff` over the push range, not `gh api .../commits/$SHA`: the API caps its file
           # list at 300 and paginates past that, so a commit touching a regenerated tree could
