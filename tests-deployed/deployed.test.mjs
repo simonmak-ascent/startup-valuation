@@ -37,6 +37,60 @@ function postJSON(path, body) {
   });
 }
 
+// First, deliberately: a rollout replaces one node and the peers converge on their own timer, so
+// (This ordering is guaranteed because node:test runs the top-level tests of ONE file in sequence and
+// `e2e-deployed.yml` passes a single file to a single `--test` invocation. A second `*.test.mjs` in
+// this directory would run concurrently and put the assertions back in front of the wait.)
+// every assertion below would sample a fleet that is still converging — which is how this suite
+// failed on 2026-11-20 with /docs 404 and FI unresolved on the one node still serving the old image.
+test("every node the balancer routes to serves the pinned image, not only the one the deploy replaced", async () => {
+  const pinned = pinnedImage();
+  assert.match(pinned, /^sha256:[0-9a-f]{64}$/, `container.json does not pin a digest for startup-valuation (${pinned || "none"})`);
+
+  // A rollout replaces one node synchronously and then moves ghcr.io/<repo>:desired-<container>;
+  // every other node converges from that tag on its own five-minute timer, then pulls, probes and
+  // swaps. So the budget is one tick plus a rollout — 15 minutes, not 7, or a correct deploy is
+  // reported as a failure whenever the timer fires late. A converged fleet costs one round (12
+  // requests), so this does not slow the scheduled run.
+  //
+  // The limit of the assertion, stated: samples go through the ALB, so a target that is unhealthy
+  // and out of rotation is never sampled. This catches a split fleet, not a drained node.
+  // `||`, not `??`: a non-numeric override yields NaN, and `Date.now() > NaN` is false for ever, so
+  // the exit test below would never fire and the poll would run to the job timeout instead.
+  const budget = Number(process.env.FLEET_DEADLINE_MS) || 15 * 60_000;
+  const deadline = Date.now() + budget;
+  let seen = {};
+  for (;;) {
+    seen = {};
+    for (let i = 0; i < 12; i += 1) {
+      const image = await probeImage();
+      seen[image] = (seen[image] ?? 0) + 1;
+    }
+    const keys = Object.keys(seen);
+    if (keys.length === 1 && keys[0] === pinned) return; // the whole fleet serves the pin
+    if (Date.now() > deadline) break;
+    await new Promise((resolve) => setTimeout(resolve, 10_000));
+  }
+  const keys = Object.keys(seen);
+  // Two different facts, and only the second is a split. Every node agreeing on a value that is not
+  // the pin means the fleet is uniform but unlabelled: the running image predates the IMAGE_DIGEST
+  // injection. Collapsing the two sends whoever reads the filed issue looking for a diverge that is
+  // not there.
+  const detail =
+    // Only the transports that produced no body at all. `(none)` is deliberately excluded: it is a
+    // body that parsed and carried no `image`, which IS the older-build case the next branch names.
+    keys.length > 0 && keys.every((k) => ["(error)", "(timeout)", "(unparseable)"].includes(k))
+      ? `no node returned a parseable body (${keys.join(", ")} across 12 samples) — the fleet is ` +
+        `unreachable or answering non-JSON, which is not the same as a fleet serving an older build`
+      : keys.length === 1
+      ? `every sampled node answered '${keys[0]}', so the fleet is uniform but does not name the pinned ` +
+        `image (container.json pins ${pinned}). Not a split: the running build predates the IMAGE_DIGEST ` +
+        `injection, or a peer converged under a payload that did not inject it.`
+      : `the fleet is split: 12 samples, one connection each, returned ${JSON.stringify(seen)}; ` +
+        `container.json pins ${pinned}`;
+  assert.deepEqual(keys.sort(), [pinned], detail);
+});
+
 test("the site answers 200 and serves the application", async () => {
   const res = await get("/");
   assert.equal(res.status, 200, `${BASE}/ returned ${res.status}`);
@@ -228,7 +282,7 @@ test("/api/* reaches the web application, not a Python status blob", async () =>
   assert.match(String(page.headers.get("content-type")), /text\/html/, "/api/playground is not served by the web app");
 });
 
-// --- the fleet, not just the node the deploy replaced --------------------------------
+// --- helpers for the fleet test at the top of this file -----------------------------
 
 function pinnedImage() {
   const manifest = JSON.parse(readFileSync(new URL("../container.json", import.meta.url), "utf8"));
@@ -274,45 +328,3 @@ function probeImage() {
   });
 }
 
-test("every node the balancer routes to serves the pinned image, not only the one the deploy replaced", async () => {
-  const pinned = pinnedImage();
-  assert.match(pinned, /^sha256:[0-9a-f]{64}$/, `container.json does not pin a digest for startup-valuation (${pinned || "none"})`);
-
-  // A rollout replaces one node synchronously and then moves ghcr.io/<repo>:desired-<container>;
-  // every other node converges from that tag on its own five-minute timer, then pulls, probes and
-  // swaps. So the budget is one tick plus a rollout — 15 minutes, not 7, or a correct deploy is
-  // reported as a failure whenever the timer fires late. A converged fleet costs one round (12
-  // requests), so this does not slow the scheduled run.
-  //
-  // The limit of the assertion, stated: samples go through the ALB, so a target that is unhealthy
-  // and out of rotation is never sampled. This catches a split fleet, not a drained node.
-  // `||`, not `??`: a non-numeric override yields NaN, and `Date.now() > NaN` is false for ever, so
-  // the exit test below would never fire and the poll would run to the job timeout instead.
-  const budget = Number(process.env.FLEET_DEADLINE_MS) || 15 * 60_000;
-  const deadline = Date.now() + budget;
-  let seen = {};
-  for (;;) {
-    seen = {};
-    for (let i = 0; i < 12; i += 1) {
-      const image = await probeImage();
-      seen[image] = (seen[image] ?? 0) + 1;
-    }
-    const keys = Object.keys(seen);
-    if (keys.length === 1 && keys[0] === pinned) return; // the whole fleet serves the pin
-    if (Date.now() > deadline) break;
-    await new Promise((resolve) => setTimeout(resolve, 10_000));
-  }
-  const keys = Object.keys(seen);
-  // Two different facts, and only the second is a split. Every node agreeing on a value that is not
-  // the pin means the fleet is uniform but unlabelled: the running image predates the IMAGE_DIGEST
-  // injection. Collapsing the two sends whoever reads the filed issue looking for a diverge that is
-  // not there.
-  const detail =
-    keys.length === 1
-      ? `every sampled node answered '${keys[0]}', so the fleet is uniform but does not name the pinned ` +
-        `image (container.json pins ${pinned}). Not a split: the running build predates the IMAGE_DIGEST ` +
-        `injection, or a peer converged under a payload that did not inject it.`
-      : `the fleet is split: 12 samples, one connection each, returned ${JSON.stringify(seen)}; ` +
-        `container.json pins ${pinned}`;
-  assert.deepEqual(keys.sort(), [pinned], detail);
-});
