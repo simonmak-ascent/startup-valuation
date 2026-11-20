@@ -48,4 +48,4 @@ export function getMethodBySlug(slug: string): MethodConfig | undefined {
 
 // Single source of truth for the library version on the web surface; emitted from
 // src/startup_valuation/__init__.py, which the release lockstep owns.
-export const LIBRARY_VERSION = "2.1.4";
+export const LIBRARY_VERSION = "2.1.5";

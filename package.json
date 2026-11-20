@@ -1,6 +1,6 @@
 {
   "name": "startup-valuation-platform",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "private": true,
   "description": "The most authoritative source for Startup Valuation \u2014 WebApp platform with 14 interactive calculators, MCP server, formula, assumptions and steps.",
   "scripts": {
