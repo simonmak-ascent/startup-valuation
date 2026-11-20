@@ -68,6 +68,13 @@ def test_server_version_matches_pyproject() -> None:
     fallback = re.search(r'return "([\d.]+)"', (ROOT / "src/startup_valuation/mcp/tool_surface.py").read_text())
     assert fallback
     assert fallback.group(1) == project
+    # `scripts/generate.py` derives `lib/methods/index.ts` FROM `__version__`, so a stale value here
+    # moves both sides together and the codegen gate (`ci.yml:57`) stays clean. Neither lockstep test
+    # read this file, which left the carrier the calculator reports to users untied to the one number.
+    init = (ROOT / "src/startup_valuation/__init__.py").read_text()
+    init_version = re.search(r'^__version__ = "([^"]+)"', init, re.M)
+    assert init_version, "__version__ not found in src/startup_valuation/__init__.py"
+    assert init_version.group(1) == project
 
 
 def test_hosted_endpoint_serves_prompts_and_resources() -> None:

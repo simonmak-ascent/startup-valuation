@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "startup-valuation"
-version = "2.1.4"
+version = "2.1.5"
 description = "Comprehensive startup valuation library implementing 80+ formulas from the Startup Valuation textbook. Includes Python library, MCP server, and AI-Agent Skills."
 readme = "README.md"
 license = "MIT"
@@ -48,6 +48,9 @@ dev = [
     "pytest-cov>=4.1.0",
     "ruff>=0.1.0",
     "mypy>=1.0.0",
+    # `tests-ci/test_sdist_contents.py` builds the sdist and inspects its members: a checker that
+    # only reads `pyproject.toml` cannot see a stray file committed inside the package directory.
+    "build>=1.2.0",
     "tomli>=2.0.0; python_version < '3.11'",
 ]
 
@@ -64,18 +67,21 @@ Repository = "https://github.com/simonmak-ascent/startup-valuation"
 packages = ["src/startup_valuation"]
 
 [tool.hatch.build.targets.sdist]
-exclude = [
-  "/.playwright-mcp/",
-  "/AGENTS.md",
-  "/constitution.md",
-  "/skills/",
-  "/specs/",
-  "/vdd/",
-  "/book-alignment-homepage.png",
-  "/.mypy_cache/",
-  "/.pytest_cache/",
-  "/site/",
-  "/output/",
+# The deliverable is the package, not the repository. An allowlist, not an exclude list: the
+# exclude list named a handful of artefacts and the sdist still shipped 704 KB of web app, docs and
+# CI — every `pip download --no-binary` consumer got a tarball of the repository. Measured before
+# this change: 37 files from tests*/, 38 from docs/, 62 from app|components|lib.
+#
+# `/src/startup_valuation/`, not `/src/`: `src/wasm/` is the optional Rust crate and is not part of
+# the Python package. Hatchling always adds `pyproject.toml`, the declared readme and licence files,
+# and the root `.gitignore`, whether or not they are listed here — the entries below are the files
+# whose absence would break a build from the sdist.
+include = [
+  "/src/startup_valuation/",
+  "/pyproject.toml",
+  "/README.md",
+  "/LICENSE",
+  "/CHANGELOG.md",
 ]
 
 [tool.pytest.ini_options]

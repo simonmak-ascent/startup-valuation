@@ -20,7 +20,7 @@ from startup_valuation.verification import (
     verify_vision,
 )
 
-__version__ = "2.1.4"
+__version__ = "2.1.5"
 __all__ = [
     "ValuationResult",
     "Distribution",

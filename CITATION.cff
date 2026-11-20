@@ -1,7 +1,7 @@
 cff-version: "1.2.0"
 message: "If you use this software, please cite it as below."
 title: "Startup Valuation Engine"
-version: "1.0.1"
+version: "2.1.5"
 authors:
   - family-names: "Mak"
     given-names: "Simon"
@@ -26,4 +26,4 @@ keywords:
 repository-code: "https://github.com/simonmak-ascent/startup-valuation"
 license: MIT
 type: software
-date-released: "2026-05-20"
+date-released: "2026-11-20"

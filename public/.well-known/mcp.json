@@ -3,7 +3,7 @@
   "name": "com.ascent-partners/startup-valuation",
   "title": "Startup Valuation MCP Server",
   "description": "Startup valuation for AI agents: 14 tools, 80+ pre-revenue formulas.",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "repository": {
     "url": "https://github.com/simonmak-ascent/startup-valuation",
     "source": "github"

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.5] - 2026-11-20
+
+### Changed
+
+- The source distribution now carries the package and nothing else. `tests*/`, `docs/`, the Next.js
+  app and the CI config were in it, so `pip download --no-binary` delivered a tarball of the whole
+  repository — 704 KB, now 80 KB. The wheel was already library-only; `src/wasm/` is excluded too.
+- Bumped every version carrier to 2.1.5, including `CITATION.cff` and the docs JSON-LD, which had
+  been stale since 1.0.x and are public statements about the software.
+
 ## [2.1.4] - 2026-10-21
 
 ### Changed
