@@ -7,9 +7,8 @@ settings:
 overrides:
   postcss: '>=8.5.23'
   uuid: '>=11.1.1'
-  vite: ^8.3.3
-  glob: '>=14.0.2'
-  minimatch: '>=11.0.1'
+  glob: ^14.0.2
+  minimatch: ^11.0.1
 
 importers:
 
@@ -1507,7 +1506,7 @@ packages:
     resolution: {integrity: sha512-fKShNpKZzupWZuY0z7egydvL0sqW4INEZBEExMBMAa6izlENEVHwoXgdaTCaBZ5fwlr4xf2o1wXC83n9RpO+NA==}
     peerDependencies:
       msw: ^2.4.9
-      vite: ^8.3.3
+      vite: ^6.0.0 || ^7.0.0 || ^8.0.0
     peerDependenciesMeta:
       msw:
         optional: true
@@ -3550,7 +3549,7 @@ packages:
       '@vitest/ui': 4.1.12
       happy-dom: '*'
       jsdom: '*'
-      vite: ^8.3.3
+      vite: ^6.0.0 || ^7.0.0 || ^8.0.0
     peerDependenciesMeta:
       '@edge-runtime/vm':
         optional: true
