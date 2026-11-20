@@ -13,10 +13,10 @@ jobs:
   build-and-upload:
     runs-on: [self-hosted, apg-ci-04]
     steps:
-      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up Python
-        uses: actions/setup-python@v7.0.0
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12"
 
@@ -28,7 +28,7 @@ jobs:
 
       - name: Upload to release
         if: github.event_name == 'release'
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3
         with:
           files: dist/*
         env:
@@ -41,10 +41,10 @@ jobs:
       name: pypi
       url: https://pypi.org/p/startup-valuation
     steps:
-      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up Python
-        uses: actions/setup-python@v7.0.0
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12"
 
@@ -55,7 +55,7 @@ jobs:
         run: python -m build
 
       - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3 (release/v1 head)
         with:
           # PyPI project is owned by an account whose trusted publisher is not
           # wired to this repo; publish with the account's API token instead.

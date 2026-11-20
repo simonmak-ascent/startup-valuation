@@ -54,6 +54,11 @@ export interface Quote {
   retrievedAt: string;
 }
 
+/** A non-blank string, or null — the string counterpart of `num()`. */
+function firstString(value: unknown): string | null {
+  return typeof value === "string" && value.trim().length > 0 ? value : null;
+}
+
 function num(value: unknown): number | null {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
@@ -112,8 +117,10 @@ export async function getQuote(symbol: string): Promise<Quote> {
 
   if (price == null) throw new Error(`Yahoo returned no price for ${symbol}`);
 
-  const currency = priceModule.currency ?? detail.currency;
-  const exchange = priceModule.exchangeName ?? detail.exchangeName;
+  // Prefer the first *usable* string, not the first non-nullish one: a malformed `price.currency`
+  // (123, "") used to win over a perfectly good `detail.currency` and the quote rendered empty.
+  const currency = firstString(priceModule.currency) ?? firstString(detail.currency);
+  const exchange = firstString(priceModule.exchangeName) ?? firstString(detail.exchangeName);
 
   return {
     symbol,

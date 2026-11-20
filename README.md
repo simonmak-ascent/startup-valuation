@@ -11,7 +11,7 @@
 [![PyPI](https://img.shields.io/pypi/v/startup-valuation.svg)](https://pypi.org/project/startup-valuation/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Coverage](https://img.shields.io/badge/coverage-88%25-brightgreen)](https://github.com/simonmak-ascent/startup-valuation/actions/workflows/ci.yml)
-[![Docs](https://img.shields.io/badge/docs-GitHub_Pages-blue)](https://simonmak-ascent.github.io/startup-valuation/)
+[![Docs](https://img.shields.io/badge/docs-live-blue)](https://startup-valuation.ascent-partners.com/docs)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/simonmak-ascent/startup-valuation/badge)](https://scorecard.dev/viewer/?uri=github.com/simonmak-ascent/startup-valuation)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -44,6 +44,21 @@ graph TB
 1. **Python Library** — 15 modules, 80+ typed functions, all returning `ValuationResult` (value + assumptions + sensitivity)
 2. **MCP Server** — 14 folded tools (80+ formulas) for AI agents via stdio and hosted Streamable HTTP
 3. **AI-agent skills** — 6 skill definitions with workflow guidance for valuation domains
+
+## The deployed platform
+
+The library ships with a web application at **<https://startup-valuation.ascent-partners.com>**:
+
+| | |
+|---|---|
+| calculators | 14 interactive methods; every figure arrives with its formula, inputs, assumptions and steps |
+| comparables | live multiples from Yahoo Finance, with the sample size each median rests on (`n=`) |
+| documentation | <https://startup-valuation.ascent-partners.com/docs> — built from `docs/` into the image, so it ships with the app |
+| languages | English at `/`, 简体中文 at `/zh`, 繁體中文 at `/hk` — the whole chrome, not only the copy |
+| MCP | Streamable HTTP at `/mcp` (14 tools); a bare `GET` answers 405 by design |
+
+There are **no accounts and no database**: nothing is stored, and the only external dependency is the
+market-data source, which `/api/health` reports.
 
 ## Installation
 
@@ -216,11 +231,30 @@ ruff check .
 mypy src/startup_valuation --ignore-missing-imports
 ```
 
-> **Note:** CI and deployment run through the APG workbench pipeline.
+Web application and delivery contract:
+
+```bash
+pnpm check                       # tsc --noEmit
+pnpm test                        # vitest: units, the chrome table, the quote mapping
+pnpm build                       # next build (standalone)
+
+python3 -m pytest tests-ci/      # pin checker, docs link rewriter
+node --test tests-ci/workflows.test.mjs   # workflow invariants, one fixture per arm
+python3 tests-ci/health_gate_sim.py       # the pin gate's behaviour, executed
+python3 tests-ci/sampler_sim.py           # the failure report's markers, executed
+
+node --test tests-deployed/deployed.test.mjs   # against the DEPLOYED origin
+```
+
+The last one is the gate that matters after a merge: it waits for every node to serve the pinned
+digest, then asserts the product — including that `/docs` can load the stylesheet it references.
+Suites that execute a shell program (`health_gate_sim`, `sampler_sim`) exist because a substring
+assertion over YAML cannot see whether the thing runs.
 
 ## Documentation
 
-- **API Reference:** [GitHub Pages](https://simonmak-ascent.github.io/startup-valuation/)
+- **API Reference:** [startup-valuation.ascent-partners.com/docs](https://startup-valuation.ascent-partners.com/docs)
+  (mirrored on [GitHub Pages](https://simonmak-ascent.github.io/startup-valuation/))
 - **Wiki (Theory & Derivations):** [GitHub Wiki](https://github.com/simonmak-ascent/startup-valuation/wiki)
 - **PyPI:** [pypi.org/project/startup-valuation](https://pypi.org/project/startup-valuation/)
 - **Chapter Index:** Maps every function to its textbook chapter

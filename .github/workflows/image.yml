@@ -17,14 +17,14 @@ on:
         required: false
         type: string
   # Auto-deploy, stage 1: every push to main builds. A pin commit is not a source change.
-  # `docs/**` now IS image content — it is built into `public/docs` by the step below — so a
-  # docs-only merge must rebuild, or /docs serves the previous edit until an unrelated push does.
+  # `docs/**` is image content — built into `public/docs` by the step below — so a docs-only merge
+  # must rebuild. So must a change to THIS workflow: the docs build recipe is in it, and ignoring
+  # `.github/workflows/**` would let a fix to that recipe merge and never reach the image.
   push:
     branches: [main]
     paths-ignore:
       - container.json
       - '*.md'                   # root-level notes; `docs/**.md` must rebuild the image
-      - '.github/workflows/**'   # a pipeline change cannot alter the image it builds
 
 permissions:
   contents: read
@@ -60,7 +60,7 @@ jobs:
       # `actions/setup-python`, not a venv: `python3 -m venv` needs `python3-venv`, which is absent
       # on this workstation and unverified on the runner — and the image build is the deploy path, so
       # it may not depend on a package nobody has checked. The docs job already works this way.
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
         if: inputs.image == ''
         with:
           python-version: "3.12"
