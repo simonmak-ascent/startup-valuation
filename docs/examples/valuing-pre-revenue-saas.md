@@ -150,8 +150,6 @@ What if our scores were wrong? Let's test the extremes:
 ## Next Steps
 
 - [Advanced Methods](https://simonmak-ascent.github.io/startup-valuation/api/core/) — Try Black-Scholes for employee option valuation
-- [How to Value a Startup](How-to-Value-a-Startup) — Full workflow from method selection to term sheet
-- [Core Methods Wiki](Core-Methods) — Full mathematical derivation of the Scorecard formula
 
 ---
 

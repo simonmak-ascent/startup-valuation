@@ -16,14 +16,14 @@ on:
         description: "Optional local image tag to push instead of building (name:stamp)"
         required: false
         type: string
-  # Auto-deploy, stage 1: every push to main builds. A pin commit is not a source change and
-  # docs cannot alter the image, so neither should trigger a rebuild.
+  # Auto-deploy, stage 1: every push to main builds. A pin commit is not a source change.
+  # `docs/**` now IS image content — it is built into `public/docs` by the step below — so a
+  # docs-only merge must rebuild, or /docs serves the previous edit until an unrelated push does.
   push:
     branches: [main]
     paths-ignore:
       - container.json
-      - 'docs/**'
-      - '**.md'
+      - '*.md'                   # root-level notes; `docs/**.md` must rebuild the image
       - '.github/workflows/**'   # a pipeline change cannot alter the image it builds
 
 permissions:
@@ -52,6 +52,36 @@ jobs:
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" \
             | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      # `/docs` has been a 404 since the site was containerised: `site/` is gitignored and built by
+      # `mkdocs build`, and `Dockerfile.web` copied only `public/`. Building it here puts the pages in
+      # the image the app serves, which is what makes them reachable at all. setup-python installs
+      # into the tool cache, outside the checkout, so `COPY . .` carries only `public/docs`.
+      # `actions/setup-python`, not a venv: `python3 -m venv` needs `python3-venv`, which is absent
+      # on this workstation and unverified on the runner — and the image build is the deploy path, so
+      # it may not depend on a package nobody has checked. The docs job already works this way.
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
+        if: inputs.image == ''
+        with:
+          python-version: "3.12"
+
+      - name: Build the docs site into public/docs
+        # The checkout above is skipped when a local image is being pushed, so there is nothing to
+        # build docs from — without this the step fails on a missing pyproject.toml, not on anything
+        # real, and the documented `-f image=…` dispatch stops working.
+        if: inputs.image == ''
+        run: |
+          set -eu
+          python -m pip install --quiet --upgrade pip
+          pip install --quiet -e ".[docs]"
+          mkdocs build --strict
+          rm -rf public/docs
+          cp -r site public/docs
+          # MkDocs writes relative hrefs for a directory URL that ends in a slash; Next serves the
+          # rewrite at the slash-less URL the user asked for, so every page would resolve its own
+          # stylesheet one directory too high. This rewrites them to the files they mean.
+          python3 scripts/absolutise_docs.py public/docs
+          echo "pages: $(find public/docs -name 'index.html' | wc -l), assets: $(find public/docs -type f ! -name '*.html' | wc -l)"
 
       - name: Build and push
         id: build

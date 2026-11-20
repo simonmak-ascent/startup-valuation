@@ -63,8 +63,10 @@ jobs:
       # The delivery-contract checks live here, not in `web`: this job installs pytest, and it runs
       # on the 3.10–3.12 matrix, so a script written for one interpreter is caught by the others. A
       # gate that fails for an environmental reason is the gate somebody deletes.
-      - name: Delivery contract (pin checker, 16 cases)
-        run: python3 -m pytest tests-ci/test_manifest_pin.py -q
+      # The directory, not one file: a check added beside the others must run without anyone
+      # remembering to name it here — that is how a gate silently stops covering its class.
+      - name: Delivery contract (pin checker and the docs rewriter)
+        run: python3 -m pytest tests-ci/ -q
 
       - name: Delivery contract (health gate behaviour)
         run: python3 tests-ci/health_gate_sim.py

@@ -4,8 +4,15 @@ import { useEffect, useState } from "react";
 
 const KEY = "apg-theme";
 
-/** Dark/light switch — APG parity (data-theme + localStorage["apg-theme"]). */
-export function ThemeToggle() {
+const DEFAULT_LABELS = { toLight: "Switch to light mode", toDark: "Switch to dark mode" };
+
+/**
+ * Dark/light switch — APG parity (data-theme + localStorage["apg-theme"]).
+ *
+ * Its accessible name is chrome: on `/zh` and `/hk` a screen reader was announcing English, the one
+ * place the localised shell left untranslated because it is not visible text.
+ */
+export function ThemeToggle({ labels = DEFAULT_LABELS }: { labels?: { toLight: string; toDark: string } } = {}) {
   const [dark, setDark] = useState(true);
 
   useEffect(() => {
@@ -27,8 +34,8 @@ export function ThemeToggle() {
     <button
       type="button"
       className="theme-toggle ms-auto"
-      aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-      title={dark ? "Switch to light mode" : "Switch to dark mode"}
+      aria-label={dark ? labels.toLight : labels.toDark}
+      title={dark ? labels.toLight : labels.toDark}
       onClick={toggle}
     >
       <span aria-hidden="true">◐</span>
