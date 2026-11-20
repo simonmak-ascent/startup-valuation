@@ -6,14 +6,23 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  id-token: write
+  # Read for the workflow; `contents: write` is granted to the one job that uploads a release asset.
+  # The publish job holds the PyPI token and needs neither.
+  contents: read
 
 jobs:
   build-and-upload:
+    # The only job that needs to write: it attaches `dist/*` to the release.
+    permissions:
+      contents: write
     runs-on: [self-hosted, apg-ci-04]
     steps:
+      # `persist-credentials: false`: the default writes this job's write-scoped token to disk,
+      # where it stays readable through `pip install build` and the hatchling build backend. The
+      # release step is handed `GITHUB_TOKEN` explicitly, so it does not need git credentials.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
@@ -41,7 +50,11 @@ jobs:
       name: pypi
       url: https://pypi.org/p/startup-valuation
     steps:
+      # Same reason as the other job: this one holds the PyPI token while executing code from the
+      # tree, and its token is only `contents: read` — no reason to leave it on disk either.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
@@ -54,10 +67,29 @@ jobs:
       - name: Build package
         run: python -m build
 
+      # Twine and its dependencies install into the workspace, not the shared toolcache: `apg-ci-04`
+      # runs four workflow files across seven jobs as the same user, so anything installed globally
+      # outlives this job. No venv: `python3 -m venv` is recorded as unverified on this runner
+      # (`image.yml:60-62`), and the publish path must not be the first thing to depend on it.
+      # `twine check` needs no credentials, so it runs here rather than under the token.
+      - name: Check metadata
+        run: |
+          # `rm` as well as `--upgrade`: pip reconciles the packages it knows about, but leaves
+          # an unknown file in the target directory — and a `sitecustomize.py` there runs at
+          # interpreter start, before any of twine.
+          rm -rf "${PWD:?}/.publish-libs"
+          python -m pip install --target "$PWD/.publish-libs" --upgrade "twine>=6,<7"
+          PYTHONPATH="$PWD/.publish-libs" python -m twine check --strict dist/*
+
       - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3 (release/v1 head)
-        with:
-          # PyPI project is owned by an account whose trusted publisher is not
-          # wired to this repo; publish with the account's API token instead.
-          password: ${{ secrets.PYPI_API_TOKEN }}
-          skip-existing: true
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          # The endpoint is explicit. Without `--repository-url` twine reads `~/.pypirc`, and on a
+          # shared runner another job could point that upload — and this token with it — elsewhere.
+          # `--non-interactive` so a missing credential fails instead of prompting.
+          # No `--skip-existing`: if this version already exists, something published it, and a
+          # silent exit 0 hides that. A conflict should fail here.
+          PYTHONPATH="$PWD/.publish-libs" python -m twine upload --non-interactive \
+            --repository-url https://upload.pypi.org/legacy/ dist/*
