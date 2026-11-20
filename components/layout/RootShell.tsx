@@ -1,3 +1,4 @@
+import { chromeFor } from "@/lib/chrome";
 import type { Metadata } from "next";
 import { Open_Sans, Titillium_Web, Raleway } from "next/font/google";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -69,16 +70,8 @@ export const hkMetadata = metadataFor("/hk");
 const THEME_INIT =
   "try{var v=localStorage.getItem('apg-theme');document.documentElement.setAttribute('data-theme',v==='light'||v==='dark'?v:'dark');}catch(e){document.documentElement.setAttribute('data-theme','dark');}";
 
-const NAV = [
-  { href: "/#methods", label: "Methods" },
-  { href: "/benchmarks", label: "Benchmarks" },
-  { href: "/public-companies", label: "Public Companies" },
-  { href: "/api/playground", label: "API Playground" },
-  { href: "/skills", label: "Skills" },
-  { href: "/why-open-source", label: "Why Open Source" },
-];
-
 export function RootShell({ lang, children }: { lang: string; children: React.ReactNode }) {
+  const chrome = chromeFor(lang);
   return (
     <html lang={lang} data-theme="dark" suppressHydrationWarning className={`${openSans.variable} ${titillium.variable} ${raleway.variable}`}>
       <body className="antialiased">
@@ -86,20 +79,20 @@ export function RootShell({ lang, children }: { lang: string; children: React.Re
         <nav className="border-b border-border bg-card">
           <div className="mx-auto flex max-w-[65.125rem] items-center gap-5 overflow-x-auto px-5 py-3 text-sm">
             <a href="/" className="whitespace-nowrap font-semibold text-text no-underline hover:no-underline">Startup Valuation</a>
-            {NAV.map((n) => (
+            {chrome.nav.map((n) => (
               <a key={n.href} href={n.href} className="whitespace-nowrap text-muted no-underline hover:text-brand">{n.label}</a>
             ))}
-            <ThemeToggle />
+            <ThemeToggle labels={chrome.theme} />
           </div>
         </nav>
         {children}
         <footer className="border-t border-border px-5 py-6 text-center text-xs text-muted">
           <div className="mb-2 flex flex-wrap justify-center gap-4">
-            <a href="/legal/terms" className="hover:text-brand">Terms of Service</a>
-            <a href="/legal/privacy" className="hover:text-brand">Privacy Policy</a>
-            <a href="/legal/cookies" className="hover:text-brand">Cookie Policy</a>
+            {chrome.legal.map((l) => (
+              <a key={l.href} href={l.href} className="hover:text-brand">{l.label}</a>
+            ))}
           </div>
-          <p>© {new Date().getFullYear()} Ascent Partners · Startup Valuation Engine · MIT License</p>
+          <p>© {new Date().getFullYear()} Ascent Partners · {chrome.footer.product} · {chrome.footer.licence}</p>
         </footer>
       </body>
     </html>

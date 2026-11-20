@@ -11,7 +11,12 @@
 export const WATCHLIST: Readonly<Record<string, readonly string[]>> = {
   SaaS: ["CRM", "NOW", "ADBE", "HUBS"],
   Biotech: ["AMGN", "GILD", "VRTX", "REGN"],
-  Fintech: ["V", "MA", "PYPL", "FI"],
+  // Fiserv trades under `FI` (renamed from `FISV` in 2023), but Yahoo answers `FI` with a shell:
+  // `summaryDetail` and `price` both come back with no `regularMarketPrice`, no `marketCap` and
+  // `currency: null` — measured 2026-11-20 — so the Fintech median published over three companies
+  // and said so. `FISV` still resolves to the same company with a live price. The payload decided
+  // this, not the count: `FI` is asked for, returns nothing, and `FISV` returns Fiserv.
+  Fintech: ["V", "MA", "PYPL", "FISV"],
   Marketplace: ["ABNB", "UBER", "ETSY", "MELI"],
   Hardware: ["AAPL", "DELL", "HPQ", "CSCO"],
 } as const;

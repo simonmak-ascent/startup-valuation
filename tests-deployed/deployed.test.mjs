@@ -96,6 +96,17 @@ test("the comparables pages serve live market data, not an empty shell", async (
     const priced = /\d+\.\d{2}\s*(USD|\u00d7)/.test(html);
     const honestFailure = /did not answer|No price resolved/i.test(html);
     assert.ok(priced || honestFailure, `${path} shows neither a price nor an honest failure state`);
+    // When the source is up, every watchlist symbol must resolve. The page prints the unresolved
+    // set, so a symbol that silently stops resolving (FI did: Yahoo answered it with no price) loses
+    // a comparable from the median while this suite stays green — the defect this assertion exists
+    // for. Gated on `vendorUp` so a transient Yahoo outage does not fail the gate.
+    if (vendorUp) {
+      const unresolved = html.match(/unresolved(?: symbols)?:[^<]*/i)?.[0] ?? "";
+      assert.ok(
+        !/unresolved(?: symbols)?:\s*[A-Z]/i.test(unresolved),
+        `${path} has unresolved symbols while the source is reachable: ${unresolved.trim()}`,
+      );
+    }
     assert.ok(
       !vendorUp || priced,
       `${path} rendered the source-down state while /api/health reports the source reachable`,
@@ -165,6 +176,36 @@ test("the removed surfaces stay removed", async () => {
     const res = await get(path);
     assert.equal(res.status, 404, `${path} returned ${res.status} — the surface was removed`);
   }
+});
+
+test("the documentation is served from the app, and its assets with it", async () => {
+  // `/docs` answered 404 from the day the site was containerised: `site/` is gitignored, `mkdocs
+  // build` produced it outside the image, and `Dockerfile.web` copied only `public/`. image.yml now
+  // builds it into `public/docs` and next.config.ts rewrites the directory URLs MkDocs writes.
+  const index = await get("/docs");
+  assert.equal(index.status, 200, `/docs returned ${index.status}`);
+  const html = await index.text();
+  assert.match(html, /Startup Valuation/, "/docs is not the built site");
+
+  // A page, not just the index: MkDocs writes `…/foo/index.html`, so the rewrite is what makes
+  // `/docs/api/capm` a page rather than a 404.
+  const page = await get("/docs/api/capm");
+  assert.equal(page.status, 200, `/docs/api/capm returned ${page.status}`);
+
+  // A page proves nothing on its own: MkDocs writes *relative* hrefs, and a page served at a
+  // slash-less URL resolves them one directory too high — unstyled, with a dead nav — while every
+  // status here stays 200. So resolve the stylesheet the page itself references.
+  const htmlPage = await page.text();
+  const href = htmlPage.match(/<link rel="stylesheet" href="([^"]+)"/)?.[1];
+  assert.ok(href, "/docs/api/capm references no stylesheet");
+  assert.ok(href.startsWith("/docs/"), `the stylesheet link is not absolute (${href}) — the page would resolve it against /api/`);
+  const pageCss = await get(href);
+  assert.equal(pageCss.status, 200, `the page's own stylesheet ${href} returned ${pageCss.status}`);
+
+  // And an asset, which must be served as a file rather than rewritten to `…/index.html`.
+  const asset = await get("/docs/assets/stylesheets/extra.css");
+  assert.equal(asset.status, 200, `/docs/assets/…/extra.css returned ${asset.status}`);
+  assert.match(String(asset.headers.get("content-type")), /text\/css/, "the docs stylesheet came back as something other than CSS");
 });
 
 test("/api/* reaches the web application, not a Python status blob", async () => {

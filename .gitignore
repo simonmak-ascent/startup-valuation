@@ -52,3 +52,6 @@ history.txt
 # Playwright artefacts (reports, traces, last-run state)
 playwright-report/
 test-results/
+
+# Built docs, generated into the image by image.yml
+public/docs/

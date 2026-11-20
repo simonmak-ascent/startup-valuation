@@ -17,7 +17,7 @@ export const ValuationRunSchema = z.object({
   id: z.string(),
   method: z.string(),
   user: z.string().optional(),
-  inputs: z.record(z.unknown()),
+  inputs: z.record(z.string(), z.unknown()),
   result: z.number(),
   steps: z.array(StepSchema),
   formula_number: z.string(),
@@ -37,7 +37,7 @@ export const MethodSchema = z.object({
   function: z.string().min(1),
   category: z.string(),
   description: z.string(),
-  inputs_schema: z.record(z.unknown()),
+  inputs_schema: z.record(z.string(), z.unknown()),
   textbook_chapter: z.string().optional(),
   formula_numbers: z.array(z.string()),
   citations: z.array(z.string()),
@@ -64,7 +64,7 @@ export const UserSchema = z.object({
   name: z.string().optional(),
   avatar_url: z.string().url().optional(),
   tier: z.enum(["free", "pro", "auditor", "enterprise"]).default("free"),
-  preferences: z.record(z.unknown()).default({}),
+  preferences: z.record(z.string(), z.unknown()).default({}),
   saved_calculations: z.array(z.string()),
   created_at: z.string().datetime(),
   last_active_at: z.string().datetime().optional(),
@@ -76,7 +76,7 @@ export const AuditLogSchema = z.object({
   user: z.string().optional(),
   action: z.string(),
   method: z.string(),
-  inputs: z.record(z.unknown()),
+  inputs: z.record(z.string(), z.unknown()),
   result: z.number(),
   steps: z.array(StepSchema),
   formula_number: z.string(),
@@ -197,7 +197,7 @@ export const EtlRunSchema = z.object({
 
 export const CalculatorRequestSchema = z.object({
   method: z.string().min(1),
-  params: z.record(z.unknown()),
+  params: z.record(z.string(), z.unknown()),
 });
 
 export const CalculatorResponseSchema = z.object({
@@ -206,7 +206,7 @@ export const CalculatorResponseSchema = z.object({
   formula_number: z.string(),
   chapter: z.string(),
   steps: z.array(StepSchema),
-  inputs: z.record(z.unknown()),
+  inputs: z.record(z.string(), z.unknown()),
   assumptions: z.array(z.unknown()),
   library_version: z.string(),
   timestamp: z.string(),
@@ -217,7 +217,7 @@ export const CalculatorResponseSchema = z.object({
 
 export const AuditRequestSchema = z.object({
   method: z.string().min(1),
-  inputs: z.record(z.unknown()).default({}),
+  inputs: z.record(z.string(), z.unknown()).default({}),
   result: z.number(),
   steps: z.array(StepSchema).default([]),
   formula_number: z.string().default(""),

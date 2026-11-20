@@ -77,15 +77,26 @@ export async function getQuote(symbol: string): Promise<Quote> {
     price?: Module;
   };
 
-  const summary = (await yf.quoteSummary(
+  // `?? {}` because `validateResult: false` also drops the library's assertion that a result
+  // exists: an empty `result` would otherwise throw a TypeError on the first property read, instead
+  // of the `no price for X` line the page prints.
+  const summary = ((await yf.quoteSummary(
     symbol,
     { modules: ["summaryDetail", "defaultKeyStatistics", "financialData", "price"] },
     // 15 s per call, and 8 in flight against a 20-symbol watchlist — so at most three waves, and
     // `getQuotes` caps the whole page at DEADLINE_MS regardless. The signal's clock starts before the
     // call is enqueued, so a tight budget here measures the queue, not Yahoo, and silently drops
     // comparables from the medians.
-    { fetchOptions: { signal: AbortSignal.timeout(15_000) } },
-  )) as Summary;
+    {
+      fetchOptions: { signal: AbortSignal.timeout(15_000) },
+      // Yahoo omits required fields often enough that the library's schema rejects a usable
+      // response: measured 2026-11-20, `FI` returned `summaryDetail.currency: null`, which the
+      // schema requires to be a string, so the whole quote threw and the Fintech median published
+      // over three companies. Every field below is already read through `num()` or a `typeof`
+      // guard, so the validation adds no safety this file does not provide itself.
+      validateResult: false,
+    },
+  )) ?? {}) as Summary;
 
   const detail: Module = summary.summaryDetail ?? {};
   const stats: Module = summary.defaultKeyStatistics ?? {};
