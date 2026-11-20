@@ -32,7 +32,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -107,7 +107,8 @@ jobs:
       - name: Unit tests (vitest)
         run: pnpm test
 
-      # The delivery chain's invariants live across seven workflow files, by hand. actionlint checks
+      # The delivery chain's invariants live across every workflow file, with the file list derived
+      # from the directory. actionlint checks
       # syntax and action names; it cannot know that a job needs a scope or that two files must
       # agree. Four of these checks correspond to defects that were already shipped once: a
       # zero-scope token, a paths filter that made a required check impossible, a reporter the
@@ -130,7 +131,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12"
 

@@ -1,11 +1,12 @@
-import { readFileSync, existsSync, mkdtempSync, writeFileSync, rmSync } from "node:fs";
+import { readFileSync, readdirSync, existsSync, mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-// The delivery chain encodes its invariants across seven workflow files, by hand, in comments.
+// The delivery chain encodes its invariants across every workflow file, with the file list derived
+// from the directory rather than written down.
 // actionlint validates syntax and action names; it cannot know that a job needs a scope, that a
 // guard must gate the steps below it, or that two files must agree. Every invariant here
 // corresponds to a defect that was actually present in this branch:
@@ -22,15 +23,12 @@ import assert from "node:assert/strict";
 // fixture that breaks it: the last test asserts each one reports its own mutation.
 
 const W = ".github/workflows";
-const FILES = [
-  "ci.yml",
-  "deploy-digest.yml",
-  "e2e-deployed.yml",
-  "guard-tamper.yml",
-  "image.yml",
-  "pin-digest.yml",
-  "release-gate.yml",
-];
+// Derived, never listed. The hand-maintained list WAS the defect: a workflow added after the list
+// was written escaped the pinning invariant and every `.ALL` invariant with the suite green. Sorted
+// so a failure message does not reorder between runs.
+const FILES = readdirSync(W)
+  .filter((f) => /\.ya?ml$/.test(f))
+  .sort();
 const read = (f) => readFileSync(`${W}/${f}`, "utf8");
 
 /**
@@ -172,18 +170,53 @@ const invariants = [
     // apg-infra SHA through. This check pins the *relationship* instead: the checked-in pin must
     // carry a 40-hex SHA and an in-repo comment naming the payload it expects, so a wrong SHA is a
     // deliberate, visible edit rather than a typo that fails at dispatch.
-    name: "every reusable workflow and action is pinned to a 40-hex commit",
-    file: "deploy-digest.yml",
+    name: "every action in every workflow is pinned to a 40-hex commit",
+    file: "publish.yml",
     check: (t) => {
+      // Every file, not one: this check used to name `deploy-digest.yml` alone, and publish.yml —
+      // the workflow that pushes to PyPI — kept four mutable refs (two tags and a branch) while it
+      // passed. `FILES` is derived from the directory, so a new workflow is in scope the moment it
+      // is added, not when someone remembers to list it.
       const bad = [];
-      for (const line of code(t).split("\n")) {
-        const m = line.match(/\buses:\s*([^\s#]+)/);
-        if (!m || m[1].startsWith("./")) continue;
-        if (!/@[0-9a-f]{40}$/.test(m[1])) bad.push(`not SHA-pinned: ${m[1]}`);
+      for (const f of FILES) {
+        // The file under test is the passed text, so the fixture's mutation is what the check sees;
+        // every other file is read from disk. Reading all of them would make the mutant a no-op.
+        const text = f === "publish.yml" ? t : read(f);
+        for (const line of code(text).split("\n")) {
+          const m = line.match(/\buses:\s*([^\s#]+)/);
+          if (!m || m[1].startsWith("./")) continue;
+          if (!/@[0-9a-f]{40}$/.test(m[1])) bad.push(`${f}: not SHA-pinned: ${m[1]}`);
+        }
       }
       return bad;
     },
     mutate: (t) => t.replace(/@[0-9a-f]{40}/, "@v1"),
+  },
+  {
+    // `docs/**` is image content since this workflow builds the site into `public/docs`, so ignoring
+    // it would leave /docs serving the previous edit until an unrelated push rebuilt the image. The
+    // recipe arm below is the other thing this file must never ignore.
+    name: "image.yml rebuilds on a docs-only merge, because the docs are image content",
+    file: "image.yml",
+    check: (t) =>
+      listUnder(code(t), "paths-ignore").some((p) => p.startsWith("docs/"))
+        ? ["push.paths-ignore excludes docs/**, so a docs-only merge leaves /docs stale in the image"]
+        : [],
+    mutate: (t) => t.replace(/^(\s*)paths-ignore:\n/m, "$1paths-ignore:\n      - 'docs/**'\n"),
+  },
+  {
+    // Its own invariant and its own fixture: bolted onto the arm above, the only mutant injects
+    // `docs/**`, so this exclusion would never be observed failing — the file's own per-arm rule.
+    name: "image.yml rebuilds when the build recipe itself changes",
+    file: "image.yml",
+    check: (t) =>
+      listUnder(code(t), "paths-ignore").some((p) => p.startsWith(".github/workflows/"))
+        ? [
+            "push.paths-ignore excludes .github/workflows/**, so a fix to the docs build recipe cannot reach the image",
+          ]
+        : [],
+    mutate: (t) =>
+      t.replace(/^(\s*)paths-ignore:\n/m, "$1paths-ignore:\n      - '.github/workflows/**'\n"),
   },
   {
     name: "e2e-deployed.yml pins a reporter whose output the diagnosis step can parse",

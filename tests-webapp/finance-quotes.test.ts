@@ -166,3 +166,47 @@ describe("the abort signal", () => {
     expect(signals[0]).not.toBe(signals[1]);
   });
 });
+
+describe("a malformed field is null, not a number — the vendor schema is off", () => {
+  // `quoteSummary` is called with `validateResult: false` because Yahoo omits fields the vendor
+  // schema requires: `FI` came back with `currency: null` and the whole quote threw, so the Fintech
+  // median published over three companies. That removes the library's type check, which makes these
+  // guards the only thing between third-party JSON and a published figure — so they are pinned.
+  it("rejects a numeric field that arrives as a string, null, NaN or an object", async () => {
+    for (const bad of ["300", null, Number.NaN, {}]) {
+      quoteSummary.mockResolvedValue(summary({ trailingPE: bad }));
+      const q = await getQuote("X");
+      expect(q.trailingPE, `trailingPE arrived as ${JSON.stringify(bad)}`).toBeNull();
+    }
+  });
+
+  it("falls back to the vendor's good currency when the preferred one is malformed", async () => {
+    // `summary()` sets detail.currency to "USD"; a malformed price.currency must not shadow it.
+    const payload = summary();
+    payload.price = { marketCap: 1, currency: 123 };
+    quoteSummary.mockResolvedValue(payload);
+    expect((await getQuote("X")).currency).toBe("USD");
+  });
+
+  it("treats a blank string as unusable, not as a currency", async () => {
+    // Two spaces would have won the `??` and rendered "5.11T  " — a currency that reads as a typo.
+    const payload = summary();
+    payload.price = { marketCap: 1, currency: "  " };
+    quoteSummary.mockResolvedValue(payload);
+    expect((await getQuote("X")).currency).toBe("USD");
+  });
+
+  it("renders an empty currency when neither field is a usable string", async () => {
+    const payload = summary({ currency: 123 });
+    payload.price = { marketCap: 1, currency: null };
+    quoteSummary.mockResolvedValue(payload);
+    expect((await getQuote("X")).currency).toBe("");
+  });
+
+  it("says there is no price when the library returns nothing, instead of a TypeError", async () => {
+    // `?? {}` in the fetch is what keeps this an honest failure rather than `Cannot read properties
+    // of undefined` — which is what the page would print as an unresolved symbol.
+    quoteSummary.mockResolvedValue(undefined);
+    await expect(getQuote("X")).rejects.toThrow(/no price/i);
+  });
+});
