@@ -123,6 +123,23 @@ function reportRecords(text) {
   return bad;
 }
 
+// One rule, three fixtures. A mutant that trips two arms proves only that two exist — the file's own
+// note — and the third arm here is the shape the rule was widened for.
+const downloadIsVerified = (_t, all) => {
+  const bad = [];
+  for (const [file, text] of Object.entries(all))
+    for (const body of runBodies(code(text))) {
+      const fetches = /\b(curl|wget)\b|\bgh release download\b/.test(body);
+      const writes =
+        /\s-o\s|\s-O\s|--output|--output-document|\|\s*(tar|sh|bash)\b|\bgh release download\b/.test(body);
+      if (!(fetches && writes)) continue;
+      if (/releases\/latest|download\/latest/.test(body))
+        bad.push(`${file}: a download is pinned to \`latest\``);
+      if (!/sha256sum\s+-c/.test(body)) bad.push(`${file}: a download is not checksum-verified`);
+    }
+  return bad;
+};
+
 const invariants = [
   {
     // The opposite drift to the arms below: not a rule that drifted, but files nothing calls.
@@ -622,6 +639,87 @@ const invariants = [
       return bad;
     },
     mutate: (_t, all) => ({ ...all, "x.yml": "jobs:\n  a:\n    uses: ./.github/workflows/nope.yml\n" }),
+  },
+  {
+    // A runner is a shared box with a dedicated unprivileged user — `gha` on apg-ci-04 has no sudo
+    // rule at all. A step that escalates therefore works only on a registration that happens to run
+    // privileged, which is why the same commit failed and succeeded on different days for a step
+    // that only needed to put a binary somewhere it could be found.
+    name: "no workflow escalates privilege in a run body",
+    file: ".ALL",
+    check: (_t, all) => {
+      const bad = [];
+      for (const [file, text] of Object.entries(all))
+        for (const body of runBodies(code(text)))
+          if (/\bsudo\b/.test(body)) bad.push(`${file}: a run body invokes sudo`);
+      return bad;
+    },
+    mutate: (_t, all) => ({ ...all, "ci.yml": `${all["ci.yml"]}\n      - run: sudo true\n` }),
+  },
+  {
+    // Fetching a remote binary is a supply-chain decision. One without a checksum is a decision made
+    // by the network; one pinned to `latest` is a decision made by whoever published upstream that
+    // day. The registry install was both, and the sudo failure was hiding it.
+    //
+    // "Download" means a curl that writes a file or pipes into an archiver or a shell — not every
+    // curl. `deploy-digest.yml` polls our own `/api/health` with curl, and that is not a fetch of
+    // code to execute.
+    name: "every downloaded binary is checksum-verified",
+    file: ".ALL",
+    check: downloadIsVerified,
+    mutate: (_t, all) => ({
+      ...all,
+      // Only the checksums, so the `latest` arm below is not also tripped here.
+      "mcp-registry.yml": all["mcp-registry.yml"].replace(/^.*sha256sum -c -.*\n/gm, ""),
+    }),
+  },
+  {
+    name: "no download is pinned to `latest`",
+    file: ".ALL",
+    check: downloadIsVerified,
+    mutate: (_t, all) => ({
+      ...all,
+      "mcp-registry.yml": all["mcp-registry.yml"].replace(
+        "releases/download/${MCP_PUBLISHER_VERSION}/",
+        "releases/latest/download/",
+      ),
+    }),
+  },
+  {
+    // The shape the rule was widened for: before this fixture existed, a body with no `curl` in it
+    // was skipped entirely, so `wget -O` and `gh release download` were unreachable code.
+    name: "a wget download is held to the same rule as a curl one",
+    file: ".ALL",
+    check: downloadIsVerified,
+    mutate: (_t, all) => ({
+      ...all,
+      "x.yml": "jobs:\n  a:\n    steps:\n      - run: |\n          wget -O f.tgz https://example.com/f.tgz\n",
+    }),
+  },
+  {
+    // `pip install build twine` was unpinned in both the gate and the publisher, so they resolved
+    // different versions and CI validated an artefact with a twine the release would never use.
+    // `requirements/publish.txt` is the only source of those tools now.
+    name: "no workflow names build or twine as a pip requirement outside the lock",
+    file: ".ALL",
+    check: (_t, all) => {
+      const bad = [];
+      for (const [file, text] of Object.entries(all))
+        for (const line of code(text).split("\n")) {
+          if (!/pip install/.test(line)) continue;
+          if (!/\b(build|twine)\b/.test(line)) continue;
+          if (/requirements\/publish\.txt/.test(line)) continue;
+          bad.push(`${file}: installs build/twine outside the lock — ${line.trim().slice(0, 60)}`);
+        }
+      return bad;
+    },
+    mutate: (_t, all) => ({
+      ...all,
+      "ci.yml": all["ci.yml"].replace(
+        '--require-hashes --target "$PWD/.build-libs" -r requirements/publish.txt',
+        '"build>=1.2" "twine>=7"',
+      ),
+    }),
   },
 ];
 

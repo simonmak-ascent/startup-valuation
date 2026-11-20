@@ -1,5 +1,10 @@
 [build-system]
-requires = ["hatchling"]
+# Pinned, because the backend decides the artefact's bytes *and* its metadata version: hatchling
+# 1.32.0 silently changed the default from 2.4 to 2.5, which broke a twine pinned below the reader
+# that supports it. This line is what a *consumer* building from the sdist resolves. Our own builds
+# do not use it: they run with `--no-isolation` against the copy pinned by hash in
+# `requirements/publish.txt`, which `tests-ci/test_sdist_contents.py` keeps in step with this line.
+requires = ["hatchling==1.33.0"]
 build-backend = "hatchling.build"
 
 [project]
