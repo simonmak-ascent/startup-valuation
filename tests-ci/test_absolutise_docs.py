@@ -78,6 +78,7 @@ def test_the_theme_override_is_not_treated_as_a_page(tmp_path: pathlib.Path) -> 
     assert r.returncode == 0, r.stderr
     assert 'href="assets/style.css"' in over.read_text()
 
+
 def test_the_config_block_is_pinned_to_docs(tmp_path: pathlib.Path) -> None:
     """The two values Material resolves against `location.href`, not against an attribute.
 
@@ -102,6 +103,7 @@ def test_the_config_block_is_pinned_to_docs(tmp_path: pathlib.Path) -> None:
     # A code sample that happens to contain `"base":` is documentation, not configuration.
     assert '"base": "a code sample, not config"' in html
 
+
 def test_a_config_block_that_was_not_pinned_fails_the_build(tmp_path: pathlib.Path) -> None:
     """The pin is conditional on a regex matching a floating theme's tag.
 
@@ -112,8 +114,7 @@ def test_a_config_block_that_was_not_pinned_fails_the_build(tmp_path: pathlib.Pa
     page = root / "index.html"
     root.mkdir(parents=True)
     page.write_text(
-        '<html><head><script id="__config" type="application/x">{"base": "."}</script>'
-        "</head><body></body></html>",
+        '<html><head><script id="__config" type="application/x">{"base": "."}</script></head><body></body></html>',
         encoding="utf-8",
     )
     r = run(root)
@@ -128,6 +129,7 @@ def test_a_link_escaping_the_tree_fails_the_build(tmp_path: pathlib.Path) -> Non
     r = run(root)
     assert r.returncode == 1, f"a link escaping the tree passed: {r.stdout}"
     assert "name no file" in r.stderr
+
 
 def test_a_renamed_config_id_fails_instead_of_passing_vacuously(tmp_path: pathlib.Path) -> None:
     """Zero detections is not success.

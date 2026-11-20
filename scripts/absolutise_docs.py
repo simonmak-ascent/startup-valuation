@@ -154,8 +154,7 @@ def main() -> int:
             pinned += 1
     if unpinned:
         print(
-            f"absolutise_docs: {len(unpinned)} page(s) carry a __config block that was not pinned, "
-            f"e.g. {unpinned[:3]}",
+            f"absolutise_docs: {len(unpinned)} page(s) carry a __config block that was not pinned, e.g. {unpinned[:3]}",
             file=sys.stderr,
         )
         return 1
