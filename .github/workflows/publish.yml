@@ -78,7 +78,11 @@ jobs:
           # an unknown file in the target directory — and a `sitecustomize.py` there runs at
           # interpreter start, before any of twine.
           rm -rf "${PWD:?}/.publish-libs"
-          python -m pip install --target "$PWD/.publish-libs" --upgrade "twine>=6,<7"
+          # `twine>=7`: hatchling emits `Metadata-Version: 2.5`, which twine 6.x's bundled
+          # `packaging` rejects with "Invalid metadata version". The upper bound stays because this
+          # step resolves from an index on a shared runner, but it now includes the major that can
+          # read the metadata this repository actually produces.
+          python -m pip install --target "$PWD/.publish-libs" --upgrade "twine>=7,<8"
           PYTHONPATH="$PWD/.publish-libs" python -m twine check --strict dist/*
 
       - name: Publish to PyPI
