@@ -125,6 +125,36 @@ function reportRecords(text) {
 
 const invariants = [
   {
+    // The opposite drift to the arms below: not a rule that drifted, but files nothing calls.
+    // `.github/scripts/` held two helpers whose only caller, `license.yml`, was deleted in
+    // 0f7a68e — nothing noticed, because nothing asked whether a called script exists. This
+    // invariant asks it of every workflow at once, so the fixture mutates a file the check does not
+    // name: a mutant confined to one file would only exercise that file's read.
+    name: "every python|bash|sh|node script path in a run body exists",
+    file: ".ALL",
+    check: (_t, all) => {
+      const bad = [];
+      for (const [f, text] of Object.entries(all)) {
+        for (const body of runBodies(text)) {
+          for (const m of body.matchAll(
+            /\b(?:python3?|bash|sh|node)\s+([\w.-]+\/[\w./-]+\.(?:py|sh|mjs|js|ts))\b/g,
+          )) {
+            const p = m[1];
+            if (!existsSync(p)) bad.push(`${f}: runs ${p}, which does not exist`);
+          }
+        }
+      }
+      return bad;
+    },
+    mutate: (_t, all) => ({
+      ...all,
+      "deploy-digest.yml": all["deploy-digest.yml"].replace(
+        /(python3\s+scripts\/)[\w-]+\.py/,
+        "$1does-not-exist.py",
+      ),
+    }),
+  },
+  {
     // The only thing that terminates the chain: Dockerfile.web copies with fresh mtimes, so a
     // rebuild of byte-identical source is a new digest, which would pin again.
     name: "image.yml ignores container.json, so the pin commit cannot trigger another build",
