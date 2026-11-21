@@ -41,7 +41,7 @@ test.describe("landing", () => {
   test("the advertised value and the MCP endpoint are on the page", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByRole("heading", { level: 1 })).toContainText("Startup Valuation");
-    // The claim, not just a nav item: C1 in docs/test-plan.md.
+    // The claim, not just a nav item: the landing copy names the segment this product values.
     await expect(page.getByText(/pre-revenue and fast-growing startups/i).first()).toBeVisible();
     await expect(page.getByText(/finance\.yahoo|Streamable HTTP|127\.0\.0\.1:8000|\/mcp/i).first()).toBeVisible();
   });
