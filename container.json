@@ -46,7 +46,7 @@
       "dataClass": "none (stateless MCP + calculator)",
       "wave": 1,
       "owner": "simonmak-ascent",
-      "notes": "pylaunch serving api.index:handler on 8021 with --host 0.0.0.0 (it defaults to loopback). The image recreates /usr/bin/python3.12 for the copied venv's console scripts.",
+      "notes": "pylaunch serving api.index:handler on 8021 with --host 0.0.0.0 (it defaults to loopback). The image copies api/ + src/ + pylaunch.py into /app with PYTHONPATH=/app/src:/app — no venv and no mounts; the earlier note about recreating /usr/bin/python3.12 for a copied venv described a different image. /mcp's serverInfo.version is the SERVER_VERSION fallback in src/startup_valuation/mcp/tool_surface.py because the image carries no distribution metadata; /api/calculate reads __version__ from __init__.py.",
       "docker_name": "sv-api",
       "cmd": [
         "sh",
