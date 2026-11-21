@@ -1,0 +1,52 @@
+# startup-valuation — the Python image behind sv-api (:8021) and sv-calc (:8020).
+#
+# Recovered 2026-11-21 from the node that built the running image (sha256:8916827b…), where it
+# existed only as /tmp/sv-src/Dockerfile.svc; `docker history` of the running image shows exactly
+# these layers. The recipe previously recorded in apg-infra described a different layout
+# (`/opt/startup-valuation/work` with a venv) that the container does not use.
+#
+# The application source is COPIED IN rather than pip-installed; only numpy and scipy come from
+# the index. `/app` is `api/`, `src/` and `pylaunch.py`, and `PYTHONPATH=/app/src:/app` makes the
+# package importable, so `importlib.metadata` finds no distribution. That matters because the two
+# services report their version from two different places, both in the source:
+#   /api/calculate  `library_version`   <- `__version__` in `src/startup_valuation/__init__.py`
+#   /mcp            `serverInfo.version` <- `SERVER_VERSION`, a hardcoded fallback literal in
+#                                         `src/startup_valuation/mcp/tool_surface.py` used exactly
+#                                         because the metadata lookup raises PackageNotFoundError
+# so a rebuild is the only way to change either, and bumping only `__init__.py` leaves `/mcp` stale.
+#
+# ONE image, two roles — the role is the command, not the layer:
+#
+#   sv-api    pylaunch --app api.index:handler     --port 8021   (/mcp)
+#   sv-calc   pylaunch --app api.calculate:handler --port 8020   (/api/calculate)
+#
+# `container.json` declares the command per container (`cmd`), and `rollout.sh` passes it through
+# `container-spec.py --cmd`. Without it a rollout starts the image default for both: sv-calc would
+# run the MCP handler on 8021 while publishing 8020, the health gate would fail and the rollout
+# would roll back.
+#
+# Built and pushed by .github/workflows/image-svc.yml, which stages api/ + src/ + pylaunch.py into
+# a minimal context. `pylaunch.py` lives in this repository for that reason — it never did before.
+
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# From requirements.txt rather than a literal list: that file is the repository's own record of
+# the library's runtime dependencies, so a new one reaches the image without this line changing.
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY --chown=1001:1001 api ./api
+COPY --chown=1001:1001 src ./src
+COPY --chown=1001:1001 pylaunch.py ./
+
+# api/index.py inserts ROOT/src itself; api/calculate.py expects the package importable.
+ENV PYTHONPATH=/app/src:/app \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+USER 1001:1001
+EXPOSE 8020 8021
+
+CMD ["sh", "-c", "exec python pylaunch.py --app api.index:handler --host 0.0.0.0 --port 8021"]
