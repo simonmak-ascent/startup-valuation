@@ -133,3 +133,59 @@ def test_mcp_initialize_answers():
     code, _, body = mcp.handle_request("POST", "/mcp", json.dumps({"jsonrpc": "2.0", "id": 1, "method": "initialize"}))
     assert code == 200
     assert json.loads(body)["result"]["serverInfo"]["name"]
+
+
+def _call_mcp(payload: dict) -> dict:
+    body = json.dumps({"jsonrpc": "2.0", "id": 1, **payload})
+    code, _, raw = mcp.handle_request("POST", "/mcp", body)
+    assert code == 200, (code, raw[:200])
+    return json.loads(raw)
+
+
+def test_a_malformed_input_is_reported_as_invalid_params(monkeypatch):
+    # Was: any KeyError from a method surfaced as -32603 "The tool call failed", which tells an agent
+    # nothing. The message is the guidance, so it goes back as invalid params.
+    def raises(*_args, **_kwargs):
+        raise KeyError("common_value")
+
+    monkeypatch.setattr(mcp, "call_tool", raises)
+    reply = _call_mcp({"method": "tools/call", "params": {"name": "valuation_stakeholder", "arguments": {}}})
+    error = reply["error"]
+    assert error["code"] == -32602
+    assert "common_value" in error["message"]
+
+
+def test_an_unexpected_failure_names_its_type_and_not_its_message(monkeypatch):
+    # An internal bug keeps a generic message (no internals leak) but names the exception type, which
+    # is what distinguishes "our bug" from "your input" in a filed issue.
+    def raises(*_args, **_kwargs):
+        raise RuntimeError("connection to /var/run/secret.sock refused")
+
+    monkeypatch.setattr(mcp, "call_tool", raises)
+    reply = _call_mcp({"method": "tools/call", "params": {"name": "valuation_core", "arguments": {}}})
+    error = reply["error"]
+    assert error["code"] == -32603
+    assert "RuntimeError" in error["message"]
+    assert "secret.sock" not in error["message"]
+
+
+def test_a_json_type_mistake_is_reported_as_invalid_params(monkeypatch):
+    # The case this change exists for: `"rate": "10%"` reaches the arithmetic as a str and raises
+    # TypeError. It is the caller's mistake, so the message is what they need.
+    def raises(*_args, **_kwargs):
+        raise TypeError("unsupported operand type(s) for *: 'str' and 'int'")
+
+    monkeypatch.setattr(mcp, "call_tool", raises)
+    reply = _call_mcp({"method": "tools/call", "params": {"name": "valuation_time_value", "arguments": {}}})
+    assert reply["error"]["code"] == -32602
+    assert "unsupported operand" in reply["error"]["message"]
+
+
+def test_an_empty_key_error_does_not_produce_a_trailing_space(monkeypatch):
+    # `str(KeyError())` is "", which would render "missing or invalid field " and look truncated.
+    def raises(*_args, **_kwargs):
+        raise KeyError()
+
+    monkeypatch.setattr(mcp, "call_tool", raises)
+    reply = _call_mcp({"method": "tools/call", "params": {"name": "valuation_core", "arguments": {}}})
+    assert reply["error"]["message"] == "missing or invalid field"
