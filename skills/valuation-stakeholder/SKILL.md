@@ -1,3 +1,10 @@
+---
+name: valuation-stakeholder
+description: >-
+  What each stakeholder's slice is worth: dilution, the option pricing method, PWERM, liquidation preferences, employee options, vesting, and asset-backed lending.
+license: MIT
+---
+
 # Skill: Valuation Stakeholder Perspectives
 
 Stakeholder-specific methods: dilution, OPM, PWERM, liquidation, acquisition synergies.
@@ -33,23 +40,23 @@ Use appropriate MCP tools (see MCP Tools section below for full signatures by st
 
 ## MCP Tools
 
-**Founder / Employee:**
-- `valuation_dilution(ownership_before, investment, post_money)` — Single-round ownership dilution
-- `valuation_intrinsic_option(strike_price, fair_market_value, shares)` — Current option value
-- `valuation_employee_option(scenarios)` — Probability-weighted option value across exit scenarios
-- `valuation_vesting_adjusted(total_value, vested_fraction, annual_vest_rate, retention_prob, years_remaining)` — Option value with vesting schedule
-- `valuation_cash_equity_breakeven(salary_reduction, equity_value, tax_rate, discount_rate, years)` — Cash vs equity compensation analysis
+Each tool takes `method` plus that method's own parameters — the arguments below are the ones
+the tool validates, and an unknown method or a missing parameter returns an error instead of a value.
 
-**409A / Valuation:**
-- `valuation_opm(enterprise_value, liquidation_pref, time_to_exit, volatility)` — Common stock via Option Pricing Method
-- `valuation_pwerm(scenarios)` — Probability-Weighted Expected Return Method
+### `valuation_stakeholder`
 
-**Lender / Creditor:**
-- `valuation_liquidation(assets, recovery_rates)` — Asset-based liquidation value
-- `valuation_max_asset_loan(cash, accounts_receivable, inventory, equipment, real_estate)` — Maximum asset-based borrowing capacity
+Allocate value across stakeholders and equity classes: single-round dilution, OPM common stock, PWERM, liquidation value, M&A synergy, employee-option values, vesting adjustment, cash-vs-equity break-even, and asset-based loan capacity.
 
-**Acquirer:**
-- `valuation_risk_adjusted_synergy(revenue_synergies, cost_synergies, prob_revenue, prob_cost, discount_rate, years)` — Risk-adjusted M&A synergy value
+- `method: "dilution"` — ownership_before, investment, post_money
+- `method: "opm"` — enterprise_value, liquidation_pref, time_to_exit, volatility
+- `method: "pwerm"` — pwerm_scenarios
+- `method: "liquidation"` — assets, recovery_rates
+- `method: "risk_adjusted_synergy"` — revenue_synergies, cost_synergies (optional: prob_revenue, prob_cost, discount_rate, years)
+- `method: "intrinsic_option"` — strike_price, fair_market_value, shares
+- `method: "employee_option"` — employee_option_scenarios
+- `method: "vesting_adjusted"` — total_value, vested_fraction (optional: annual_vest_rate, retention_prob, years_remaining)
+- `method: "cash_equity_breakeven"` — salary_reduction, equity_value (optional: tax_rate, discount_rate, years)
+- `method: "max_asset_loan"` — all optional: cash, accounts_receivable, inventory, equipment, real_estate
 
 ## Best Practices
 

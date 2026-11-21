@@ -50,12 +50,14 @@ jobs:
       - name: Type check
         run: mypy src/startup_valuation --ignore-missing-imports
 
-      - name: Registry + MCP surface determinism gate
+      - name: Registry + MCP surface + skills determinism gate
         run: |
           python scripts/generate.py
           python scripts/generate_mcp.py
+          python scripts/generate_skills.py
           git diff --exit-code -- lib/methods/ || (echo "lib/methods/*.ts are out of date; run 'python scripts/generate.py'." && exit 1)
           git diff --exit-code -- src/startup_valuation/mcp/server.py || (echo "src/startup_valuation/mcp/server.py is out of date; run 'python scripts/generate_mcp.py'." && exit 1)
+          git diff --exit-code -- skills/ || (echo "skills/*/SKILL.md are out of date; run 'python scripts/generate_skills.py'." && exit 1)
 
       - name: Run tests
         run: pytest --cov=startup_valuation --cov-report=term-missing --cov-fail-under=85 -v

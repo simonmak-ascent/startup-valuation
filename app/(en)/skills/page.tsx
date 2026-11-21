@@ -18,38 +18,39 @@ const skills = [
     name: "Core Valuation Methods",
     description:
       "Scorecard, Berkus, Risk Factor Summation, and the VC Method for pre-revenue startups.",
-    tools: ["valuation_scorecard", "valuation_berkus", "valuation_vc_post_money"],
+    tools: ["valuation_core"],
   },
   {
     slug: "valuation-advanced",
     name: "Advanced Valuation Methods",
     description:
-      "Black-Scholes, Monte Carlo simulation, and OPM for high-uncertainty and option-like valuations.",
-    tools: ["valuation_opm", "valuation_black_scholes"],
+      "Black-Scholes, binomial trees, and named bull/base/bear scenario analysis for contingent values.",
+    tools: ["valuation_advanced"],
   },
   {
     slug: "valuation-industry",
     name: "Industry-Specific Methods",
     description: "SaaS, Biotech, Fintech, Marketplace, and Hardware valuation KPIs.",
-    tools: ["valuation_saas_ltv", "valuation_saas_cac", "valuation_trl"],
+    tools: ["valuation_saas", "valuation_biotech", "valuation_fintech", "valuation_marketplace", "valuation_hardware"],
   },
   {
     slug: "valuation-foundations",
     name: "Valuation Foundations",
-    description: "Probability, time value of money, CAPM, and market comparables.",
-    tools: ["valuation_capm", "valuation_present_value", "valuation_expected_value"],
+    description:
+      "Probability, time value of money, CAPM, market comparables, and cross-border adjustments.",
+    tools: ["valuation_probability", "valuation_time_value", "valuation_capm", "valuation_comparables", "valuation_international"],
   },
   {
     slug: "valuation-stakeholder",
     name: "Stakeholder Perspectives",
     description: "Dilution, OPM, PWERM, liquidation preference, and acquisition synergies.",
-    tools: ["valuation_dilution", "valuation_opm", "valuation_pwerm"],
+    tools: ["valuation_stakeholder"],
   },
   {
     slug: "valuation-emerging",
     name: "Emerging Topics",
-    description: "SAFE notes, Metcalfe's Law, ESG valuation, and data moats.",
-    tools: ["valuation_safe_expected", "valuation_metcalfes", "valuation_esg_discount"],
+    description: "SAFE notes, token and network valuation, ESG adjustments, and data moats.",
+    tools: ["valuation_emerging"],
   },
 ];
 

@@ -1,3 +1,10 @@
+---
+name: valuation-core
+description: >-
+  Value pre-revenue startups with the Scorecard, Berkus, Risk-Factor Summation and VC methods, plus exit terminal value and a triangulated blend. Use when there is no revenue yet and the question is which early-stage method the available data supports.
+license: MIT
+---
+
 # Skill: Valuation Core Methods
 
 Core startup valuation methods: Scorecard, Berkus, Risk Factor Summation, and VC Method.
@@ -33,16 +40,24 @@ Use the appropriate MCP tool (see MCP Tools section below for full signatures).
 
 ### Step 5: Triangulate
 Run multiple methods and compare. If results differ by > 50%, investigate assumptions.
-Use `valuation_full_analysis` for one-shot triangulation.
+Use `valuation_core` with `method: "triangulated"` for one-shot triangulation.
 
 ## MCP Tools
 
-- `valuation_scorecard(average_valuation, weights, scores)` — Pre-revenue with comparable regional deal data
-- `valuation_berkus(sound_idea, prototype, quality_team, strategic_relationships, product_rollout)` — Very early stage, max $2.5M
-- `valuation_risk_factor_summation(base_valuation, risk_ratings)` — Granular 12-factor risk assessment
-- `valuation_vc_post_money(terminal_value, target_return)` — When exit projection is available
-- `valuation_vc_pre_money(post_money, investment)` — Derive pre-money from post-money
-- `valuation_full_analysis(average_valuation, weights, scores, terminal_value, target_return, investment)` — Triangulated Scorecard + VC
+Each tool takes `method` plus that method's own parameters — the arguments below are the ones
+the tool validates, and an unknown method or a missing parameter returns an error instead of a value.
+
+### `valuation_core`
+
+The textbook's pre-revenue methods: Scorecard, Berkus, Risk-Factor Summation, VC Method (post- and pre-money), and exit terminal value.
+
+- `method: "scorecard"` — average_valuation, weights, scores
+- `method: "berkus"` — all optional: sound_idea, prototype, quality_team, strategic_relationships, product_rollout
+- `method: "risk_factor"` — base_valuation, risk_ratings
+- `method: "vc_post_money"` — terminal_value, target_return
+- `method: "vc_pre_money"` — post_money, investment
+- `method: "terminal_value"` — projected_revenue, multiple
+- `method: "triangulated"` — average_valuation, weights, scores, terminal_value, target_return, investment
 
 ## Best Practices
 

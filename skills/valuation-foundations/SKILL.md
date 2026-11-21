@@ -1,3 +1,10 @@
+---
+name: valuation-foundations
+description: >-
+  The building blocks: probability-weighted expected value, time value and DCF, CAPM/WACC discount rates, market comparables, and cross-border adjustments. Use to derive a discount rate or discount cash flows before a method that consumes them.
+license: MIT
+---
+
 # Skill: Valuation Foundations
 
 Foundational mathematical tools: Probability, Time Value of Money, CAPM, Market Comparables, International Valuation.
@@ -33,29 +40,57 @@ Use appropriate MCP tools (see MCP Tools section below for full signatures by mo
 
 ## MCP Tools
 
-**Probability:**
-- `valuation_expected_value(outcomes, probabilities)` — Discrete random variable: E[X] = Σ xᵢ × P(xᵢ)
-- `valuation_expected_value_continuous(lower, upper)` — Continuous random variable via numerical integration
-- `valuation_joint_probability(probabilities)` — Sequential event chain: P(total) = Π Pᵢ
-- `valuation_probability_weighted(probabilities, values)` — Scenario-weighted value: E[V] = Σ pᵢ × Vᵢ
-- `valuation_portfolio_return(probabilities, returns)` — VC portfolio expected return: E[R] = Σ pᵢ × Rᵢ
+Each tool takes `method` plus that method's own parameters — the arguments below are the ones
+the tool validates, and an unknown method or a missing parameter returns an error instead of a value.
 
-**Time Value:**
-- `valuation_present_value(future_value, rate, periods)` — Single cash flow: PV = C / (1+r)^t
-- `valuation_npv(cash_flows, rate)` — Series of cash flows: NPV = Σ Cₜ / (1+r)^t
+### `valuation_probability`
 
-**CAPM:**
-- `valuation_capm(risk_free_rate, beta, market_return)` — Standard CAPM: E(R) = Rf + β × (Rm - Rf)
-- `valuation_portfolio_beta(weights, betas)` — Portfolio-weighted beta: βp = Σ wᵢβᵢ
-- `valuation_startup_capm(risk_free_rate, beta, market_risk_premium, size_premium, startup_premium)` — Startup-adjusted CAPM with size and stage premiums
+Compute expected value and probability-weighted outcomes for startup scenarios: discrete E[X], joint probability of sequential events, probability-weighted value, VC portfolio expected return, Poisson event probability, and continuous E[X] over a range.
 
-**Comparables:**
-- `valuation_regression_multiple(intercept, growth_rate, growth_coefficient, market_maturity, maturity_coefficient, stage, stage_coefficient, geography, geography_coefficient)` — Regression-adjusted multiple from peer data
+- `method: "expected_value_discrete"` — outcomes, probabilities
+- `method: "joint_probability"` — probabilities
+- `method: "probability_weighted"` — outcomes, probabilities
+- `method: "portfolio_return"` — weights, returns
+- `method: "poisson"` — mean_events, k
+- `method: "expected_value_continuous"` — lower, upper
 
-**International:**
-- `valuation_ppp(spot_rate, inflation_foreign, inflation_domestic)` — Purchasing Power Parity exchange rate
-- `valuation_crp(sovereign_yield, us_treasury_yield)` — Country Risk Premium from sovereign spreads
-- `valuation_intl_capm(risk_free_rate, beta, mrp, crp)` — International CAPM: r = Rf + β×MRP + CRP
+### `valuation_time_value`
+
+Discount, compound, and forecast value over time: single future value PV, net present value of a cash-flow stream, annuity present value, discounted cash flow with a Gordon terminal value, constant-rate compound growth of revenue or cash flow, and the implied compound annual growth rate (CAGR).
+
+- `method: "present_value"` — future_value, rate, periods
+- `method: "npv"` — cash_flows, rate
+- `method: "annuity"` — payment, rate, periods
+- `method: "compound_growth"` — starting_value, growth_rate, periods
+- `method: "cagr"` — starting_value, ending_value, periods
+- `method: "dcf"` — cash_flows, rate (optional: terminal_growth)
+
+### `valuation_capm`
+
+Estimate the cost of capital: standard CAPM, startup-adjusted CAPM with size and illiquidity premiums, portfolio beta from weighted asset betas, and WACC blending after-tax cost of equity and debt.
+
+- `method: "capm"` — risk_free_rate, beta, market_return
+- `method: "startup_capm"` — risk_free_rate, beta, market_risk_premium (optional: size_premium, liquidity_premium)
+- `method: "portfolio_beta"` — weights, betas
+- `method: "wacc"` — equity_value, debt_value, cost_of_equity, cost_of_debt, tax_rate
+
+### `valuation_comparables`
+
+Market multiples from comparables: P/E, P/S, EV/EBITDA, EV/Revenue, and a regression-adjusted multiple.
+
+- `method: "pe_ratio"` — market_cap, net_income
+- `method: "ps_ratio"` — market_cap, revenue
+- `method: "ev_ebitda"` — enterprise_value, ebitda
+- `method: "ev_revenue"` — enterprise_value, revenue
+- `method: "regression_multiple"` — intercept, growth_rate, growth_coefficient (optional: market_maturity, maturity_coefficient, stage, stage_coefficient, geography, geography_coefficient)
+
+### `valuation_international`
+
+Cross-border adjustments: purchasing-power parity, country risk premium, and international CAPM.
+
+- `method: "ppp"` — spot_rate, inflation_foreign, inflation_domestic
+- `method: "country_risk_premium"` — sovereign_yield, us_treasury_yield
+- `method: "intl_capm"` — risk_free_rate, beta, mrp, crp
 
 ## Best Practices
 
