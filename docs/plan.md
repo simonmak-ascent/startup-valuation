@@ -348,7 +348,7 @@ owns what it creates.
 | **T2** | translate `lib/db/migrate.ts` (17 tables, indexes) into `db/migrations/*.sql`, applied by a runner in one transaction | applied to a scratch database inside a **rolled-back** transaction (`standards.md:1278` precedent); `\d` output diffed against the table list in `migrate.ts` |
 | **T3** | port the 49 sites by verb: `RETURN` → `SELECT`, `UPSERT` → `INSERT … ON CONFLICT`, `CREATE … CONTENT` → `INSERT … RETURNING` | each module's existing tests pass; a golden test asserts the generated SQL for the three non-trivial shapes |
 | **T4** | wire `DATABASE_URL` into `/etc/startup-valuation/sv-web.env` from RDS, never from a file I read | `/api/health` → 200 `{"status":"ok"}`, and 503 with a *timeout* when the pool is broken — both asserted |
-| **T5** | ETL sources (`fred`, `eodhd`, `damodaran`, `crunchbase`, `sec-edgar`) write through the new client | row counts per source after a run, and provenance columns non-null on a sample of 3 rows |
+| **T5** | ETL sources (`fred`, `damodaran`, `crunchbase`, `sec-edgar`) write through the new client — `eodhd.ts` was removed on 2026-11-21: the product is Yahoo-only and the adapter was never imported | row counts per source after a run, and provenance columns non-null on a sample of 3 rows |
 | **T6** | deployed e2e | 8/8, including the health assertion |
 
 ## Why not the alternatives
@@ -384,7 +384,7 @@ The two pages that render empty states need data that is published publicly and 
 
 **And the importers fetch nothing.** `etl/sources/damodaran.ts` and `sec-edgar.ts` read
 `etl/data/damodaran.csv` / `sec-edgar.csv`; `etl/data/` contains only a README. The acquisition half
-of the pipeline was never written — only `eodhd.ts` calls an API, and it needs a paid key.
+of the pipeline was never written; `eodhd.ts` was the only adapter that called an API and it needed a paid key, so it was removed on 2026-11-21 with the rest of the non-Yahoo sources.
 
 So the smallest honest path for these two pages is **build-time acquisition into versioned JSON**,
 carrying the provenance the repo already enforces (`source_url`, `source_name`,
