@@ -1,0 +1,81 @@
+name: image-svc
+
+# The Python image behind sv-api (:8021) and sv-calc (:8020). One image, two roles; the role is
+# the `cmd` container.json declares per container.
+#
+# Dispatch by hand rather than on push: publishing the image serves nothing on its own. The
+# sequence is build -> read the digest -> pin both containers in container.json -> dispatch
+# deploy-digest.yml. A push trigger would produce digests nobody pins.
+#
+# Before 2026-11-21 this image could only be built by hand on ecs-01, and the recipe lived on that
+# node rather than in a repository (apg-infra OI-40).
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag suffix (default svc-<short sha>)"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: image-svc-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  image:
+    runs-on: [self-hosted, apg-ecs-01]
+    steps:
+      - name: Check the runner can reach Docker
+        run: docker info --format '{{.ServerVersion}}'
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Log in to GHCR
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" \
+            | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      # The Dockerfile copies api/ + src/ + pylaunch.py and nothing else, so staging them keeps the
+      # context at a few hundred KB instead of the whole repository.
+      - name: Stage a minimal context
+        run: |
+          set -euo pipefail
+          ctx="$(mktemp -d /tmp/sv-svc-ctx.XXXXXX)"
+          cp -a api src pylaunch.py Dockerfile.svc requirements.txt "$ctx/"
+          echo "CTX=$ctx" >> "$GITHUB_ENV"
+          echo "== context $(du -sh "$ctx" | cut -f1) from ${GITHUB_SHA::7}"
+          echo "== versions: /api/calculate $(grep -m1 '__version__' src/startup_valuation/__init__.py | cut -d'"' -f2) · /mcp $(grep -oE '"[0-9]+\.[0-9]+\.[0-9]+"' src/startup_valuation/mcp/tool_surface.py | head -1 | tr -d '"')"
+
+      - name: Build and push
+        env:
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+          SUFFIX: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          tag="${SUFFIX:-svc-${SHA::7}}"
+          img="ghcr.io/${REPO}:${tag}"
+          docker build -q -f "$CTX/Dockerfile.svc" -t "$img" "$CTX"
+          docker push "$img"
+          digest="$(docker image inspect "$img" --format '{{index .RepoDigests 0}}')"
+          {
+            echo "### ${img}"
+            echo
+            echo "\`${digest}\`"
+            echo
+            echo "Pin it in \`container.json\` for **both** \`startup-valuation-api\` and"
+            echo "\`startup-valuation-calculate\`, then dispatch \`deploy-digest.yml\` with"
+            echo "\`-f containers=startup-valuation-api,startup-valuation-calculate -f digest=<sha256>\`."
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "DIGEST=${digest##*@}"
+
+      # `apg-ecs-01` is a shared runner: the next repository's job runs as the same user and would
+      # inherit this login. `image.yml` logs out for the same reason.
+      - name: Log out
+        if: always()
+        run: docker logout ghcr.io || true
