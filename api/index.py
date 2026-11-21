@@ -159,11 +159,22 @@ def handle_request(http_method: str, path: str, body_raw: str | None) -> tuple:
         arguments = params.get("arguments", {}) or {}
         try:
             result = call_tool(name, arguments)
-        except ValueError as exc:
-            return _rpc_error(req_id, -32602, str(exc))
-        except Exception:  # noqa: BLE001 — surface a generic error, log the detail
+        except (ValueError, KeyError, TypeError) as exc:
+            # A bad method, a missing parameter, or a malformed value: the message is the guidance,
+            # so it goes back to the caller. `KeyError.__str__` is `repr(key)`, so the field name
+            # arrives quoted; "field" is the word that makes it actionable.
+            if isinstance(exc, KeyError):
+                detail = f"missing or invalid field {exc}" if exc.args else "missing or invalid field"
+            else:
+                detail = str(exc)
+            # A caller error does not need a stack trace, but a KeyError raised by our own registry
+            # lookup lands here too — record the type so that class stays diagnosable.
+            _LOGGER.warning("tool call rejected: %s (%s)", name, type(exc).__name__)
+            return _rpc_error(req_id, -32602, detail)
+        except Exception as exc:  # noqa: BLE001 — surface a generic error, log the detail
             _LOGGER.exception("tool call failed: %s", name)
-            return _rpc_error(req_id, -32603, "The tool call failed")
+            # The type, not the message: enough to distinguish "our bug" from "your input".
+            return _rpc_error(req_id, -32603, f"The tool call failed ({type(exc).__name__})")
         try:
             text = _json.dumps(result, allow_nan=False)
         except ValueError:
