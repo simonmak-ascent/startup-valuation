@@ -1,3 +1,10 @@
+---
+name: valuation-emerging
+description: >-
+  Instruments and effects outside the textbook's core chapters: SAFEs, token and network valuations, ESG adjustments, data moats and remote-first premia.
+license: MIT
+---
+
 # Skill: Valuation Emerging Topics
 
 Emerging valuation methods: SAFE, crypto/token, ESG, network effects, remote-first.
@@ -28,31 +35,29 @@ Use appropriate MCP tools (see MCP Tools section below for full signatures by to
 
 ## MCP Tools
 
-**SAFE:**
-- `valuation_safe_discount(series_a_price, discount)` — SAFE conversion using discount rate
-- `valuation_safe_cap(cap, series_a_price)` — SAFE conversion using valuation cap
-- `valuation_safe_expected(investment, cap, discount, series_a_valuation, series_a_price)` — Expected SAFE value across both cap and discount scenarios
+Each tool takes `method` plus that method's own parameters — the arguments below are the ones
+the tool validates, and an unknown method or a missing parameter returns an error instead of a value.
 
-**Crypto / Token:**
-- `valuation_token_value(transaction_volume, price_per_tx, velocity, supply)` — Token value via MV=PQ equation of exchange
-- `valuation_nvt_ratio(market_cap, daily_transaction_volume)` — Network Value to Transactions ratio (NVT > 25 = overvalued)
+### `valuation_emerging`
 
-**ESG:**
-- `valuation_esg_rate(base_rate, risk_premium, opp_discount)` — ESG-adjusted discount rate
-- `valuation_esg_premium(base_valuation, esg_score, premium_per_point)` — ESG premium on valuation (positive ESG score)
-- `valuation_esg_discount(base_valuation, esg_risk_score, discount_per_point)` — ESG risk discount on valuation
+Modern and alternative valuation: SAFE conversion (discount, cap, expected value), token valuation (equation of exchange, NVT), ESG adjustments (rate, premium, discount), Metcalfe network value, data-moat value, and remote-first premium/NPV.
 
-**Network Effects:**
-- `valuation_metcalfes(n, k)` — Network value (V = k × n²)
-- `valuation_data_moat(data_volume, data_uniqueness, monetization_rate, competitive_advantage_years, discount_rate)` — Value of proprietary data advantage
-
-**Remote-First:**
-- `valuation_remote_npv(annual_savings, discount_rate)` — NPV of remote cost savings (perpetuity)
-- `valuation_remote_premium(base_valuation, cost_savings_pct, talent_access_premium, productivity_gain)` — Valuation premium for remote-first companies
+- `method: "safe_discount"` — series_a_price, discount
+- `method: "safe_cap"` — cap, series_a_price
+- `method: "safe_expected"` — investment, cap, discount, series_a_valuation, series_a_price
+- `method: "token_value"` — transaction_volume, price_per_tx, velocity, supply
+- `method: "nvt_ratio"` — market_cap, transaction_volume
+- `method: "esg_rate"` — rate (optional: esg_risk_premium, esg_opportunity_discount)
+- `method: "esg_premium"` — base_valuation, esg_score (optional: premium_per_point)
+- `method: "esg_discount"` — base_valuation, esg_risk_score (optional: discount_per_point)
+- `method: "metcalfe"` — n (optional: k)
+- `method: "data_moat"` — data_volume, data_uniqueness, monetization_rate, competitive_advantage_years (optional: discount_rate)
+- `method: "remote_npv"` — annual_savings, discount_rate
+- `method: "remote_premium"` — base_valuation (optional: cost_savings_pct, talent_access_premium, productivity_gain)
 
 ## Best Practices
 
-- SAFE: always compare both cap and discount scenarios; use `valuation_safe_expected` for the combined analysis
+- SAFE: always compare both cap and discount scenarios; use `valuation_emerging` with `method: "safe_expected"` for the combined analysis
 - Token velocity should be based on actual on-chain transaction data, not theoretical assumptions
 - ESG premium calibration: use industry-standard frameworks (SASB, GRI, MSCI) for score consistency
 - Metcalfe's Law: for real platforms, use α = 1.2-1.5 (empirical), not n² (theoretical)

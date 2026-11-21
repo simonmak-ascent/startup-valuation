@@ -13,7 +13,7 @@
 
 ## MCP tools
 
-All tools are pure arithmetic (no I/O), read-only and idempotent; a `method` parameter selects the formula inside each tool and results are rounded to 2 decimals.
+All tools are pure arithmetic (no I/O), read-only and idempotent; a `method` parameter selects the formula inside each tool and values are returned at full float precision — round only for display.
 
 - `valuation_core`: Scorecard, Berkus, Risk-Factor Summation, VC Method, terminal value, triangulated valuation
 - `valuation_probability`: discrete and continuous expected value, joint probability, probability-weighted value, VC portfolio return, Poisson events
@@ -29,8 +29,8 @@ All tools are pure arithmetic (no I/O), read-only and idempotent; a `method` par
 ## Docs
 
 - [Website](https://startup-valuation.ascent-partners.com/): calculators, benchmarks and live comparables
-- [Documentation](https://simonmak-ascent.github.io/startup-valuation/): library reference and chapter guides
-- [MCP server guide](https://simonmak-ascent.github.io/startup-valuation/mcp-server/): client configuration
+- [Documentation](https://startup-valuation.ascent-partners.com/docs/): library reference and chapter guides
+- [MCP server guide](https://startup-valuation.ascent-partners.com/docs/mcp-server/): client configuration
 - [Agent skills](https://startup-valuation.ascent-partners.com/skills): AI-agent skill packs
 - [Source code](https://github.com/simonmak-ascent/startup-valuation)
 - [PyPI package](https://pypi.org/project/startup-valuation/)

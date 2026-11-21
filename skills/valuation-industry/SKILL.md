@@ -1,3 +1,10 @@
+---
+name: valuation-industry
+description: >-
+  Industry models priced on the metrics their vertical actually uses: SaaS, marketplace, fintech, biotech and hardware. Use once revenue exists and the business model is known.
+license: MIT
+---
+
 # Skill: Valuation Industry Methods
 
 Industry-specific methods: SaaS, Biotech, Fintech, Marketplace, Hardware.
@@ -34,30 +41,56 @@ Compare results to industry benchmarks. Flag if metrics are outside normal range
 
 ## MCP Tools
 
-**SaaS:**
-- `valuation_saas_ltv(arpu, gross_margin, churn_rate)` — Lifetime value per customer
-- `valuation_rule_of_40(growth_rate, profit_margin)` — Health check: growth + profit ≥ 40%
-- `valuation_saas_multiple(arr, multiple)` — ARR-based valuation
+Each tool takes `method` plus that method's own parameters — the arguments below are the ones
+the tool validates, and an unknown method or a missing parameter returns an error instead of a value.
 
-**Biotech:**
-- `valuation_decision_tree(probabilities, terminal_value)` — Stage-gate expected value
-- `valuation_peak_sales(patient_population, penetration, price, compliance)` — Peak sales estimate
-- `valuation_pipeline(drugs, discount_rate)` — Multi-drug pipeline valuation
+### `valuation_saas`
 
-**Fintech:**
-- `valuation_payment_revenue(transaction_volume, take_rate)` — Payment processor revenue
-- `valuation_lending(loan_book, roe, pe_multiple, npl_reserves)` — Lending fintech valuation
-- `valuation_payment_processor(transaction_volume, take_rate, growth_rate, discount_rate, terminal_multiple, years)` — DCF-based processor valuation
-- `valuation_neobank(customers, arpu, gross_margin, churn_rate, pe_multiple)` — Customer-based neobank valuation
+SaaS unit economics and valuation: LTV, CAC, MRR, ARR, net revenue retention, magic number, Rule of 40, CAC payback, and ARR revenue-multiple valuation.
 
-**Marketplace:**
-- `valuation_take_rate(revenue, gmv)` — Revenue as percentage of GMV
-- `valuation_gmv_multiple(gmv, multiple)` — GMV-based valuation
-- `valuation_buyer_retention(buyers_period_1, buyers_repeat)` — Cohort retention metric
-- `valuation_network_density(active_buyers, active_sellers, total_users)` — Marketplace engagement ratio
+- `method: "ltv"` — arpu, gross_margin, churn_rate
+- `method: "cac"` — sales_marketing_expense, new_customers
+- `method: "mrr"` — arr_value
+- `method: "arr"` — subscription_values
+- `method: "nrr"` — starting_revenue, ending_revenue (optional: expansion_revenue)
+- `method: "magic_number"` — net_new_arr, sm_expense_prior
+- `method: "rule_of_40"` — growth_rate, profit_margin
+- `method: "cac_payback"` — cac, mrr_per_customer, gross_margin
+- `method: "revenue_multiple"` — arr, revenue_multiple
 
-**Hardware:**
-- `valuation_trl(market_size, market_share, margin, multiple, trl_discount)` — TRL-adjusted valuation
+### `valuation_biotech`
+
+Risk-adjusted biotech valuation: peak sales, decision-tree expected value, and full pipeline rNPV across drugs.
+
+- `method: "peak_sales"` — patient_population, penetration, price (optional: compliance)
+- `method: "decision_tree"` — probabilities, terminal_value
+- `method: "pipeline"` — drugs, discount_rate
+
+### `valuation_fintech`
+
+Value and size fintech business models: payment revenue, lending valuation, payment-processor DCF, and neobank customer-based valuation.
+
+- `method: "payment_revenue"` — transaction_volume, take_rate
+- `method: "lending"` — loan_book, roe, pe_multiple (optional: npl_reserves)
+- `method: "payment_processor"` — transaction_volume, take_rate, growth_rate, discount_rate, terminal_multiple (optional: years)
+- `method: "neobank"` — customers, arpu, gross_margin, churn_rate, pe_multiple
+
+### `valuation_marketplace`
+
+Marketplace health and valuation: take rate, GMV revenue-multiple valuation, buyer retention, and network density.
+
+- `method: "take_rate"` — revenue, gmv
+- `method: "gmv_multiple"` — gmv, multiple
+- `method: "buyer_retention"` — buyers_period_1, buyers_repeat
+- `method: "network_density"` — active_buyers, active_sellers, total_users
+
+### `valuation_hardware`
+
+Hardware and deep-tech valuation: TRL-risk-adjusted valuation, gross margin, and break-even volume.
+
+- `method: "trl"` — market_size, market_share, margin, multiple, trl_discount
+- `method: "gross_margin"` — asp, variable_cost
+- `method: "break_even_volume"` — fixed_costs, asp, variable_cost
 
 ## Best Practices
 

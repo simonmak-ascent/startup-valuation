@@ -97,23 +97,27 @@ Compute expected value and probability-weighted outcomes for startup scenarios: 
 
 ### `valuation_time_value` — Time Value of Money
 
-Discount future cash to present value: single future value PV, net present value of a cash-flow stream, and annuity present value. Method selects the formula.
+Convert cash between dates: single future value PV, net present value of a cash-flow stream, annuity present value, compound growth, CAGR, and DCF with a terminal value. Method selects the formula.
 
 | `method` value | Computes | Parameters |
 |---|---|---|
 | `present_value` | PV = C / (1+r)^t. | `future_value`, `rate`, `periods` |
 | `npv` | NPV = Σ Cₜ / (1+r)^t. | `cash_flows`, `rate` |
 | `annuity` | PV = P·[1-(1+r)^-n]/r. | `payment`, `rate`, `periods` |
+| `compound_growth` | V_n = V_0·(1+g)^n. | `starting_value`, `growth_rate`, `periods` |
+| `cagr` | CAGR = (V_n / V_0)^(1/n) - 1. | `starting_value`, `ending_value`, `periods` |
+| `dcf` | Σ Cₜ/(1+r)^t plus a Gordon terminal value. | `cash_flows`, `rate` (optional: `terminal_growth`) |
 
 ### `valuation_capm` — CAPM & Cost of Equity
 
-Estimate the cost of equity: standard CAPM, startup-adjusted CAPM with size and illiquidity premiums, and portfolio beta from weighted asset betas. Method selects the formula.
+Estimate the cost of capital: standard CAPM, startup-adjusted CAPM with size and illiquidity premiums, portfolio beta from weighted asset betas, and WACC. Method selects the formula.
 
 | `method` value | Computes | Parameters |
 |---|---|---|
 | `capm` | E(R) = Rf + β·(E(Rm) - Rf). | `risk_free_rate`, `beta`, `market_return` |
 | `startup_capm` | r = Rf + β·MRP + size premium + illiquidity premium. | `risk_free_rate`, `beta`, `market_risk_premium`, `size_premium`, `liquidity_premium` |
 | `portfolio_beta` | βp = Σ wᵢ·βᵢ. | `weights`, `betas` |
+| `wacc` | WACC = (E/V)·Re + (D/V)·Rd·(1 - T). | `equity_value`, `debt_value`, `cost_of_equity`, `cost_of_debt`, `tax_rate` |
 
 ### `valuation_core` — Pre-Revenue Core Methods
 
@@ -227,11 +231,11 @@ Allocate value across stakeholders and equity classes: single-round dilution, OP
 |---|---|---|
 | `dilution` | Ownership = before × (1 - investment / post-money). | `ownership_before`, `investment`, `post_money` |
 | `opm` | Option-pricing allocation of equity value to common shares. | `enterprise_value`, `liquidation_pref`, `time_to_exit`, `volatility` |
-| `pwerm` | Probability-weighted expected return method across exit scenarios. | `scenarios` |
+| `pwerm` | Probability-weighted expected return method across exit scenarios. | `pwerm_scenarios` |
 | `liquidation` | V = Σ(asset × recovery rate). | `assets`, `recovery_rates` |
 | `risk_adjusted_synergy` | Probability-weighted, discounted M&A revenue + cost synergies. | `revenue_synergies`, `cost_synergies`, `prob_revenue`, `prob_cost`, `discount_rate`, `years` |
 | `intrinsic_option` | Intrinsic value = max(0, FMV - strike) × shares. | `strike_price`, `fair_market_value`, `shares` |
-| `employee_option` | Probability-weighted employee option value across scenarios. | `scenarios` |
+| `employee_option` | Probability-weighted employee option value across scenarios. | `employee_option_scenarios` |
 | `vesting_adjusted` | Option value adjusted for vesting schedule and retention probability. | `total_value`, `vested_fraction`, `annual_vest_rate`, `retention_prob`, `years_remaining` |
 | `cash_equity_breakeven` | Break-even comparing salary reduction against discounted equity. | `salary_reduction`, `equity_value`, `tax_rate`, `discount_rate`, `years` |
 | `max_asset_loan` | Borrowing capacity from asset collateral values. | `cash`, `accounts_receivable`, `inventory`, `equipment`, `real_estate` |

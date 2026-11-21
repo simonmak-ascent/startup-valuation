@@ -7,9 +7,10 @@ stdio server (``startup_valuation/mcp/server.py``) and the hosted HTTP endpoint
 
 Design notes (Glama / TDQS Tool Definition Quality Score):
 
-* Tools are **folded by valuation family** (15 tools) rather than one tool
+* Tools are **folded by valuation family** (14 tools) rather than one tool
   per formula (60). TDQS scores *Tool Count Appropriateness* 5/5 only in the
-  3-15 band; a `method` enum selects the formula inside each tool.
+  3-15 band; a `method` enum selects the formula inside each tool. Count is
+  `len(TOOLS)` at the bottom of this module — the code, not this sentence.
 * Every tool carries a ``title``, an ``outputSchema``, and MCP
   ``annotations``. All tools are pure calculators: read-only, idempotent,
   closed-world, non-destructive.
@@ -1450,7 +1451,8 @@ _TYPE_MAP: dict[str, dict[str, Any]] = {
 #: consequences beyond the structured hints.
 _RETURNS_NOTE = (
     " Returns value, method, inputs, assumptions, chapter, formula_number and calculation steps; pure "
-    "arithmetic — no I/O and no external calls — rounded to 2 decimals, with no auth or rate limits. An "
+    "arithmetic — no I/O and no external calls — at full float precision, so a value can be fed into "
+    "another method without rounding loss; round only for display. No auth and no rate limits. An "
     "unknown method, or a missing method-required parameter, returns an error instead of a value."
 )
 

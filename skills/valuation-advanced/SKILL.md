@@ -1,3 +1,10 @@
+---
+name: valuation-advanced
+description: >-
+  Contingent and discrete values: Black-Scholes, binomial trees, and named bull/base/bear scenario tables. Use when the payoff depends on an event, or the outcomes are a small named set rather than a continuous distribution.
+license: MIT
+---
+
 # Skill: Valuation Advanced Methods
 
 Advanced techniques: Black-Scholes, Monte Carlo, Scenario Analysis, and Binomial Tree.
@@ -35,12 +42,16 @@ For Monte Carlo, import from library: `from startup_valuation.advanced import mo
 
 ## MCP Tools
 
-- `valuation_black_scholes(underlying, strike, risk_free_rate, volatility, time_to_maturity)` — European call option (real options)
-- `valuation_scenario_analysis(scenarios)` — Discrete outcome scenarios [{name, probability, value}]
-- `valuation_binomial(underlying, strike, risk_free_rate, volatility, time_to_maturity, steps=50)` — High-resolution binomial tree
+Each tool takes `method` plus that method's own parameters — the arguments below are the ones
+the tool validates, and an unknown method or a missing parameter returns an error instead of a value.
 
-Note: `monte_carlo_valuation` is available in the library but not exposed as an MCP tool.
-Use `from startup_valuation.advanced import monte_carlo_valuation` directly.
+### `valuation_advanced`
+
+Advanced techniques: Black-Scholes call value, binomial-tree option value, and scenario analysis.
+
+- `method: "black_scholes"` — underlying, strike, risk_free_rate, volatility, time_to_maturity
+- `method: "binomial"` — underlying, strike, risk_free_rate, volatility, time_to_maturity (optional: steps)
+- `method: "scenario_analysis"` — scenarios
 
 ## Best Practices
 

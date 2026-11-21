@@ -86,7 +86,7 @@ The hosted Streamable HTTP endpoint needs no install: `https://startup-valuation
 Copy the `skills/` directory to your agent's skills folder. Available skills:
 
 - `valuation-core` — Scorecard, Berkus, VC Method, Risk Factor
-- `valuation-advanced` — Black-Scholes, Monte Carlo, Scenario Analysis
+- `valuation-advanced` — Black-Scholes, binomial trees, Scenario Analysis
 - `valuation-industry` — SaaS, Biotech, Fintech, Marketplace, Hardware
 - `valuation-stakeholder` — Dilution, OPM, PWERM, Liquidation
 - `valuation-emerging` — SAFE, Crypto, ESG, Network Effects

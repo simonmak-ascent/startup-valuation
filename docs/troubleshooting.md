@@ -67,7 +67,7 @@ pip install --upgrade startup-valuation
 **Solutions:**
 
 1. **Check tool name spelling** — Tool names use `valuation_` prefix and snake_case:
-   - ✅ `valuation_scorecard`
+   - ✅ `valuation_core` with `method: "scorecard"`
    - ❌ `valuation_score_card`
    - ❌ `scorecard_valuation` (this is the library function name, not the MCP tool name)
 

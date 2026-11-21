@@ -15,7 +15,7 @@ There are 6 skills available:
 | Skill | Covers |
 |---|---|
 | `valuation-core` | Scorecard, Berkus, VC Method, Risk Factor Summation |
-| `valuation-advanced` | Black-Scholes, Binomial, Monte Carlo, Scenario Analysis |
+| `valuation-advanced` | Black-Scholes, binomial trees, Scenario Analysis |
 | `valuation-industry` | SaaS, Biotech, Fintech, Marketplace, Hardware |
 | `valuation-stakeholder` | Dilution, OPM, PWERM, Liquidation Preference |
 | `valuation-emerging` | SAFE, Crypto (MV=PQ), ESG, Metcalfe's Law |
@@ -114,8 +114,8 @@ Here's how to write a skill for a new valuation method:
 4. Compare with comparable property sales
 
 ## MCP Tools
-- `valuation_present_value` — for discounted cash flow of rental income
-- `valuation_capm` — for determining appropriate discount rate
+- `valuation_time_value` with `method: "dcf"` — for discounted cash flow of rental income
+- `valuation_capm` with `method: "capm"` — for determining the appropriate discount rate
 
 ## Best Practices
 - Use local market cap rates, not national averages
@@ -137,9 +137,9 @@ User asks: "Value my SaaS startup"
 Agent checks skills → matches `valuation-industry` (SaaS section)
     ↓
 Skill workflow says:
-  1. Calculate ARR → use `valuation_saas_multiple` with arr parameter
-  2. Calculate LTV/CAC → use `valuation_saas_ltv`
-  3. Check Rule of 40 → use `valuation_rule_of_40`
+  1. Calculate ARR → use `valuation_saas` with `method: "revenue_multiple"`
+  2. Calculate LTV/CAC → use `valuation_saas` with `method: "ltv"`
+  3. Check Rule of 40 → use `valuation_saas` with `method: "rule_of_40"`
     ↓
 Agent calls MCP tools in sequence
     ↓
