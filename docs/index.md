@@ -4,6 +4,26 @@
 
 This site is the companion documentation for the Python library implementing **80+ formulas** from the Startup Valuation textbook.
 
+## The deployed application
+
+This documentation ships with the product it describes, at
+<https://startup-valuation.ascent-partners.com>:
+
+| path | what it serves |
+|---|---|
+| `/` | the landing page — what the tool does, the connect snippets, and the facts |
+| `/methods/<slug>` | one calculator per method — 27 of them — each returning its formula, inputs, assumptions and steps |
+| `/benchmarks` | industry multiples from live Yahoo Finance quotes; every median states the sample it rests on (`n=`) |
+| `/public-companies` | the public comparables behind those multiples |
+| `/skills` | the six AI-agent skill packs |
+| `/api/playground` | an interactive playground for the calculators and the tool surface |
+| `/api/health` | the dependency probe — the market-data source the product relies on, and whether it answers |
+| `/api/calculate` | the calculator as JSON, served by the Python service |
+| `/mcp` | the MCP endpoint, Streamable HTTP; a bare `GET` answers `405` by design |
+| `/docs` | this site |
+
+English is served at `/`, 简体中文 at `/zh` and 繁體中文 at `/hk` — the whole chrome changes, not only the prose.
+
 ## Quick Start
 
 ```bash
@@ -48,7 +68,7 @@ print(f"Option value: ${result.value:,.0f}")  # $15,240,000
 - **80+ valuation formulas** across 15 modules covering every method in the textbook
 - **Typed Python API** with structured `ValuationResult` returns (value + assumptions + sensitivity)
 - **MCP Server** exposing all calculations as tools for AI agents (Claude, OpenCode, etc.)
-- **AI-Agent Skills** with workflow guidance for 5 valuation domains
+- **AI-Agent Skills** with workflow guidance for six valuation domains
 - **Every function tested** against textbook example values
 
 ## Modules

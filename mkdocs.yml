@@ -101,3 +101,20 @@ nav:
       - Notation: notation.md
       - Cross-Reference: cross-reference.md
   - Troubleshooting: troubleshooting.md
+
+# Internal planning documents, deliberately not published.
+#
+# They are working papers: they describe routes and gaps from an earlier state of the app, and
+# several name endpoints that no longer exist (`/api/auth/session`, `/api/audit/route`,
+# `/api/export/report`). mkdocs builds every file under `docs_dir` whether or not it is in the nav,
+# so before this they were served at /docs/plan/ and read as current documentation. Keeping them in
+# the tree keeps every reference to them valid; excluding them stops them being published.
+# `tests-ci/test_docs_alignment.py` reads this list, asserts every name is a real file, asserts these
+# five are still excluded, and fails on any document present in docs/ that is neither tracked nor
+# excluded — which is how a stray working paper would be caught before it published.
+exclude_docs: |
+  plan.md
+  plan-context.md
+  plan-product.md
+  plan-delivery.md
+  test-plan.md
