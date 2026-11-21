@@ -3,7 +3,7 @@
     {
       "name": "startup-valuation",
       "repo": "simonmak-ascent/startup-valuation",
-      "image": "ghcr.io/simonmak-ascent/startup-valuation@sha256:6438155df7f16e69f2dc214a0aa5cae2e456557864c68922d3160b83b61490cb",
+      "image": "ghcr.io/simonmak-ascent/startup-valuation@sha256:fad2d9bdd91acabd42d5b35df1712675f5401b005a4b3c743b64faab94068a94",
       "port": 3110,
       "hosts": [
         "startup-valuation.ascent-partners.com"
