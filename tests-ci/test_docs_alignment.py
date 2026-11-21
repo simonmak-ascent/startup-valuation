@@ -7,14 +7,16 @@ application no longer has (`/api/auth/session`, `/api/audit/route`, `/api/export
 nav, so all five were served under /docs/ — /docs/plan/, /docs/plan-context/, /docs/plan-product/,
 /docs/plan-delivery/ and /docs/test-plan/ — and read as current documentation of a vanished app.
 
-They stay in the tree — other documents reference them by path — and are excluded from the build by
-`mkdocs.yml`'s `exclude_docs`.
+They are `.gitignore`d, so a clone does not contain them at all; on the workstation they are still on
+disk, and `mkdocs.yml`'s `exclude_docs` stops a local `mkdocs build` from publishing them.
 
 These tests hold the two properties that failure violated:
 
 * a document that names an `/api` route the app does not serve must be excluded from the published
   set, and no stray markdown document may sit in the published tree at all;
-* an excluded name must be a file that exists, so the list cannot rot into decoration.
+* an excluded name must be a file that exists, or a path `.gitignore` covers — the two states above —
+  so the list cannot rot into decoration. This catches a typo; it no longer catches a planning
+  document deleted from disk while its exclusion and ignore entry are both left behind.
 """
 
 from __future__ import annotations
@@ -129,9 +131,21 @@ def test_a_document_naming_a_dead_route_is_excluded_from_the_site() -> None:
     )
 
 
-def test_every_excluded_document_exists() -> None:
-    missing = sorted(name for name in _excluded() if not (DOCS / name).exists())
-    assert not missing, f"exclude_docs names files that do not exist: {missing}"
+def test_every_excluded_document_exists_or_is_ignored() -> None:
+    # In a clone the planning papers are absent — they are .gitignore'd — while on the workstation
+    # they are present and must still be excluded from the build. Either state is valid; a name that
+    # is neither present nor ignored is a typo that would silently protect nothing.
+    import subprocess
+
+    bad = []
+    for name in _excluded():
+        path = f"docs/{name}"
+        if (DOCS / name).exists():
+            continue
+        ignored = subprocess.run(["git", "check-ignore", "-q", path], cwd=ROOT, capture_output=True).returncode
+        if ignored != 0:
+            bad.append(name)
+    assert not bad, f"exclude_docs names files that neither exist nor are ignored: {bad}"
 
 
 def test_the_planning_documents_are_the_ones_excluded() -> None:

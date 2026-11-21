@@ -107,14 +107,16 @@ nav:
 # They are working papers: they describe routes and gaps from an earlier state of the app, and
 # several name endpoints that no longer exist (`/api/auth/session`, `/api/audit/route`,
 # `/api/export/report`). mkdocs builds every file under `docs_dir` whether or not it is in the nav,
-# so before this they were served at /docs/plan/ and read as current documentation. Keeping them in
-# the tree keeps every reference to them valid; excluding them stops them being published.
-# `tests-ci/test_docs_alignment.py` reads this list, asserts every name is a real file, asserts these
-# five are still excluded, and fails on any document present in docs/ that is neither tracked nor
-# excluded — which is how a stray working paper would be caught before it published.
+# so before this they were served at /docs/plan/ and read as current documentation.
+#
+# They are also `.gitignore`d, so a clone does not contain them at all; this list exists for the
+# workstation, where the files are still on disk and a local `mkdocs build` would otherwise publish
+# them. `tests-ci/test_docs_alignment.py` asserts these six are still excluded and that no other
+# document is published while naming an `/api` route the app does not serve.
 exclude_docs: |
   plan.md
   plan-context.md
   plan-product.md
   plan-delivery.md
   test-plan.md
+  plan-15min.md

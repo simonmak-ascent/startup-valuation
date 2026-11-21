@@ -211,8 +211,8 @@ test("the removed surfaces stay removed", async () => {
   // Sign-in, the dashboard and billing were deleted with the database dependency on 2026-11-18.
   // A reintroduction without a session store would go green on every other assertion here, so the
   // absence is asserted explicitly: these paths must 404, not redirect to a page that cannot work.
-  // Every surface docs/plan.md removed, not a sample: /api/audit was an unauthenticated write
-  // endpoint, and a reintroduced checkout or Stripe webhook would otherwise go unnoticed.
+  // Every surface the removed application had, not a sample: /api/audit was an unauthenticated
+  // write endpoint, and a reintroduced checkout or Stripe webhook would otherwise go unnoticed.
   const removed = [
     "/sign-in",
     "/dashboard",

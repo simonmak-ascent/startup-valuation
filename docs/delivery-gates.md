@@ -50,8 +50,7 @@ T1.2 path guards — commit ✅ · push ✅ · merge ✅ (b32d136) · deploy ⛔
 ```
 
 The `⛔` names the blocker, not "pending". An item with no deploy and no e2e row is a task that has
-not started delivery, whatever its code says. `docs/plan.md` and `docs/plan-delivery.md` use this
-form; the session todo list uses it too.
+not started delivery, whatever its code says. The session todo list uses this form too.
 
 ## Why each stage is where it is
 
@@ -88,7 +87,7 @@ form; the session todo list uses it too.
   unattended. It remains possible for `sv-api`/`sv-calc`, which have no reproducible image yet
   (OI-40), so a pin of those digests still needs an operator.
 - **The ALB path rules.** They live on the broker (`/root/edge/hosts`, `publish.py`), outside this
-  repository. Until they match `docs/plan-delivery.md`'s table, `/mcp` and `/api/*` cannot be
+  repository. Until they match the delivery contract's path table, `/mcp` and `/api/*` cannot be
   delivered however green the pipeline is.
 - **Rebuilding the Python containers.** OI-40; the recipe is written, the build runs on a node.
 

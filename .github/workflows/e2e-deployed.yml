@@ -150,8 +150,8 @@ jobs:
             echo
             echo 'A red run means the host is not serving what this repository declares — not that a'
             echo 'unit test is wrong. The usual causes, in order: a node is unreachable or draining,'
-            echo 'the fleet is split across two digests, the ALB routing does not match'
-            echo 'docs/plan-delivery.md, or the fix is merged but not deployed.'
+            echo 'the fleet is split across two digests, the ALB routing does not match the'
+            echo 'delivery contract, or the fix is merged but not deployed.'
             echo
             echo '## Fix loop'
             echo

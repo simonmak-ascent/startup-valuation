@@ -30,6 +30,18 @@ vdd/
 # Wiki canonical sources (pushed separately to wiki repo)
 textbook/
 
+# Internal planning documents — local-only, like AGENTS.md, specs/ and vdd/. They describe an
+# earlier state of the application and several name routes it no longer serves, so they must not
+# reach a clone: mkdocs builds every file under docs/ and would otherwise publish them. The files
+# stay on the workstation; they were untracked with `git rm --cached`, and these entries keep them
+# out. `docs/plan-15min.md` is covered by the same reasoning.
+/docs/plan.md
+/docs/plan-context.md
+/docs/plan-product.md
+/docs/plan-delivery.md
+/docs/test-plan.md
+/docs/plan-15min.md
+
 # Playwright MCP test artifacts
 .playwright-mcp/
 
